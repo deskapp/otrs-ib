@@ -1,0 +1,50 @@
+/**
+ * Core.WidgetMenu.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 71 */
+.ControlRow li:hover {
+    background: #D2E2EF !important;
+}
+
+/* 81 */
+.ControlRow li.Active,
+.ControlRow li.Active:hover,
+.ControlRow li.Active:active {
+    background: #909090;
+    padding-left: 2px;
+}
+
+/* 109 */
+.ControlRow li.Active:hover > a {
+    color: #000000;
+    border-top-left-radius: 2px;
+}
+
+/* 360 */
+.Actions li a:hover,
+.Actions li span:hover,
+.OverviewZoom a:hover {
+    background: #D2E2EF !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-left: 1px solid #D2E2EF;
+    border-right: 1px solid #D2E2EF;
+}
+
+/* 627 */
+span.Pagination a:hover {
+    color: #3D80B3;
+}
+
+} /* end @media */

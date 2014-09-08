@@ -1,0 +1,63 @@
+/**
+ * Core.Default.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Customer Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 28 */
+a {
+    color: #276a9d;
+}
+
+/* 32 */
+a:hover {
+    color: #093557;
+}
+
+/* 65 */
+#Header {
+    padding: 21px 34px 18px;
+    background: #CCDCEA;
+    background: -moz-linear-gradient(top,  #F3F7FA 0%, #CCDCEA 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F3F7FA), color-stop(100%,#CCDCEA));
+    background: -webkit-linear-gradient(top,  #F3F7FA 0%,#CCDCEA 100%);
+    background: -o-linear-gradient(top,  #F3F7FA 0%,#CCDCEA 100%);
+    background: -ms-linear-gradient(top,  #F3F7FA 0%,#CCDCEA 100%);
+    background: linear-gradient(to bottom,  #F3F7FA 0%,#CCDCEA 100%);
+    border-bottom: 1px solid #A1BBD2;
+    text-shadow: none;
+}
+
+/* 150 */
+#Navigation .Selected,
+#Navigation .Selected:active {
+    margin-top: -1px;
+    background: #7B9DB9 !important;
+    border-bottom: 1px solid #789bb8;
+}
+
+/* 177 */
+#Footer a:hover {
+    color: #093557;
+}
+
+/* 321 */
+form input.Error,
+form textarea.Error {
+    border-color: #BB0000;
+}
+
+/* 326 */
+form select.Error {
+    color: #BB0000;
+}
+
+} /* end @media */

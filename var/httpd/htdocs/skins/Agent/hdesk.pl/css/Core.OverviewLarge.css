@@ -1,0 +1,37 @@
+/**
+ * Core.OverviewLarge.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 108 */
+.OverviewLarge > li:hover > .Content {
+    background: #D2E2EF !important;
+}
+
+/* 118 */
+.OverviewLarge > li:hover .Infos table label {
+    color: #888888;
+}
+
+/* 122 */
+.OverviewLarge > li:hover .Infos table a {
+    color: #3D80B3;
+}
+
+/* 287 */
+.OverviewLarge .Infos table td label {
+    display: block;
+    color: #888888;
+    font-weight: normal;
+}
+
+} /* end @media */

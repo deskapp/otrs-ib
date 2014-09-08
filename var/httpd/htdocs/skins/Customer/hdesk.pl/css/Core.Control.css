@@ -1,0 +1,115 @@
+/**
+ * Core.Control.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Customer Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 18 */
+#Navigation {
+    height: 23px;
+    width: 100%;
+    position: relative;
+    background: #CDDDEB;
+    background: -moz-linear-gradient(top,  #CDDDEB 0%, #B9D0E3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#CDDDEB), color-stop(100%,#B9D0E3));
+    background: -webkit-linear-gradient(top,  #CDDDEB 0%,#B9D0E3 100%);
+    background: -o-linear-gradient(top,  #CDDDEB 0%,#B9D0E3 100%);
+    background: -ms-linear-gradient(top,  #CDDDEB 0%,#B9D0E3 100%);
+    background: linear-gradient(to bottom,  #CDDDEB 0%,#B9D0E3 100%);
+    border-top: 1px solid #DDE9F3;
+    border-bottom: 1px solid #C9C9C9;
+    clear: both;
+}
+    
+/* 42 */
+#Navigation > ul > li > ul {
+    position: absolute;
+    top: 24px;
+    left: 1px;
+    min-width: 140px;
+    display: none;
+    -webkit-box-shadow: 0 1px 2px #DDD inset, 0 1px 0 #E8E8E8;
+    box-shadow: 0 1px 2px #DDD inset, 0 1px 0 #E8E8E8;
+    border: 1px solid #5B809E;
+    border-top: 1px solid #7B9DB9;
+    border-radius: 0px 0px 5px 5px;
+}
+
+/* 85 */
+#Navigation > ul > li > a {
+    padding: 5px 11px;
+    color: #111;
+    font-size: 13px;
+    background: url(../../default/img/controlrow_isolator.png) no-repeat right 2px;
+    display: block;
+    outline: none;
+}
+
+/* 94 */
+#Navigation > ul > li > ul a, #Navigation > ul > li > ul .Footer {
+    color: #FFFFFF;
+    font-size: 13px;
+    padding: 6px 8px;
+    display: block;
+    background-color: #7B9DB9;
+    border-top: 1px solid #5B809E;
+}
+
+/* 103 */
+#Navigation > ul > li > ul .Footer {
+    border-top: 0px;
+    border-radius: 0px 0px 5px 5px;
+    padding-bottom: 0px;
+    padding-top: 2px;
+    background-color: #7B9DB9;
+}
+
+/* 111 */
+#Navigation > ul > li > ul a:hover,
+#Navigation > ul > li > ul a:focus,
+#Navigation > ul > li > ul a.SubSelected {
+    color: #FFFFFF;
+    background-color: #4D7698;
+}
+
+/* 122 */
+#Navigation li:active {
+    margin-top: -2px;
+    background: #7B9DB9;
+    border-top: 1px solid #727272;
+    border-left: 1px solid #727272;
+}
+
+/* 143 */
+#Navigation li:active > a {
+    padding-top: 7px;
+    padding-bottom: 3px;
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+/* 167 */
+#Navigation .Selected > a {
+    margin-right: -1px;
+    padding: 6px 10px 4px 11px;
+    color: #FFFFFF;
+    background: none;
+    text-shadow: none;
+}
+
+/* 180 */
+#Navigation .Selected a:active {
+    padding: 6px 10px 4px 11px;
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+} /* end @media */

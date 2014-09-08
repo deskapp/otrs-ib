@@ -1,0 +1,105 @@
+/**
+ * Core.Form.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 19 */
+input,
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea,
+select,
+select[multiple="multiple"] {
+    font-family: Verdana,Geneva,sans-serif;
+}
+
+/* 72 */
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+    border-color: #3D80B3;
+}
+
+/* 284 */
+#JSTree .jstree-clicked {
+    background: #D2E2EF !important;
+    border-color: #b1c9de;
+    padding: 0px 1px;
+}
+
+/* 276 */
+#JSTree .jstree-search {
+    color: #3D80B3;
+}
+
+/* 357 */
+form label.LabelError {
+    color: #BB0000 !important;
+}
+
+/* 394 */
+.CustomerContainer .CustomerTicketText.MainCustomer {
+    background-color: #D2E2EF;
+    border: 1px solid #D2E2EF;
+}
+
+/* 429 */
+form input.Error,
+form textarea.Error {
+    border-color: #BB0000;
+}
+
+/* 446 */
+fieldset.TableLike > label,
+fieldset.TableLike > .Row > label {
+    display: block;
+    float: left;
+    line-height: 1.3em;
+    width: 30%;
+    text-align: right;
+    color: #929292;
+    min-height: 17px;
+    padding-top: 5px;
+    padding-bottom: 1px;
+    text-shadow: 0 1px 0 #FAFAFA;
+}
+
+/* 466 */
+fieldset.TableLike > .Field,
+fieldset.TableLike > .Row > .Field {
+    line-height: 1.3em;
+    margin-left: 30%;
+    margin-right: 0;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 10px;
+    padding-right: 0px;
+    min-height: 20px;
+}
+
+/* 545 */
+fieldset.TableLike > .Value,
+fieldset.TableLike > .Row > .Value {
+    margin-left: 30%;
+    padding: 5px 0 3px 8px;
+    line-height: 1.3em;
+}
+
+/* new */
+div.ArticleMailHeader fieldset.TableLike label,
+div.ArticleMailHeader fieldset.TableLike p {
+    line-height: 1.7em;
+}
+
+} /* end @media */

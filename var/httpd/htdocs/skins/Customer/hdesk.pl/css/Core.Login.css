@@ -1,0 +1,27 @@
+/**
+ * Core.Login.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Customer Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 197 */
+.ErrorBox span {
+    padding: 5px 8px 4px;
+    color: #FFFFFF;
+    background: #BB0000;
+    border-radius: 5px;
+    box-shadow: 1px 1px 0 #DDD;
+    -webkit-box-shadow: 1px 1px 0 #DDD;
+    cursor: default;
+    font-weight: bold;
+}
+
+} /* end @media */

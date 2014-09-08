@@ -1,0 +1,105 @@
+/**
+ * Core.TicketDetail.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 87 */
+.ArticleMailHeader {
+    margin: 0;
+    padding: 5px 0;
+    font-size: 11px;
+    border-bottom: 1px solid #C6C5C4;
+    background: #F3F3F3;
+}
+
+/* 94 */
+.ArticleMailContent {
+    padding: 8px 10px;
+    line-height: 1.3;
+}
+
+/* 248 */
+.UseArticleColors .customer-webrequest > td,
+.UseArticleColors .customer-email-external > td,
+.UseArticleColors .customer-note-external > td,
+.UseArticleColors .customer-phone > td {
+    background: #ffffff none !important;
+    border-bottom: 1px dotted #CCCCCC;
+}
+
+/* 258 */
+.UseArticleColors .agent-phone > td {
+    background: #e1ffe1 none !important;
+    border-bottom: 1px dotted #CCCCCC;
+}
+
+/* 267 */
+.UseArticleColors .agent-email-external > td {
+    background: #e1ffe1 none !important;
+    border-bottom: 1px dotted #CCCCCC;
+}
+
+/* 276 */
+.UseArticleColors .agent-email-internal > td {
+    background: #ffe1e1 none !important;
+    border-bottom: 1px dotted #CCCCCC;
+}
+
+/* 285 */
+.UseArticleColors .agent-note-external > td {
+    background: #e1ffe1 none !important;
+    border-bottom: 1px dotted #CCCCCC;
+}
+
+/* 294 */
+.UseArticleColors .agent-note-internal > td {
+    background: #ffe1e1 none !important;
+    border-bottom: 1px dotted #CCCCCC;
+}
+
+/* 307 */
+.UseArticleColors .system-note-internal > td,
+.UseArticleColors .system-note-external > td,
+.UseArticleColors .system-note-report > td,
+.UseArticleColors .system-email-external > td,
+.UseArticleColors .system-email-internal > td {
+    background: #ffffcc none !important;
+    border-bottom: 1px dotted #CCCCCC;
+}
+
+/* 328 */
+.UseArticleColors .agent-phone:hover > td,
+.UseArticleColors .agent-email-external:hover > td,
+.UseArticleColors .agent-email-internal:hover > td,
+.UseArticleColors .agent-note-external:hover > td,
+.UseArticleColors .agent-note-internal:hover > td,
+.UseArticleColors .system-note-internal:hover > td,
+.UseArticleColors .system-note-external:hover > td,
+.UseArticleColors .system-note-report:hover > td,
+.UseArticleColors .system-email-external:hover > td,
+.UseArticleColors .system-email-internal:hover > td,
+.UseArticleColors .customer-webrequest:hover > td,
+.UseArticleColors .customer-email-external:hover > td,
+.UseArticleColors .customer-note-external:hover > td,
+.UseArticleColors .customer-phone:hover > td {
+    background: #D2E2EF !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+/* 1803 */
+.ControlRow .Icons a.Active {
+    background: #909090;
+    border-left: 1px solid #777777;
+}
+
+} /* end @media */

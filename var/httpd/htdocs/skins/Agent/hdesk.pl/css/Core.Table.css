@@ -1,0 +1,168 @@
+/**
+ * Core.Table.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 46 */
+.DataTable tbody tr:hover td,
+.TableSmall tbody tr:hover td {
+    background: #D2E2EF !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+/* 128 */
+.DataTable thead th {
+    padding: 3px 10px 4px;
+    color: #4B4B4B;
+    font-size: 11px;
+    text-transform: none;
+    background: none;
+    border-top: 1px solid #FFF;
+    border-bottom: 1px solid #BBB;
+    border-right: 1px solid #CCC;
+    vertical-align: bottom;
+    white-space: nowrap;
+}
+
+/* 159 */
+.DataTable thead th a {
+    background-image: none;
+    color: #444;
+    font-size: 11px;
+    height: 16px !important;
+    line-height: 12px;
+    display: block !important;
+}
+
+/* 174 */
+.DataTable thead .SortAscending a {
+    background: #BBBBBB !important;
+}
+
+/* 184*/
+.DataTable thead .SortDescending > a:after,
+.TableSmall thead .SortDescending > a:after {
+    content: "\25BC";
+    display: block;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    text-shadow: none;
+}
+
+/* 194 */
+.DataTable thead .SortAscending > a:after,
+.TableSmall thead .SortAscending > a:after {
+    content: "\25B2";
+    display: block;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    text-shadow: none;
+}
+
+/* 204 */
+.DataTable thead .SortDescending a {
+    background: #BBBBBB !important;
+}
+
+/* 296 */
+.DataTable .Row td.QueueOverviewTotals {
+    text-transform: none;
+    color: #4B4B4B;
+    border-top: 1px dotted #CCCCCC;
+}
+
+/* 387 */
+.TableSmall thead a,
+.TableSmall thead span {
+    margin: 0 2px 1px 1px;
+    padding: 0 10px;
+    color: #4A4A4A;
+    font-size: 11px;
+    line-height: 15px;
+    height: 15px;
+    text-transform: none;
+    display: block;
+    white-space: nowrap;
+}
+
+/* 433 */
+.TableSmall thead .SortAscending a,
+.TableSmall thead .headerSortUp a {
+    background: #CCCCCC;
+    padding-right: 20px;
+}
+
+.RTL .TableSmall thead .SortAscending a,
+.RTL .TableSmall thead .headerSortUp a {
+    background: #CCCCCC;
+}
+
+.TableSmall thead .SortDescending a,
+.TableSmall thead .headerSortDown a {
+    background: #CCCCCC;
+    padding-right: 20px;
+}
+
+.RTL .TableSmall thead .SortDescending a,
+.RTL .TableSmall thead .headerSortDown a {
+    background: #CCCCCC;
+}
+
+/* 766 */
+.DataTable thead th.DashboardHeader a,
+.TableSmall thead th.OverviewHeader a,
+.DataTable thead th.DashboardHeader span.Gray {
+    height: 16px;
+    line-height: 14px;
+    padding-left: 5px;
+}
+
+/* 830 */
+.DataTable thead th.DashboardHeader .ColumnSettingsBox,
+.TableSmall thead th.OverviewHeader .ColumnSettingsBox {
+    background-color: #EEEEEE;
+    border: 1px solid #BBBBBB;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    box-shadow: 1px 1px 3px #CCCCCC, -1px -1px 3px #CCCCCC;
+    display: none;
+    padding: 8px 10px;
+    position: absolute;
+    right: -2px;
+    top: -10px;
+    width: 180px;
+    z-index: 100;
+}
+
+/* 864 */
+.DataTable thead th.DashboardHeader .ColumnSettingsBox span.SelectedValue a,
+.TableSmall thead th.OverviewHeader .ColumnSettingsBox span.SelectedValue a {
+    background: #999999;
+    border-radius: 14px;
+    color: #FFFFFF;
+    display: block;
+    font-size: 10px;
+    font-weight: bold;
+    height: 15px;
+    left: 0;
+    position: absolute;
+    text-align: left;
+    top: -2px;
+    width: 10px;
+    padding: 0px 2px 3px 5px;
+}
+
+} /* end @media */

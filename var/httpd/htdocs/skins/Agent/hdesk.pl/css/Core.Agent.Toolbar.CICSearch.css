@@ -1,0 +1,29 @@
+/**
+ * Core.Agent.Toolbar.CICSearch.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 19 */
+#ToolBarCICSearchCustomerID,
+#ToolBarCICSearchCustomerUser {
+    height: 15px;
+    margin: 0 0 0 5px;
+    padding: 3px 4px 4px;
+    font: normal 12px/15px Verdana, Geneva, sans-serif;
+    border-color: #7EAFD3;
+    border-radius: 3px;
+    vertical-align: bottom;
+    -webkit-box-shadow: 0 1px 2px #E8E8E8 inset;
+    box-shadow: 0 1px 2px #E8E8E8 inset;
+}
+
+} /* end @media */
