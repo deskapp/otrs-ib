@@ -2,6 +2,7 @@
 # --
 # scripts/apache2-perl-startup.pl - to load the modules if mod_perl is used
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU AFFERO General Public License as published by
@@ -119,6 +120,8 @@ use Kernel::System::Stats;
 #use Kernel::System::CustomerUser::LDAP;
 #use Kernel::System::CustomerAuth::DB;
 #use Kernel::System::CustomerAuth::LDAP;
+#use Kernel::System::Cache::FileStorable;
+#use Kernel::System::Cache::Memcached;
 
 # web agent middle ware modules
 use Kernel::Modules::AgentTicketQueue;
