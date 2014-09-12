@@ -6253,7 +6253,7 @@ via the Preferences button after logging in.
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Cache::SubdirLevels" Required="1" Valid="1" ConfigLevel="200">
-        <Description Translatable="1">Specify how many sub directory levels to use when creating cache files. This should prevent too many cache files being in one directory.</Description>
+        <Description Translatable="1">When using FileStorable specify how many sub directory levels to use when creating cache files to prevent too many cache files being in one directory. When using Redis, keys for massive operations will be divided into 16^Cache::SubdirLevels groups to avoid overloading systems with too long key list processing.</Description>
         <Group>Framework</Group>
         <SubGroup>Core::Cache</SubGroup>
         <Setting>
@@ -6263,6 +6263,19 @@ via the Preferences button after logging in.
                 <Item Key="2">2</Item>
                 <Item Key="3">3</Item>
             </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Cache::Module::Redis###Parameters" Required="0" Valid="1">
+        <Description Translatable="1">Defines all the Redis connection parameters.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Cache</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="server">127.0.0.1:6379</Item>
+                <Item Key="cnx_timeout">1</Item>
+                <Item Key="read_timeout">1</Item>
+                <Item Key="write_timeout">1</Item>
+            </Hash>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="AutoComplete::Agent###Default" Required="0" Valid="1">
