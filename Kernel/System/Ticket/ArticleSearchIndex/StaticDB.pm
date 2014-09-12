@@ -1,6 +1,7 @@
 # --
 # Kernel/System/Ticket/ArticleSearchIndex/StaticDB.pm - article search index backend static
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -11,6 +12,10 @@ package Kernel::System::Ticket::ArticleSearchIndex::StaticDB;
 
 use strict;
 use warnings;
+
+sub ArticleIndexBackendInit {
+    return 1;
+}
 
 sub ArticleIndexBuild {
     my ( $Self, %Param ) = @_;
@@ -52,8 +57,7 @@ sub ArticleIndexBuild {
         Bind => [ \$Article{ArticleID}, ],
     );
 
-    # return if no content exists
-    return 1 if !$Article{Body};
+    $Article{Body} = '' if (!defined $Article{Body});
 
     # insert search index
     $Self->{DBObject}->Do(
@@ -109,6 +113,26 @@ sub ArticleIndexDeleteTicket {
     return if !$Self->{DBObject}->Do(
         SQL  => 'DELETE FROM article_search WHERE ticket_id = ?',
         Bind => [ \$Param{TicketID} ],
+    );
+
+    return 1;
+}
+
+sub ArticleIndexMergeTicket {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    for my $Needed (qw(MainTicketID MergeTicketID UserID)) {
+        if ( !$Param{$Needed} ) {
+            $Self->{LogObject}->Log( Priority => 'error', Message => "Need $Needed!" );
+            return;
+        }
+    }
+
+    # update ticket id in merged articles
+    return if !$Self->{DBObject}->Do(
+        SQL  => 'UPDATE article_search SET ticket_id='
+            . $Param{MainTicketID} . ' WHERE ticket_id=' . $Param{MergeTicketID},
     );
 
     return 1;
@@ -299,6 +323,20 @@ sub _ArticleIndexStringToWord {
     }
 
     return \@ListOfWords;
+}
+
+sub ArticleIndexUpdateAttr {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    for (qw(TicketID UserID)) {
+        if ( !$Param{$_} ) {
+            $Self->{LogObject}->Log( Priority => 'error', Message => "Need $_!" );
+            return;
+        }
+    }
+
+    return 1;
 }
 
 1;
