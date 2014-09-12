@@ -6286,6 +6286,19 @@ via the Preferences button after logging in.
             </Hash>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="Cache::Module::Redis###Parameters" Required="0" Valid="0">
+        <Description Translatable="1">Defines all the Redis connection parameters.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Cache</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="server">127.0.0.1:6379</Item>
+                <Item Key="cnx_timeout">1</Item>
+                <Item Key="read_timeout">1</Item>
+                <Item Key="write_timeout">1</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="AutoComplete::Agent###Default" Required="0" Valid="1">
         <Description Translatable="1">Defines the config options for the autocompletion feature.</Description>
         <Group>Framework</Group>
