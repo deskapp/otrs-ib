@@ -354,6 +354,7 @@ sub TicketSearch {
         }
     }
 
+
     $Self->{DynamicFieldObject} ||= Kernel::System::DynamicField->new( %{$Self} );
     $Self->{DynamicFieldBackendObject}
         ||= Kernel::System::DynamicField::Backend->new( %{$Self} );
@@ -996,6 +997,40 @@ sub TicketSearch {
         }
         if ($Used) {
             $SQLExt .= ')';
+        }
+    }
+
+    # archive flag
+    if ( $Self->{ConfigObject}->Get('Ticket::ArchiveSystem') ) {
+
+        # if no flag is given, only search for not archived ticket
+        if ( !$Param{ArchiveFlags} ) {
+            $Param{ArchiveFlags} = ['n'];
+        }
+
+        # prepare search with archive flags, check arguments
+        if ( ref $Param{ArchiveFlags} ne 'ARRAY' ) {
+            $Self->{LogObject}->Log(
+                Priority => 'error',
+                Message  => "Invalid attribute ArchiveFlags '$Param{ArchiveFlags}'!",
+            );
+            return;
+        }
+
+        # prepare options
+        my %Options;
+        for my $Key ( @{ $Param{ArchiveFlags} } ) {
+            $Options{$Key} = 1;
+        }
+
+        # search for archived
+        if ( $Options{y} && !$Options{n} ) {
+            $Param{ArchiveFlag} = 1;
+        }
+
+        # search for not archived
+        elsif ( !$Options{y} && $Options{n} ) {
+            $Param{ArchiveFlag} = 0;
         }
     }
 
@@ -1668,37 +1703,8 @@ sub TicketSearch {
     }
 
     # archive flag
-    if ( $Self->{ConfigObject}->Get('Ticket::ArchiveSystem') ) {
-
-        # if no flag is given, only search for not archived ticket
-        if ( !$Param{ArchiveFlags} ) {
-            $Param{ArchiveFlags} = ['n'];
-        }
-
-        # prepare search with archive flags, check arguments
-        if ( ref $Param{ArchiveFlags} ne 'ARRAY' ) {
-            $Self->{LogObject}->Log(
-                Priority => 'error',
-                Message  => "Invalid attribute ArchiveFlags '$Param{ArchiveFlags}'!",
-            );
-            return;
-        }
-
-        # prepare options
-        my %Options;
-        for my $Key ( @{ $Param{ArchiveFlags} } ) {
-            $Options{$Key} = 1;
-        }
-
-        # search for archived
-        if ( $Options{y} && !$Options{n} ) {
-            $SQLExt .= ' AND archive_flag = 1';
-        }
-
-        # search for not archived
-        elsif ( !$Options{y} && $Options{n} ) {
-            $SQLExt .= ' AND archive_flag = 0';
-        }
+    if ( defined $Param{ArchiveFlag} ) {
+        $SQLExt .= ' AND archive_flag = ' . $Param{ArchiveFlag};
     }
 
     # database query for sort/order by option

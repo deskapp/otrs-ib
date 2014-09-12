@@ -2,6 +2,7 @@
 # --
 # otrs.RebuildFulltextIndex.pl - the global search indexer handle
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU AFFERO General Public License as published by
@@ -43,7 +44,10 @@ getopt( 'h', \%Opts );
 if ( $Opts{h} ) {
     print "otrs.RebuildFulltextIndex.pl - rebuild fulltext index\n";
     print "Copyright (C) 2001-2014 OTRS AG, http://otrs.com/\n";
-    print "usage: otrs.RebuildFulltextIndex.pl\n";
+    print "Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/\n";
+    print "usage: otrs.RebuildFulltextIndex.pl [-a] [-m]\n"
+        . "where: -a  rebuild index of all tickets (only unarchived tickets by default)\n"
+        . "       -m  rebuild only main index without any parent indexes\n";
     exit 1;
 }
 
@@ -62,7 +66,9 @@ $CommonObject{TimeObject} = Kernel::System::Time->new( %CommonObject, );
 $CommonObject{DBObject}     = Kernel::System::DB->new(%CommonObject);
 $CommonObject{TicketObject} = Kernel::System::Ticket->new(%CommonObject);
 
-# get all tickets
+# get all unarchived tickets (or all tickets if -a option given)
+my $ArchiveFlags = ( $Opts{a} ) ? ['y', 'n'] : ['n'];
+
 my @TicketIDs = $CommonObject{TicketObject}->TicketSearch(
 
     # result (required)
@@ -72,6 +78,7 @@ my @TicketIDs = $CommonObject{TicketObject}->TicketSearch(
     Limit      => 100_000_000,
     UserID     => 1,
     Permission => 'ro',
+    ArchiveFlags => $ArchiveFlags,
 );
 
 my $Count = 0;
@@ -87,8 +94,9 @@ for my $TicketID (@TicketIDs) {
 
     for my $ArticleID (@ArticleIndex) {
         $CommonObject{TicketObject}->ArticleIndexBuild(
-            ArticleID => $ArticleID,
-            UserID    => 1,
+            ArticleID     => $ArticleID,
+            UserID        => 1,
+            MainIndexOnly => $Opts{m},
         );
     }
     if ( $Count % 5000 == 0 ) {

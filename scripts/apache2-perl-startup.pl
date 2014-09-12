@@ -2,6 +2,7 @@
 # --
 # scripts/apache2-perl-startup.pl - to load the modules if mod_perl is used
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU AFFERO General Public License as published by
@@ -110,6 +111,8 @@ use Kernel::System::Stats;
 #use Kernel::System::Log::File;
 #use Kernel::System::Ticket::ArticleStorageDB;
 #use Kernel::System::Ticket::ArticleStorageFS;
+#use Kernel::System::Ticket::ArticleSearchIndex::StaticDB;
+#use Kernel::System::Ticket::ArticleSearchIndex::SphinxAndStaticDB;
 #use Kernel::System::Ticket::IndexAccelerator::RuntimeDB;
 #use Kernel::System::Ticket::IndexAccelerator::StaticDB;
 #use Kernel::System::Ticket::Number::Date;
