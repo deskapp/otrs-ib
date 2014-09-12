@@ -122,6 +122,8 @@ use Kernel::System::Stats;
 #use Kernel::System::CustomerUser::LDAP;
 #use Kernel::System::CustomerAuth::DB;
 #use Kernel::System::CustomerAuth::LDAP;
+#use Kernel::System::Cache::FileStorable;
+#use Kernel::System::Cache::Memcached;
 
 # web agent middle ware modules
 use Kernel::Modules::AgentTicketQueue;
