@@ -723,6 +723,7 @@ sub Data {
         'Ticket Type' => 'Typ zgłoszenia',
         'Ticket Types' => 'Typy zgłoszeń',
         'Compose' => 'Stwórz',
+        'pending' => 'oczekujące',
         'Pending' => 'Oczekujące',
         'Owner' => 'Właściciel',
         'Owner Update' => 'Aktualizacja własciciela',
@@ -3159,6 +3160,13 @@ sub Data {
 
         # Template: Warning
         'Go back to the previous page' => 'Powrót do poprzedniej strony',
+
+        # Stat: AccTime.pm
+        'Tickets with no accounted time' => 'Zgłoszenia bez zaraportowanego czasu',
+        'Show Service column' => 'Pokaż kolumnę Usługa',
+        'Show' => 'Pokaż',
+        'Hide' => 'Ukryj',
+        'Only' => 'Tylko',
 
         # SysConfig
         '(UserLogin) Firstname Lastname' => '(Login) Imię',
