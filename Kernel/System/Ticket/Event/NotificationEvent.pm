@@ -1,6 +1,7 @@
 # --
 # Kernel/System/Ticket/Event/NotificationEvent.pm - a event module to send notifications
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -315,6 +316,16 @@ sub _SendNotificationToRecipients {
             }
             elsif ( $Recipient eq 'Customer' ) {
                 my %Recipient;
+
+                # check if sending customer notifications is enabled
+                if ($Self->{ConfigObject}->Get('CustomerNotificationsDisabled'))
+                {
+                    $Self->{LogObject}->Log(
+                        Priority => 'notice',
+                        Message  => 'Send no customer notification because sending notifications to customers is disabled (see CustomerNotificationsDisabled)!',
+                    );
+                    next RECIPIENT;
+                }
 
                 # ArticleLastCustomerArticle() returns the lastest customer article but if there
                 # is no customer acticle, it returns the latest agent article. In this case

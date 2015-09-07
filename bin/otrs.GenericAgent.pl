@@ -2,6 +2,7 @@
 # --
 # bin/otrs.GenericAgent.pl - a generic agent -=> e. g. close ale emails in a specific queue
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU AFFERO General Public License as published by
@@ -81,8 +82,8 @@ $CommonObject{LogObject}    = Kernel::System::Log->new(
 );
 $CommonObject{MainObject}   = Kernel::System::Main->new(%CommonObject);
 $CommonObject{DBObject}     = Kernel::System::DB->new(%CommonObject);
-$CommonObject{PIDObject}    = Kernel::System::PID->new(%CommonObject);
 $CommonObject{TimeObject}   = Kernel::System::Time->new(%CommonObject);
+$CommonObject{PIDObject}    = Kernel::System::PID->new(%CommonObject);
 $CommonObject{TicketObject} = Kernel::System::Ticket->new( %CommonObject, Debug => $Opts{d}, );
 $CommonObject{QueueObject}  = Kernel::System::Queue->new(%CommonObject);
 $CommonObject{GenericAgentObject} = Kernel::System::GenericAgent->new(
@@ -122,21 +123,18 @@ if ( $Opts{c} eq 'db' && $Opts{b} && $Opts{b} !~ /^\d+$/ ) {
 }
 
 # create pid lock
-if ( !$Opts{f} && !$CommonObject{PIDObject}->PIDCreate( Name => $JobName ) ) {
-    print "NOTICE: otrs.GenericAgent.pl is already running!\n";
+if (!$CommonObject{PIDObject}->PIDCreate(
+        Name  => $JobName,
+        Force => $Opts{f})) {
     exit 1;
-}
-elsif ( $Opts{f} && !$CommonObject{PIDObject}->PIDCreate( Name => $JobName ) ) {
-    print "NOTICE: otrs.GenericAgent.pl is already running but is starting again!\n";
 }
 
 # while to run several times if -b is used
 while (1) {
 
     # set new PID
-    $CommonObject{PIDObject}->PIDCreate(
+    $CommonObject{PIDObject}->PIDUpdate(
         Name  => $JobName,
-        Force => 1,
     );
 
     # process all db jobs
@@ -156,6 +154,11 @@ while (1) {
     print "NOTICE: Waiting for next interval ($Opts{b} min)...\n";
     sleep 60 * $Opts{b};
 }
+
+# Execute all saved Events with Transaction=1 in TicketObject destructor
+undef $CommonObject{GenericAgentObject};
+undef $CommonObject{QueueObject};
+undef $CommonObject{TicketObject};
 
 # delete pid lock
 $CommonObject{PIDObject}->PIDDelete( Name => $JobName );

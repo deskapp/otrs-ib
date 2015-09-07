@@ -43,6 +43,7 @@ sub new {
     $Self->{CustomerUserObject} = Kernel::System::CustomerUser->new(%Param);
     $Self->{LinkObject}         = Kernel::System::LinkObject->new(%Param);
     $Self->{PDFObject}          = Kernel::System::PDF->new(%Param);
+    $Self->{SkinColor}          = $Self->{ConfigObject}->Get('PDF::SkinColor');
     $Self->{DynamicFieldObject} = Kernel::System::DynamicField->new(%Param);
     $Self->{BackendObject}      = Kernel::System::DynamicField::Backend->new(%Param);
 
@@ -196,12 +197,12 @@ sub Run {
         if ( !$Page{MaxPages} || $Page{MaxPages} < 1 || $Page{MaxPages} > 1000 ) {
             $Page{MaxPages} = 100;
         }
-        my $HeaderRight  = $Self->{ConfigObject}->Get('Ticket::Hook') . $Ticket{TicketNumber};
-        my $HeadlineLeft = $HeaderRight;
-        my $Title        = $HeaderRight;
+        my $Title = '[' . $Self->{ConfigObject}->Get('Ticket::Hook') . $Ticket{TicketNumber} . ']';
+        my $HeadlineLeft = $Title;
+        my $HeaderRight = $Self->{ConfigObject}->Get('ProductName');
         if ( $Ticket{Title} ) {
-            $HeadlineLeft = $Ticket{Title};
-            $Title .= ' / ' . $Ticket{Title};
+            $Title = $Title . ' ' . $Ticket{Title};
+            $HeadlineLeft = $Title;
         }
 
         $Page{MarginTop}    = 30;
@@ -209,13 +210,19 @@ sub Run {
         $Page{MarginBottom} = 40;
         $Page{MarginLeft}   = 40;
         $Page{HeaderRight}  = $HeaderRight;
-        $Page{FooterLeft}   = '';
-        $Page{PageText}     = $Self->{LayoutObject}->{LanguageObject}->Get('Page');
-        $Page{PageCount}    = 1;
+        $Page{HeadlineLeft} = $HeadlineLeft;
+        $Page{HeadlineRight} = ' ';            
+        $Page{FooterLeft} = $PrintedBy . ' '
+            . $Self->{UserFirstname} . ' '
+            . $Self->{UserLastname} . ' ('
+            . $Self->{UserEmail} . ') '
+            . $Time;
+        $Page{PageText}   = $Self->{LayoutObject}->{LanguageObject}->Get('Page');
+        $Page{PageCount}  = 1;
 
         # create new pdf document
         $Self->{PDFObject}->DocumentNew(
-            Title  => $Self->{ConfigObject}->Get('Product') . ': ' . $Title,
+            Title  => $Title,
             Encode => $Self->{LayoutObject}->{UserCharset},
         );
 
@@ -224,36 +231,12 @@ sub Run {
             %Page, FooterRight => $Page{PageText} . ' ' . $Page{PageCount},
         );
         $Page{PageCount}++;
+        $Page{HeadlineLeft} = '';
 
+        # set new position
         $Self->{PDFObject}->PositionSet(
             Move => 'relativ',
-            Y    => -6,
-        );
-
-        # output title
-        $Self->{PDFObject}->Text(
-            Text     => $Ticket{Title},
-            FontSize => 13,
-        );
-
-        $Self->{PDFObject}->PositionSet(
-            Move => 'relativ',
-            Y    => -6,
-        );
-
-        # output "printed by"
-        $Self->{PDFObject}->Text(
-            Text => $PrintedBy . ' '
-                . $Self->{UserFirstname} . ' '
-                . $Self->{UserLastname} . ' ('
-                . $Self->{UserEmail} . ')'
-                . ', ' . $Time,
-            FontSize => 9,
-        );
-
-        $Self->{PDFObject}->PositionSet(
-            Move => 'relativ',
-            Y    => -14,
+            Y    => -10,
         );
 
         # output ticket infos
@@ -294,7 +277,7 @@ sub Run {
         );
 
         # return the pdf document
-        my $Filename = 'Ticket_' . $Ticket{TicketNumber};
+        my $Filename = $Self->{ConfigObject}->Get('Ticket::Hook') . $Ticket{TicketNumber};
         my ( $s, $m, $h, $D, $M, $Y ) = $Self->{TimeObject}->SystemTime2Date(
             SystemTime => $Self->{TimeObject}->SystemTime(),
         );
@@ -422,27 +405,27 @@ sub _PDFOutputTicketInfos {
     # create left table
     my $TableLeft = [
         {
-            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('State'),
+            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('State') . ':',
             Value => $Self->{LayoutObject}->{LanguageObject}->Get( $Ticket{State} ),
         },
         {
-            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Priority'),
+            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Priority') . ':',
             Value => $Self->{LayoutObject}->{LanguageObject}->Get( $Ticket{Priority} ),
         },
         {
-            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Queue'),
+            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Queue') . ':',
             Value => $Ticket{Queue},
         },
         {
-            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Lock'),
+            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Lock') . ':',
             Value => $Self->{LayoutObject}->{LanguageObject}->Get( $Ticket{Lock} ),
         },
         {
-            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('CustomerID'),
+            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('CustomerID') . ':',
             Value => $Ticket{CustomerID},
         },
         {
-            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Owner'),
+            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Owner') . ':',
             Value => $Ticket{Owner} . ' ('
                 . $UserInfo{UserFirstname} . ' '
                 . $UserInfo{UserLastname} . ')',
@@ -459,7 +442,7 @@ sub _PDFOutputTicketInfos {
                 . $Param{ResponsibleData}->{UserLastname} . ')';
         }
         my $Row = {
-            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Responsible'),
+            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Responsible') . ':',
             Value => $Responsible,
         };
         push( @{$TableLeft}, $Row );
@@ -468,7 +451,7 @@ sub _PDFOutputTicketInfos {
     # add type row, if feature is enabled
     if ( $Self->{ConfigObject}->Get('Ticket::Type') ) {
         my $Row = {
-            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Type'),
+            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Type') . ':',
             Value => $Ticket{Type},
         };
         push( @{$TableLeft}, $Row );
@@ -477,12 +460,12 @@ sub _PDFOutputTicketInfos {
     # add service and sla row, if feature is enabled
     if ( $Self->{ConfigObject}->Get('Ticket::Service') ) {
         my $RowService = {
-            Key => $Self->{LayoutObject}->{LanguageObject}->Get('Service'),
+            Key => $Self->{LayoutObject}->{LanguageObject}->Get('Service') . ':',
             Value => $Ticket{Service} || '-',
         };
         push( @{$TableLeft}, $RowService );
         my $RowSLA = {
-            Key => $Self->{LayoutObject}->{LanguageObject}->Get('SLA'),
+            Key => $Self->{LayoutObject}->{LanguageObject}->Get('SLA') . ':',
             Value => $Ticket{SLA} || '-',
         };
         push( @{$TableLeft}, $RowSLA );
@@ -491,11 +474,11 @@ sub _PDFOutputTicketInfos {
     # create right table
     my $TableRight = [
         {
-            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Age'),
+            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Age') . ':',
             Value => $Self->{LayoutObject}->{LanguageObject}->Get( $Ticket{Age} ),
         },
         {
-            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Created'),
+            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Created') . ':',
             Value => $Self->{LayoutObject}->Output(
                 Template => '$TimeLong{"$Data{"Created"}"}',
                 Data     => \%Ticket,
@@ -505,7 +488,7 @@ sub _PDFOutputTicketInfos {
 
     if ( $Self->{ConfigObject}->Get('Ticket::Frontend::AccountTime') ) {
         my $Row = {
-            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Accounted time'),
+            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Accounted time') . ':',
             Value => $Ticket{TicketTimeUnits},
         };
         push( @{$TableRight}, $Row );
@@ -514,7 +497,7 @@ sub _PDFOutputTicketInfos {
     # only show pending until unless it is really pending
     if ( $Ticket{PendingUntil} ) {
         my $Row = {
-            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Pending till'),
+            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Pending till') . ':',
             Value => $Ticket{PendingUntil},
         };
         push( @{$TableRight}, $Row );
@@ -523,7 +506,7 @@ sub _PDFOutputTicketInfos {
     # add first response time row
     if ( defined( $Ticket{FirstResponseTime} ) ) {
         my $Row = {
-            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('First Response Time'),
+            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('First Response Time') . ':',
             Value => $Self->{LayoutObject}->Output(
                 Template => '$TimeShort{"$QData{"FirstResponseTimeDestinationDate"}"}',
                 Data     => \%Ticket,
@@ -535,7 +518,7 @@ sub _PDFOutputTicketInfos {
     # add update time row
     if ( defined( $Ticket{UpdateTime} ) ) {
         my $Row = {
-            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Update Time'),
+            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Update Time') . ':',
             Value => $Self->{LayoutObject}->Output(
                 Template => '$TimeShort{"$QData{"UpdateTimeDestinationDate"}"}',
                 Data     => \%Ticket,
@@ -547,7 +530,7 @@ sub _PDFOutputTicketInfos {
     # add solution time row
     if ( defined( $Ticket{SolutionTime} ) ) {
         my $Row = {
-            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Solution Time'),
+            Key   => $Self->{LayoutObject}->{LanguageObject}->Get('Solution Time') . ':',
             Value => $Self->{LayoutObject}->Output(
                 Template => '$TimeShort{"$QData{"SolutionTimeDestinationDate"}"}',
                 Data     => \%Ticket,
@@ -567,26 +550,22 @@ sub _PDFOutputTicketInfos {
         $TableParam{CellData}[$Row][0]{Content}         = $TableLeft->[$Row]->{Key};
         $TableParam{CellData}[$Row][0]{Font}            = 'ProportionalBold';
         $TableParam{CellData}[$Row][1]{Content}         = $TableLeft->[$Row]->{Value};
-        $TableParam{CellData}[$Row][2]{Content}         = ' ';
-        $TableParam{CellData}[$Row][2]{BackgroundColor} = '#FFFFFF';
-        $TableParam{CellData}[$Row][3]{Content}         = $TableRight->[$Row]->{Key};
-        $TableParam{CellData}[$Row][3]{Font}            = 'ProportionalBold';
-        $TableParam{CellData}[$Row][4]{Content}         = $TableRight->[$Row]->{Value};
+        $TableParam{CellData}[$Row][2]{Content}         = $TableRight->[$Row]->{Key};
+        $TableParam{CellData}[$Row][2]{Font}            = 'ProportionalBold';
+        $TableParam{CellData}[$Row][3]{Content}         = $TableRight->[$Row]->{Value};
     }
 
-    $TableParam{ColumnData}[0]{Width} = 70;
+    $TableParam{ColumnData}[0]{Width} = 80;
     $TableParam{ColumnData}[1]{Width} = 156.5;
-    $TableParam{ColumnData}[2]{Width} = 1;
-    $TableParam{ColumnData}[3]{Width} = 70;
-    $TableParam{ColumnData}[4]{Width} = 156.5;
+    $TableParam{ColumnData}[2]{Width} = 80;
+    $TableParam{ColumnData}[3]{Width} = 156.5;
 
     $TableParam{Type}                = 'Cut';
     $TableParam{Border}              = 0;
-    $TableParam{FontSize}            = 7;
-    $TableParam{BackgroundColorEven} = '#DDDDDD';
-    $TableParam{Padding}             = 6;
-    $TableParam{PaddingTop}          = 3;
-    $TableParam{PaddingBottom}       = 3;
+    $TableParam{FontSize}            = 6;
+    $TableParam{BackgroundColorEven} = '#E5E5E5';
+    $TableParam{BackgroundColorOdd}  = '#E5E5E5';
+    $TableParam{Padding}             = 3;
 
     # output table
     for ( $Page{PageCount} .. $Page{MaxPages} ) {
@@ -653,7 +632,7 @@ sub _PDFOutputLinkedObjects {
     }
 
     $TableParam{ColumnData}[0]{Width} = 80;
-    $TableParam{ColumnData}[1]{Width} = 431;
+    $TableParam{ColumnData}[1]{Width} = 423;
 
     # set new position
     $Self->{PDFObject}->PositionSet(
@@ -666,9 +645,9 @@ sub _PDFOutputLinkedObjects {
         Text     => $Self->{LayoutObject}->{LanguageObject}->Get('Linked Objects'),
         Height   => 7,
         Type     => 'Cut',
-        Font     => 'ProportionalBoldItalic',
+        Font     => 'ProportionalBold',
         FontSize => 7,
-        Color    => '#666666',
+        Color    => $Self->{SkinColor},
     );
 
     # set new position
@@ -681,10 +660,8 @@ sub _PDFOutputLinkedObjects {
     $TableParam{Type}            = 'Cut';
     $TableParam{Border}          = 0;
     $TableParam{FontSize}        = 6;
-    $TableParam{BackgroundColor} = '#DDDDDD';
-    $TableParam{Padding}         = 1;
-    $TableParam{PaddingTop}      = 3;
-    $TableParam{PaddingBottom}   = 3;
+    $TableParam{BackgroundColor} = '#E5E5E5';
+    $TableParam{Padding}         = 3;
 
     # output table
     for ( $Page{PageCount} .. $Page{MaxPages} ) {
@@ -763,7 +740,7 @@ sub _PDFOutputTicketDynamicFields {
     }
 
     $TableParam{ColumnData}[0]{Width} = 80;
-    $TableParam{ColumnData}[1]{Width} = 431;
+    $TableParam{ColumnData}[1]{Width} = 423;
 
     # output ticket dynamic fields
     if ($Output) {
@@ -779,9 +756,9 @@ sub _PDFOutputTicketDynamicFields {
             Text     => $Self->{LayoutObject}->{LanguageObject}->Get('Ticket Dynamic Fields'),
             Height   => 7,
             Type     => 'Cut',
-            Font     => 'ProportionalBoldItalic',
+            Font     => 'ProportionalBold',
             FontSize => 7,
-            Color    => '#666666',
+            Color    => $Self->{SkinColor},
         );
 
         # set new position
@@ -794,10 +771,8 @@ sub _PDFOutputTicketDynamicFields {
         $TableParam{Type}            = 'Cut';
         $TableParam{Border}          = 0;
         $TableParam{FontSize}        = 6;
-        $TableParam{BackgroundColor} = '#DDDDDD';
-        $TableParam{Padding}         = 1;
-        $TableParam{PaddingTop}      = 3;
-        $TableParam{PaddingBottom}   = 3;
+        $TableParam{BackgroundColor} = '#E5E5E5';
+        $TableParam{Padding}         = 3;
 
         # output table
         for ( $Page{PageCount} .. $Page{MaxPages} ) {
@@ -856,7 +831,7 @@ sub _PDFOutputCustomerInfos {
         }
     }
     $TableParam{ColumnData}[0]{Width} = 80;
-    $TableParam{ColumnData}[1]{Width} = 431;
+    $TableParam{ColumnData}[1]{Width} = 423;
 
     if ($Output) {
 
@@ -871,9 +846,9 @@ sub _PDFOutputCustomerInfos {
             Text     => $Self->{LayoutObject}->{LanguageObject}->Get('Customer Information'),
             Height   => 7,
             Type     => 'Cut',
-            Font     => 'ProportionalBoldItalic',
+            Font     => 'ProportionalBold',
             FontSize => 7,
-            Color    => '#666666',
+            Color    => $Self->{SkinColor},
         );
 
         # set new position
@@ -886,10 +861,8 @@ sub _PDFOutputCustomerInfos {
         $TableParam{Type}            = 'Cut';
         $TableParam{Border}          = 0;
         $TableParam{FontSize}        = 6;
-        $TableParam{BackgroundColor} = '#DDDDDD';
-        $TableParam{Padding}         = 1;
-        $TableParam{PaddingTop}      = 3;
-        $TableParam{PaddingBottom}   = 3;
+        $TableParam{BackgroundColor} = '#E5E5E5';
+        $TableParam{Padding}         = 3;
 
         # output table
         for ( $Page{PageCount} .. $Page{MaxPages} ) {
@@ -924,28 +897,13 @@ sub _PDFOutputArticles {
     }
     my %Page = %{ $Param{PageData} };
 
+    $Self->{PDFObject}->PositionSet(
+        Move => 'relativ',
+        Y    => -15,
+    );
+
     my $ArticleCounter = 1;
     for my $ArticleTmp ( @{ $Param{ArticleData} } ) {
-        if ( $ArticleCounter == 1 ) {
-            $Self->{PDFObject}->PositionSet(
-                Move => 'relativ',
-                Y    => -15,
-            );
-
-            # output headline
-            $Self->{PDFObject}->Text(
-                Text     => $Self->{LayoutObject}->{LanguageObject}->Get('Articles'),
-                Height   => 7,
-                Type     => 'Cut',
-                Font     => 'ProportionalBoldItalic',
-                FontSize => 7,
-                Color    => '#666666',
-            );
-            $Self->{PDFObject}->PositionSet(
-                Move => 'relativ',
-                Y    => 2,
-            );
-        }
 
         my %Article = %{$ArticleTmp};
 
@@ -971,19 +929,14 @@ sub _PDFOutputArticles {
         my %TableParam1;
         my $Row = 0;
 
-        $Self->{PDFObject}->PositionSet(
-            Move => 'relativ',
-            Y    => -6,
-        );
-
         # article number tag
         $Self->{PDFObject}->Text(
-            Text     => '    # ' . $ArticleCounter,
+            Text     => $Self->{LayoutObject}->{LanguageObject}->Get('Article') . ' #' . $ArticleCounter,
             Height   => 7,
             Type     => 'Cut',
-            Font     => 'ProportionalBoldItalic',
+            Font     => 'ProportionalBold',
             FontSize => 7,
-            Color    => '#666666',
+            Color    => $Self->{SkinColor},
         );
 
         $Self->{PDFObject}->PositionSet(
@@ -1064,7 +1017,7 @@ sub _PDFOutputArticles {
             $TableParam1{CellData}[$Row][1]{Content} = $Attachments;
         }
         $TableParam1{ColumnData}[0]{Width} = 80;
-        $TableParam1{ColumnData}[1]{Width} = 431;
+        $TableParam1{ColumnData}[1]{Width} = 423;
 
         $Self->{PDFObject}->PositionSet(
             Move => 'relativ',
@@ -1075,10 +1028,8 @@ sub _PDFOutputArticles {
         $TableParam1{Type}            = 'Cut';
         $TableParam1{Border}          = 0;
         $TableParam1{FontSize}        = 6;
-        $TableParam1{BackgroundColor} = '#DDDDDD';
-        $TableParam1{Padding}         = 1;
-        $TableParam1{PaddingTop}      = 3;
-        $TableParam1{PaddingBottom}   = 3;
+        $TableParam1{BackgroundColor} = '#E5E5E5';
+        $TableParam1{Padding}         = 3;
 
         # output table (article infos)
         for ( $Page{PageCount} .. $Page{MaxPages} ) {
@@ -1105,7 +1056,7 @@ sub _PDFOutputArticles {
         $TableParam2{Border}                  = 0;
         $TableParam2{Font}                    = 'Monospaced';
         $TableParam2{FontSize}                = 7;
-        $TableParam2{BackgroundColor}         = '#DDDDDD';
+        $TableParam2{BackgroundColor}         = '#FFFFFF';
         $TableParam2{Padding}                 = 4;
         $TableParam2{PaddingTop}              = 8;
         $TableParam2{PaddingBottom}           = 8;

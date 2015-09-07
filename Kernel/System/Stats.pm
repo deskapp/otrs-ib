@@ -1,6 +1,7 @@
 # --
 # Kernel/System/Stats.pm - all stats core functions
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -897,23 +898,23 @@ sub GenerateGraph {
     my $Graph = $GDBackend->new( $XSize || 550, $YSize || 350 );
 
     # set fonts so we can use non-latin characters
-    my $FontDir    = $Self->{ConfigObject}->Get('Home') . '/var/fonts/';
-    my $TitleFont  = $FontDir . $Self->{ConfigObject}->Get('Stats::Graph::TitleFont');
-    my $LegendFont = $FontDir . $Self->{ConfigObject}->Get('Stats::Graph::LegendFont');
-    $Graph->set_title_font( $TitleFont, 14 );
+    GD::Text->font_path($Self->{ConfigObject}->Get('Stats::Graph::font_path') || $Self->{ConfigObject}->Get('Home') . '/var/fonts/');
+
+    $Graph->set_title_font($Self->{ConfigObject}->Get('Stats::Graph::title_font_file') || 'DejaVuSans-Bold.ttf', $Self->{ConfigObject}->Get('Stats::Graph::title_font_size') || 14);
 
     # there are different font options for different font types
     if ( $GDBackend eq 'GD::Graph::pie' ) {
-        $Graph->set_value_font( $LegendFont, 9 );
+        $Graph->set_value_font($Self->{ConfigObject}->Get('Stats::Graph::values_font_file') || 'DejaVuSans.ttf', $Self->{ConfigObject}->Get('Stats::Graph::values_font_size') || 9 );
     }
     else {
-        $Graph->set_values_font( $LegendFont, 9 );
-        $Graph->set_legend_font( $LegendFont, 9 );
-        $Graph->set_x_label_font( $LegendFont, 9 );
-        $Graph->set_y_label_font( $LegendFont, 9 );
-        $Graph->set_x_axis_font( $LegendFont, 9 );
-        $Graph->set_y_axis_font( $LegendFont, 9 );
+        $Graph->set_x_label_font( $Self->{ConfigObject}->Get('Stats::Graph::x_label_font_file') || 'DejaVuSans.ttf', $Self->{ConfigObject}->Get('Stats::Graph::x_label_font_size') || 9 );
+        $Graph->set_y_label_font( $Self->{ConfigObject}->Get('Stats::Graph::y_label_font_file') || 'DejaVuSans.ttf', $Self->{ConfigObject}->Get('Stats::Graph::y_label_font_size') || 9 );
+        $Graph->set_x_axis_font( $Self->{ConfigObject}->Get('Stats::Graph::x_axis_font_file') || 'DejaVuSans.ttf', $Self->{ConfigObject}->Get('Stats::Graph::x_axis_font_size') || 9 );
+        $Graph->set_y_axis_font( $Self->{ConfigObject}->Get('Stats::Graph::y_axis_font_file') || 'DejaVuSans.ttf', $Self->{ConfigObject}->Get('Stats::Graph::y_axis_font_size') || 9 );
+        $Graph->set_values_font( $Self->{ConfigObject}->Get('Stats::Graph::values_font_file') || 'DejaVuSans.ttf', $Self->{ConfigObject}->Get('Stats::Graph::values_font_size') || 9 );
+        $Graph->set_legend_font( $Self->{ConfigObject}->Get('Stats::Graph::legend_font_file') || 'DejaVuSans.ttf', $Self->{ConfigObject}->Get('Stats::Graph::legend_font_size') || 9 );
     }
+
     $Graph->set(
         x_label => $Xlabel,
 
@@ -1422,7 +1423,10 @@ sub GetStaticFiles {
 
         if ( defined $Result ) {
             for my $StatID ( @{$Result} ) {
-                my $Data = $Self->StatsGet( StatID => $StatID );
+                my $Data = $Self->StatsGet(
+                    StatID => $StatID,
+                    NoObjectAttributes => 1,
+                );
 
                 # check witch one are static statistics
                 if ( $Data->{File} && $Data->{StatType} eq 'static' ) {

@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/CustomerTicketPrint.pm - print layout for customer interface
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -39,6 +40,7 @@ sub new {
     $Self->{CustomerUserObject} = Kernel::System::CustomerUser->new(%Param);
     $Self->{UserObject}         = Kernel::System::User->new(%Param);
     $Self->{PDFObject}          = Kernel::System::PDF->new(%Param);
+    $Self->{SkinColor}          = $Self->{ConfigObject}->Get('PDF::SkinColor');
     $Self->{DynamicFieldObject} = Kernel::System::DynamicField->new(%Param);
     $Self->{BackendObject}      = Kernel::System::DynamicField::Backend->new(%Param);
 
@@ -131,12 +133,12 @@ sub Run {
         if ( !$Page{MaxPages} || $Page{MaxPages} < 1 || $Page{MaxPages} > 1000 ) {
             $Page{MaxPages} = 100;
         }
-        my $HeaderRight  = $Self->{ConfigObject}->Get('Ticket::Hook') . $Ticket{TicketNumber};
-        my $HeadlineLeft = $HeaderRight;
-        my $Title        = $HeaderRight;
+        my $Title = '[' . $Self->{ConfigObject}->Get('Ticket::Hook') . $Ticket{TicketNumber} . ']';
+        my $HeadlineLeft = $Title;
+        my $HeaderRight = $Self->{ConfigObject}->Get('ProductName');
         if ( $Ticket{Title} ) {
-            $HeadlineLeft = $Ticket{Title};
-            $Title .= ' / ' . $Ticket{Title};
+            $Title = $Title . ' ' . $Ticket{Title};
+            $HeadlineLeft = $Title;
         }
 
         $Page{MarginTop}    = 30;
@@ -145,19 +147,18 @@ sub Run {
         $Page{MarginLeft}   = 40;
         $Page{HeaderRight}  = $HeaderRight;
         $Page{HeadlineLeft} = $HeadlineLeft;
-        $Page{HeadlineRight}
-            = $PrintedBy . ' '
+        $Page{HeadlineRight} = ' ';
+        $Page{FooterLeft} = $PrintedBy . ' '
             . $Self->{UserFirstname} . ' '
             . $Self->{UserLastname} . ' ('
             . $Self->{UserEmail} . ') '
             . $Time;
-        $Page{FooterLeft} = '';
         $Page{PageText}   = $Self->{LayoutObject}->{LanguageObject}->Get('Page');
         $Page{PageCount}  = 1;
 
         # create new pdf document
         $Self->{PDFObject}->DocumentNew(
-            Title  => $Self->{ConfigObject}->Get('Product') . ': ' . $Title,
+            Title  => $Title,
             Encode => $Self->{LayoutObject}->{UserCharset},
         );
 
@@ -166,27 +167,11 @@ sub Run {
             %Page, FooterRight => $Page{PageText} . ' ' . $Page{PageCount},
         );
         $Page{PageCount}++;
-
-        # type of print tag
-        my $PrintTag = '';
-
-        $PrintTag = ( $Self->{LayoutObject}->{LanguageObject}->Get('Ticket') ) . ' ' .
-            ( $Self->{LayoutObject}->{LanguageObject}->Get('Print') );
-
-        # output headline
-        $Self->{PDFObject}->Text(
-            Text     => $PrintTag,
-            Height   => 9,
-            Type     => 'Cut',
-            Font     => 'ProportionalBold',
-            Align    => 'right',
-            FontSize => 9,
-            Color    => '#666666',
-        );
+        $Page{HeadlineLeft} = '';
 
         $Self->{PDFObject}->PositionSet(
             Move => 'relativ',
-            Y    => -6,
+            Y    => -10,
         );
 
         # output ticket infos
@@ -216,7 +201,7 @@ sub Run {
         );
 
         # return the pdf document
-        my $Filename = 'Ticket_' . $Ticket{TicketNumber};
+        my $Filename = $Self->{ConfigObject}->Get('Ticket::Hook') . $Ticket{TicketNumber};
         my ( $s, $m, $h, $D, $M, $Y ) = $Self->{TimeObject}->SystemTime2Date(
             SystemTime => $Self->{TimeObject}->SystemTime(),
         );
@@ -226,7 +211,7 @@ sub Run {
         $m = sprintf( "%02d", $m );
         my $PDFString = $Self->{PDFObject}->DocumentOutput();
         return $Self->{LayoutObject}->Attachment(
-            Filename    => $Filename . "_" . "$Y-$M-$D" . "_" . "$h-$m.pdf",
+            Filename    => $Filename . "_" . "$Y$M$D" . "_" . "$h$m.pdf",
             ContentType => "application/pdf",
             Content     => $PDFString,
             Type        => 'attachment',
@@ -368,27 +353,22 @@ sub _PDFOutputTicketInfos {
         $TableParam{CellData}[$Row][0]{Content}         = $TableLeft->[$Row]->{Key};
         $TableParam{CellData}[$Row][0]{Font}            = 'ProportionalBold';
         $TableParam{CellData}[$Row][1]{Content}         = $TableLeft->[$Row]->{Value};
-        $TableParam{CellData}[$Row][2]{Content}         = ' ';
-        $TableParam{CellData}[$Row][2]{BackgroundColor} = '#FFFFFF';
-        $TableParam{CellData}[$Row][3]{Content}         = $TableRight->[$Row]->{Key};
-        $TableParam{CellData}[$Row][3]{Font}            = 'ProportionalBold';
-        $TableParam{CellData}[$Row][4]{Content}         = $TableRight->[$Row]->{Value};
+        $TableParam{CellData}[$Row][2]{Content}         = $TableRight->[$Row]->{Key};
+        $TableParam{CellData}[$Row][2]{Font}            = 'ProportionalBold';
+        $TableParam{CellData}[$Row][3]{Content}         = $TableRight->[$Row]->{Value};
     }
 
     $TableParam{ColumnData}[0]{Width} = 80;
-    $TableParam{ColumnData}[1]{Width} = 170.5;
-    $TableParam{ColumnData}[2]{Width} = 4;
-    $TableParam{ColumnData}[3]{Width} = 80;
-    $TableParam{ColumnData}[4]{Width} = 170.5;
+    $TableParam{ColumnData}[1]{Width} = 156.5;
+    $TableParam{ColumnData}[2]{Width} = 80;
+    $TableParam{ColumnData}[3]{Width} = 156.5;
 
     $TableParam{Type}                = 'Cut';
     $TableParam{Border}              = 0;
     $TableParam{FontSize}            = 6;
-    $TableParam{BackgroundColorEven} = '#AAAAAA';
-    $TableParam{BackgroundColorOdd}  = '#DDDDDD';
-    $TableParam{Padding}             = 1;
-    $TableParam{PaddingTop}          = 3;
-    $TableParam{PaddingBottom}       = 3;
+    $TableParam{BackgroundColorEven} = '#E5E5E5';
+    $TableParam{BackgroundColorOdd}  = '#E5E5E5';
+    $TableParam{Padding}             = 3;
 
     # output table
     for ( $Page{PageCount} .. $Page{MaxPages} ) {
@@ -472,7 +452,7 @@ sub _PDFOutputTicketDynamicFields {
     }
 
     $TableParam{ColumnData}[0]{Width} = 80;
-    $TableParam{ColumnData}[1]{Width} = 431;
+    $TableParam{ColumnData}[1]{Width} = 423;
 
     # output ticket dynamic fields
     if ($Output) {
@@ -488,9 +468,9 @@ sub _PDFOutputTicketDynamicFields {
             Text     => $Self->{LayoutObject}->{LanguageObject}->Get('Ticket Dynamic Fields'),
             Height   => 7,
             Type     => 'Cut',
-            Font     => 'ProportionalBoldItalic',
+            Font     => 'ProportionalBold',
             FontSize => 7,
-            Color    => '#666666',
+            Color    => $Self->{SkinColor},
         );
 
         # set new position
@@ -503,7 +483,7 @@ sub _PDFOutputTicketDynamicFields {
         $TableParam{Type}            = 'Cut';
         $TableParam{Border}          = 0;
         $TableParam{FontSize}        = 6;
-        $TableParam{BackgroundColor} = '#DDDDDD';
+        $TableParam{BackgroundColor} = '#E5E5E5';
         $TableParam{Padding}         = 1;
         $TableParam{PaddingTop}      = 3;
         $TableParam{PaddingBottom}   = 3;
@@ -565,7 +545,7 @@ sub _PDFOutputCustomerInfos {
         }
     }
     $TableParam{ColumnData}[0]{Width} = 80;
-    $TableParam{ColumnData}[1]{Width} = 431;
+    $TableParam{ColumnData}[1]{Width} = 423;
 
     if ($Output) {
 
@@ -580,9 +560,9 @@ sub _PDFOutputCustomerInfos {
             Text     => $Self->{LayoutObject}->{LanguageObject}->Get('Customer Information'),
             Height   => 7,
             Type     => 'Cut',
-            Font     => 'ProportionalBoldItalic',
+            Font     => 'ProportionalBold',
             FontSize => 7,
-            Color    => '#666666',
+            Color    => $Self->{SkinColor},
         );
 
         # set new position
@@ -595,7 +575,7 @@ sub _PDFOutputCustomerInfos {
         $TableParam{Type}            = 'Cut';
         $TableParam{Border}          = 0;
         $TableParam{FontSize}        = 6;
-        $TableParam{BackgroundColor} = '#DDDDDD';
+        $TableParam{BackgroundColor} = '#E5E5E5';
         $TableParam{Padding}         = 1;
         $TableParam{PaddingTop}      = 3;
         $TableParam{PaddingBottom}   = 3;
@@ -633,28 +613,13 @@ sub _PDFOutputArticles {
     }
     my %Page = %{ $Param{PageData} };
 
+    $Self->{PDFObject}->PositionSet(
+        Move => 'relativ',
+        Y    => -15,
+    );
+
     my $ArticleCounter = 1;
     for my $ArticleTmp ( @{ $Param{ArticleData} } ) {
-        if ( $ArticleCounter == 1 ) {
-            $Self->{PDFObject}->PositionSet(
-                Move => 'relativ',
-                Y    => -15,
-            );
-
-            # output headline
-            $Self->{PDFObject}->Text(
-                Text     => $Self->{LayoutObject}->{LanguageObject}->Get('Articles'),
-                Height   => 7,
-                Type     => 'Cut',
-                Font     => 'ProportionalBoldItalic',
-                FontSize => 7,
-                Color    => '#666666',
-            );
-            $Self->{PDFObject}->PositionSet(
-                Move => 'relativ',
-                Y    => 2,
-            );
-        }
 
         my %Article = %{$ArticleTmp};
 
@@ -673,19 +638,14 @@ sub _PDFOutputArticles {
         my %TableParam1;
         my $Row = 0;
 
-        $Self->{PDFObject}->PositionSet(
-            Move => 'relativ',
-            Y    => -6,
-        );
-
         # article number tag
         $Self->{PDFObject}->Text(
-            Text     => '    # ' . $ArticleCounter,
+            Text     => $Self->{LayoutObject}->{LanguageObject}->Get('Article') . ' #' . $ArticleCounter,
             Height   => 7,
             Type     => 'Cut',
-            Font     => 'ProportionalBoldItalic',
+            Font     => 'ProportionalBold',
             FontSize => 7,
-            Color    => '#666666',
+            Color    => $Self->{SkinColor},
         );
 
         $Self->{PDFObject}->PositionSet(
@@ -773,7 +733,7 @@ sub _PDFOutputArticles {
             $TableParam1{CellData}[$Row][1]{Content} = $Attachments;
         }
         $TableParam1{ColumnData}[0]{Width} = 80;
-        $TableParam1{ColumnData}[1]{Width} = 431;
+        $TableParam1{ColumnData}[1]{Width} = 423;
 
         $Self->{PDFObject}->PositionSet(
             Move => 'relativ',
@@ -784,7 +744,7 @@ sub _PDFOutputArticles {
         $TableParam1{Type}            = 'Cut';
         $TableParam1{Border}          = 0;
         $TableParam1{FontSize}        = 6;
-        $TableParam1{BackgroundColor} = '#DDDDDD';
+        $TableParam1{BackgroundColor} = '#E5E5E5';
         $TableParam1{Padding}         = 1;
         $TableParam1{PaddingTop}      = 3;
         $TableParam1{PaddingBottom}   = 3;
@@ -814,7 +774,7 @@ sub _PDFOutputArticles {
         $TableParam2{Border}                  = 0;
         $TableParam2{Font}                    = 'Monospaced';
         $TableParam2{FontSize}                = 7;
-        $TableParam2{BackgroundColor}         = '#DDDDDD';
+        $TableParam2{BackgroundColor}         = '#FFFFFF';
         $TableParam2{Padding}                 = 4;
         $TableParam2{PaddingTop}              = 8;
         $TableParam2{PaddingBottom}           = 8;

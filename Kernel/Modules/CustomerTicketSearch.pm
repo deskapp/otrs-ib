@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/CustomerTicketSearch.pm - Utilities for tickets
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -676,7 +677,7 @@ sub Run {
             );
 
             # return csv to download
-            my $CSVFile = 'ticket_search';
+            my $CSVFile = $Self->{LayoutObject}->{LanguageObject}->Get('Tickets');
             my ( $s, $m, $h, $D, $M, $Y ) = $Self->{TimeObject}->SystemTime2Date(
                 SystemTime => $Self->{TimeObject}->SystemTime(),
             );
@@ -685,7 +686,7 @@ sub Run {
             $h = sprintf( "%02d", $h );
             $m = sprintf( "%02d", $m );
             return $Self->{LayoutObject}->Attachment(
-                Filename    => $CSVFile . "_" . "$Y-$M-$D" . "_" . "$h-$m.csv",
+                Filename    => $CSVFile . "_" . "$Y$M$D" . "_" . "$h$m.csv",
                 ContentType => "text/csv; charset=" . $Self->{LayoutObject}->{UserCharset},
                 Content     => $CSV,
             );
@@ -749,7 +750,7 @@ sub Run {
 
                 # customer info string
                 if ( $Article{CustomerName} ) {
-                    $Article{CustomerName} = '(' . $Article{CustomerName} . ')';
+                    $Article{CustomerName} = $Article{CustomerName};
                 }
 
                 # add blocks to template
@@ -924,7 +925,7 @@ sub Run {
 
                     # customer info string
                     if ( $Article{CustomerName} ) {
-                        $Article{CustomerName} = '(' . $Article{CustomerName} . ')';
+                        $Article{CustomerName} = $Article{CustomerName};
                     }
 
                     # add blocks to template

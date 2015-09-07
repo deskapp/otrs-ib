@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/AgentStats.pm - stats module
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -56,6 +57,8 @@ sub new {
     $Self->{JSONObject}  = Kernel::System::JSON->new( %{$Self} );
     $Self->{CSVObject}   = Kernel::System::CSV->new( %{$Self} );
     $Self->{StatsObject} = Kernel::System::Stats->new( %{$Self} );
+
+    $Self->{SkinColor}   = $Self->{ConfigObject}->Get('PDF::SkinColor');
 
     return $Self;
 }
@@ -2205,7 +2208,7 @@ sub Run {
 
         # Generate Filename
         my $Filename = $Self->{StatsObject}->StringAndTimestamp2Filename(
-            String => $Stat->{Title} . ' Created',
+            String => $Stat->{Title},
         );
 
         # Translate the column and row description
@@ -2276,6 +2279,8 @@ sub Run {
                 for my $Content ( @{$HeadArrayRef} ) {
                     $CellData->[$CounterRow]->[$CounterHead]->{Content} = $Content;
                     $CellData->[$CounterRow]->[$CounterHead]->{Font}    = 'ProportionalBold';
+                    $CellData->[$CounterRow]->[$CounterHead]->{FontColor}       = '#EEEEEE';
+                    $CellData->[$CounterRow]->[$CounterHead]->{BackgroundColor} = $Self->{SkinColor};
                     $CounterHead++;
                 }
                 if ( $CounterHead > 0 ) {
@@ -2306,16 +2311,15 @@ sub Run {
                 $PageParam{MarginRight}     = 40;
                 $PageParam{MarginBottom}    = 40;
                 $PageParam{MarginLeft}      = 40;
-                $PageParam{HeaderRight}
-                    = $Self->{ConfigObject}->Get('Stats::StatsHook') . $Stat->{StatNumber};
-                $PageParam{FooterLeft}   = $Url;
-                $PageParam{HeadlineLeft} = $Title;
-                $PageParam{HeadlineRight}
-                    = $PrintedBy . ' '
+                $PageParam{HeaderRight}     = $Self->{ConfigObject}->Get('ProductName');
+                $PageParam{FooterLeft} =  $PrintedBy . ' '
                     . $User{UserFirstname} . ' '
                     . $User{UserLastname} . ' ('
                     . $User{UserEmail} . ') '
                     . $Time;
+                $PageParam{HeadlineLeft} = $Title;
+                $PageParam{HeadlineRight} = ' ';
+                    
 
                 # table params
                 my %TableParam;
@@ -2323,15 +2327,15 @@ sub Run {
                 $TableParam{Type}                = 'Cut';
                 $TableParam{FontSize}            = 6;
                 $TableParam{Border}              = 0;
-                $TableParam{BackgroundColorEven} = '#AAAAAA';
-                $TableParam{BackgroundColorOdd}  = '#DDDDDD';
+                $TableParam{BackgroundColorEven} = '#E5E5E5';
+                $TableParam{BackgroundColorOdd}  = '#FFFFFF';
                 $TableParam{Padding}             = 1;
                 $TableParam{PaddingTop}          = 3;
                 $TableParam{PaddingBottom}       = 3;
 
                 # create new pdf document
                 $Self->{PDFObject}->DocumentNew(
-                    Title  => $Self->{ConfigObject}->Get('Product') . ': ' . $Title,
+                    Title  => $Title,
                     Encode => $Self->{LayoutObject}->{UserCharset},
                 );
 

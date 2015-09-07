@@ -2,6 +2,7 @@
 # --
 # otrs.MySQLInnoDBSwitch.pl - converts mysql tables from MyISAM to InnoDB
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU AFFERO General Public License as published by
@@ -84,13 +85,11 @@ if ( $CommonObject{DBObject}->{'DB::Type'} ne 'mysql' ) {
 }
 
 # create pid lock
-if ( !$Opts{f} && !$CommonObject{PIDObject}->PIDCreate( Name => 'MySQLInnoDBSwitch' ) ) {
-    print
-        "NOTICE: otrs.MySQLInnoDBSwitch.pl is already running (use '-f 1' if you want to start it forced)!\n";
+if (!$CommonObject{PIDObject}->PIDCreate(
+        Name  => 'MySQLInnoDBSwitch',
+        Force => $Opts{f})) {
+    print "NOTICE: otrs.MySQLInnoDBSwitch.pl is already running (use '-f 1' if you want to start it forced)!\n";
     exit 1;
-}
-elsif ( $Opts{f} && !$CommonObject{PIDObject}->PIDCreate( Name => 'MySQLInnoDBSwitch' ) ) {
-    print "NOTICE: otrs.MySQLInnoDBSwitch.pl is already running but is starting again!\n";
 }
 
 # Get all tables that have MyISAM

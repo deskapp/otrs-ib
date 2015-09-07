@@ -1,6 +1,7 @@
 // --
 // Core.UI.RichTextEditor.js - provides all UI functions
 // Copyright (C) 2001-2013 OTRS AG, http://otrs.org/
+// Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -45,7 +46,8 @@ Core.UI.RichTextEditor = (function (TargetNS) {
         var EditorID = '',
             Editor,
             Instance,
-            UserLanguage;
+            UserLanguage,
+            EnterMode;
 
         if (isJQueryObject($EditorArea) && $EditorArea.length === 1) {
             EditorID = $EditorArea.attr('id');
@@ -73,6 +75,19 @@ Core.UI.RichTextEditor = (function (TargetNS) {
         // To correct this, we replace "_" with "-" in the language (e.g. zh_CN becomes zh-cn)
         UserLanguage = Core.Config.Get('UserLanguage').replace(/_/, "-");
 
+        // Get EnterMode from config
+        switch ( Core.Config.Get('RichText.EnterMode') )
+        {
+            case '1':
+                EnterMode = CKEDITOR.ENTER_P;
+                break;
+            case '3':
+                EnterMode = CKEDITOR.ENTER_DIV;
+                break;
+            default:
+                EnterMode = CKEDITOR.ENTER_BR;
+        }
+
         Editor = CKEDITOR.replace(EditorID,
         {
             customConfig: '', // avoid loading external config files
@@ -80,13 +95,14 @@ Core.UI.RichTextEditor = (function (TargetNS) {
             language: UserLanguage,
             width: Core.Config.Get('RichText.Width', 620),
             resize_minWidth: Core.Config.Get('RichText.Width', 620),
+            resize_dir: 'both',
             height: Core.Config.Get('RichText.Height', 320),
             removePlugins : 'elementspath,scayt,menubutton',
             forcePasteAsPlainText: false,
             format_tags: 'p;h1;h2;h3;h4;h5;h6;pre',
             fontSize_sizes: '8px;10px;12px;16px;18px;20px;22px;24px;26px;28px;30px;',
-            extraAllowedContent: 'div table tr td th colgroup col style[*]{*}',
-            enterMode: CKEDITOR.ENTER_BR,
+            extraAllowedContent: 'img div table tr td th colgroup col style[*]{*}',
+            enterMode: EnterMode,
             shiftEnterMode: CKEDITOR.ENTER_BR,
             contentsLangDirection: Core.Config.Get('RichText.TextDir', 'ltr'),
             disableNativeSpellChecker: false,

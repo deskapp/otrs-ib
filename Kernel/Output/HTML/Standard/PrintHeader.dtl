@@ -1,6 +1,7 @@
 # --
 # PrintHeader.dtl - provides global print header
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -10,7 +11,7 @@
 # http headers
 Content-Type: text/html; charset=utf-8;
 Content-Disposition: $Data{"ContentDisposition"}
-X-Powered-By: $Config{"Product"} $Config{"Version"} - Open Ticket Request System (http://otrs.org)
+X-Powered-By: $Config{"Product"} - Open Ticket Request System (http://otrs.org)
 Expires: Tue, 1 Jan 1980 12:00:00 GMT
 X-UA-Compatible: IE=edge,chrome=1
 X-Frame-Options: SAMEORIGIN
@@ -27,12 +28,11 @@ body {
     font-family: Geneva, Helvetica, Arial, sans-serif;
     font-size: 11pt;
     background-color: #ffffff;
-    color: black;
+    color: #404040;
 }
-
 pre {
     font-family: monospace, fixed, courier;
-    font-size: 10px;
+    font-size: 9pt;
 }
 
 a {
@@ -45,13 +45,13 @@ a:hover {
 }
 
 .mainhead {
-    color: #ffffff;
-    background-color: #00000c;
-    font-size: 14px;
+    color: $Config{"PDF::SkinColor"};
+    background-color: #ffffff;
+    font-size: 12pt;
     font-family: Geneva, Helvetica, Arial, sans-serif;
     font-weight: bold;
     vertical-align: top;
-    horizontal-align: center
+    horizontal-align: center;
 }
 
 .mainhead2 {
@@ -61,7 +61,7 @@ a:hover {
     font-family: Geneva, Helvetica, Arial, sans-serif;
     font-weight: bold;
     vertical-align: top;
-    horizontal-align: center
+    horizontal-align: center;
 }
 
 .mainbody {
@@ -116,8 +116,11 @@ content
 }
 
 .contentkey {
-    color: #000000;
-    font-size: 11px;
+    color: #eeeeee;
+    background-color: $Config{"PDF::SkinColor"};
+    font-size: 8pt;
+    padding: 4px;
+    font-weight: bold;
     font-family: Geneva, Helvetica, Arial, sans-serif;
     vertical-align: top;
 }
@@ -159,6 +162,20 @@ content
     border-right: 1px solid #000000;
     border-bottom: 1px solid #000000;
     border-top: 1px solid #000000;
+    border: none;
+}
+
+hr {
+    margin:           20px 0px 20px 0px;
+    background-color: #444444;
+    color:            #444444;
+    border-width:     0px;
+    height:           1px;
+}
+
+.contentbody td {
+    padding: 5px;
+    border-bottom: 1px solid #444444;
 }
 
 /**
@@ -273,13 +290,10 @@ fieldset.TableLike.FixedLabelSmall > .Value {
 </head>
 <body class="$QData{"BodyClass"}" onload="window.print();">
     <a name="top"></a>
-    <p>
-        <a href="#" onclick="window.close();">$Text{"Close window"}</a>
-    </p>
     <table border="0" width="$Data{"Width"}" cellpadding="0" cellspacing="0" bgcolor="#000000" class="container">
         <tr>
             <td>
-                <table border="0" width="$Data{"Width"}" cellpadding="12" cellspacing="4" bgcolor="#ffffff">
+                <table border="0" width="$Data{"Width"}" cellpadding="5" cellspacing="0" bgcolor="#ffffff">
                     <tr>
                         <td>
                             <table border="0" cellspacing="1" cellpadding="0" width="100%">

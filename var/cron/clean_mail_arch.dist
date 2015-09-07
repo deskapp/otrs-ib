@@ -1,0 +1,3 @@
+
+# remove old data from mail archive every sunday morning
+11 05 * * 7 (/bin/date; $HOME/bin/otrs.CleanMailArchive /var/opt/otrs/mail 93) >> /var/opt/otrs/file/log/otrs.CleanMailArchive.log

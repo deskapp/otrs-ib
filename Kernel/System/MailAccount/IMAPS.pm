@@ -36,7 +36,9 @@ sub Connect {
         debug       => $Param{Debug},
         use_ssl     => 1,
         ssl_options => [
-            SSL_verify_mode => IO::Socket::SSL::SSL_VERIFY_NONE(),
+            SSL_ca_path => '/etc/ssl/certs',
+            SSL_verify_mode => IO::Socket::SSL::SSL_VERIFY_PEER(),
+            SSL_verifycn_scheme => 'http',
         ],
     );
     if ( !$IMAPObject ) {

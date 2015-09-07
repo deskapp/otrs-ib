@@ -1,6 +1,7 @@
 # --
 # Kernel/Output/HTML/DashboardCustomerIDStatus.pm
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -73,7 +74,7 @@ sub Run {
         Permission                       => $Self->{Config}->{Permission},
         UserID                           => $Self->{UserID},
         CacheTTL                         => $Self->{Config}->{CacheTTLLocal} * 60,
-    );
+    ) || 0;
 
     $Self->{LayoutObject}->Block(
         Name => 'ContentSmallCustomerIDStatusEscalatedTickets',
@@ -91,7 +92,7 @@ sub Run {
         Permission => $Self->{Config}->{Permission},
         UserID     => $Self->{UserID},
         CacheTTL   => $Self->{Config}->{CacheTTLLocal} * 60,
-    );
+    ) || 0;
 
     $Self->{LayoutObject}->Block(
         Name => 'ContentSmallCustomerIDStatusOpenTickets',
@@ -109,7 +110,7 @@ sub Run {
         Permission => $Self->{Config}->{Permission},
         UserID     => $Self->{UserID},
         CacheTTL   => $Self->{Config}->{CacheTTLLocal} * 60,
-    );
+    ) || 0;
 
     $Self->{LayoutObject}->Block(
         Name => 'ContentSmallCustomerIDStatusClosedTickets',
@@ -126,7 +127,7 @@ sub Run {
         Permission => $Self->{Config}->{Permission},
         UserID     => $Self->{UserID},
         CacheTTL   => $Self->{Config}->{CacheTTLLocal} * 60,
-    );
+    ) || 0;
 
     $Self->{LayoutObject}->Block(
         Name => 'ContentSmallCustomerIDStatusAllTickets',
@@ -145,7 +146,7 @@ sub Run {
             Permission   => $Self->{Config}->{Permission},
             UserID       => $Self->{UserID},
             CacheTTL     => $Self->{Config}->{CacheTTLLocal} * 60,
-        );
+        ) || 0;
 
         $Self->{LayoutObject}->Block(
             Name => 'ContentSmallCustomerIDStatusArchivedTickets',

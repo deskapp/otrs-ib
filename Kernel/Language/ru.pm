@@ -11,6 +11,7 @@
 # Copyright (C) 2012-2013 Vadim Goncharov <vgoncharov at mail.ru>
 # Copyright (C) 2013 Alexey Gluhov <glalexnn at yandex.ru>
 # Copyright (C) 2013 Andrey N. Burdin <BurdinAN at it-sakh.net>
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # Copyright (C) 2013 Yuriy Kolesnikov <ynkolesnikov at gmail.com>
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
@@ -5425,7 +5426,7 @@ sub Data {
         'Log file location is only needed for File-LogModule!' => 'Указание расположения файла журнала требуется только для ',
         'Logfile' => 'Файл журнала',
         'Logfile too large, you need to reset it!' => 'Файл журнала слишком большой, вам нужно очистить его!',
-        'Login failed! Your username or password was entered incorrectly.' =>
+        'Login failed! Your user name or password was entered incorrectly.' =>
             'Ошибка идентификации! Указано неправильное имя или пароль!',
         'Logout successful. Thank you for using OTRS!' => 'Вы успешно вышли из системы. Благодарим за пользование системой OTRS !',
         'Lookup' => 'Поиск',

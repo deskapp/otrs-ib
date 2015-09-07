@@ -1,7 +1,7 @@
 # --
 # Kernel/Modules/AgentTicketSearch.pm - Utilities for tickets
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
-# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -813,29 +813,49 @@ sub Run {
 
                 if ( $Self->{PDFObject} ) {
                     my %Info = ( %Data, %UserInfo );
+
                     my $Created = $Self->{LayoutObject}->Output(
                         Template => '$TimeLong{"$Data{"Created"}"}',
                         Data     => \%Data,
                     );
+
+                    # print only agent name and surname, no login (save space)
                     my $Owner = $Self->{LayoutObject}->Output(
                         Template =>
-                            '$QData{"Owner","30"} ($Quote{"$Data{"UserFirstname"} $Data{"UserLastname"}","30"})',
+                            '$Quote{"$Data{"UserFirstname"} $Data{"UserLastname"}","30"}',
                         Data => \%Info
                     );
+
+                    # move ID to second line
                     my $Customer = $Self->{LayoutObject}->Output(
-                        Template => '$QData{"CustomerID","15"} $QData{"CustomerName","15"}',
+                        Template => '$QData{"CustomerName","30"}' . "\n" . '$QData{"CustomerID","30"}',
                         Data     => \%Data
                     );
 
+                    # get From and truncate if longer than 70 chars
+                    my $From = $Self->{LayoutObject}->Output(
+                        Template => '$Data{"From"}',
+                        Data     => \%Info
+                    );
+                    $From =~ s/^(.{70}).+?$/$1\[\.\.\]/gs;
+
+                    # get Subject and truncate if longer than 70 chars
+                    my $Subject = $Self->{LayoutObject}->Output(
+                        Template => '$Data{"Subject"}',
+                        Data     => \%Info
+                    );
+                    $Subject =~ s/^(.{70}).+?$/$1\[\.\.\]/gs;
+
+
+                    # put sender and subject in one line; translate state name
                     my @PDFRow;
                     push @PDFRow,  $Data{TicketNumber};
                     push @PDFRow,  $Created;
-                    push @PDFRow,  $Data{From};
-                    push @PDFRow,  $Data{Subject};
-                    push @PDFRow,  $Data{State};
-                    push @PDFRow,  $Data{Queue};
-                    push @PDFRow,  $Owner;
+                    push @PDFRow,  $From . "\n" . $Subject;
                     push @PDFRow,  $Customer;
+                    push @PDFRow,  $Owner;
+                    push @PDFRow,  $Self->{LayoutObject}->{LanguageObject}->Get($Data{State});
+                    push @PDFRow,  $Data{Queue};
                     push @PDFData, \@PDFRow;
                 }
                 else {
@@ -850,8 +870,7 @@ sub Run {
 
             # PDF Output
             if ( $Self->{PDFObject} ) {
-                my $Title = $Self->{LayoutObject}->{LanguageObject}->Get('Ticket') . ' '
-                    . $Self->{LayoutObject}->{LanguageObject}->Get('Search');
+                my $Title = $Self->{LayoutObject}->{LanguageObject}->Get('Ticket Report');
                 my $PrintedBy = $Self->{LayoutObject}->{LanguageObject}->Get('printed by');
                 my $Page      = $Self->{LayoutObject}->{LanguageObject}->Get('Page');
                 my $Time      = $Self->{LayoutObject}->Output( Template => '$Env{"Time"}' );
@@ -869,6 +888,10 @@ sub Run {
                     $MaxPages = 100;
                 }
 
+                # get color for PDF titles, headers, etc.
+                my $SkinColor = $Self->{ConfigObject}->Get('PDF::SkinColor');
+                my $ProductName = $Self->{ConfigObject}->Get('ProductName') || 'OTRS';
+
                 my $CellData;
 
                 # verify if there are tickets to show
@@ -877,27 +900,38 @@ sub Run {
                     # create the header
                     $CellData->[0]->[0]->{Content} = $Self->{ConfigObject}->Get('Ticket::Hook');
                     $CellData->[0]->[0]->{Font}    = 'ProportionalBold';
+                    $CellData->[0]->[0]->{FontColor} = '#F5F5F5';
+                    $CellData->[0]->[0]->{BackgroundColor} = $SkinColor;
                     $CellData->[0]->[1]->{Content}
                         = $Self->{LayoutObject}->{LanguageObject}->Get('Created');
                     $CellData->[0]->[1]->{Font} = 'ProportionalBold';
+                    $CellData->[0]->[1]->{FontColor} = '#F5F5F5';
+                    $CellData->[0]->[1]->{BackgroundColor} = $SkinColor;
                     $CellData->[0]->[2]->{Content}
-                        = $Self->{LayoutObject}->{LanguageObject}->Get('From');
+                        = $Self->{LayoutObject}->{LanguageObject}->Get('From') . " / " . $Self->{LayoutObject}->{LanguageObject}->Get('Subject');
                     $CellData->[0]->[2]->{Font} = 'ProportionalBold';
+                    $CellData->[0]->[2]->{FontColor} = '#F5F5F5';
+                    $CellData->[0]->[2]->{BackgroundColor} = $SkinColor;
                     $CellData->[0]->[3]->{Content}
-                        = $Self->{LayoutObject}->{LanguageObject}->Get('Subject');
+                        = $Self->{LayoutObject}->{LanguageObject}->Get('Customer');
                     $CellData->[0]->[3]->{Font} = 'ProportionalBold';
+                    $CellData->[0]->[3]->{FontColor} = '#F5F5F5';
+                    $CellData->[0]->[3]->{BackgroundColor} = $SkinColor;
                     $CellData->[0]->[4]->{Content}
-                        = $Self->{LayoutObject}->{LanguageObject}->Get('State');
-                    $CellData->[0]->[4]->{Font} = 'ProportionalBold';
-                    $CellData->[0]->[5]->{Content}
-                        = $Self->{LayoutObject}->{LanguageObject}->Get('Queue');
-                    $CellData->[0]->[5]->{Font} = 'ProportionalBold';
-                    $CellData->[0]->[6]->{Content}
                         = $Self->{LayoutObject}->{LanguageObject}->Get('Owner');
+                    $CellData->[0]->[4]->{Font} = 'ProportionalBold';
+                    $CellData->[0]->[4]->{FontColor} = '#F5F5F5';
+                    $CellData->[0]->[4]->{BackgroundColor} = $SkinColor;
+                    $CellData->[0]->[5]->{Content}
+                        = $Self->{LayoutObject}->{LanguageObject}->Get('State');
+                    $CellData->[0]->[5]->{Font} = 'ProportionalBold';
+                    $CellData->[0]->[5]->{FontColor} = '#F5F5F5';
+                    $CellData->[0]->[5]->{BackgroundColor} = $SkinColor;
+                    $CellData->[0]->[6]->{Content}
+                        = $Self->{LayoutObject}->{LanguageObject}->Get('Queue');
                     $CellData->[0]->[6]->{Font} = 'ProportionalBold';
-                    $CellData->[0]->[7]->{Content}
-                        = $Self->{LayoutObject}->{LanguageObject}->Get('CustomerID');
-                    $CellData->[0]->[7]->{Font} = 'ProportionalBold';
+                    $CellData->[0]->[6]->{FontColor} = '#F5F5F5';
+                    $CellData->[0]->[6]->{BackgroundColor} = $SkinColor;
 
                     # create the content array
                     my $CounterRow = 1;
@@ -924,14 +958,14 @@ sub Run {
                 $PageParam{MarginRight}     = 40;
                 $PageParam{MarginBottom}    = 40;
                 $PageParam{MarginLeft}      = 40;
-                $PageParam{HeaderRight}     = $Title;
-                $PageParam{FooterLeft}      = $Url;
-                $PageParam{HeadlineLeft}    = $Title;
-                $PageParam{HeadlineRight}   = $PrintedBy . ' '
+                $PageParam{HeaderRight}     = $ProductName;
+                $PageParam{FooterLeft}      = $PrintedBy . ' '
                     . $Self->{UserFirstname} . ' '
                     . $Self->{UserLastname} . ' ('
                     . $Self->{UserEmail} . ') '
                     . $Time;
+                $PageParam{HeadlineLeft}    = $Title;
+                $PageParam{HeadlineRight}   = ' ';
 
                 # table params
                 my %TableParam;
@@ -939,20 +973,30 @@ sub Run {
                 $TableParam{Type}                = 'Cut';
                 $TableParam{FontSize}            = 6;
                 $TableParam{Border}              = 0;
-                $TableParam{BackgroundColorEven} = '#AAAAAA';
-                $TableParam{BackgroundColorOdd}  = '#DDDDDD';
+                $TableParam{BackgroundColorEven} = '#E5E5E5';
+                $TableParam{BackgroundColorOdd}  = '#FFFFFF';
                 $TableParam{Padding}             = 1;
                 $TableParam{PaddingTop}          = 3;
                 $TableParam{PaddingBottom}       = 3;
 
                 # create new pdf document
                 $Self->{PDFObject}->DocumentNew(
-                    Title  => $Self->{ConfigObject}->Get('Product') . ': ' . $Title,
+                    Title  => $Title,
                     Encode => $Self->{LayoutObject}->{UserCharset},
                 );
 
                 # start table output
                 $Self->{PDFObject}->PageNew( %PageParam, FooterRight => $Page . ' 1', );
+
+                # title on first page only
+                $PageParam{HeadlineLeft} = '';
+
+                # set new position
+                $Self->{PDFObject}->PositionSet(
+                    Move => 'relativ',
+                    Y    => -10,
+                );
+
                 PAGE:
                 for my $PageNumber ( 2 .. $MaxPages ) {
 
@@ -972,7 +1016,8 @@ sub Run {
                 }
 
                 # return the pdf document
-                my $Filename = 'ticket_search';
+                my $Filename = $Title;
+                $Filename =~ s/\s+/_/g;
                 my ( $s, $m, $h, $D, $M, $Y )
                     = $Self->{TimeObject}->SystemTime2Date(
                     SystemTime => $Self->{TimeObject}->SystemTime(),
@@ -983,7 +1028,7 @@ sub Run {
                 $m = sprintf( "%02d", $m );
                 my $PDFString = $Self->{PDFObject}->DocumentOutput();
                 return $Self->{LayoutObject}->Attachment(
-                    Filename    => $Filename . "_" . "$Y-$M-$D" . "_" . "$h-$m.pdf",
+                    Filename    => $Filename . "_" . "$Y$M$D" . "_" . "$h$m.pdf",
                     ContentType => "application/pdf",
                     Content     => $PDFString,
                     Type        => 'attachment',

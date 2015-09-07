@@ -1,6 +1,7 @@
 # --
 # Kernel/System/TicketSearch.pm - all ticket search functions
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -450,7 +451,19 @@ sub TicketSearch {
     ARGUMENT:
     for my $Key ( sort keys %Param ) {
         if ( $Key =~ /^(Ticket(Close|Change)Time(Newer|Older)(Date|Minutes)|Created.+?)/ ) {
-            $SQLFrom .= 'INNER JOIN ticket_history th ON st.id = th.ticket_id ';
+
+            # suggest index to avoid ticket_history scans
+            my $IndexHint = '';
+            if ($Param{TicketCloseTimeOlderDate} || $Param{TicketCloseTimeNewerDate}) {
+
+                my $DBType = $Self->{DBObject}->GetDatabaseFunction('Type');
+                if ( $DBType eq 'mysql' ) {
+                    $IndexHint = 'USE INDEX (ticket_history_create_time) ';
+                }
+            }
+
+            $SQLFrom .= 'INNER JOIN ticket_history th ' . $IndexHint . 'ON st.id = th.ticket_id ';
+
             last ARGUMENT;
         }
     }

@@ -1,6 +1,7 @@
 /**
  * @project     OTRS (http://www.otrs.org) - Customer Frontend
  * @copyright   OTRS AG
+ * @copyright   (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
  * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
  */
 
@@ -163,11 +164,14 @@ form #cke_RichText span.cke_wrapper {
     padding: 0 0 0 4px;
 }
 
-#Footer a {
+#Footer {
     margin: 8px 8px 7px;
     color: #CCC;
     font-weight: bold;
-    float: left;
+}
+
+#Footer a {
+    color: #CCC;
 }
 
 #Footer a:hover {

@@ -1,3 +1,3 @@
 
 # fetch emails every 10 minutes
-*/10 * * * *    $HOME/bin/otrs.PostMasterMailbox.pl >> /dev/null
+#7,17,27,37,47,57 * * * *    (/bin/date; $HOME/bin/otrs.PostMasterMailbox.pl) >> /var/opt/otrs/file/log/otrs.PostMasterMailbox.pl.log

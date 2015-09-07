@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/AdminTemplate.pm - provides admin std template module
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -316,6 +317,23 @@ sub Run {
 sub _Edit {
     my ( $Self, %Param ) = @_;
 
+    if ( $Self->{LayoutObject}->{BrowserRichText} ) {
+        # reformat from plain to html
+        if ( $Param{ContentType} && $Param{ContentType} =~ /text\/plain/i ) {
+            $Param{Template} = $Self->{HTMLUtilsObject}->ToHTML(
+                String => $Param{Template},
+            );
+        }
+    }
+    else {
+        # reformat from html to plain
+        if ( $Param{ContentType} && $Param{ContentType} =~ /text\/html/i ) {
+            $Param{Template} = $Self->{HTMLUtilsObject}->ToAscii(
+                String => $Param{Template},
+            );
+        }
+    }
+
     $Self->{LayoutObject}->Block(
         Name => 'Overview',
         Data => \%Param,
@@ -377,23 +395,8 @@ sub _Edit {
             Name => 'RichText',
             Data => \%Param,
         );
-
-        # reformat from plain to html
-        if ( $Param{ContentType} && $Param{ContentType} =~ /text\/plain/i ) {
-            $Param{Template} = $Self->{HTMLUtilsObject}->ToHTML(
-                String => $Param{Template},
-            );
-        }
     }
-    else {
 
-        # reformat from html to plain
-        if ( $Param{ContentType} && $Param{ContentType} =~ /text\/html/i ) {
-            $Param{Template} = $Self->{HTMLUtilsObject}->ToAscii(
-                String => $Param{Template},
-            );
-        }
-    }
     return 1;
 }
 

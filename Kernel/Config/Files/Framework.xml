@@ -58,6 +58,14 @@
             <String Regex="">yourhost.example.com</String>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="ExtFQDN" Required="1" Valid="1" ConfigLevel="200">
+        <Description Translatable="1">Defines the fully qualified domain name for external IDs generation (i.e. Message-ID).</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core</SubGroup>
+        <Setting>
+            <String Regex="">yourexternal.address.com</String>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="HttpType" Required="1" Valid="1" ConfigLevel="200">
         <Description Translatable="1">Defines the type of protocol, used by the web server, to serve the application. If https protocol will be used instead of plain http, it must be specified here. Since this has no affect on the web server's settings or behavior, it will not change the method of access to the application and, if it is wrong, it will not prevent you from logging into the application. This setting is only used as a variable, OTRS_CONFIG_HttpType which is found in all forms of messaging used by the application, to build links to the tickets within your system.</Description>
         <Group>Framework</Group>
@@ -287,11 +295,27 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::RichText::DefaultCSS" Required="1" Valid="1">
-        <Description Translatable="1">Defines the default CSS used in rich text editors.</Description>
+        <Description Translatable="1">Defines the default CSS used in rich text editors and HTML mail body.</Description>
         <Group>Framework</Group>
         <SubGroup>Core::Web</SubGroup>
         <Setting>
             <String Regex="">font-family:Geneva,Helvetica,Arial,sans-serif; font-size: 12px;</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Frontend::RichText::EditingAreaCSS" Required="0" Valid="1">
+        <Description Translatable="1">Defines the CSS style to embed in rich text editor.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Web</SubGroup>
+        <Setting>
+            <String Regex=""></String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Frontend::RichText::MailCSS" Required="0" Valid="1">
+        <Description Translatable="1">Defines the CSS style to embed in HTML messages.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Web</SubGroup>
+        <Setting>
+            <TextArea></TextArea>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::RichText::EnhancedMode" Required="1" Valid="1">
@@ -302,6 +326,18 @@
             <Option SelectedID="0">
                 <Item Key="0">No</Item>
                 <Item Key="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Frontend::RichText::EnterMode" Required="1" Valid="1">
+        <Description Translatable="1">Sets the behavior of the Enter key in rich text editor (enterMode CKEditor parameter). It also determines other behavior rules of the editor, like whether the &amp;lt;br&amp;gt; element is to be used as a paragraph separator when indenting text. The allowed values are the following constants: P (new &amp;lt;p&amp;gt; paragraphs are created), BR (lines are broken with &amp;lt;br&amp;gt; elements), DIV (new &amp;lt;div&amp;gt; blocks are created).</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Web</SubGroup>
+        <Setting>
+            <Option SelectedID="2">
+                <Item Key="1">P</Item>
+                <Item Key="2">BR</Item>
+                <Item Key="3">DIV</Item>
             </Option>
         </Setting>
     </ConfigItem>
@@ -467,7 +503,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="LogModule" Required="1" Valid="1">
-        <Description Translatable="1">Defines the log module for the system. "File" writes all messages in a given logfile, "SysLog" uses the syslog daemon of the system, e.g. syslogd.</Description>
+        <Description Translatable="1">Defines the log module for the system. "File" and "FileEx" writes all messages in a given logfile, "SysLog" uses the syslog daemon of the system, e.g. syslogd.</Description>
         <Group>Framework</Group>
         <SubGroup>Core::Log</SubGroup>
         <Setting>
@@ -503,7 +539,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="LogModule::LogFile" Required="1" Valid="1">
-        <Description Translatable="1">If "file" was selected for LogModule, a logfile must be specified. If the file doesn't exist, it will be created by the system.</Description>
+        <Description Translatable="1">If "File" or "FileEx" was selected for LogModule, a logfile must be specified. If the file doesn't exist, it will be created by the system.</Description>
         <Group>Framework</Group>
         <SubGroup>Core::Log</SubGroup>
         <Setting>
@@ -519,6 +555,14 @@
                 <Item Key="0">No</Item>
                 <Item Key="1">Yes</Item>
             </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="LogModule::LogLinesDisplayLimit" Required="1" Valid="1">
+        <Description Translatable="1">Maximum number of log lines to display in admin panel.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Log</SubGroup>
+        <Setting>
+            <String Regex="">400</String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="SendmailModule" Required="1" Valid="1" ConfigLevel="200">
@@ -2435,6 +2479,28 @@
             </TimeWorkingHours>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="FindURIEnabled" Required="1" Valid="1">
+        <Description Translatable="1">Turns on extended link detection using Find::URI. Requires perl modules Find::URI and URI::Find::Schemeless to be installed. After enabling this option you should also enable SubstMalformedChars to avoid Find::URI crashes on malformed data.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Web</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0">No</Item>
+                <Item Key="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="SubstMalformedChars" Required="1" Valid="1">
+        <Description Translatable="1">Turns on malformed character substitution when displaying and quoting rich text messages.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Web</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0">No</Item>
+                <Item Key="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="WebMaxFileUpload" Required="1" Valid="1" ConfigLevel="200">
         <Description Translatable="1">Defines the maximal size (in bytes) for file uploads via the browser. Warning: Setting this option to a value which is too low could cause many masks in your OTRS instance to stop working (probably any mask which takes input from the user).</Description>
         <Group>Framework</Group>
@@ -2682,6 +2748,28 @@
             <String Regex="">http://proxy.sn.no:8001/</String>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="Package::DeployCheck" Required="1" Valid="1" ConfigLevel="200">
+        <Description Translatable="1">Toggles package deployment checking.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Package</SubGroup>
+        <Setting>
+            <Option SelectedID="1">
+                <Item Key="0">No</Item>
+                <Item Key="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Package::OnlineVerification" Required="1" Valid="1" ConfigLevel="200">
+        <Description Translatable="1">Toggles online package verification using OTRS web service.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Package</SubGroup>
+        <Setting>
+            <Option SelectedID="1">
+                <Item Key="0">No</Item>
+                <Item Key="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="Package::ShowFeatureAddons" Required="0" Valid="1" ConfigLevel="200">
         <Description Translatable="1">Toggles display of OTRS FeatureAddons list in PackageManager.</Description>
         <Group>Framework</Group>
@@ -2802,6 +2890,14 @@
                 <Item Key="950">950</Item>
                 <Item Key="1000">1000</Item>
             </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="PDF::SkinColor" Required="1" Valid="1">
+        <Description Translatable="1">Specifies the color for PDF color elements.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::PDF</SubGroup>
+        <Setting>
+            <String Regex="">#404040</String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="PDF::TTFontFile###Proportional" Required="1" Valid="1">
@@ -3643,7 +3739,7 @@ via the Preferences button after logging in.
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Customer::AuthModule::DB::CryptType" Required="1" Valid="1" ConfigLevel="200">
-        <Description Translatable="1">If "DB" was selected for Customer::AuthModule, the crypt type of passwords must be specified.</Description>
+        <Description Translatable="1">If "DB" was selected for Customer::AuthModule, the crypt type of passwords must be specified. Note: using SSHA256 or SSHA512 is recommended (both require Crypt::SaltedHash). Currently SSHA512 requires extra config steps /pw field in users and customer_user tables must be 128 chars wide - OTRS 3.1.10 default is only 64 chars/.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Customer::Auth</SubGroup>
         <Setting>
@@ -3654,7 +3750,17 @@ via the Preferences button after logging in.
                 <Item Key="sha1">SHA-1</Item>
                 <Item Key="sha2">SHA-2</Item>
                 <Item Key="bcrypt">bcrypt</Item>
+                <Item Key="ssha256">SSHA256 (SALT48)</Item>
+                <Item Key="ssha512">SSHA512 (SALT128)</Item>
             </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Customer::AuthModule::DB::bcryptCost" Required="0" Valid="0" ConfigLevel="200">
+        <Description Translatable="1">If "bcrypt" was selected for CryptType, use cost specified here for bcrypt hashing. Currently max. supported cost value is 31.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Frontend::Customer::Auth</SubGroup>
+        <Setting>
+            <String Regex="^[0-9]{1,2}$">12</String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Customer::AuthModule::DB::Table" Required="1" Valid="1" ConfigLevel="200">
@@ -5314,22 +5420,6 @@ via the Preferences button after logging in.
             </Array>
         </Setting>
      </ConfigItem>
-     <ConfigItem Name="Stats::Graph::TitleFont" Required="1" Valid="1">
-        <Description Translatable="1">Defines the title font in graphs (place custom fonts in var/fonts).</Description>
-        <Group>Framework</Group>
-        <SubGroup>Core::Stats::Graph</SubGroup>
-        <Setting>
-            <String Regex="">DejaVuSans-Bold.ttf</String>
-        </Setting>
-    </ConfigItem>
-    <ConfigItem Name="Stats::Graph::LegendFont" Required="1" Valid="1">
-        <Description Translatable="1">Defines the legend font in graphs (place custom fonts in var/fonts).</Description>
-        <Group>Framework</Group>
-        <SubGroup>Core::Stats::Graph</SubGroup>
-        <Setting>
-            <String Regex="">DejaVuSans.ttf</String>
-        </Setting>
-    </ConfigItem>
     <ConfigItem Name="Stats::Graph::line_width" Required="1" Valid="1">
         <Description Translatable="1">Defines the boldness of the line drawed by the graph.</Description>
         <Group>Framework</Group>
@@ -5368,6 +5458,126 @@ via the Preferences button after logging in.
         <SubGroup>Core::Stats::Graph</SubGroup>
         <Setting>
             <String Regex="^[0-9]{1,5}$">8</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::Graph::font_path" Required="1" Valid="1">
+        <Description Translatable="1">Defines the path to font files for graphs.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Stats::Graph</SubGroup>
+        <Setting>
+            <String Regex="">/opt/otrs/var/fonts</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::Graph::title_font_file" Required="1" Valid="1">
+        <Description Translatable="1">Defines the font file for graph title.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Stats::Graph</SubGroup>
+        <Setting>
+            <String Regex="">DejaVuSans.ttf</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::Graph::title_font_size" Required="1" Valid="1">
+        <Description Translatable="1">Defines the font size for graph title.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Stats::Graph</SubGroup>
+        <Setting>
+            <String Regex="^[0-9]{1,3}$">12</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::Graph::x_label_font_file" Required="1" Valid="1">
+        <Description Translatable="1">Defines the font file for graph X label.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Stats::Graph</SubGroup>
+        <Setting>
+            <String Regex="">DejaVuSans.ttf</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::Graph::x_label_font_size" Required="1" Valid="1">
+        <Description Translatable="1">Defines the font size for graph X label.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Stats::Graph</SubGroup>
+        <Setting>
+            <String Regex="^[0-9]{1,3}$">10</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::Graph::y_label_font_file" Required="1" Valid="1">
+        <Description Translatable="1">Defines the font file for graph Y label.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Stats::Graph</SubGroup>
+        <Setting>
+            <String Regex="">DejaVuSans.ttf</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::Graph::y_label_font_size" Required="1" Valid="1">
+        <Description Translatable="1">Defines the font size for graph Y label.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Stats::Graph</SubGroup>
+        <Setting>
+            <String Regex="^[0-9]{1,3}$">10</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::Graph::x_axis_font_file" Required="1" Valid="1">
+        <Description Translatable="1">Defines the font file for graph X axis.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Stats::Graph</SubGroup>
+        <Setting>
+            <String Regex="">DejaVuSans.ttf</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::Graph::x_axis_font_size" Required="1" Valid="1">
+        <Description Translatable="1">Defines the font size for graph X axis.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Stats::Graph</SubGroup>
+        <Setting>
+            <String Regex="^[0-9]{1,3}$">10</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::Graph::y_axis_font_file" Required="1" Valid="1">
+        <Description Translatable="1">Defines the font file for graph Y axis.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Stats::Graph</SubGroup>
+        <Setting>
+            <String Regex="">DejaVuSans.ttf</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::Graph::y_axis_font_size" Required="1" Valid="1">
+        <Description Translatable="1">Defines the font size for graph Y axis.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Stats::Graph</SubGroup>
+        <Setting>
+            <String Regex="^[0-9]{1,3}$">10</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::Graph::values_font_file" Required="1" Valid="1">
+        <Description Translatable="1">Defines the font file for graph values.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Stats::Graph</SubGroup>
+        <Setting>
+            <String Regex="">DejaVuSans.ttf</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::Graph::values_font_size" Required="1" Valid="1">
+        <Description Translatable="1">Defines the font size for graph values.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Stats::Graph</SubGroup>
+        <Setting>
+            <String Regex="^[0-9]{1,3}$">10</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::Graph::legend_font_file" Required="1" Valid="1">
+        <Description Translatable="1">Defines the font file for graph legend.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Stats::Graph</SubGroup>
+        <Setting>
+            <String Regex="">DejaVuSans.ttf</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::Graph::legend_font_size" Required="1" Valid="1">
+        <Description Translatable="1">Defines the font size for graph legend.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Stats::Graph</SubGroup>
+        <Setting>
+            <String Regex="^[0-9]{1,3}$">10</String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Stats::TimeType" Required="1" Valid="1">
@@ -6202,6 +6412,14 @@ via the Preferences button after logging in.
             </Option>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="TimeDestinationTimeMaxLoops" Required="0" Valid="0" ConfigLevel="200">
+        <Description Translatable="1">Maximum number of loops (days) in DestinationTime function algo (see Kernel/System/Time.pm for details). Increase if using long SLA times, i.e. longer than 100 days.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Time</SubGroup>
+        <Setting>
+            <String Regex="^\d+$">100</String>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="AdminCustomerUser::RunInitialWildcardSearch" Required="1" Valid="1">
         <Description Translatable="1">Runs an initial wildcard search of the existing customer users when accessing the AdminCustomerUser module.</Description>
         <Group>Framework</Group>
@@ -6302,19 +6520,6 @@ via the Preferences button after logging in.
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="Cache::Module::Redis###Parameters" Required="0" Valid="0">
-        <Description Translatable="1">Defines all the Redis connection parameters.</Description>
-        <Group>Framework</Group>
-        <SubGroup>Core::Cache</SubGroup>
-        <Setting>
-            <Hash>
-                <Item Key="server">127.0.0.1:6379</Item>
-                <Item Key="cnx_timeout">1</Item>
-                <Item Key="read_timeout">1</Item>
-                <Item Key="write_timeout">1</Item>
-            </Hash>
-        </Setting>
-    </ConfigItem>
     <ConfigItem Name="AutoComplete::Agent###Default" Required="0" Valid="1">
         <Description Translatable="1">Defines the config options for the autocompletion feature.</Description>
         <Group>Framework</Group>
@@ -6378,6 +6583,19 @@ via the Preferences button after logging in.
         <Setting>
             <Hash>
                 <Item Key="Go to dashboard!">$Env{"CGIHandle"}?Action=AgentDashboard</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Cache::Module::Redis###Parameters" Required="0" Valid="0">
+        <Description Translatable="1">Defines all the Redis connection parameters.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Cache</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="server">127.0.0.1:6379</Item>
+                <Item Key="cnx_timeout">1</Item>
+                <Item Key="read_timeout">1</Item>
+                <Item Key="write_timeout">1</Item>
             </Hash>
         </Setting>
     </ConfigItem>

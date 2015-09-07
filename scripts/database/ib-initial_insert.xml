@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<database Name="otrs">
+
+<!-- notifications agent - pl -->
+    <Insert Table="notifications">
+        <Data Key="notification_type" Type="Quote">Agent::NewTicket</Data>
+        <Data Key="notification_charset" Type="Quote">utf-8</Data>
+        <Data Key="notification_language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote">Nowe zgłoszenie (&lt;OTRS_CUSTOMER_SUBJECT[50]&gt;)</Data>
+        <Data Key="text" Type="Quote">Witaj &lt;OTRS_UserFirstname&gt;,
+
+W kolejce "&lt;OTRS_TICKET_Queue&gt;" pojawiło się nowe zgłoszenie &lt;OTRS_CONFIG_Ticket::Hook&gt;&lt;OTRS_TICKET_TicketNumber&gt;.
+
+Zgłoszenie możesz obsłużyć na stronie:
+&lt;OTRS_CONFIG_HttpType&gt;://&lt;OTRS_CONFIG_FQDN&gt;/agent/&lt;OTRS_TICKET_TicketNumber&gt;
+
+System &lt;OTRS_CONFIG_ProductName&gt;
+
+________________________________
+
+Od: &lt;OTRS_CUSTOMER_FROM&gt;
+Temat: &lt;OTRS_CUSTOMER_SUBJECT&gt;
+
+Fragment otrzymanej wiadomości:
+&lt;OTRS_CUSTOMER_EMAIL[30]&gt;
+
+</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notifications">
+        <Data Key="notification_type" Type="Quote">Agent::FollowUp</Data>
+        <Data Key="notification_charset" Type="Quote">utf-8</Data>
+        <Data Key="notification_language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote">Nowa wiadomość do zgłoszenia (&lt;OTRS_CUSTOMER_SUBJECT[50]&gt;)</Data>
+        <Data Key="text" Type="Quote">Witaj &lt;OTRS_UserFirstname&gt;,
+
+Pojawiła się nowa wiadomość do zgłoszenia &lt;OTRS_CONFIG_Ticket::Hook&gt;&lt;OTRS_TICKET_TicketNumber&gt;.
+
+Zgłoszenie możesz obsłużyć na stronie:
+&lt;OTRS_CONFIG_HttpType&gt;://&lt;OTRS_CONFIG_FQDN&gt;/agent/&lt;OTRS_TICKET_TicketNumber&gt;
+
+System &lt;OTRS_CONFIG_ProductName&gt;
+
+________________________________
+
+Od: &lt;OTRS_CUSTOMER_FROM&gt;
+Temat: &lt;OTRS_CUSTOMER_SUBJECT&gt;
+
+Fragment otrzymanej wiadomości:
+&lt;OTRS_CUSTOMER_EMAIL[30]&gt;
+
+</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notifications">
+        <Data Key="notification_type" Type="Quote">Agent::LockTimeout</Data>
+        <Data Key="notification_charset" Type="Quote">utf-8</Data>
+        <Data Key="notification_language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote">Odblokowanie zgłoszenia (&lt;OTRS_CUSTOMER_SUBJECT[50]&gt;)</Data>
+        <Data Key="text" Type="Quote">Witaj &lt;OTRS_UserFirstname&gt;,
+
+Przypisane do ciebie zgłoszenie &lt;OTRS_CONFIG_Ticket::Hook&gt;&lt;OTRS_TICKET_TicketNumber&gt;, znajdujące się w kolejce "&lt;OTRS_TICKET_Queue&gt;" zostało odblokowane.
+
+Zgłoszenie możesz obsłużyć na stronie:
+&lt;OTRS_CONFIG_HttpType&gt;://&lt;OTRS_CONFIG_FQDN&gt;/agent/&lt;OTRS_TICKET_TicketNumber&gt;
+
+System &lt;OTRS_CONFIG_ProductName&gt;
+
+________________________________
+
+Od: &lt;OTRS_CUSTOMER_FROM&gt;
+Temat: &lt;OTRS_CUSTOMER_SUBJECT&gt;
+
+Fragment otrzymanej wiadomości:
+&lt;OTRS_CUSTOMER_EMAIL[30]&gt;
+
+</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notifications">
+        <Data Key="notification_type" Type="Quote">Agent::OwnerUpdate</Data>
+        <Data Key="notification_charset" Type="Quote">utf-8</Data>
+        <Data Key="notification_language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote">Przypisanie zgłoszenia (&lt;OTRS_CUSTOMER_SUBJECT[50]&gt;)</Data>
+        <Data Key="text" Type="Quote">Witaj &lt;OTRS_UserFirstname&gt;,
+
+&lt;OTRS_CURRENT_UserFirstname&gt; &lt;OTRS_CURRENT_UserLastname&gt; przydzielił(a) tobie zgłoszenie &lt;OTRS_CONFIG_Ticket::Hook&gt;&lt;OTRS_TICKET_TicketNumber&gt;.
+
+Komentarz:
+&lt;OTRS_COMMENT&gt;
+
+Zgłoszenie możesz obsłużyć na stronie:
+&lt;OTRS_CONFIG_HttpType&gt;://&lt;OTRS_CONFIG_FQDN&gt;/agent/&lt;OTRS_TICKET_TicketNumber&gt;
+
+System &lt;OTRS_CONFIG_ProductName&gt;
+
+________________________________
+
+Od: &lt;OTRS_CUSTOMER_FROM&gt;
+Temat: &lt;OTRS_CUSTOMER_SUBJECT&gt;
+
+Fragment otrzymanej wiadomości:
+&lt;OTRS_CUSTOMER_EMAIL[30]&gt;
+
+</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notifications">
+        <Data Key="notification_type" Type="Quote">Agent::ResponsibleUpdate</Data>
+        <Data Key="notification_charset" Type="Quote">utf-8</Data>
+        <Data Key="notification_language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote">Przypisanie odpowiedzialności za zgłoszenie (&lt;OTRS_CUSTOMER_SUBJECT[50]&gt;)</Data>
+        <Data Key="text" Type="Quote">Witaj &lt;OTRS_RESPONSIBLE_UserFirstname&gt;,
+
+&lt;OTRS_CURRENT_UserFirstname&gt; &lt;OTRS_CURRENT_UserLastname&gt; wskazał ciebie jako osobę odpowiedzialną za zgłoszenie &lt;OTRS_CONFIG_Ticket::Hook&gt;&lt;OTRS_TICKET_TicketNumber&gt;.
+
+Komentarz:
+&lt;OTRS_COMMENT&gt;
+
+Zgłoszenie znajduje się na stronie:
+&lt;OTRS_CONFIG_HttpType&gt;://&lt;OTRS_CONFIG_FQDN&gt;/agent/&lt;OTRS_TICKET_TicketNumber&gt;
+
+System &lt;OTRS_CONFIG_ProductName&gt;
+
+________________________________
+
+Od: &lt;OTRS_CUSTOMER_FROM&gt;
+Temat: &lt;OTRS_CUSTOMER_SUBJECT&gt;
+
+Fragment otrzymanej wiadomości:
+&lt;OTRS_CUSTOMER_EMAIL[30]&gt;
+
+</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notifications">
+        <Data Key="notification_type" Type="Quote">Agent::AddNote</Data>
+        <Data Key="notification_charset" Type="Quote">utf-8</Data>
+        <Data Key="notification_language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote">Nowa notatka do zgłoszenia (&lt;OTRS_CUSTOMER_SUBJECT[50]&gt;)</Data>
+        <Data Key="text" Type="Quote">Witaj &lt;OTRS_UserFirstname&gt;,
+
+&lt;OTRS_CURRENT_UserFirstname&gt; &lt;OTRS_CURRENT_UserLastname&gt; dodał(a) nową notatkę do zgłoszenia &lt;OTRS_CONFIG_Ticket::Hook&gt;&lt;OTRS_TICKET_TicketNumber&gt;.
+
+Treść notatki:
+&lt;OTRS_CUSTOMER_BODY&gt;
+
+Zgłoszenie możesz obsłużyć na stronie:
+&lt;OTRS_CONFIG_HttpType&gt;://&lt;OTRS_CONFIG_FQDN&gt;/agent/&lt;OTRS_TICKET_TicketNumber&gt;
+
+System &lt;OTRS_CONFIG_ProductName&gt;
+
+________________________________
+
+Od: &lt;OTRS_CUSTOMER_FROM&gt;
+Temat: &lt;OTRS_CUSTOMER_SUBJECT&gt;
+
+Fragment otrzymanej wiadomości:
+&lt;OTRS_CUSTOMER_EMAIL[30]&gt;
+
+</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notifications">
+        <Data Key="notification_type" Type="Quote">Agent::Move</Data>
+        <Data Key="notification_charset" Type="Quote">utf-8</Data>
+        <Data Key="notification_language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote">Przeniesienie zgłoszenia (&lt;OTRS_CUSTOMER_SUBJECT[50]&gt;)</Data>
+        <Data Key="text" Type="Quote">Witaj &lt;OTRS_UserFirstname&gt;,
+
+Zgłoszenie &lt;OTRS_CONFIG_Ticket::Hook&gt;&lt;OTRS_TICKET_TicketNumber&gt; zostało przeniesione przez &lt;OTRS_CURRENT_UserFirstname&gt; &lt;OTRS_CURRENT_UserLastname&gt; do kolejki "&lt;OTRS_CUSTOMER_QUEUE&gt;".
+
+Zgłoszenie możesz obsłużyć na stronie:
+&lt;OTRS_CONFIG_HttpType&gt;://&lt;OTRS_CONFIG_FQDN&gt;/agent/&lt;OTRS_TICKET_TicketNumber&gt;
+
+System &lt;OTRS_CONFIG_ProductName&gt;
+
+________________________________
+
+Od: &lt;OTRS_CUSTOMER_FROM&gt;
+Temat: &lt;OTRS_CUSTOMER_SUBJECT&gt;
+
+Fragment otrzymanej wiadomości:
+&lt;OTRS_CUSTOMER_EMAIL[30]&gt;
+
+</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notifications">
+        <Data Key="notification_type" Type="Quote">Agent::PendingReminder</Data>
+        <Data Key="notification_charset" Type="Quote">utf-8</Data>
+        <Data Key="notification_language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote">Przypomnienie o zgłoszeniu (&lt;OTRS_CUSTOMER_SUBJECT[50]&gt;)</Data>
+        <Data Key="text" Type="Quote">Witaj &lt;OTRS_UserFirstname&gt;,
+
+W kolejce "&lt;OTRS_TICKET_Queue&gt;" znajduje się zgłoszenie &lt;OTRS_CONFIG_Ticket::Hook&gt;&lt;OTRS_TICKET_TicketNumber&gt;, dla którego ustawiona została wysyłka tego przypomnienia.
+
+Zgłoszenie możesz obsłużyć na stronie:
+&lt;OTRS_CONFIG_HttpType&gt;://&lt;OTRS_CONFIG_FQDN&gt;/agent/&lt;OTRS_TICKET_TicketNumber&gt;
+
+System &lt;OTRS_CONFIG_ProductName&gt;
+
+________________________________
+
+Od: &lt;OTRS_CUSTOMER_FROM&gt;
+Temat: &lt;OTRS_CUSTOMER_SUBJECT&gt;
+
+Fragment otrzymanej wiadomości:
+&lt;OTRS_CUSTOMER_EMAIL[30]&gt;
+
+</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notifications">
+        <Data Key="notification_type" Type="Quote">Agent::Escalation</Data>
+        <Data Key="notification_charset" Type="Quote">utf-8</Data>
+        <Data Key="notification_language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote">Eskalacja zgłoszenia (&lt;OTRS_CUSTOMER_SUBJECT[50]&gt;)</Data>
+        <Data Key="text" Type="Quote">Witaj &lt;OTRS_UserFirstname&gt;,
+
+Zgłoszenie &lt;OTRS_CONFIG_Ticket::Hook&gt;&lt;OTRS_TICKET_TicketNumber&gt; jest eskalowane.
+
+Zgłoszenie możesz obsłużyć na stronie:
+&lt;OTRS_CONFIG_HttpType&gt;://&lt;OTRS_CONFIG_FQDN&gt;/agent/&lt;OTRS_TICKET_TicketNumber&gt;
+
+System &lt;OTRS_CONFIG_ProductName&gt;
+
+________________________________
+
+Od: &lt;OTRS_CUSTOMER_FROM&gt;
+Temat: &lt;OTRS_CUSTOMER_SUBJECT&gt;
+
+Fragment otrzymanej wiadomości:
+&lt;OTRS_CUSTOMER_EMAIL[30]&gt;
+
+</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+    <Insert Table="notifications">
+        <Data Key="notification_type" Type="Quote">Agent::EscalationNotifyBefore</Data>
+        <Data Key="notification_charset" Type="Quote">utf-8</Data>
+        <Data Key="notification_language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote">Ostrzeżenie przed eskalacją zgłoszenia (&lt;OTRS_CUSTOMER_SUBJECT[50]&gt;)</Data>
+        <Data Key="text" Type="Quote">Witaj &lt;OTRS_UserFirstname&gt;,
+
+Zgłoszenie &lt;OTRS_CONFIG_Ticket::Hook&gt;&lt;OTRS_TICKET_TicketNumber&gt; będzie wkrótce eskalowane.
+
+Data eskalacji: &lt;OTRS_TICKET_EscalationDestinationDate&gt;
+Eskalacja za:   &lt;OTRS_TICKET_EscalationDestinationIn&gt;
+
+Zgłoszenie możesz obsłużyć na stronie:
+&lt;OTRS_CONFIG_HttpType&gt;://&lt;OTRS_CONFIG_FQDN&gt;/agent/&lt;OTRS_TICKET_TicketNumber&gt;
+
+System &lt;OTRS_CONFIG_ProductName&gt;
+
+________________________________
+
+Od: &lt;OTRS_CUSTOMER_FROM&gt;
+Temat: &lt;OTRS_CUSTOMER_SUBJECT&gt;
+
+Fragment otrzymanej wiadomości:
+&lt;OTRS_CUSTOMER_EMAIL[30]&gt;
+
+</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="create_by">1</Data>
+        <Data Key="create_time">current_timestamp</Data>
+        <Data Key="change_by">1</Data>
+        <Data Key="change_time">current_timestamp</Data>
+    </Insert>
+
+</database>

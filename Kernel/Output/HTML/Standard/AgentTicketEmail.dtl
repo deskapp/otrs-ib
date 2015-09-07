@@ -1,6 +1,7 @@
 # --
 # AgentTicketEmail.dtl - provides HTML form for agent email
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -449,7 +450,7 @@ $('#NewResponsibleID').bind('change', function (Event) {
                     <label for="StandardTemplateID">$Text{"Text Template"}:</label>
                     <div class="Field">
                         $Data{"StandardTemplateStrg"}
-                        <p class="FieldExplanation">Setting a template will overwrite any text or attachment.</p>
+                        <p class="FieldExplanation">$Text{"Setting a template will overwrite any text or attachment."}</p>
                     </div>
                     <div class="Clear"></div>
 <!--dtl:js_on_document_complete-->

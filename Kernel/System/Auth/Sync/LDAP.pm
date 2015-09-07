@@ -1,6 +1,7 @@
 # --
 # Kernel/System/Auth/Sync/LDAP.pm - provides the ldap sync
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -193,7 +194,10 @@ sub Sync {
     $UserDNQuote =~ s{ ( [\\()] ) }{\\$1}xmsg;
 
     # get current user id
-    my $UserID = $Self->{UserObject}->UserLookup( UserLogin => $Param{User} );
+    my $UserID = $Self->{UserObject}->UserLookup(
+        UserLogin       => $Param{User},
+        DisableWarnings => 1,
+    );
 
     # system permissions
     my %PermissionsEmpty =
@@ -262,12 +266,12 @@ sub Sync {
         # add new user
         if ( %SyncUser && !$UserID ) {
             $UserID = $Self->{UserObject}->UserAdd(
-                UserTitle => 'Mr/Mrs',
-                UserLogin => $Param{User},
+                UserLogin    => $Param{User},
                 %SyncUser,
                 UserType     => 'User',
                 ValidID      => 1,
                 ChangeUserID => 1,
+                Extended     => 1,
             );
             if ( !$UserID ) {
                 $Self->{LogObject}->Log(
@@ -326,7 +330,9 @@ sub Sync {
             my $AttributeChange;
             ATTRIBUTE:
             for my $Attribute ( sort keys %SyncUser ) {
-                next ATTRIBUTE if $SyncUser{$Attribute} eq $UserData{$Attribute};
+                my $SyncUserAttribute = $SyncUser{$Attribute} || '';
+                my $UserDataAttribute = $UserData{$Attribute} || '';
+                next ATTRIBUTE if $SyncUserAttribute eq $UserDataAttribute;
                 $AttributeChange = 1;
                 last ATTRIBUTE;
             }
@@ -339,6 +345,7 @@ sub Sync {
                     %SyncUser,
                     UserType     => 'User',
                     ChangeUserID => 1,
+                    Extended     => 1,
                 );
             }
         }

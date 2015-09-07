@@ -1,6 +1,7 @@
 # --
 # Kernel/GenericInterface/Operation/Ticket/TicketGet.pm - GenericInterface Ticket Get operation backend
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -212,7 +213,7 @@ one or more ticket entries in one call.
                                     ContentID          => "",
                                     ContentType        => "application/pdf",
                                     Filename           => "StdAttachment-Test1.pdf",
-                                    Filesize           => "4.6 KBytes",
+                                    Filesize           => "4.6 KB",
                                     FilesizeRaw        => 4722,
                                 },
                                 {

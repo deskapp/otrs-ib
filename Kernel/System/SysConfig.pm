@@ -376,7 +376,7 @@ sub CreateConfig {
     $Out .= "{ no warnings 'redefine'; sub Load {\n";
     $Out .= "    my (\$File, \$Self) = \@_;\n";
     $Out .= $File;
-    $Out .= "} } \n";
+    $Out .= "} }\n";
     $Out .= "1;\n";
 
     return $Self->_FileWriteAtomic(

@@ -1,6 +1,7 @@
 # --
 # Main.t - Main tests
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -20,7 +21,7 @@ my @Tests = (
     {
         Name         => 'FilenameCleanUp() - Local',
         FilenameOrig => 'me_t o/alal.xml',
-        FilenameNew  => 'me_t o_alal.xml',
+        FilenameNew  => 'me_t_o_alal.xml',
         Type         => 'Local',
     },
     {
@@ -56,7 +57,7 @@ my @Tests = (
     {
         Name         => 'FilenameCleanUp() - Local',
         FilenameOrig => 'me_to/a+lal Grüße 0.xml',
-        FilenameNew  => 'me_to_a+lal Grüße 0.xml',
+        FilenameNew  => 'me_to_a+lal_Grüße_0.xml',
         Type         => 'Local',
     },
     {

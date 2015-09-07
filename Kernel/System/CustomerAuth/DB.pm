@@ -1,6 +1,7 @@
 # --
 # Kernel/System/CustomerAuth/DB.pm - provides the db authentication
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -99,6 +100,7 @@ sub Auth {
     my $RemoteAddr = $ENV{REMOTE_ADDR} || 'Got no REMOTE_ADDR env!';
     my $UserID     = '';
     my $GetPw      = '';
+    my $PassOK     = 0;
 
     # sql query
     my $SQL = "SELECT $Self->{Pw}, $Self->{Key} FROM $Self->{Table} WHERE "
@@ -125,6 +127,24 @@ sub Auth {
 
     if ( $Self->{CryptType} eq 'plain' ) {
         $CryptedPw = $Pw;
+    }
+
+    # SSHA256 (with 48-bit salt)
+    elsif ( $GetPw =~ /^\{SSHA256\}.+$/ ) {
+        my $SaltedHashObject;
+        if ( $Self->{MainObject}->Require('Crypt::SaltedHash') ) {
+            $SaltedHashObject = Crypt::SaltedHash->new(algorithm => 'SHA-256', salt_len => 6);
+            $PassOK = Crypt::SaltedHash->validate($GetPw, $Pw, 6);
+        }
+    }
+
+    # SSHA512 (with 128-bit salt)
+    elsif ( $GetPw =~ /^\{SSHA512\}.+$/ ) {
+        my $SaltedHashObject;
+        if ( $Self->{MainObject}->Require('Crypt::SaltedHash') ) {
+            $SaltedHashObject = Crypt::SaltedHash->new(algorithm => 'SHA-512', salt_len => 16);
+            $PassOK = Crypt::SaltedHash->validate($GetPw, $Pw, 16);
+        }
     }
 
     # md5 or sha pw
@@ -238,7 +258,7 @@ sub Auth {
     }
 
     # login note
-    elsif ( ( $GetPw && $User && $UserID ) && $CryptedPw eq $GetPw ) {
+    elsif ( ( $GetPw && $User && $UserID ) && ( $PassOK || ( $CryptedPw eq $GetPw ) ) ) {
         $Self->{LogObject}->Log(
             Priority => 'notice',
             Message  => "CustomerUser: $User Authentication ok (REMOTE_ADDR: $RemoteAddr).",

@@ -1,7 +1,7 @@
 # --
 # Kernel/System/Ticket.pm - all ticket functions
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
-# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -1380,6 +1380,85 @@ sub _TicketGetFirstResponse {
     return %Data;
 }
 
+sub _TicketGetSolutionStart {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    for my $Needed (qw(TicketID Ticket)) {
+        if ( !defined $Param{$Needed} ) {
+            $Self->{LogObject}->Log( Priority => 'error', Message => "Need $Needed!" );
+            return;
+        }
+    }
+
+    my %Data;
+
+    # in SolutionStartResetOnReopen mode find solution start event searching
+    # for first history event of type StateUpdate or NewTicket after
+    # last closed-type history entry; use first entry if no such history entry
+    # found
+    if ( $Self->{ConfigObject}->Get('Ticket::SolutionStartResetOnReopen') ) {
+
+        # get close state types (ticket state ID's as hash keys)
+        my %ClosedIDs = $Self->{StateObject}->StateGetStatesByType(
+            StateType => ['closed'],
+            Result    => 'HASH',
+        );
+
+        return if !%ClosedIDs;
+
+        # Get id for history types StateUpdate and NewTicket
+        my @HistoryTypeIDs;
+        for my $HistoryType (qw ( StateUpdate NewTicket )) {
+            push @HistoryTypeIDs, $Self->HistoryTypeLookup( Type => $HistoryType );
+        }
+
+        # get all history events of type StateUpdate and NewTicket (both can change ticket state)
+        return if !$Self->{DBObject}->Prepare(
+            SQL => "
+                SELECT id, create_time, state_id
+                FROM ticket_history
+                WHERE ticket_id = ?
+                   AND history_type_id IN  (${\(join ', ', sort @HistoryTypeIDs)})
+                ORDER BY create_time ASC, id ASC",
+            Bind  => [ \$Param{TicketID} ],
+        );
+
+        # walk through all history items found and find solution start event;
+        # use first event by default
+        my $TickedClosedInPrevStateChange = 0;
+        while ( my @Row = $Self->{DBObject}->FetchrowArray() ) {
+
+            if ( ( $TickedClosedInPrevStateChange && ! exists $ClosedIDs{$Row[2]} )
+                    || ! defined $Data{SolutionStartTime} ) {
+                $Data{SolutionStartTime} = $Row[1];
+                $Data{SolutionStartHistoryID} = $Row[0];
+            }
+
+            # set closed in prev state change if this history item has closed type
+            if ( exists $ClosedIDs{$Row[2]} ) {
+                $TickedClosedInPrevStateChange = 1;
+            }
+            else {
+                $TickedClosedInPrevStateChange = 0;
+            }
+
+        }
+
+    }
+
+    # use ticket creation time and SolutionStartHistoryID=0 if
+    # not in SolutionStartResetOnReopen mode (default OTRS mode)
+    # or searching in history not succeeded in SolutionStartResetOnReopen
+    # for some reason (should not happen)
+    if ( ! defined $Data{SolutionStartTime} ) {
+        $Data{SolutionStartTime} = $Param{Ticket}->{Created};
+        $Data{SolutionStartHistoryID} = 0;
+    }
+
+    return %Data;
+}
+
 sub _TicketGetClosed {
     my ( $Self, %Param ) = @_;
 
@@ -1389,6 +1468,23 @@ sub _TicketGetClosed {
             $Self->{LogObject}->Log( Priority => 'error', Message => "Need $Needed!" );
             return;
         }
+    }
+
+    # find solution start event
+    my $SolutionStartTime;
+    my $SolutionStartHistoryID;
+
+    my %SolutionStart = $Self->_TicketGetSolutionStart(%Param);
+
+    if (%SolutionStart) {
+        $SolutionStartTime = $SolutionStart{SolutionStartTime};
+        $SolutionStartHistoryID = $SolutionStart{SolutionStartHistoryID};
+    }
+
+    # use ticket creation time as fallback
+    else {
+        $SolutionStartTime = $Param{TicketID}->{Created};
+        $SolutionStartHistoryID = 0;
     }
 
     # get close state types
@@ -1411,8 +1507,10 @@ sub _TicketGetClosed {
             WHERE ticket_id = ?
                AND state_id IN (${\(join ', ', sort @List)})
                AND history_type_id IN  (${\(join ', ', sort @HistoryTypeIDs)})
+               AND ( (create_time >= ?) OR ( (create_time = ?) AND (id > ?) ) )
             ",
-        Bind => [ \$Param{TicketID} ],
+        Bind  => [ \$Param{TicketID}, \$SolutionStartTime,
+            \$SolutionStartTime, \$SolutionStartHistoryID ],
     );
 
     my %Data;
@@ -1441,7 +1539,7 @@ sub _TicketGetClosed {
 
         # get unix time stamps
         my $CreateTime = $Self->{TimeObject}->TimeStamp2SystemTime(
-            String => $Param{Ticket}->{Created},
+            String => $SolutionStartTime,
         );
         my $SolutionTime = $Self->{TimeObject}->TimeStamp2SystemTime(
             String => $Data{Closed},
@@ -2726,9 +2824,27 @@ sub TicketEscalationIndexBuild {
             );
         }
         else {
+
+            # find solution start event
+            my $SolutionStartTime;
+
+            my %SolutionStart = $Self->_TicketGetSolutionStart(
+                    TicketID => $Ticket{TicketID},
+                    Ticket   => \%Ticket,
+                );
+
+            if (%SolutionStart) {
+                $SolutionStartTime = $SolutionStart{SolutionStartTime};
+            }
+
+            # use ticket creation time if not found
+            else {
+                $SolutionStartTime = $Ticket{Created};
+            }
+
             my $DestinationTime = $Self->{TimeObject}->DestinationTime(
                 StartTime => $Self->{TimeObject}->TimeStamp2SystemTime(
-                    String => $Ticket{Created}
+                    String => $SolutionStartTime
                 ),
                 Time     => $Escalation{SolutionTime} * 60,
                 Calendar => $Escalation{Calendar},
@@ -3858,6 +3974,7 @@ sub TicketStateSet {
     # add history
     $Self->HistoryAdd(
         TicketID     => $Param{TicketID},
+        StateID      => $State{ID},
         ArticleID    => $ArticleID,
         QueueID      => $Ticket{QueueID},
         Name         => "\%\%$Ticket{State}\%\%$State{Name}\%\%",
@@ -5080,39 +5197,49 @@ sub HistoryAdd {
         $Param{QueueID} = $Self->TicketQueueID( TicketID => $Param{TicketID} );
     }
 
+    my %Ticket;
+
     # get type
     if ( !$Param{TypeID} ) {
-        my %Ticket = $Self->TicketGet(
-            %Param,
-            DynamicFields => 0,
-        );
+        if (!%Ticket) {
+            %Ticket = $Self->TicketGet(
+                %Param,
+                DynamicFields => 0,
+            );
+        }
         $Param{TypeID} = $Ticket{TypeID};
     }
 
     # get owner
     if ( !$Param{OwnerID} ) {
-        my %Ticket = $Self->TicketGet(
-            %Param,
-            DynamicFields => 0,
-        );
+        if (!%Ticket) {
+            %Ticket = $Self->TicketGet(
+                %Param,
+                DynamicFields => 0,
+            );
+        }
         $Param{OwnerID} = $Ticket{OwnerID};
     }
 
     # get priority
     if ( !$Param{PriorityID} ) {
-        my %Ticket = $Self->TicketGet(
-            %Param,
-            DynamicFields => 0,
-        );
+        if (!%Ticket) {
+            %Ticket = $Self->TicketGet(
+                %Param,
+                DynamicFields => 0,
+            );
+        }
         $Param{PriorityID} = $Ticket{PriorityID};
     }
 
     # get state
     if ( !$Param{StateID} ) {
-        my %Ticket = $Self->TicketGet(
-            %Param,
-            DynamicFields => 0,
-        );
+        if (!%Ticket) {
+            %Ticket = $Self->TicketGet(
+                %Param,
+                DynamicFields => 0,
+            );
+        }
         $Param{StateID} = $Ticket{StateID};
     }
 
@@ -5461,13 +5588,14 @@ sub TicketMerge {
     # link tickets
     my $LinkObject = Kernel::System::LinkObject->new( %{$Self} );
     $LinkObject->LinkAdd(
-        SourceObject => 'Ticket',
-        SourceKey    => $Param{MainTicketID},
-        TargetObject => 'Ticket',
-        TargetKey    => $Param{MergeTicketID},
-        Type         => 'ParentChild',
-        State        => 'Valid',
-        UserID       => $Param{UserID},
+        SourceObject   => 'Ticket',
+        SourceKey      => $Param{MainTicketID},
+        TargetObject   => 'Ticket',
+        TargetKey      => $Param{MergeTicketID},
+        Type           => 'ParentChild',
+        State          => 'Valid',
+        UserID         => $Param{UserID},
+        NoticeIfExists => 1,
     );
 
     # set new state of merge ticket

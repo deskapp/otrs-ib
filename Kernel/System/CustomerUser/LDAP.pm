@@ -1,6 +1,7 @@
 # --
 # Kernel/System/CustomerUser/LDAP.pm - some customer user functions in LDAP
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -375,8 +376,8 @@ sub CustomerSearch {
         attrs     => \@Attributes,
     );
 
-    # log ldap errors
-    if ( $Result->code() ) {
+    # log ldap errors (ignore LDAP_SIZELIMIT_EXCEEDED errors)
+    if ( $Result->code() && ( $Result->code() != 4 ) ) {
         $Self->{LogObject}->Log(
             Priority => 'error',
             Message  => $Result->error(),

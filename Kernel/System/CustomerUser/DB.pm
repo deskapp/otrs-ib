@@ -1,6 +1,7 @@
 # --
 # Kernel/System/CustomerUser/DB.pm - some customer user functions
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -906,6 +907,22 @@ sub SetPassword {
         $CryptedPw = $Pw;
     }
 
+    # crypt with SSHA256 and 48-bit salt; switch to default sha256 if no Crypt::SaltedHash available
+    elsif ( $CryptType eq 'ssha256' && $Self->{MainObject}->Require('Crypt::SaltedHash') ) {
+        my $SaltedHashObject;
+        $SaltedHashObject = Crypt::SaltedHash->new(algorithm => 'SHA-256', salt_len => 6);
+        $SaltedHashObject->add($Pw);
+        $CryptedPw = $SaltedHashObject->generate;
+    }
+
+    # crypt with SSHA512 and 128-bit salt; switch to default sha256 if no Crypt::SaltedHash available
+    elsif ( $CryptType eq 'ssha512' && $Self->{MainObject}->Require('Crypt::SaltedHash') ) {
+        my $SaltedHashObject;
+        $SaltedHashObject = Crypt::SaltedHash->new(algorithm => 'SHA-512', salt_len => 16);
+        $SaltedHashObject->add($Pw);
+        $CryptedPw = $SaltedHashObject->generate;
+    }
+
     # crypt with unix crypt
     elsif ( $CryptType eq 'crypt' ) {
 
@@ -952,7 +969,12 @@ sub SetPassword {
             return;
         }
 
-        my $Cost = 9;
+        # get cost from config; use 12 if not configured; don't allow values smaller than 9 for security;
+        # current Crypt::Eksblowfish::Bcrypt limit is 31
+        my $Cost = $Self->{ConfigObject}->Get('Customer::AuthModule::DB::bcryptCost') // 12;
+        $Cost = 9 if $Cost < 9;
+        $Cost = 31 if $Cost > 31;
+
         my $Salt = $Self->{MainObject}->GenerateRandomString( Length => 16 );
 
         # remove UTF8 flag, required by Crypt::Eksblowfish::Bcrypt
@@ -962,7 +984,7 @@ sub SetPassword {
         my $Octets = Crypt::Eksblowfish::Bcrypt::bcrypt_hash(
             {
                 key_nul => 1,
-                cost    => 9,
+                cost    => $Cost,
                 salt    => $Salt,
             },
             $Pw

@@ -1,6 +1,7 @@
 # --
 # Kernel/System/Main.pm - main core components
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -258,8 +259,8 @@ sub FilenameCleanUp {
     # replace invalid token for attachment file names
     elsif ( $Param{Type} && $Param{Type} =~ /^attachment/i ) {
 
-        # replace invalid token like < > ? " : ; | \ / or *
-        $Param{Filename} =~ s/[ <>\?":\\\*\|\/;\[\]]/_/g;
+        # only whitelisted characters allowed in filenames for security
+        $Param{Filename} =~ s/[^\w\-+.#_]/_/g;
 
         # replace utf8 and iso
         $Param{Filename} =~ s/(\x{00C3}\x{00A4}|\x{00A4})/ae/g;
@@ -282,8 +283,9 @@ sub FilenameCleanUp {
     }
     else {
 
-        # replace invalid token like [ ] * : ? " < > ; | \ /
-        $Param{Filename} =~ s/[<>\?":\\\*\|\/;\[\]]/_/g;
+        # only whitelisted characters allowed in filenames for security
+        $Param{Filename} =~ s/[^\w\-+.#_]/_/g;
+
     }
 
     return $Param{Filename};
@@ -423,15 +425,16 @@ to write data to file system
     );
 
     my $FileLocation = $MainObject->FileWrite(
-        Directory  => 'c:\some\location',
-        Filename   => 'me_to/alal.xml',
+        Directory       => 'c:\some\location',
+        Filename        => 'me_to/alal.xml',
         # or Location
-        Location   => 'c:\some\location\me_to\alal.xml'
+        Location        => 'c:\some\location\me_to\alal.xml'
 
-        Content    => \$Content,
-        Mode       => 'binmode', # binmode|utf8
-        Type       => 'Local',   # optional - Local|Attachment|MD5
-        Permission => '644',     # unix file permissions
+        Content         => \$Content,
+        Mode            => 'binmode', # binmode|utf8
+        Type            => 'Local',   # optional - Local|Attachment|MD5
+        Permission      => '644',     # unix file permissions
+        DisableWarnings => 1,         # optional
     );
 
 Platform note: MacOS (HFS+) stores filenames as Unicode NFD internally,
@@ -482,19 +485,23 @@ sub FileWrite {
     # return if file can not open
     my $FH;
     if ( !open $FH, $Mode, $Param{Location} ) {    ## no critic
-        $Self->{LogObject}->Log(
-            Priority => 'error',
-            Message  => "Can't write '$Param{Location}': $!",
-        );
+        if ( !$Param{DisableWarnings} ) {
+            $Self->{LogObject}->Log(
+                Priority => 'error',
+                Message  => "Can't write '$Param{Location}': $!",
+            );
+        }
         return;
     }
 
     # lock file (Exclusive Lock)
     if ( !flock $FH, 2 ) {
-        $Self->{LogObject}->Log(
-            Priority => 'error',
-            Message  => "Can't lock '$Param{Location}': $!",
-        );
+        if ( !$Param{DisableWarnings} ) {
+            $Self->{LogObject}->Log(
+                Priority => 'error',
+                Message  => "Can't lock '$Param{Location}': $!",
+            );
+        }
     }
 
     # empty file first (needed if file is open by '+<')
@@ -588,7 +595,7 @@ sub FileDelete {
 
     # delete file
     if ( !unlink( $Param{Location} ) ) {
-        if ( !$Param{DisableWarnings} ) {
+        if ( !$Param{DisableWarnings} && (-e $Param{Location}) ) {
             $Self->{LogObject}->Log(
                 Priority => 'error',
                 Message  => "Can't delete '$Param{Location}': $!",

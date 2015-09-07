@@ -1,6 +1,7 @@
 # --
 # Header.dtl - provides global HTML header
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -10,7 +11,7 @@
 # http headers
 Content-Type: text/html; charset=utf-8;
 Content-Disposition: $Data{"ContentDisposition"}
-X-Powered-By: $Config{"Product"} $Config{"Version"} - Open Ticket Request System (http://otrs.org/)
+X-Powered-By: $Config{"Product"} - Open Ticket Request System (http://otrs.org/)
 X-UA-Compatible: IE=edge,chrome=1
 X-Frame-Options: SAMEORIGIN
 Expires: Tue, 1 Jan 1980 12:00:00 GMT
@@ -30,6 +31,26 @@ $Include{"HTMLHead"}
 <!-- dtl:block:ToolBarItem -->
             <li class="$QData{"Class"}"><a href="$Data{"Link"}" accesskey="$QData{"AccessKey"}" title="$Text{"$Data{"Description"}"}: $QData{"Count"}$QData{"AccessKeyReference"}">$Text{"$Data{"Description"}"} <i class="icon-small icon-time icon-show-reached"></i> <i class="icon-small icon-star icon-show-new"></i><i class="$QData{"Icon"}"></i> <span class="Counter">$QData{"Count"}</span> </a></li>
 <!-- dtl:block:ToolBarItem -->
+<!-- dtl:block:ToolBarCICSearchCustomerID -->
+            <li class="Extended SearchFulltext">
+                <input type="text" size="$QData{"Size"}" id="ToolBarCICSearchCustomerID" placeholder="$Text{"$Data{"Description"}"}" title="$Text{"$Data{"Description"}"}"/>
+            </li>
+<!-- dtl:js_on_document_complete -->
+            <script type="text/javascript">//<![CDATA[
+                Core.Agent.CustomerInformationCenterSearch.InitAutocomplete( $('#ToolBarCICSearchCustomerID'), "SearchCustomerID" );
+            //]]></script>
+<!-- dtl:js_on_document_complete -->
+<!-- dtl:block:ToolBarCICSearchCustomerID -->
+<!-- dtl:block:ToolBarCICSearchCustomerUser -->
+            <li class="Extended SearchFulltext">
+                <input type="text" size="$QData{"Size"}" id="ToolBarCICSearchCustomerUser" placeholder="$Text{"$Data{"Description"}"}" title="$Text{"$Data{"Description"}"}"/>
+            </li>
+<!-- dtl:js_on_document_complete -->
+            <script type="text/javascript">//<![CDATA[
+                Core.Agent.CustomerInformationCenterSearch.InitAutocomplete( $('#ToolBarCICSearchCustomerUser'), "SearchCustomerUser" );
+            //]]></script>
+<!-- dtl:js_on_document_complete -->
+<!-- dtl:block:ToolBarCICSearchCustomerUser -->
 <!-- dtl:block:ToolBarSearchProfile -->
             <li class="Extended SearchProfile">
                 <form action="$Env{"CGIHandle"}" method="post" name="SearchProfile">
@@ -63,26 +84,6 @@ $Include{"HTMLHead"}
                 </form>
             </li>
 <!-- dtl:block:ToolBarSearchFulltext -->
-<!-- dtl:block:ToolBarCICSearchCustomerID -->
-            <li class="Extended SearchFulltext">
-                <input type="text" size="$QData{"Size"}" id="ToolBarCICSearchCustomerID" placeholder="$Text{"$Data{"Description"}"}" title="$Text{"$Data{"Description"}"}"/>
-            </li>
-<!-- dtl:js_on_document_complete -->
-            <script type="text/javascript">//<![CDATA[
-                Core.Agent.CustomerInformationCenterSearch.InitAutocomplete( $('#ToolBarCICSearchCustomerID'), "SearchCustomerID" );
-            //]]></script>
-<!-- dtl:js_on_document_complete -->
-<!-- dtl:block:ToolBarCICSearchCustomerID -->
-<!-- dtl:block:ToolBarCICSearchCustomerUser -->
-            <li class="Extended SearchFulltext">
-                <input type="text" size="$QData{"Size"}" id="ToolBarCICSearchCustomerUser" placeholder="$Text{"$Data{"Description"}"}" title="$Text{"$Data{"Description"}"}"/>
-            </li>
-<!-- dtl:js_on_document_complete -->
-            <script type="text/javascript">//<![CDATA[
-                Core.Agent.CustomerInformationCenterSearch.InitAutocomplete( $('#ToolBarCICSearchCustomerUser'), "SearchCustomerUser" );
-            //]]></script>
-<!-- dtl:js_on_document_complete -->
-<!-- dtl:block:ToolBarCICSearchCustomerUser -->
         </ul>
 <!-- dtl:block:ToolBar -->
 
@@ -91,11 +92,11 @@ $Include{"HTMLHead"}
             <button type="button" onclick="Core.Debug.SimulateRTLPage();">Simulate RTL</button>
 <!-- dtl:block:DebugRTLButton -->
 <!-- dtl:block:Login -->
-            $Text{"You are logged in as"}
+            $Text{"User"}
             <a href="$Env{"Baselink"}Action=AgentPreferences" title="$Text{"Edit personal preferences"}">$QEnv{"UserFullname"}</a>
 <!-- dtl:block:Login -->
 <!-- dtl:block:LoginWithoutLink -->
-            $Text{"You are logged in as"} $QEnv{"UserFullname"}
+            $Text{"User"} $QEnv{"UserFullname"}
 <!-- dtl:block:LoginWithoutLink -->
 <!-- dtl:block:Logout -->
             <a class="LogoutButton" id="LogoutButton" href="$Env{"Baselink"}Action=Logout;$QEnv{"ChallengeTokenParam"}" title="$Text{"Logout"}">

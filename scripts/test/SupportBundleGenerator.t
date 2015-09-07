@@ -337,6 +337,10 @@ for my $Test (@Tests) {
 
 for my $Test (@Tests) {
 
+    my @OriginalList = $PackageObject->RepositoryList(
+        Result => 'short',
+    );
+
     # prepare testing environment
     if ( IsHashRefWithData( $Test->{InstallPackages} ) ) {
 
@@ -353,7 +357,7 @@ for my $Test (@Tests) {
     # execute function
     my ( $Content, $Filename ) = $SupportBundleGeneratorObject->GeneratePackageList();
 
-    if ( $Test->{InstallPackages} ) {
+    if ( $Test->{InstallPackages} || scalar @OriginalList ) {
         $Self->IsNot(
             bytes::length( ${$Content} ) / ( 1024 * 1024 ),
             0,
@@ -468,9 +472,7 @@ if (%RegistrationInfo) {
 }
 
 # GenerateSupportData tests
-my %OriginalResult = $SupportDataCollectorObject->Collect(
-    UseCache => 1,
-);
+my %OriginalResult = $SupportDataCollectorObject->Collect();
 
 # for this test we will just check that both results has the same identifiers
 my %OriginalIdentifiers;
@@ -482,7 +484,7 @@ $OriginalResult{Result} = \%OriginalIdentifiers;
 # execute function
 ( $Content, $Filename ) = $SupportBundleGeneratorObject->GenerateSupportData();
 
-if (%RegistrationInfo) {
+if (%OriginalResult) {
     $Self->IsNot(
         bytes::length( ${$Content} ) / ( 1024 * 1024 ),
         0,

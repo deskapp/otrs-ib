@@ -126,6 +126,17 @@
             </Option>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="Ticket::SolutionStartResetOnReopen" Required="0" Valid="1">
+        <Description Translatable="1">Enable solution start time reset on ticket reopen for SLA solution time calculations.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Core::Ticket</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0">No</Item>
+                <Item Key="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="Ticket::Service::Default::UnknownCustomer" Required="1" Valid="1">
         <Description Translatable="1">Allows default services to be selected also for non existing customers.</Description>
         <Group>Ticket</Group>
@@ -757,6 +768,17 @@
                 <Item>admin</Item>
                 <Item>users</Item>
             </Array>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Ticket::Frontend::RealnameOnly" Required="1" Valid="1">
+        <Description Translatable="1">Display realname instead of full e-mail address in the From/To/CC fields in the ticket zoom view.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewZoom</SubGroup>
+        <Setting>
+            <Option SelectedID="1">
+                <Item Key="0">No</Item>
+                <Item Key="1">Yes</Item>
+            </Option>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Ticket::Frontend::PlainView" Required="1" Valid="1">
@@ -1572,6 +1594,22 @@
         <SubGroup>Frontend::Agent::Ticket::ViewSearch</SubGroup>
         <Setting>
             <String></String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Ticket::Frontend::AgentTicketSearch###Defaults###ServiceIDs" Required="0" Valid="0">
+        <Description Translatable="1">Defines the default shown ticket search attribute for ticket search screen.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewSearch</SubGroup>
+        <Setting>
+            <Array></Array>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Ticket::Frontend::AgentTicketSearch###Defaults###SLAIDs" Required="0" Valid="0">
+        <Description Translatable="1">Defines the default shown ticket search attribute for ticket search screen.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewSearch</SubGroup>
+        <Setting>
+            <Array></Array>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::Search###Ticket" Required="0" Valid="1">
@@ -4160,13 +4198,14 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Ticket::Frontend::MoveType" Required="1" Valid="1">
-        <Description Translatable="1">Determines if the list of possible queues to move to ticket into should be displayed in a dropdown list or in a new window in the agent interface. If "New Window" is set you can add a move note to the ticket.</Description>
+        <Description Translatable="1">Determines if the list of possible queues to move to ticket into should be displayed in a dropdown list or in a new window in the agent interface or both. If "New window" is set you can add a move note to the ticket.</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::Ticket::ViewMove</SubGroup>
         <Setting>
             <Option SelectedID="form">
-                <Item Key="link">New Window</Item>
+                <Item Key="link">New window</Item>
                 <Item Key="form">Dropdown</Item>
+                <Item Key="linkandform">Dropdown and new window</Item>
             </Option>
         </Setting>
     </ConfigItem>
@@ -5434,7 +5473,7 @@ $QData{"Body"}
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="Ticket::Frontend::PreMenuModule###445-Move" Required="0" Valid="1">
+    <ConfigItem Name="Ticket::Frontend::PreMenuModule###445-MoveLink" Required="0" Valid="1">
         <Description Translatable="1">Shows a link in the menu to move a ticket in every ticket overview of the agent interface.</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::Ticket::MenuModulePre</SubGroup>
@@ -5444,6 +5483,21 @@ $QData{"Body"}
                 <Item Key="Name">Move</Item>
                 <Item Key="Action">AgentTicketMove</Item>
                 <Item Key="Description" Translatable="1">Change queue!</Item>
+                <Item Key="MoveType">link</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Ticket::Frontend::PreMenuModule###446-MoveForm" Required="0" Valid="1">
+        <Description Translatable="1">Shows a form in the menu to move a ticket in every ticket overview of the agent interface.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::MenuModulePre</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::TicketMenuMove</Item>
+                <Item Key="Name">Move</Item>
+                <Item Key="Action">AgentTicketMove</Item>
+                <Item Key="Description" Translatable="1">Change queue!</Item>
+                <Item Key="MoveType">form</Item>
             </Hash>
         </Setting>
     </ConfigItem>
@@ -6501,6 +6555,28 @@ $QData{"Body"}
             </Option>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="CustomerNotificationsDisabled" Required="1" Valid="1">
+        <Description Translatable="1">Disable sending notifications to customers.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Core::Ticket</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0">No</Item>
+                <Item Key="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="CustomerNotificationsDisabled" Required="1" Valid="1">
+        <Description Translatable="1">Disable sending notifications to customers.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Core::Ticket</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0">No</Item>
+                <Item Key="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
         <ConfigItem Name="AgentSelfNotifyOnAction" Required="1" Valid="1">
         <Description Translatable="1">Specifies if an agent should receive email notification of his own actions.</Description>
         <Group>Ticket</Group>
@@ -7488,7 +7564,7 @@ $QData{"Body"}
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::Ticket::ViewMove</SubGroup>
         <Setting>
-            <String Regex="">$Text{"Change Queue"}</String>
+            <String Regex="">$Text{"Queue change"}</String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Ticket::Frontend::AgentTicketMove###Body" Required="0" Valid="1">
@@ -8523,6 +8599,17 @@ $QData{"Body"}
             </Option>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="PostmasterFollowUpSearchMessageID" Required="0" Valid="0">
+        <Description Translatable="1">Executes follow up Message-ID checks in mails that don't have a ticket number in the subject. Incoming message will be treated as ticket X follow up if: (0) Message-ID is not empty (should not be) and (1) there is 1 or more (but not more than MaxArticles if MaxArticles>0) articles in ticket X with the same Message-ID and (2) no article with the same Message-ID exists in ticket other than X and (3) age difference between oldest Article from (1) and incoming message is not greater than MaxAge seconds if MaxAge > 0.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Core::PostMaster</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="MaxAge">604800</Item>
+                <Item Key="MaxArticles">10</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="PostmasterUserID" Required="1" Valid="1">
         <Description Translatable="1">Specifies user id of the postmaster data base.</Description>
         <Group>Ticket</Group>
@@ -8908,6 +8995,17 @@ Thanks for your help!
         <SubGroup>Core::PostMaster</SubGroup>
         <Setting>
             <String Regex="">(MAILER-DAEMON|postmaster|abuse)@.+?\..+?</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="AutoResponseAddCustomerAddressToCc" Required="1" Valid="1">
+        <Description Translatable="1">Add customer address to Cc in autoresponse if customer e-mail is different than autoresponse recipient (useful for ticket splitting for example).</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Core::PostMaster</SubGroup>
+        <Setting>
+            <Option SelectedID="1">
+                <Item Key="0">No</Item>
+                <Item Key="1">Yes</Item>
+            </Option>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="AutoResponseForWebTickets" Required="1" Valid="1">

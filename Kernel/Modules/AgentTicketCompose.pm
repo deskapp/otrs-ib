@@ -483,6 +483,7 @@ sub Run {
             );
             $Self->{UploadCacheObject}->FormIDAddFile(
                 FormID => $Self->{FormID},
+                Disposition => 'attachment',
                 %UploadStuff,
             );
         }
@@ -792,7 +793,12 @@ sub Run {
             my @NewAttachmentData;
             for my $Attachment (@AttachmentData) {
                 my $ContentID = $Attachment->{ContentID};
-                if ($ContentID) {
+                if (
+                    $ContentID
+                    && ( $Attachment->{ContentType} =~ /image/i )
+                    && ( $Attachment->{Disposition} =~ /inline/i )
+                    )
+                {
                     my $ContentIDHTMLQuote = $Self->{LayoutObject}->Ascii2Html(
                         Text => $ContentID,
                     );
@@ -1077,6 +1083,7 @@ sub Run {
                 my %Data = $Self->{StdAttachmentObject}->StdAttachmentGet( ID => $_ );
                 $Self->{UploadCacheObject}->FormIDAddFile(
                     FormID => $Self->{FormID},
+                    Disposition => 'attachment',
                     %Data,
                 );
             }
@@ -1125,6 +1132,11 @@ sub Run {
         $Data{OrigFromName} = $Data{OrigFrom};
         $Data{OrigFromName} =~ s/<.*>|\(.*\)|\"|;|,//g;
         $Data{OrigFromName} =~ s/( $)|(  $)//g;
+
+        # fallback to OrigFrom if realname part is empty
+        if ( !$Data{OrigFromName} ) {
+            $Data{OrigFromName} = $Data{OrigFrom};
+        }
 
         # get customer data
         my %Customer;
@@ -1618,6 +1630,7 @@ sub _Mask {
             = $ArticleTypeID;
     }
 
+    # get selected article type id and its name
     my $ArticleTypeIDSelected = $Param{ArticleTypeID};
     if ( $Param{GetParam}->{ArticleTypeID} ) {
 
@@ -1626,10 +1639,19 @@ sub _Mask {
 
     }
 
+    # use email-external for response type if replying to non-internal article, email-internal otherwise
+    my $ArticleTypeSelected = $Self->{TicketObject}->ArticleTypeLookup( ArticleTypeID => $ArticleTypeIDSelected );
+    my $ResponseTypeID;
+    if ( $ArticleTypeSelected && $ArticleTypeSelected !~ m{internal} ) {
+        $ResponseTypeID = $Self->{TicketObject}->ArticleTypeLookup( ArticleType => 'email-external' );
+    } else {
+        $ResponseTypeID = $Self->{TicketObject}->ArticleTypeLookup( ArticleType => 'email-internal' );
+    };
+
     $Param{ArticleTypesStrg} = $Self->{LayoutObject}->BuildSelection(
         Data       => \%ArticleTypes,
         Name       => 'ArticleTypeID',
-        SelectedID => $ArticleTypeIDSelected,
+        SelectedID => $ResponseTypeID,
     );
 
     # build customer search autocomplete field
@@ -1930,7 +1952,16 @@ sub _Mask {
 
     # show attachments
     for my $Attachment ( @{ $Param{Attachments} } ) {
-        next if $Attachment->{ContentID} && $Self->{LayoutObject}->{BrowserRichText};
+        if (
+            $Attachment->{ContentID}
+            && $Self->{LayoutObject}->{BrowserRichText}
+            && ( $Attachment->{ContentType} =~ /image/i )
+            && ( $Attachment->{Disposition} =~ /inline/i )
+            )
+        {
+            next;
+        }
+
         $Self->{LayoutObject}->Block(
             Name => 'Attachment',
             Data => $Attachment,

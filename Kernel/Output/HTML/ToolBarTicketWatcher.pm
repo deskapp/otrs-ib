@@ -1,6 +1,7 @@
 # --
 # Kernel/Output/HTML/ToolBarTicketWatcher.pm
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -66,7 +67,7 @@ sub Run {
         WatchUserIDs => [ $Self->{UserID} ],
         UserID       => 1,
         Permission   => 'ro',
-    );
+    ) || 0;
     my $CountNew = $Self->{TicketObject}->TicketSearch(
         Result       => 'COUNT',
         WatchUserIDs => [ $Self->{UserID} ],
@@ -76,7 +77,7 @@ sub Run {
         TicketFlagUserID => $Self->{UserID},
         UserID           => 1,
         Permission       => 'ro',
-    );
+    ) || 0;
     $CountNew = $Count - $CountNew;
 
     my $CountReached = $Self->{TicketObject}->TicketSearch(
@@ -86,7 +87,7 @@ sub Run {
         TicketPendingTimeOlderMinutes => 1,
         UserID                        => 1,
         Permission                    => 'ro',
-    );
+    ) || 0;
 
     my $Class        = $Param{Config}->{CssClass};
     my $ClassNew     = $Param{Config}->{CssClassNew};

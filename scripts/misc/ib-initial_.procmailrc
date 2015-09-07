@@ -1,0 +1,40 @@
+# --
+# .procmailrc - procmailrc of the OTRS user
+# Copyright (C) 2012-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+SHELL=/bin/sh
+PATH=/bin:/usr/bin:/usr/local/bin
+
+LOGFILE=/var/opt/otrs/file/log/procmail.log
+VERBOSE=on
+COMSAT=no
+ARCHFOLDER=`date +'%Y%m%d'`
+
+
+# Remove all X-OTRS Headers
+:0 fhw
+| grep -vi '^X-OTRS-'
+
+
+# Backup of all incoming emails in maildir folder (no
+# locking required)
+:0 c
+/var/opt/otrs/mail/$ARCHFOLDER/
+
+
+# Pipe all email into the PostMaster process.
+:0 w:/var/opt/otrs/file/lock/otrs.PostMaster.pl.lock
+| /opt/otrs/bin/otrs.PostMaster.pl
+
+
+# spool all the rest (which the otrs.PostMaster.pl can't process!)
+# If the database is down or the otrs.PostMaster.pl exit was not '0'!
+# bin/otrs.cleanup job can reprocess it; we use here maildir format
+# to skip locking
+:0
+/var/opt/otrs/spool/

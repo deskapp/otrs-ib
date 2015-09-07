@@ -411,10 +411,13 @@ sub Run {
             my $Body = $Self->{LayoutObject}->Ascii2RichText(
                 String => $Self->{ConfigObject}->Get('Ticket::Frontend::MergeText'),
             );
+            my $RichTextEnterMode = $Self->{ConfigObject}->Get('Frontend::RichText::EnterMode');
+            my $Separator = '<br/><br/>';
+            $Separator = '' if ($RichTextEnterMode && $RichTextEnterMode == 1);
             $Article{Body} = $Salutation
-                . '<br/><br/>'
+                . $Separator
                 . $Body
-                . '<br/><br/>'
+                . $Separator
                 . $Signature;
         }
         else {

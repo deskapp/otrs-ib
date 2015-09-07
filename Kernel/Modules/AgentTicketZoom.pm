@@ -1,7 +1,7 @@
 # --
 # Kernel/Modules/AgentTicketZoom.pm - to get a closer view
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
-# Copyright (C) 2015 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+# Copyright (C) 2013-2015 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -750,7 +750,7 @@ sub MaskAgentZoom {
     }
 
     # get MoveQueuesStrg
-    if ( $Self->{ConfigObject}->Get('Ticket::Frontend::MoveType') =~ /^form$/i ) {
+    if ( $Self->{ConfigObject}->Get('Ticket::Frontend::MoveType') =~ /form/i ) {
         $MoveQueues{0}
             = '- ' . $Self->{LayoutObject}->{LanguageObject}->Get('Move') . ' -';
         $Param{MoveQueuesStrg} = $Self->{LayoutObject}->AgentQueueListOption(
@@ -759,6 +759,7 @@ sub MaskAgentZoom {
             CurrentQueueID => $Ticket{QueueID},
         );
     }
+
     if (
         $Self->{ConfigObject}->Get('Frontend::Module')->{AgentTicketMove}
         && ( !defined $AclAction{AgentTicketMove} || $AclAction{AgentTicketMove} )
@@ -772,13 +773,14 @@ sub MaskAgentZoom {
         );
         $Param{TicketID} = $Ticket{TicketID};
         if ($Access) {
-            if ( $Self->{ConfigObject}->Get('Ticket::Frontend::MoveType') =~ /^form$/i ) {
+            if ( $Self->{ConfigObject}->Get('Ticket::Frontend::MoveType') =~ /form/i ) {
                 $Self->{LayoutObject}->Block(
                     Name => 'MoveLink',
                     Data => { %Param, %AclAction },
                 );
             }
-            else {
+
+            if ( $Self->{ConfigObject}->Get('Ticket::Frontend::MoveType') =~ /link/i ) {
                 $Self->{LayoutObject}->Block(
                     Name => 'MoveForm',
                     Data => { %Param, %AclAction },
@@ -2288,6 +2290,7 @@ sub _ArticleItem {
     }
 
     # do some strips && quoting
+    my $RealnameOnly = $Self->{ConfigObject}->Get('Ticket::Frontend::RealnameOnly');
     KEY:
     for my $Key (qw(From To Cc)) {
         next KEY if !$Article{$Key};
@@ -2296,7 +2299,7 @@ sub _ArticleItem {
             Data => {
                 Key      => $Key,
                 Value    => $Article{$Key},
-                Realname => $Article{ $Key . 'Realname' },
+                Realname => ( $RealnameOnly eq 0 ) ? $Article{ $Key } : $Article{ $Key . 'Realname' },
             },
         );
     }
@@ -2528,19 +2531,18 @@ sub _ArticleItem {
                     },
                     Article => \%Article,
                 );
-
-                # check for the display of the filesize
-                if ( $Job eq '2-HTML-Viewer' && !%Data ) {
-                    $Data{DataFileSize} = ", " . $File{Filesize};
+                if (%Data) {
+                    $Self->{LayoutObject}->Block(
+                        Name => $Data{Block} || 'ArticleAttachmentRowLink',
+                        Data => {%Data},
+                    );
                 }
-                elsif ( $Job eq '2-HTML-Viewer' && %Data ) {
-                    $Data{DataFileSize} = ", " . $Data{Filesize};
-                }
-                $Self->{LayoutObject}->Block(
-                    Name => $Data{Block} || 'ArticleAttachmentRowLink',
-                    Data => {%Data},
-                );
             }
+
+            $Self->{LayoutObject}->Block(
+                Name => 'ArticleAttachmentRowFilesize',
+                Data => \%File,
+            );
         }
     }
 

@@ -1,6 +1,7 @@
 # --
 # Kernel/Config/Defaults.pm - Default Config file for OTRS kernel
 # Copyright (C) 2001-2013 OTRS AG, http://otrs.org/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -339,7 +340,11 @@ sub LoadDefaults {
     # example values: AuthSyncBackend, AuthSyncBackend2
 #    $Self->{'AuthModule::UseSyncBackend'} = '';
 
-    # password crypt type (bcrypt|sha2|sha1|md5|crypt|plain)
+    # password crypt type (bcrypt|ssha256|ssha512|sha2|sha1|md5|crypt|plain)
+    # Note: using bcrypt is recommended. Both SSHA* require
+    # Crypt::SaltedHash. Currently SSHA512 requires extra config steps
+    # /pw field in users and customer_user tables must be 128 chars wide
+    # - OTRS 3.1.10 default is only 64 chars/.
 #    $Self->{'AuthModule::DB::CryptType'} = 'sha2';
 
     # This is an example configuration for an LDAP auth. backend.

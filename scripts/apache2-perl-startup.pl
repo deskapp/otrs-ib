@@ -55,8 +55,8 @@ use CGI::Carp ();
 use Apache::DBI;
 
 # enable this if you use mysql
-#use DBD::mysql ();
-#use Kernel::System::DB::mysql;
+use DBD::mysql ();
+use Kernel::System::DB::mysql;
 
 # enable this if you use postgresql
 #use DBD::Pg ();
@@ -104,26 +104,27 @@ use Kernel::System::Email;
 use Kernel::System::Stats;
 
 # optional core modules
-#use Kernel::System::Auth::LDAP;
+use Kernel::System::Auth::LDAP;
 #use Kernel::System::AuthSession::FS;
-#use Kernel::System::PDF;
-#use Kernel::System::Log::SysLog;
+use Kernel::System::PDF;
+use Kernel::System::Log::SysLog;
 #use Kernel::System::Log::File;
 #use Kernel::System::Ticket::ArticleStorageDB;
-#use Kernel::System::Ticket::ArticleStorageFS;
-#use Kernel::System::Ticket::ArticleSearchIndex::StaticDB;
-#use Kernel::System::Ticket::ArticleSearchIndex::SphinxAndStaticDB;
+use Kernel::System::Ticket::ArticleStorageFS;
+use Kernel::System::Ticket::ArticleSearchIndex::StaticDB;
+use Kernel::System::Ticket::ArticleSearchIndex::SphinxAndStaticDB;
 #use Kernel::System::Ticket::IndexAccelerator::RuntimeDB;
-#use Kernel::System::Ticket::IndexAccelerator::StaticDB;
+use Kernel::System::Ticket::IndexAccelerator::StaticDB;
 #use Kernel::System::Ticket::Number::Date;
-#use Kernel::System::Ticket::Number::AutoIncrement;
+use Kernel::System::Ticket::Number::AutoIncrement;
 #use Kernel::System::Ticket::Number::Random;
-#use Kernel::System::CustomerUser::DB;
-#use Kernel::System::CustomerUser::LDAP;
-#use Kernel::System::CustomerAuth::DB;
-#use Kernel::System::CustomerAuth::LDAP;
-#use Kernel::System::Cache::FileStorable;
-#use Kernel::System::Cache::Memcached;
+use Kernel::System::CustomerUser::DB;
+use Kernel::System::CustomerUser::LDAP;
+use Kernel::System::CustomerAuth::DB;
+use Kernel::System::CustomerAuth::LDAP;
+use Kernel::System::FindURI;
+use Kernel::System::Cache::FileStorable;
+use Kernel::System::Cache::Memcached;
 
 # web agent middle ware modules
 use Kernel::Modules::AgentTicketQueue;

@@ -1,6 +1,7 @@
 # --
 # Kernel/Output/HTML/TicketOverviewMedium.pm
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -305,14 +306,6 @@ sub _Show {
         $Self->{LogObject}->Log( Priority => 'error', Message => 'Need TicketID!' );
         return;
     }
-
-    # get move queues
-    my %MoveQueues = $Self->{TicketObject}->MoveList(
-        TicketID => $Param{TicketID},
-        UserID   => $Self->{UserID},
-        Action   => $Self->{LayoutObject}->{Action},
-        Type     => 'move_into',
-    );
 
     # get last customer article
     my %Article = $Self->{TicketObject}->ArticleLastCustomerArticle(
@@ -883,33 +876,6 @@ sub _Show {
         Name => $CustomerIDBlock,
         Data => { %Param, %Article },
     );
-
-    # get MoveQueuesStrg
-    if ( $Self->{ConfigObject}->Get('Ticket::Frontend::MoveType') =~ /^form$/i ) {
-        $Param{MoveQueuesStrg} = $Self->{LayoutObject}->AgentQueueListOption(
-            Name       => 'DestQueueID',
-            Data       => \%MoveQueues,
-            SelectedID => $Article{QueueID},
-        );
-    }
-    if (
-        $Self->{ConfigObject}->Get('Frontend::Module')->{AgentTicketMove}
-        && ( !defined $AclAction{AgentTicketMove} || $AclAction{AgentTicketMove} )
-        )
-    {
-        my $Access = $Self->{TicketObject}->TicketPermission(
-            Type     => 'move',
-            TicketID => $Param{TicketID},
-            UserID   => $Self->{UserID},
-            LogNo    => 1,
-        );
-        if ($Access) {
-            $Self->{LayoutObject}->Block(
-                Name => 'Move',
-                Data => { %Param, %AclAction },
-            );
-        }
-    }
 
     # add action items as js
     if ( @ActionItems && !$Param{Config}->{TicketActionsPerTicket} ) {

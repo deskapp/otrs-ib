@@ -2,6 +2,7 @@
 # --
 # otrs.GenerateDashboardStats.pl - calculate stats caches for dashboard stats widgets
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU AFFERO General Public License as published by
@@ -59,21 +60,13 @@ sub Run {
     my %CommonObject = _CommonObjects();
 
     # create pid lock
-    if ( !$Opts{f} && !$CommonObject{PIDObject}->PIDCreate( Name => 'GenerateDashboardStats' ) ) {
-        print
-            "NOTICE: otrs.GenerateDashboardStats.pl is already running (use '-f 1' if you want to start it forced)!\n";
+    if (!$CommonObject{PIDObject}->PIDCreate(
+            Name  => 'GenerateDashboardStats',
+            TTL   => 60 * 60 * 24 * 3,
+            Force => $Opts{f})) {
+        print "NOTICE: otrs.GenerateDashboardStats.pl is already running (use '-f 1' if you want to start it forced)!\n";
         exit 1;
     }
-    elsif ( $Opts{f} && !$CommonObject{PIDObject}->PIDCreate( Name => 'GenerateDashboardStats' ) ) {
-        print "NOTICE: otrs.GenerateDashboardStats.pl is already running but is starting again!\n";
-    }
-
-    # set new PID
-    $CommonObject{PIDObject}->PIDCreate(
-        Name  => 'GenerateDashboardStats',
-        Force => 1,
-        TTL   => 60 * 60 * 24 * 3,
-    );
 
     # get the list of stats that can be used in agent dashboards
     my $Stats = $CommonObject{StatsObject}->StatsListGet();
@@ -144,10 +137,10 @@ sub Run {
         }
     }
 
+    print "NOTICE: done.\n";
+
     # delete pid lock
     $CommonObject{PIDObject}->PIDDelete( Name => 'GenerateDashboardStats' );
-
-    print "NOTICE: done.\n";
 }
 
 sub _CommonObjects {

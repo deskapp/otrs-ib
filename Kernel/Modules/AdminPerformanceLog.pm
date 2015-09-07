@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/AdminPerformanceLog.pm - provides a log view for admins
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -227,7 +228,7 @@ sub Run {
                 $Self->{LayoutObject}->Block(
                     Name => 'Reset',
                     Data => {
-                        Size => sprintf "%.1f MBytes",
+                        Size => sprintf "%.1f MB",
                         ( $Self->_DatabaseCheck() / ( 1024 * 1024 ) ),
                     },
                 );

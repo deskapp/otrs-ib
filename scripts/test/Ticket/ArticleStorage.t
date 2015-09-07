@@ -1,6 +1,7 @@
 # --
 # ArticleStorage.t - ticket module testscript
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -251,7 +252,7 @@ for my $Backend (qw(DB FS)) {
             'ContentID'          => '',
             'ContentType'        => 'image/png',
             'Filename'           => "$TargetFilename.pdf",
-            'Filesize'           => '3 Bytes',
+            'Filesize'           => '3 B',
             'FilesizeRaw'        => '3'
         },
         "$Backend ArticleAttachmentIndex - collision check entry 1",
@@ -264,7 +265,7 @@ for my $Backend (qw(DB FS)) {
             'ContentID'          => '',
             'ContentType'        => 'image/png',
             'Filename'           => "$TargetFilename-1.pdf",
-            'Filesize'           => '3 Bytes',
+            'Filesize'           => '3 B',
             'FilesizeRaw'        => '3'
         },
         "$Backend ArticleAttachmentIndex - collision check entry 2",

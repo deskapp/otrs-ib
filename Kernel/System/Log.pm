@@ -1,6 +1,7 @@
 # --
 # Kernel/System/Log.pm - log wapper
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -80,9 +81,13 @@ sub new {
 
     # load log backend
     my $GenericModule = $Param{ConfigObject}->Get('LogModule') || 'Kernel::System::Log::SysLog';
+    $Self->{GenericModule} = $GenericModule;
     if ( !eval "require $GenericModule" ) {    ## no critic
         die "Can't load log backend module $GenericModule! $@";
     }
+
+    # set default log lines display limit
+    $Self->{DefaultLimit} = $Param{ConfigObject}->Get('LogModule::LogLinesDisplayLimit') || 400;
 
     # create backend handle
     $Self->{Backend} = $GenericModule->new(
@@ -90,18 +95,21 @@ sub new {
         EncodeObject => $Self->{EncodeObject},
     );
 
-    return $Self if !eval "require IPC::SysV";    ## no critic
+    # setup IPC for logs if not FileEx backend is being used
+    if ( $GenericModule ne 'Kernel::System::Log::FileEx' ) {
+        return $Self if !eval "require IPC::SysV";    ## no critic
 
-    # create the IPC options
-    $Self->{IPC}     = 1;
-    $Self->{IPCKey}  = '444423' . $SystemID;
-    $Self->{IPCSize} = $Param{ConfigObject}->Get('LogSystemCacheSize') || 32 * 1024;
+        # create the IPC options
+        $Self->{IPC}     = 1;
+        $Self->{IPCKey}  = '444423' . $SystemID;
+        $Self->{IPCSize} = $Param{ConfigObject}->Get('LogSystemCacheSize') || 32 * 1024;
 
-    # init session data mem
-    if ( !eval { $Self->{Key} = shmget( $Self->{IPCKey}, $Self->{IPCSize}, oct(1777) ) } ) {
-        $Self->{Key} = shmget( $Self->{IPCKey}, 1, oct(1777) );
-        $Self->CleanUp();
-        $Self->{Key} = shmget( $Self->{IPCKey}, $Self->{IPCSize}, oct(1777) );
+        # init session data mem
+        if ( !eval { $Self->{Key} = shmget( $Self->{IPCKey}, $Self->{IPCSize}, oct(1777) ) } ) {
+            $Self->{Key} = shmget( $Self->{IPCKey}, 1, oct(1777) );
+            $Self->CleanUp();
+            $Self->{Key} = shmget( $Self->{IPCKey}, $Self->{IPCSize}, oct(1777) );
+        }
     }
 
     return $Self;
@@ -235,15 +243,16 @@ sub Log {
         $Self->{ lc $Priority }->{Message} = $Message;
     }
 
-    # write shm cache log
-    if ( lc $Priority ne 'debug' && $Self->{IPC} ) {
-
-        $Priority = lc $Priority;
-
-        my $Data   = localtime() . ";;$Priority;;$Self->{LogPrefix};;$Message\n";    ## no critic
-        my $String = $Self->GetLog();
-
-        shmwrite( $Self->{Key}, $Data . $String, 0, $Self->{IPCSize} ) || die $!;
+    # write shm cache log if not FileEx backend is being used
+    if ( $Self->{GenericModule} ne 'Kernel::System::Log::FileEx' ) {
+        if ( lc $Priority ne 'debug' && $Self->{IPC} ) {
+            $Priority = lc($Priority);
+            my $Data   = localtime() . "\t$Priority\t$Subroutine2\t$Self->{LogPrefix}\t$Message\n";    ## no critic
+            my $String = $Self->GetLog();
+            if (!shmwrite( $Self->{Key}, $Data . $String, 0, $Self->{IPCSize} )) {
+                $Self->{IPC} = 0;
+            }
+        }
     }
 
     return 1;
@@ -268,18 +277,43 @@ sub GetLogEntry {
 
 =item GetLog()
 
-to get the tmp log data (from shared memory - ipc) in csv form
+to get the tmp log data (from shared memory - ipc) in tab delimited form
 
-    my $CSVLog = $LogObject->GetLog();
+    my $Log = $LogObject->GetLog();
 
 =cut
 
 sub GetLog {
     my ( $Self, %Param ) = @_;
 
+    if (! $Param{Limit} ) {
+        $Param{Limit} = $Self->{DefaultLimit};
+    }
+
     my $String = '';
-    if ( $Self->{IPC} ) {
-        shmread( $Self->{Key}, $String, 0, $Self->{IPCSize} ) || die "$!";
+
+    # use shm cache log if not FileEx backend is being used; use log FileEx otherwide
+    if ( $Self->{GenericModule} ne 'Kernel::System::Log::FileEx' ) {
+        if ( $Self->{IPC} ) {
+            my $String1 = '';
+            if (!shmread( $Self->{Key}, $String1, 0, $Self->{IPCSize} )) {
+                $Self->{IPC} = 0;
+                return $String;
+            };
+            my @lines = split( /\n/, $String1);
+
+            # get number of lines in log file
+            my $lines_no = @lines;
+
+            # return last Limit lines (reverse log order in shm already)
+            for (my $i = 0; ( ($i < $Param{Limit}) && ($i < $lines_no) ); $i++)
+            {
+               $String = $String . $lines[$i] . "\n";
+            }
+        }
+    } else {
+        # log backend
+        $String = $Self->{Backend}->GetLog(%Param);
     }
 
     # encode the string
@@ -304,9 +338,10 @@ sub CleanUp {
     # remove the shm
     if ( !shmctl( $Self->{Key}, 0, 0 ) ) {
         $Self->Log(
-            Priority => 'error',
+            Priority => 'notice',
             Message  => "Can't remove shm for log: $!",
         );
+        $Self->{IPC} = 0;
         return;
     }
 

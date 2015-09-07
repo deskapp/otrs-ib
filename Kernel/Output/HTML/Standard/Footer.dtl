@@ -1,6 +1,7 @@
 # --
 # Footer.dtl - provides global HTML footer
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -10,8 +11,11 @@
 
 <div id="Footer" class="ARIARoleContentinfo">
 <!-- dtl:block:Banner -->
-    <a href="http://otrs.org/" target="_blank">$Text{"Powered by"} $Config{"Product"} $Config{"Version"}</a>
+    <a href="http://www.ib.pl/produkty/linux/ib-helpdesk.html" target="_blank">IB Helpdesk</a> | <a href="http://otrs.org/" target="_blank">$Text{"Powered by"} $Config{"Product"} $Config{"Version"}</a>
 <!-- dtl:block:Banner -->
+<!-- dtl:block:BannerNoVersion -->
+    <a href="http://www.ib.pl/produkty/linux/ib-helpdesk.html" target="_blank">IB Helpdesk</a> | <a href="http://otrs.org/" target="_blank">$Text{"Powered by"} $Config{"Product"}</a>
+<!-- dtl:block:BannerNoVersion -->
     <div class="TopOfPage"><a href="#Top">$Text{"Top of page"} <i class="icon-chevron-sign-up"></i></a></div>
     <div class="Clear"></div>
 </div>

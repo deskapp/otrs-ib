@@ -2,6 +2,7 @@
 # --
 # otrs.ArticleStorageSwitch.pl - to move stored attachments from one backend to other
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU AFFERO General Public License as published by
@@ -83,14 +84,12 @@ $CommonObject{TicketObject} = Kernel::System::Ticket->new(%CommonObject);
 $CommonObject{ConfigObject}->{'Ticket::EventModulePost'} = {};
 
 # create pid lock
-if ( !$Opts{f} && !$CommonObject{PIDObject}->PIDCreate( Name => 'ArticleStorageSwitch' ) ) {
-    print
-        "NOTICE: otrs.ArticleStorageSwitch.pl is already running (use '-f 1' if you want to start it ";
-    print "forced)!\n";
+if (!$CommonObject{PIDObject}->PIDCreate(
+        Name  => 'ArticleStorageSwitch',
+        TTL   => 60 * 60 * 24 * 3,
+        Force => $Opts{f})) {
+    print "NOTICE: otrs.ArticleStorageSwitch.pl is already running (use '-f 1' if you want to start it forced)!\n";
     exit 1;
-}
-elsif ( $Opts{f} && !$CommonObject{PIDObject}->PIDCreate( Name => 'ArticleStorageSwitch' ) ) {
-    print "NOTICE: otrs.ArticleStorageSwitch.pl is already running but is starting again!\n";
 }
 
 # extended input validation
@@ -128,13 +127,6 @@ elsif ( $Opts{C} ) {
     );
 }
 
-# set new PID
-$CommonObject{PIDObject}->PIDCreate(
-    Name  => 'ArticleStorageSwitch',
-    Force => 1,
-    TTL   => 60 * 60 * 24 * 3,
-);
-
 # get all tickets
 my @TicketIDs = $CommonObject{TicketObject}->TicketSearch(
 
@@ -165,9 +157,9 @@ for my $TicketID (@TicketIDs) {
     );
 }
 
+print "NOTICE: done.\n";
+
 # delete pid lock
 $CommonObject{PIDObject}->PIDDelete( Name => 'ArticleStorageSwitch' );
-
-print "NOTICE: done.\n";
 
 exit 0;
