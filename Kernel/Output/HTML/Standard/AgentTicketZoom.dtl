@@ -356,11 +356,6 @@ $('#$QData{"FormID"} select[name=$QData{"PhoneElementID"}]').bind('change', func
 <!-- dtl:js_on_document_complete -->
                     </li>
 <!-- dtl:block:MoveLink -->
-<!-- dtl:block:MoveForm -->
-                    <li>
-                        <a href="$Env{"Baselink"}Action=AgentTicketMove;TicketID=$LQData{"TicketID"};" class="AsPopup PopupType_TicketAction" title="$Text{"Change Queue"}">$Text{"Queue"}</a>
-                    </li>
-<!-- dtl:block:MoveForm -->
 <!-- dtl:block:TicketMenuExternalLink -->
                     <li>
                         <a href="$Data{"Link"}" class="$QData{"Class"}" $Data{"LinkParam"} title="$Text{"$Data{"Description"}"}" target="$Data{"Target"}">$Text{"$Data{"Name"}"}</a>
