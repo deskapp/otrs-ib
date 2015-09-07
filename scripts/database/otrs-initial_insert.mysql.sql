@@ -825,58 +825,6 @@ INSERT INTO article_sender_type (id, name, valid_id, create_by, create_time, cha
     VALUES
     (3, 'customer', 1, 1, current_timestamp, 1, current_timestamp);
 # ----------------------------------------------------------
-#  insert into table ticket
-# ----------------------------------------------------------
-INSERT INTO ticket (id, tn, queue_id, ticket_lock_id, user_id, responsible_user_id, ticket_priority_id, ticket_state_id, title, create_time_unix, timeout, until_time, escalation_time, escalation_response_time, escalation_update_time, escalation_solution_time, valid_id, create_by, create_time, change_by, change_time)
-    VALUES
-    (1, '2010080210123456', 2, 1, 1, 1, 3, 1, 'Welcome to OTRS!', 1280750400, 0, 0, 0, 0, 0, 0, 1, 1, current_timestamp, 1, current_timestamp);
-# ----------------------------------------------------------
-#  insert into table article
-# ----------------------------------------------------------
-INSERT INTO article (id, ticket_id, article_type_id, article_sender_type_id, a_from, a_to, a_subject, a_body, a_message_id, incoming_time, content_path, valid_id, create_by, create_time, change_by, change_time)
-    VALUES
-    (1, 1, 1, 3, 'OTRS Feedback <feedback@otrs.org>', 'Your OTRS System <otrs@localhost>', 'Welcome to OTRS!', 'Welcome!
-
-Thank you for installing OTRS.
-
-You will find updates and patches at http://www.otrs.com/open-source/.
-Online documentation is available at http://doc.otrs.org/.
-You can also use our mailing lists http://lists.otrs.org/
-or our forums at http://forums.otrs.org/
-
-Regards,
-
-The OTRS Project
-', '<007@localhost>', 1280750400, '2010/08/02', 1, 1, current_timestamp, 1, current_timestamp);
-# ----------------------------------------------------------
-#  insert into table article_plain
-# ----------------------------------------------------------
-INSERT INTO article_plain (id, article_id, body, create_by, create_time, change_by, change_time)
-    VALUES
-    (1, 1, 'From: OTRS Feedback <feedback@otrs.org>
-To: Your OTRS System <otrs@localhost>
-Subject: Welcome to OTRS!
-
-Welcome!
-
-Thank you for installing OTRS.
-
-You will find updates and patches at http://www.otrs.com/open-source/.
-Online documentation is available at http://doc.otrs.org/.
-You can also use our mailing lists http://lists.otrs.org/
-or our forums at http://forums.otrs.org/
-
-Regards,
-
-The OTRS Project
-', 1, current_timestamp, 1, current_timestamp);
-# ----------------------------------------------------------
-#  insert into table ticket_history
-# ----------------------------------------------------------
-INSERT INTO ticket_history (id, name, history_type_id, ticket_id, type_id, article_id, priority_id, owner_id, state_id, queue_id, valid_id, create_by, create_time, change_by, change_time)
-    VALUES
-    (1, 'New Ticket [2010080210123456] created.', 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, current_timestamp, 1, current_timestamp);
-# ----------------------------------------------------------
 #  insert into table notifications
 # ----------------------------------------------------------
 INSERT INTO notifications (notification_type, notification_charset, notification_language, subject, text, content_type, create_by, create_time, change_by, change_time)

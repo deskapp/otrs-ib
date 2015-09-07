@@ -1,6 +1,7 @@
 # --
 # Kernel/Output/HTML/Layout.pm - provides generic HTML output
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -1118,6 +1119,13 @@ sub Login {
 
         $Self->Block(
             Name => 'LoginLogo'
+        );
+    }
+
+    # Banner
+    if ( !$Self->{ConfigObject}->Get('Secure::DisableBanner') ) {
+        $Self->Block(
+            Name => 'BannerNoVersion'
         );
     }
 
@@ -2323,7 +2331,7 @@ sub NoPermission {
     my $WithHeader = $Param{WithHeader} || 'yes';
 
     my $TranslatableMessage = $Self->{LanguageObject}->Get(
-        "We are sorry, you do not have permissions anymore to access this ticket in its'current state. "
+        "We are sorry, you do not have permissions anymore to access this ticket in its current state. "
     );
     $TranslatableMessage .= '<br/>';
     $TranslatableMessage .= $Self->{LanguageObject}->Get(" You can take one of the next actions:");
@@ -3437,6 +3445,13 @@ sub CustomerLogin {
         );
     }
 
+    # Banner
+    if ( !$Self->{ConfigObject}->Get('Secure::DisableBanner') ) {
+        $Self->Block(
+            Name => 'Banner'
+        );
+    }
+
     # create & return output
     $Output .= $Self->Output( TemplateFile => 'CustomerLogin', Data => \%Param );
 
@@ -3957,7 +3972,7 @@ sub CustomerNoPermission {
     my ( $Self, %Param ) = @_;
 
     my $WithHeader = $Param{WithHeader} || 'yes';
-    $Param{Message} ||= 'No Permission!';
+    $Param{Message} ||= $Self->{LanguageObject}->Get('No Permission!');
 
     # create output
     my $Output;
@@ -4098,7 +4113,7 @@ sub _RichTextReplaceLinkOfInlineContent {
 
     # replace image link with content id for uploaded images
     ${ $Param{String} } =~ s{
-        (<img.+?src=("|'))[^>]+ContentID=(.+?)("|')([^>]+>)
+        (<img.+?src=("|'))[^"']+?ContentID=(.+?)("|')(.*?>)
     }
     {
         my ($Start, $CID, $Close, $End) = ($1, $3, $4, $5);
@@ -4151,7 +4166,7 @@ sub RichTextDocumentServe {
     # get charset and convert content to internal charset
     if ( $Self->{EncodeObject}->EncodeInternalUsed() ) {
         my $Charset;
-        if ( $Param{Data}->{ContentType} =~ m/.+?charset=("|'|)(.+)/ig ) {
+        if ( $Param{Data}->{ContentType} =~ m/.+?charset\s*=\s*("|'|)(.+)/ig ) {
             $Charset = $2;
             $Charset =~ s/"|'//g;
         }
@@ -4163,9 +4178,10 @@ sub RichTextDocumentServe {
         # convert charset
         if ($Charset) {
             $Param{Data}->{Content} = $Self->{EncodeObject}->Convert(
-                Text => $Param{Data}->{Content},
-                From => $Charset,
-                To   => 'utf-8',
+                Text  => $Param{Data}->{Content},
+                From  => $Charset,
+                To    => 'utf-8',
+                Check => ( $Self->{ConfigObject}->Get('SubstMalformedChars') ) ? 1 : 0,
             );
 
             # replace charset in content
@@ -4243,43 +4259,12 @@ sub RichTextDocumentServe {
         $SessionID = ';' . $Self->{SessionName} . '=' . $Self->{SessionID};
     }
 
-    # replace inline images in content with runtime url to images
+    # replace inline images (defined with Content-ID or Content-Location)
+    # in content with runtime url to images
     my $AttachmentLink = $Self->{Baselink} . $Param{URL};
-    $Param{Data}->{Content} =~ s{
-        (=|"|')cid:(.*?)("|'|>|\/>|\s)
-    }
-    {
-        my $Start= $1;
-        my $ContentID = $2;
-        my $End = $3;
-
-        # improve html quality
-        if ( $Start ne '"' && $Start ne '\'' ) {
-            $Start .= '"';
-        }
-        if ( $End ne '"' && $End ne '\'' ) {
-            $End = '"' . $End;
-        }
-
-        # find matching attachment and replace it with runtime url to image
-        for my $AttachmentID (  sort keys %{ $Param{Attachments} }) {
-            next if lc $Param{Attachments}->{$AttachmentID}->{ContentID} ne lc "<$ContentID>";
-            $ContentID = $AttachmentLink . $AttachmentID . $SessionID;
-            last;
-        }
-
-        # return new runtime url
-        $Start . $ContentID . $End;
-    }egxi;
-
-    # bug #5053
-    # inline images using Content-Location as identifier instead of Content-ID even RFC2557
-    # http://www.ietf.org/rfc/rfc2557.txt
-
-    # find matching attachment and replace it with runtlime url to image
     ATTACHMENTID:
     for my $AttachmentID ( sort keys %{ $Param{Attachments} } ) {
-        next if !$Param{Attachments}->{$AttachmentID}->{ContentID};
+        next ATTACHMENTID if !$Param{Attachments}->{$AttachmentID}->{ContentID};
 
         # content id cleanup
         $Param{Attachments}->{$AttachmentID}->{ContentID} =~ s/^<//;
@@ -4288,25 +4273,25 @@ sub RichTextDocumentServe {
         next ATTACHMENTID if !$Param{Attachments}->{$AttachmentID}->{ContentID};
 
         $Param{Data}->{Content} =~ s{
-        (=|"|')(\Q$Param{Attachments}->{$AttachmentID}->{ContentID}\E)("|'|>|\/>|\s)
-    }
-    {
-        my $Start= $1;
-        my $ContentID = $2;
-        my $End = $3;
-
-        # improve html quality
-        if ( $Start ne '"' && $Start ne '\'' ) {
-            $Start .= '"';
+        (\ssrc\s*=\s*)(["']{0,1})(cid:){0,1}(\Q$Param{Attachments}->{$AttachmentID}->{ContentID}\E)("|'|>|\/>|\s)
         }
-        if ( $End ne '"' && $End ne '\'' ) {
-            $End = '"' . $End;
-        }
+        {
+            my $PartSrc = $1;
+            my $PartOpenQuot;
+            my $PartContentID = $4;
+            my $PartEnd = $5;
 
-        # return new runtime url
-        $ContentID = $AttachmentLink . $AttachmentID . $SessionID;
-        $Start . $ContentID . $End;
-    }egxi;
+            # improve html quality
+            if ( $PartEnd ne '"' && $PartEnd ne '\'' ) {
+                $PartEnd = '"' . $PartEnd;
+                $PartOpenQuot = '"';
+            }
+            $PartOpenQuot = $PartEnd if !$PartOpenQuot;
+
+            # return new runtime url
+            $PartContentID = $AttachmentLink . $AttachmentID . ';' . $SessionID;
+            $PartSrc . $PartOpenQuot . $PartContentID . $PartEnd;
+        }egxi;
     }
 
     return %{ $Param{Data} };

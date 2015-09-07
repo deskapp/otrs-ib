@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/AgentTicketForward.pm - to forward a message
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -331,12 +332,22 @@ sub Form {
         my $EndForwardedMessage
             = $Self->{LayoutObject}->{LanguageObject}->Get('End forwarded message');
 
-        $Data{Body} = "<br/>---- $ForwardedMessageFrom $From ---<br/><br/>" . $Data{Body};
-        $Data{Body} .= "<br/>---- $EndForwardedMessage ---<br/>";
+        my $RichTextEnterMode = $Self->{ConfigObject}->Get('Frontend::RichText::EnterMode');
+        if ($RichTextEnterMode && $RichTextEnterMode == 1) {
+            $Data{Body} = "</p><p>---- $ForwardedMessageFrom $From ---</p>" . $Data{Body};
+            $Data{Body} .= "<p>---- $EndForwardedMessage ---</p></p>";
+        }
+        else {
+            $Data{Body} = "<br/><br/>---- $ForwardedMessageFrom $From ---<br/><br/>" . $Data{Body};
+            $Data{Body} .= "<br/>---- $EndForwardedMessage ---<br/>";
+        }
+
         $Data{Body} = $Data{Signature} . $Data{Body};
 
         if ( $GetParam{ForwardTemplateID} ) {
-            $Data{Body} = $Data{StdTemplate} . '<br/>' . $Data{Body};
+            my $Separator = '<br/>';
+            $Separator = '' if ($RichTextEnterMode && $RichTextEnterMode == 1);
+            $Data{Body} = $Data{StdTemplate} . $Separator . $Data{Body};
         }
 
         $Data{ContentType} = 'text/html';
@@ -369,7 +380,7 @@ sub Form {
         my $EndForwardedMessage
             = $Self->{LayoutObject}->{LanguageObject}->Get('End forwarded message');
 
-        $Data{Body} = "\n---- $ForwardedMessageFrom $Data{From} ---\n\n" . $Data{Body};
+        $Data{Body} = "\n\n---- $ForwardedMessageFrom $Data{From} ---\n\n" . $Data{Body};
         $Data{Body} .= "\n---- $EndForwardedMessage ---\n";
         $Data{Body} = $Data{Signature} . $Data{Body};
     }
@@ -838,6 +849,7 @@ sub SendEmail {
         );
         $Self->{UploadCacheObject}->FormIDAddFile(
             FormID => $GetParam{FormID},
+            Disposition => 'attachment',
             %UploadStuff,
         );
     }
@@ -902,9 +914,15 @@ sub SendEmail {
 
         # remove unused inline images
         my @NewAttachmentData;
+
         for my $Attachment (@AttachmentData) {
             my $ContentID = $Attachment->{ContentID};
-            if ( $ContentID && ( $Attachment->{ContentType} =~ /image/i ) ) {
+            if (
+                $ContentID
+                && ( $Attachment->{ContentType} =~ /image/i )
+                && ( $Attachment->{Disposition} =~ /inline/i )
+                )
+            {
                 my $ContentIDHTMLQuote = $Self->{LayoutObject}->Ascii2Html(
                     Text => $ContentID,
                 );
@@ -1506,6 +1524,7 @@ sub _Mask {
             $Attachment->{ContentID}
             && $Self->{LayoutObject}->{BrowserRichText}
             && ( $Attachment->{ContentType} =~ /image/i )
+            && ( $Attachment->{Disposition} =~ /inline/i )
             )
         {
             next;

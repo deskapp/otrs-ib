@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/PictureUpload.pm - get picture uploads
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -117,34 +118,15 @@ sub Run {
     my @AttachmentMeta = $Self->{UploadCacheObject}->FormIDGetAllFilesMeta(
         FormID => $FormID,
     );
-    my $FilenameTmp    = $File{Filename};
-    my $SuffixTmp      = 0;
-    my $UniqueFilename = '';
-    while ( !$UniqueFilename ) {
-        $UniqueFilename = $FilenameTmp;
-        NEWNAME:
-        for my $Attachment ( reverse @AttachmentMeta ) {
-            next NEWNAME if $FilenameTmp ne $Attachment->{Filename};
 
-            # name exists -> change
-            ++$SuffixTmp;
-            if ( $File{Filename} =~ /^(.*)\.(.+?)$/ ) {
-                $FilenameTmp = "$1-$SuffixTmp.$2";
-            }
-            else {
-                $FilenameTmp = "$File{Filename}-$SuffixTmp";
-            }
-            $UniqueFilename = '';
-            last NEWNAME;
-        }
-    }
+    $File{Filename} = 'inline-' . time() . '-' . int(rand(1000000)) . '-' . $File{Filename};
 
     # add uploaded file to upload cache
     $Self->{UploadCacheObject}->FormIDAddFile(
         FormID      => $FormID,
-        Filename    => $FilenameTmp,
+        Filename    => $File{Filename},
         Content     => $File{Content},
-        ContentType => $File{ContentType} . '; name="' . $FilenameTmp . '"',
+        ContentType => $File{ContentType} . '; name="' . $File{Filename} . '"',
         Disposition => 'inline',
     );
 
@@ -154,7 +136,7 @@ sub Run {
         FormID => $FormID
     );
     for my $Attachment (@AttachmentMeta) {
-        next if $FilenameTmp ne $Attachment->{Filename};
+        next if $File{Filename} ne $Attachment->{Filename};
         $ContentIDNew = $Attachment->{ContentID};
         last;
     }

@@ -1,0 +1,64 @@
+#!/bin/sh
+# otrs.cleanup - to clean up unprocessed emails
+# Copyright (C) 2001-2012 OTRS AG, http://otrs.org/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+# --
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU AFFERO General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+# or see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+#OTRS_ROOT=/opt/otrs
+OTRS_ROOT=${HOME}
+OTRS_SPOOL_MAILDIR=/var/opt/otrs/spool
+OTRS_POSTMASTER=${OTRS_ROOT}/bin/otrs.PostMaster.pl
+LOCKFILE=/var/lock/otrs.cleanup.lock
+
+# check if not already running
+if test -e ${LOCKFILE}; then
+    pid=`cat ${LOCKFILE}`
+    # kill -0 won't kill proc; will test if running only
+    if kill -0 ${pid} > /dev/null 2>&1; then
+        echo "otrs.cleanup[${$}]: another instance (pid: ${pid}) already running - aborting"
+        exit
+    fi
+fi
+
+# create lock
+echo ${$} > ${LOCKFILE}
+
+# check if running with correct OTRS home dir
+if ! test -e ${OTRS_ROOT}/RELEASE; then
+    echo "otrs.cleanup[${$}]: ${HOME} is not otrs root"
+    exit 1;
+fi
+
+# check otrs spool maildir
+echo "otrs.cleanup[${$}]: checking otrs spool ${OTRS_SPOOL_MAILDIR}/new for waiting messages"
+for i in ${OTRS_SPOOL_MAILDIR}/new/* ; do
+    # process old emails
+    if echo ${i} | grep -v '*' > /dev/null 2>&1; then
+        echo -n "otrs.cleanup[${$}]: starting otrs postmaster for ${i}... "
+        if cat ${i} | ${OTRS_POSTMASTER} > /dev/null 2>&1; then
+            rm ${i} && echo 'done (file removed)';
+        else
+            echo 'failed (file not removed)';
+        fi
+    fi
+done
+
+# remove lock
+rm ${LOCKFILE}
+
+echo "otrs.cleanup[${$}]: done"

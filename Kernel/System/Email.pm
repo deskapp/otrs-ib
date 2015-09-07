@@ -1,6 +1,7 @@
 # --
 # Kernel/System/Email.pm - the global email send module
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -309,8 +310,8 @@ sub Send {
     my $Version = $Self->{ConfigObject}->Get('Version');
 
     if ( !$Self->{ConfigObject}->Get('Secure::DisableBanner') ) {
-        $Header{'X-Mailer'}     = "$Product Mail Service ($Version)";
-        $Header{'X-Powered-By'} = 'OTRS - Open Ticket Request System (http://otrs.org/)';
+        $Header{'X-Mailer'}     = "$Product Mail Service";
+        $Header{'X-Powered-By'} = 'OTRS - Open Ticket Request System (http://otrs.org/); IB Helpdesk (http://www.ib.pl/)';
     }
     $Header{Type} = $Param{MimeType} || 'text/plain';
 
@@ -405,7 +406,12 @@ sub Send {
                         && $Upload->{Content} eq $Param{HTMLBody};
 
                     # skip, but remember all attachments except inline images
-                    if ( !defined $Upload->{ContentID} ) {
+                    if (
+                        ( ! defined $Upload->{ContentID} )
+                        || ( ! defined $Upload->{ContentType} || $Upload->{ContentType} !~ /image/i )
+                        || ( ! defined $Upload->{Disposition} || $Upload->{Disposition} !~ /inline/i )
+                        )
+                    {
                         push @NewAttachments, \%{$Upload};
                         next ATTACHMENT;
                     }
@@ -464,13 +470,29 @@ sub Send {
                 Charset => $Param{Charset},
             );
 
+            my $Encoding = $Upload->{Encoding};
+            if ( !$Encoding ) {
+                # in case encoding was not specified, use base64 for text
+                # types to avoid corruption of attachments with broken mime
+                # type like "text/pdf"; other tupes will be handled with
+                # MIME::Entity in -SUGGEST mode; see suggest_encoding
+                # description on
+                # http://search.cpan.org/~dskoll/MIME-tools-5.505/lib/MIME/Entity.pm
+                if ( $Upload->{ContentType} =~ m{^text/}i ) {
+                    $Encoding = 'base64';
+                }
+                else {
+                    $Encoding = '-SUGGEST';
+                }
+            }
+
             # attach file to email (no content id needed)
             $Entity->attach(
                 Filename    => $Filename,
                 Data        => $Upload->{Content},
                 Type        => $Upload->{ContentType},
                 Disposition => $Upload->{Disposition} || 'inline',
-                Encoding    => $Upload->{Encoding} || '-SUGGEST',
+                Encoding    => $Encoding,
             );
         }
     }
@@ -898,7 +920,7 @@ sub _EncodeMIMEWords {
 sub _MessageIDCreate {
     my ( $Self, %Param ) = @_;
 
-    my $FQDN = $Self->{ConfigObject}->Get('FQDN');
+    my $FQDN = $Self->{ConfigObject}->Get('ExtFQDN');
     return 'Message-ID: <' . time() . '.' . rand(999999) . '@' . $FQDN . '>';
 }
 

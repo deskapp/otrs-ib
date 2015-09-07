@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/AgentTicketMove.pm - move tickets to queues
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -149,7 +150,7 @@ sub Run {
     for my $Parameter (
         qw(Subject Body
         NewUserID OldUserID NewStateID NewPriorityID
-        UserSelection OwnerAll NoSubmit DestQueueID DestQueue
+        UserSelection OwnerAll NoSubmit DestQueueID DestQueue MoveType
         )
         )
     {
@@ -410,6 +411,7 @@ sub Run {
         );
         $Self->{UploadCacheObject}->FormIDAddFile(
             FormID => $Self->{FormID},
+            Disposition => 'attachment',
             %UploadStuff,
         );
     }
@@ -686,8 +688,8 @@ sub Run {
             );
             if ( !$AccessOk ) {
                 $Output .= $Self->{LayoutObject}->Warning(
-                    Message => "Sorry, you need to be the ticket owner to perform this action.",
-                    Comment => 'Please change the owner first.',
+                    Message => $Self->{LayoutObject}->{LanguageObject}->Get('Sorry, you need to be the ticket owner to perform this action.'),
+                    Comment => $Self->{LayoutObject}->{LanguageObject}->Get('Please change the owner first.'),
                 );
                 $Output .= $Self->{LayoutObject}->Footer(
                     Type => 'Small',
@@ -886,7 +888,12 @@ sub Run {
             my @NewAttachmentData;
             for my $Attachment (@AttachmentData) {
                 my $ContentID = $Attachment->{ContentID};
-                if ($ContentID) {
+                if (
+                    $ContentID
+                    && ( $Attachment->{ContentType} =~ /image/i )
+                    && ( $Attachment->{Disposition} =~ /inline/i )
+                    )
+                {
                     my $ContentIDHTMLQuote = $Self->{LayoutObject}->Ascii2Html(
                         Text => $ContentID,
                     );
@@ -938,8 +945,7 @@ sub Run {
     # only set the dynamic fields if the new window was displayed (link), otherwise if ticket was
     # moved from the dropdown menu (form) in AgentTicketZoom, the value if the dynamic fields will
     # be undefined and it will set to empty in the DB, see bug#8481
-    if ( $Self->{ConfigObject}->Get('Ticket::Frontend::MoveType') eq 'link' ) {
-
+    if ( $GetParam{MoveType} ne 'form' ) {
         # cycle trough the activated Dynamic Fields for this screen
         DYNAMICFIELD:
         for my $DynamicFieldConfig ( @{ $Self->{DynamicField} } ) {
@@ -983,12 +989,12 @@ sub Run {
     if ( !$AccessNew || $NextScreen eq 'LastScreenOverview' ) {
 
         # Module directly called
-        if ( $Self->{ConfigObject}->Get('Ticket::Frontend::MoveType') eq 'form' ) {
+        if ( $GetParam{MoveType} eq 'form' ) {
             return $Self->{LayoutObject}->Redirect( OP => $Self->{LastScreenOverview} );
         }
 
         # Module opened in popup
-        elsif ( $Self->{ConfigObject}->Get('Ticket::Frontend::MoveType') eq 'link' ) {
+        else {
             return $Self->{LayoutObject}->PopupClose(
                 URL => ( $Self->{LastScreenOverview} || 'Action=AgentDashboard' ),
             );
@@ -996,7 +1002,7 @@ sub Run {
     }
 
     # Module directly called
-    if ( $Self->{ConfigObject}->Get('Ticket::Frontend::MoveType') eq 'form' ) {
+    if ( $GetParam{MoveType} eq 'form' ) {
         return $Self->{LayoutObject}->Redirect(
             OP => "Action=AgentTicketZoom;TicketID=$Self->{TicketID}"
                 . ( $ArticleID ? ";ArticleID=$ArticleID" : '' ),
@@ -1004,7 +1010,7 @@ sub Run {
     }
 
     # Module opened in popup
-    elsif ( $Self->{ConfigObject}->Get('Ticket::Frontend::MoveType') eq 'link' ) {
+    else {
         return $Self->{LayoutObject}->PopupClose(
             URL => "Action=AgentTicketZoom;TicketID=$Self->{TicketID}"
                 . ( $ArticleID ? ";ArticleID=$ArticleID" : '' ),
@@ -1184,7 +1190,16 @@ sub AgentMove {
 
     # show attachments
     for my $Attachment ( @{ $Param{Attachments} } ) {
-        next if $Attachment->{ContentID} && $Self->{LayoutObject}->{BrowserRichText};
+        if (
+            $Attachment->{ContentID}
+            && $Self->{LayoutObject}->{BrowserRichText}
+            && ( $Attachment->{ContentType} =~ /image/i )
+            && ( $Attachment->{Disposition} =~ /inline/i )
+            )
+        {
+            next;
+        }
+
         $Self->{LayoutObject}->Block(
             Name => 'Attachment',
             Data => $Attachment,

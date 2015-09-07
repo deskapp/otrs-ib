@@ -1,6 +1,7 @@
 # --
 # Kernel/Output/HTML/LayoutTicket.pm - provides generic ticket HTML output
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -474,9 +475,10 @@ sub ArticleQuote {
 
             # convert html body to correct charset
             $Body = $Self->{EncodeObject}->Convert(
-                Text => $AttachmentHTML{Content},
-                From => $Charset,
-                To   => $Self->{UserCharset},
+                Text  => $AttachmentHTML{Content},
+                From  => $Charset,
+                To    => $Self->{UserCharset},
+                Check => ( $Self->{ConfigObject}->Get('SubstMalformedChars') ) ? 1 : 0,
             );
 
             # add url quoting
@@ -501,69 +503,10 @@ sub ArticleQuote {
                 . $SessionID
                 . ';ContentID=';
 
-            # search inline documents in body and add it to upload cache
+            # search inline images (defined with Content-ID or Content-Location)
+            # in body and add it to upload cache
             my %Attachments = %{ $ArticleTmp->{Atms} };
             my %AttachmentAlreadyUsed;
-            $Body =~ s{
-                (=|"|')cid:(.*?)("|'|>|\/>|\s)
-            }
-            {
-                my $Start= $1;
-                my $ContentID = $2;
-                my $End = $3;
-
-                # improve html quality
-                if ( $Start ne '"' && $Start ne '\'' ) {
-                    $Start .= '"';
-                }
-                if ( $End ne '"' && $End ne '\'' ) {
-                    $End = '"' . $End;
-                }
-
-                # find attachment to include
-                ATMCOUNT:
-                for my $AttachmentID ( sort keys %Attachments ) {
-
-                    # next if cid is not matching
-                    if ( lc $Attachments{$AttachmentID}->{ContentID} ne lc "<$ContentID>" ) {
-                        next ATMCOUNT;
-                    }
-
-                    # get whole attachment
-                    my %AttachmentPicture = $Self->{TicketObject}->ArticleAttachment(
-                        ArticleID => $Param{ArticleID},
-                        FileID    => $AttachmentID,
-                        UserID    => $Self->{UserID},
-                    );
-
-                    # content id cleanup
-                    $AttachmentPicture{ContentID} =~ s/^<//;
-                    $AttachmentPicture{ContentID} =~ s/>$//;
-
-                    # find cid, add attachment URL and remember, file is already uploaded
-                    $ContentID = $AttachmentLink . $Self->LinkEncode( $AttachmentPicture{ContentID} );
-
-                    # add to upload cache if not uploaded and remember
-                    if (!$AttachmentAlreadyUsed{$AttachmentID}) {
-
-                        # remember
-                        $AttachmentAlreadyUsed{$AttachmentID} = 1;
-
-                        # write attachment to upload cache
-                        $Param{UploadCacheObject}->FormIDAddFile(
-                            FormID      => $Param{FormID},
-                            Disposition => 'inline',
-                            %{ $Attachments{$AttachmentID} },
-                            %AttachmentPicture,
-                        );
-                    }
-                }
-
-                # return link
-                $Start . $ContentID . $End;
-            }egxi;
-
-            # find inline images using Content-Location instead of Content-ID
             for my $AttachmentID ( sort keys %Attachments ) {
 
                 next if !$Attachments{$AttachmentID}->{ContentID};
@@ -580,15 +523,23 @@ sub ArticleQuote {
                 $AttachmentPicture{ContentID} =~ s/>$//;
 
                 $Body =~ s{
-                    ("|')(\Q$AttachmentPicture{ContentID}\E)("|'|>|\/>|\s)
+                    (\ssrc\s*=\s*)(["']{0,1})(cid:){0,1}(\Q$AttachmentPicture{ContentID}\E)("|'|>|\/>|\s)
                 }
                 {
-                    my $Start= $1;
-                    my $ContentID = $2;
-                    my $End = $3;
+                    my $PartSrc = $1;
+                    my $PartOpenQuot;
+                    my $PartContentID = $4;
+                    my $PartEnd = $5;
 
-                    # find cid, add attachment URL and remember, file is already uploaded
-                    $ContentID = $AttachmentLink . $Self->LinkEncode( $AttachmentPicture{ContentID} );
+                    # improve html quality
+                    if ( $PartEnd ne '"' && $PartEnd ne '\'' ) {
+                        $PartEnd = '"' . $PartEnd;
+                        $PartOpenQuot = '"';
+                    }
+                    $PartOpenQuot = $PartEnd if !$PartOpenQuot;
+
+                    # find cid, add attachment URL and remeber, file is already uploaded
+                    $PartContentID = $AttachmentLink . $Self->LinkEncode( $AttachmentPicture{ContentID} );
 
                     # add to upload cache if not uploaded and remember
                     if (!$AttachmentAlreadyUsed{$AttachmentID}) {
@@ -605,8 +556,8 @@ sub ArticleQuote {
                         );
                     }
 
-                    # return link
-                    $Start . $ContentID . $End;
+                    # return new runtime url
+                    $PartSrc . $PartOpenQuot . $PartContentID . $PartEnd;
                 }egxi;
             }
 
@@ -632,6 +583,7 @@ sub ArticleQuote {
                 # add attachment
                 $Param{UploadCacheObject}->FormIDAddFile(
                     FormID => $Param{FormID},
+                    Disposition => 'attachment',
                     %Attachment,
                 );
             }
@@ -679,6 +631,7 @@ sub ArticleQuote {
             # add attachment
             $Param{UploadCacheObject}->FormIDAddFile(
                 FormID => $Param{FormID},
+                Disposition => 'attachment',
                 %Attachment,
             );
         }
@@ -727,7 +680,8 @@ sub TicketListShow {
 
     # update preferences if needed
     my $Key = 'UserTicketOverview' . $Env->{Action};
-    if ( !$Self->{ConfigObject}->Get('DemoSystem') && $Self->{$Key} ne $View ) {
+    if ( !$Self->{ConfigObject}->Get('DemoSystem')
+        && ( !$Self->{$Key} || ( $Self->{$Key} && $Self->{$Key} ne $View ) ) ) {
         $Self->{UserObject}->SetPreferences(
             UserID => $Self->{UserID},
             Key    => $Key,

@@ -1,0 +1,31 @@
+/**
+ * Core.Agent.Admin.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 47 */
+.Admin .Size1of2 h4 {
+    margin: 0 2px 0 0;
+    padding: 5px 5px 4px;
+    color: #3D80B3;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+/* 81 */
+.Admin .Size1of2:hover h4 {
+    color: #2D6896;
+}
+
+} /* end @media print*/

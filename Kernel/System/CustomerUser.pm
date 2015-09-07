@@ -419,7 +419,7 @@ sub CustomerUserAdd {
         if (%User) {
             $Self->{LogObject}->Log(
                 Priority => 'error',
-                Message  => "User already exists '$Param{UserLogin}'!",
+                Message  => "User already exists!",
             );
             return;
         }
@@ -475,7 +475,7 @@ sub CustomerUserUpdate {
         if (%User) {
             $Self->{LogObject}->Log(
                 Priority => 'error',
-                Message  => "User already exists '$Param{UserLogin}'!",
+                Message  => "User already exists!",
             );
             return;
         }

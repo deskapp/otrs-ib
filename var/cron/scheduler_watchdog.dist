@@ -1,3 +1,3 @@
 
 # check scheduler status
-*/5 * * * *    $HOME/bin/otrs.Scheduler.pl -w 1 >> /dev/null
+#6,16,26,36,46,56 * * * *  (/bin/date; $HOME/bin/otrs.Scheduler.pl -w 1) >> /var/opt/otrs/file/log/otrs.Scheduler.pl.log

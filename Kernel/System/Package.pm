@@ -1,6 +1,7 @@
 # --
 # Kernel/System/Package.pm - lib package manager
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -1357,6 +1358,7 @@ sub DeployCheck {
 
     $Self->{DeployCheckInfo} = undef;
 
+    return 1 if !$Self->{ConfigObject}->Get('Package::DeployCheck');
     return 1 if !$Structure{Filelist};
     return 1 if ref $Structure{Filelist} ne 'ARRAY';
 
@@ -1468,6 +1470,8 @@ sub PackageVerify {
         return;
     }
 
+    return 'verified' if !$Self->{ConfigObject}->Get('Package::OnlineVerification');
+
     # define package verification info
     my $PackageVerifyInfo = {
         Description =>
@@ -1494,6 +1498,7 @@ sub PackageVerify {
         $Self->{PackageVerifyInfo} = $PackageVerifyInfo;
         return $CachedValue;
     }
+
 
     # create new web user agent object -> note proxy is different from Package::Proxy
     my $WebUserAgentObject = Kernel::System::WebUserAgent->new(
@@ -1594,6 +1599,7 @@ sub PackageVerifyAll {
     );
 
     return () if !@PackageList;
+    return () if !$Self->{ConfigObject}->Get('Package::OnlineVerification');
 
     # create a mapping of Package Name => md5 pairs
     my %PackageList = map { $_->{Name} => $_->{MD5sum} } @PackageList;

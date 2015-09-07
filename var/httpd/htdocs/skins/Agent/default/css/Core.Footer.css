@@ -3,6 +3,7 @@
  *
  * @project     OTRS (http://www.otrs.org) - Agent Frontend
  * @copyright   OTRS AG
+ * @copyright   (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
  * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
  */
 
@@ -21,6 +22,7 @@
     font-size: 10px;
     position: relative;
     clear: both;
+    color: #9E9E9E;
 }
 
 #Footer a,

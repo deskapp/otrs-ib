@@ -1,6 +1,7 @@
 # --
 # Kernel/System/PDF.pm - PDF lib
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -152,7 +153,7 @@ sub DocumentNew {
     # get Product and Version
     $Self->{Config}->{Project} = $Self->{ConfigObject}->Get('Product');
     $Self->{Config}->{Version} = $Self->{ConfigObject}->Get('Version');
-    my $ProjectVersion = $Self->{Config}->{Project} . ' ' . $Self->{Config}->{Version};
+    my $ProjectVersion = $Self->{Config}->{Project};
 
     # set document title
     $Self->{Document}->{Title} = $Param{Title} || $ProjectVersion;
@@ -193,7 +194,7 @@ sub DocumentNew {
             . $NowSec
             . "+01'00'",
         'Creator'  => $ProjectVersion,
-        'Producer' => "OTRS PDF Creator",
+        'Producer' => $ProjectVersion,
         'Title'    => $Self->{Document}->{Title},
         'Subject'  => $Self->{Document}->{Title},
     );
@@ -355,6 +356,9 @@ sub PageNew {
 
     my %Data = ();
 
+    # get curtom skin color for title; set #404040 if not defined
+    my $SkinColor = $Self->{ConfigObject}->Get('PDF::SkinColor');
+
     # set new page width and height, if values are given
     if ( $Param{Width} && $Param{Height} ) {
         $Data{Width}  = $Param{Width};
@@ -425,8 +429,8 @@ sub PageNew {
             Text     => $Param{HeaderRight},
             Type     => 'Cut',
             Color    => '#404040',
-            FontSize => 12,
-            Height   => 12,
+            FontSize => 8,
+            Height   => 8,
             Align    => 'right',
         );
     }
@@ -446,7 +450,7 @@ sub PageNew {
     # output the lines in top of the page
     $Self->HLine(
         Color     => '#505050',
-        LineWidth => 1,
+        LineWidth => 0.5,
     );
 
     if ( $Param{FooterLeft} ) {
@@ -516,7 +520,7 @@ sub PageNew {
     # output the lines in bottom of the page
     $Self->HLine(
         Color     => '#505050',
-        LineWidth => 1,
+        LineWidth => 0.5,
     );
 
     if ( $Param{HeadlineLeft} && $Param{HeadlineRight} ) {
@@ -534,10 +538,11 @@ sub PageNew {
         );
         $Self->Text(
             Text     => $Param{HeadlineLeft},
-            Width    => ( $Printable{Width} / 2 ),
+            Width    => ( $Printable{Width} ),
             Height   => 12,
             Type     => 'Cut',
             Font     => 'ProportionalBold',
+            Color    => $SkinColor,
             FontSize => 12,
         );
         $Self->PositionSet(

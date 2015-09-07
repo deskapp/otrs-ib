@@ -200,7 +200,10 @@ sub Run {
     my $GetParam = $Self->GetEmailParams();
 
     # check if follow up
-    my ( $Tn, $TicketID ) = $Self->CheckFollowUp( %{$GetParam} );
+    my ( $Tn, $TicketID ) = $Self->CheckFollowUp(
+        %{$GetParam},
+        Quiet => 1,
+    );
 
     # run all PreFilterModules (modify email params)
     if ( ref $Self->{ConfigObject}->Get('PostMaster::PreFilterModule') eq 'HASH' ) {
@@ -444,6 +447,7 @@ to detect the ticket number in processing email
 
     my ($TicketNumber, $TicketID) = $PostMasterObject->CheckFollowUp(
         Subject => 'Re: [Ticket:#123456] Some Subject',
+        Quiet => 0,  # 1 = don't generate logs for prerun
     );
 
 =cut
@@ -452,6 +456,7 @@ sub CheckFollowUp {
     my ( $Self, %Param ) = @_;
 
     my $Subject = $Param{Subject} || '';
+    my $Quiet = $Param{Quiet} || 0;
     my $Tn = $Self->{TicketObject}->GetTNByString($Subject);
 
     if ($Tn) {
@@ -480,6 +485,7 @@ sub CheckFollowUp {
             # get ticket id of message id
             my $TicketID = $Self->{TicketObject}->ArticleGetTicketIDOfMessageID(
                 MessageID => "<$Reference>",
+                Quiet => $Quiet,
             );
             next if !$TicketID;
             my $Tn = $Self->{TicketObject}->TicketNumberLookup( TicketID => $TicketID, );
@@ -553,6 +559,31 @@ sub CheckFollowUp {
                     );
                 }
                 return ( $Ticket{TicketNumber}, $TicketID );
+            }
+        }
+    }
+
+    # Do ticket lookup using Message-ID; for details see PostmasterFollowUpSearchMessageID description in SysConfig.
+    my $MsgIDConfig = $Self->{ConfigObject}->Get('PostmasterFollowUpSearchMessageID');
+    if ( $MsgIDConfig && $Param{'Message-ID'} ) {
+        # get ticket id containing article(s) with given message id
+        my $TicketID = $Self->{TicketObject}->ArticleGetTicketIDOfMessageID(
+            MessageID => $Param{'Message-ID'},
+            MaxAge => $MsgIDConfig->{MaxAge},
+            MaxArticles => $MsgIDConfig->{MaxArticles},
+            Quiet => $Quiet,
+        );
+        if ($TicketID) {
+            my $Tn = $Self->{TicketObject}->TicketNumberLookup( TicketID => $TicketID, );
+            if ( $Tn ) {
+                if ( $Self->{Debug} > 1 ) {
+                    $Self->{LogObject}->Log(
+                        Priority => 'debug',
+                        Message =>
+                            "CheckFollowUp (Message-ID): yes, it's a follow up ($Tn/$TicketID)",
+                    );
+                }
+                return ( $Tn, $TicketID );
             }
         }
     }

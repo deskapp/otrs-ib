@@ -1,6 +1,7 @@
 # --
 # Kernel/Output/HTML/ArticleCheckPGP.pm
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -222,6 +223,7 @@ sub Check {
         use MIME::Parser;
         my $Parser = MIME::Parser->new();
         $Parser->decode_headers(0);
+        $Parser->decode_bodies(0);
         $Parser->extract_nested_messages(0);
         $Parser->output_to_core('ALL');
         my $Entity = $Parser->parse_data($Message);
@@ -257,6 +259,7 @@ sub Check {
             # Encrypt it
             my %Decrypt = $Self->{CryptObject}->Decrypt( Message => $Cryped, );
             if ( $Decrypt{Successful} ) {
+                $Parser->decode_bodies(1);
                 $Entity = $Parser->parse_data( $Decrypt{Data} );
                 my $Head = $Entity->head();
                 $Head->unfold();

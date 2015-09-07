@@ -1,3 +1,3 @@
 
-# unlock every hour old locked tickets
-35 * * * *  $HOME/bin/otrs.UnlockTickets.pl --timeout >> /dev/null
+# unlock every 20 min old locked tickets
+*/20 * * * *  (/bin/date; $HOME/bin/otrs.UnlockTickets.pl --timeout) >> /var/opt/otrs/file/log/otrs.UnlockTickets.pl.log

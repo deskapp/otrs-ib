@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/AdminNotificationEvent.pm - to manage event-based notifications
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -460,18 +461,37 @@ sub _Edit {
         $TreeView = 1;
     }
 
-    $Param{RecipientsStrg} = $Self->{LayoutObject}->BuildSelection(
-        Data => {
-            AgentOwner            => 'Agent (Owner)',
-            AgentResponsible      => 'Agent (Responsible)',
-            AgentWritePermissions => 'Agent (All with write permissions)',
-            Customer              => 'Customer',
-        },
-        Name       => 'Recipients',
-        Multiple   => 1,
-        Size       => 4,
-        SelectedID => $Param{Data}->{Recipients},
-    );
+    # build Recipients select; add customer option only if sending
+    # notifications to customers is enabled in config
+    if ($Self->{ConfigObject}->Get('CustomerNotificationsDisabled'))
+    {
+        $Param{RecipientsStrg} = $Self->{LayoutObject}->BuildSelection(
+            Data => {
+                AgentOwner            => 'Agent (Owner)',
+                AgentResponsible      => 'Agent (Responsible)',
+                AgentWritePermissions => 'Agent (All with write permissions)',
+            },
+            Name       => 'Recipients',
+            Multiple   => 1,
+            Size       => 3,
+            SelectedID => $Param{Data}->{Recipients},
+        );
+    }
+    else
+    {
+        $Param{RecipientsStrg} = $Self->{LayoutObject}->BuildSelection(
+            Data => {
+                AgentOwner            => 'Agent (Owner)',
+                AgentResponsible      => 'Agent (Responsible)',
+                AgentWritePermissions => 'Agent (All with write permissions)',
+                Customer              => 'Customer',
+            },
+            Name       => 'Recipients',
+            Multiple   => 1,
+            Size       => 4,
+            SelectedID => $Param{Data}->{Recipients},
+        );
+    };
 
     my %AllAgents = $Self->{UserObject}->UserList(
         Type  => 'Long',

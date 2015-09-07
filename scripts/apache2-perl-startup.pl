@@ -2,6 +2,7 @@
 # --
 # scripts/apache2-perl-startup.pl - to load the modules if mod_perl is used
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU AFFERO General Public License as published by
@@ -54,8 +55,8 @@ use CGI::Carp ();
 use Apache::DBI;
 
 # enable this if you use mysql
-#use DBD::mysql ();
-#use Kernel::System::DB::mysql;
+use DBD::mysql ();
+use Kernel::System::DB::mysql;
 
 # enable this if you use postgresql
 #use DBD::Pg ();
@@ -103,22 +104,27 @@ use Kernel::System::Email;
 use Kernel::System::Stats;
 
 # optional core modules
-#use Kernel::System::Auth::LDAP;
+use Kernel::System::Auth::LDAP;
 #use Kernel::System::AuthSession::FS;
-#use Kernel::System::PDF;
-#use Kernel::System::Log::SysLog;
+use Kernel::System::PDF;
+use Kernel::System::Log::SysLog;
 #use Kernel::System::Log::File;
 #use Kernel::System::Ticket::ArticleStorageDB;
-#use Kernel::System::Ticket::ArticleStorageFS;
+use Kernel::System::Ticket::ArticleStorageFS;
+use Kernel::System::Ticket::ArticleSearchIndex::StaticDB;
+use Kernel::System::Ticket::ArticleSearchIndex::SphinxAndStaticDB;
 #use Kernel::System::Ticket::IndexAccelerator::RuntimeDB;
-#use Kernel::System::Ticket::IndexAccelerator::StaticDB;
+use Kernel::System::Ticket::IndexAccelerator::StaticDB;
 #use Kernel::System::Ticket::Number::Date;
-#use Kernel::System::Ticket::Number::AutoIncrement;
+use Kernel::System::Ticket::Number::AutoIncrement;
 #use Kernel::System::Ticket::Number::Random;
-#use Kernel::System::CustomerUser::DB;
-#use Kernel::System::CustomerUser::LDAP;
-#use Kernel::System::CustomerAuth::DB;
-#use Kernel::System::CustomerAuth::LDAP;
+use Kernel::System::CustomerUser::DB;
+use Kernel::System::CustomerUser::LDAP;
+use Kernel::System::CustomerAuth::DB;
+use Kernel::System::CustomerAuth::LDAP;
+use Kernel::System::FindURI;
+use Kernel::System::Cache::FileStorable;
+use Kernel::System::Cache::Memcached;
 
 # web agent middle ware modules
 use Kernel::Modules::AgentTicketQueue;

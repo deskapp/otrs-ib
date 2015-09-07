@@ -1,6 +1,7 @@
 # --
 # Kernel/System/Ticket/Article.pm - global article module for OTRS kernel
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -174,10 +175,9 @@ sub ArticleCreate {
         EncodeObject => $Self->{EncodeObject},
     );
 
-    # add 'no body' if there is no body there!
     my @AttachmentConvert;
-    if ( !length $Param{Body} ) {    # allow '0' as body
-        $Param{Body} = 'No body';
+    if ( !defined($Param{Body}) ) {
+        $Param{Body} = '';
     }
 
     # process html article
@@ -736,8 +736,15 @@ sub ArticleCreate {
 get ticket id of given message id
 
     my $TicketID = $TicketObject->ArticleGetTicketIDOfMessageID(
-        MessageID => '<13231231.1231231.32131231@example.com>',
+       MessageID => '<13231231.1231231.32131231@example.com>',
+       MaxAge => 0,          # search only articles not older than MaxAge
+                             # seconds; 0 disables this filter
+       MaxArticles => 0,     # search failure if more than MaxArticles have
+                             # same Message-ID; 0 disables this filter
+       Quiet => 0,           # 1 = don't generate logs for prerun
     );
+
+search will fail if there are two different tickets with article having given Message-ID
 
 =cut
 
@@ -749,13 +756,18 @@ sub ArticleGetTicketIDOfMessageID {
         $Self->{LogObject}->Log( Priority => 'error', Message => 'Need MessageID!' );
         return;
     }
+
+    my $Quiet = $Param{Quiet} || 0;
+
     my $MD5 = $Self->{MainObject}->MD5sum( String => $Param{MessageID} );
+
+    # search for tickets with given Message-ID in its articles
 
     # sql query
     return if !$Self->{DBObject}->Prepare(
-        SQL   => 'SELECT ticket_id FROM article WHERE a_message_id_md5 = ?',
+        SQL   => 'SELECT DISTINCT(ticket_id) FROM article WHERE a_message_id_md5 = ?',
         Bind  => [ \$MD5 ],
-        Limit => 10,
+        Limit => 2,
     );
     my $TicketID;
     my $Count = 0;
@@ -764,19 +776,85 @@ sub ArticleGetTicketIDOfMessageID {
         $TicketID = $Row[0];
     }
 
-    # no reference found
+    # no ticket found
     return if $Count == 0;
 
-    # one found
-    return $TicketID if $Count == 1;
+    # search failure if more than one ticket with article having given Message-ID exist
+    if ($Count > 1) {
+        # more then one found! that should not be, a message_id should be unique!
+        if (!$Quiet) {
+            $Self->{LogObject}->Log(
+                Priority => 'notice',
+                Message  => "Articles with Message-ID '$Param{MessageID}' exist in more than one "
+                    . "ticket. Follow up mode disabled.",
+            );
+        }
+        return;
+    }
 
-    # more than one found! that should not be, a message_id should be unique!
-    $Self->{LogObject}->Log(
-        Priority => 'notice',
-        Message  => "The MessageID '$Param{MessageID}' is in your database "
-            . "more than one time! That should not be, a message_id should be unique!",
-    );
-    return;
+    # search failure if number of articles with given Message-ID is greater than MaxArticles
+    # (disable check if MaxArticles is not integer or is not > 0)
+    if ( $Param{MaxArticles} && ( $Param{MaxArticles} =~ /^\d+$/) && ($Param{MaxArticles} > 0) ) {
+        # sql query
+        return if !$Self->{DBObject}->Prepare(
+            SQL   => 'SELECT COUNT(ticket_id) FROM article WHERE a_message_id_md5 = ?',
+            Bind  => [ \$MD5 ],
+        );
+
+        $Count = 0;
+        while ( my @Row = $Self->{DBObject}->FetchrowArray() ) {
+            $Count = $Row[0];
+        }
+
+        if ($Count >= $Param{MaxArticles}) {
+            if (!$Quiet) {
+                $Self->{LogObject}->Log(
+                    Priority => 'notice',
+                    Message  => "Number of articles with Message-ID '$Param{MessageID}' ($Count) "
+                        . "reached MaxArticles limit (" . $Param{MaxArticles} . "). Follow up mode disabled.",
+                );
+            }
+            return;
+        };
+    }
+
+    # search failure if oldest article with given Message-ID is older than MaxAge seconds
+    # (disable check if MaxAge is not integer or is not > 0)
+    if ( $Param{MaxAge} && ( $Param{MaxAge} =~ /^\d+$/) && ($Param{MaxAge} > 0) ) {
+        # sql query
+        return if !$Self->{DBObject}->Prepare(
+            SQL   => 'SELECT create_time FROM article WHERE a_message_id_md5 = ? ORDER BY create_time ASC',
+            Bind  => [ \$MD5 ],
+            Limit => 1,
+        );
+
+        my $OldestArticleCreate = 0;
+        while ( my @Row = $Self->{DBObject}->FetchrowArray() ) {
+            $OldestArticleCreate = $Row[0];
+
+            # cleanup time stamps (some databases are using e. g. 2008-02-25 22:03:00.000000
+            # and 0000-00-00 00:00:00 time stamps)
+            $OldestArticleCreate =~ s/^(\d\d\d\d-\d\d-\d\d\s\d\d:\d\d:\d\d)\..+?$/$1/;
+        }
+
+        my $OldestArticleCreateTime = $Self->{TimeObject}->TimeStamp2SystemTime(
+            String => $OldestArticleCreate,
+        );
+
+        if ( $Self->{TimeObject}->SystemTime() - $Param{MaxAge} > $OldestArticleCreateTime ) {
+            if (!$Quiet) {
+                $Self->{LogObject}->Log(
+                    Priority => 'notice',
+                    Message  => "Oldest article with Message-ID '$Param{MessageID}' is "
+                        . "older (" . $OldestArticleCreate . ") than MaxAge limit ("
+                        . $Param{MaxAge} . " sec.). Follow up mode disabled.",
+                );
+            }
+            return;
+        }
+    }
+
+    return $TicketID;
 }
 
 =item ArticleGetContentPath()
@@ -2056,15 +2134,20 @@ sub ArticleSend {
         MainObject   => $Self->{MainObject},
         EncodeObject => $Self->{EncodeObject},
     );
+
+    if ( !$Param{Attachment} ) {
+        $Param{Attachment} = [];
+    }
+
     $HTMLUtilsObject->EmbeddedImagesExtract(
         DocumentRef => \$Param{Body},
-        AttachmentsRef => $Param{Attachment} || [],
+        AttachmentsRef => \@{ $Param{Attachment} },
     );
 
     # create article
     my $Time      = $Self->{TimeObject}->SystemTime();
     my $Random    = rand 999999;
-    my $FQDN      = $Self->{ConfigObject}->Get('FQDN');
+    my $FQDN      = $Self->{ConfigObject}->Get('ExtFQDN');
     my $MessageID = "<$Time.$Random.$Param{TicketID}.$Param{UserID}\@$FQDN>";
     my $ArticleID = $Self->ArticleCreate(
         %Param,
@@ -2742,7 +2825,7 @@ sub SendAutoResponse {
     }
 
     # log that no auto response was sent!
-    if ( $OrigHeader{'X-OTRS-Loop'} ) {
+    if ( $OrigHeader{'X-OTRS-Loop'} && $OrigHeader{'X-OTRS-Loop'} !~ /(false|no)/i ) {
 
         # add history row
         $Self->HistoryAdd(
@@ -2854,8 +2937,8 @@ sub SendAutoResponse {
     my $ToAll = $AutoReplyAddresses;
     my $Cc;
 
-    # also send CC to customer user if customer user id is used and addresses do not match
-    if ( $Ticket{CustomerUserID} ) {
+    # also send CC to customer user if enabled and if customer user id is used and addresses do not match
+    if ( $Ticket{CustomerUserID} && $Self->{ConfigObject}->Get('AutoResponseAddCustomerAddressToCc') ) {
         my %CustomerUser = $Self->{CustomerUserObject}->CustomerUserDataGet(
             User => $Ticket{CustomerUserID},
         );
@@ -3308,7 +3391,7 @@ returns:
         ContentID          => "",
         ContentType        => "application/pdf",
         Filename           => "StdAttachment-Test1.pdf",
-        Filesize           => "4.6 KBytes",
+        Filesize           => "4.6 KB",
         FilesizeRaw        => 4722,
     );
 
@@ -3359,7 +3442,7 @@ returns:
         '1' => {
             'ContentAlternative' => '',
             'ContentID' => '',
-            'Filesize' => '4.6 KBytes',
+            'Filesize' => '4.6 KB',
             'ContentType' => 'application/pdf',
             'Filename' => 'StdAttachment-Test1.pdf',
             'FilesizeRaw' => 4722
@@ -3367,7 +3450,7 @@ returns:
         '2' => {
             'ContentAlternative' => '',
             'ContentID' => '',
-            'Filesize' => '183 Bytes',
+            'Filesize' => '183 B',
             'ContentType' => 'text/html; charset="utf-8"',
             'Filename' => 'file-2',
             'FilesizeRaw' => 183
@@ -3444,7 +3527,7 @@ sub ArticleAttachmentIndex {
                     # content id cleanup
                     $File{ContentID} =~ s/^<//;
                     $File{ContentID} =~ s/>$//;
-                    if ( $File{ContentID} && $Attachment{Content} =~ /\Q$File{ContentID}\E/i ) {
+                    if ( $File{ContentID} && $Attachment{Content} =~ /(\ssrc\s*=\s*)(["']{0,1})(cid:){0,1}(\Q$File{ContentID}\E)("|'|>|\/>|\s)/i ) {
                         delete $Attachments{$AttachmentID};
                     }
                 }
@@ -3489,8 +3572,8 @@ sub ArticleAttachmentIndex {
 
                 # check size by tolerance of 1.1 factor (because of charset difs)
                 if (
-                    $BodySize / 1.1 < $AttachmentFilePlain{FilesizeRaw}
-                    && $BodySize * 1.1 > $AttachmentFilePlain{FilesizeRaw}
+                    $BodySize / 1.1 <= $AttachmentFilePlain{FilesizeRaw}
+                    && $BodySize * 1.1 >= $AttachmentFilePlain{FilesizeRaw}
                     )
                 {
                     delete $Attachments{$AttachmentIDPlain};

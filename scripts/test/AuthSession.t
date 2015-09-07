@@ -1,6 +1,7 @@
 # --
 # AuthSession.t - auth session tests
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -84,13 +85,13 @@ for my $ModuleFile (@BackendModuleFiles) {
         my $Length = length($LongString);
         my $Size   = $Length;
         if ( $Size > ( 1024 * 1024 ) ) {
-            $Size = sprintf "%.1f MBytes", ( $Size / ( 1024 * 1024 ) );
+            $Size = sprintf "%.1f MB", ( $Size / ( 1024 * 1024 ) );
         }
         elsif ( $Size > 1024 ) {
-            $Size = sprintf "%.1f KBytes", ( ( $Size / 1024 ) );
+            $Size = sprintf "%.1f KB", ( ( $Size / 1024 ) );
         }
         else {
-            $Size = $Size . ' Bytes';
+            $Size = $Size . ' B';
         }
 
         my %NewSessionData = (

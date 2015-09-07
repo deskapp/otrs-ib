@@ -1,6 +1,7 @@
 # --
 # Kernel/System/EmailParser.pm - the global email parser module
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -102,7 +103,7 @@ sub new {
     $Self->{Debug} = $Param{Debug} || 0;
 
     # check needed objects
-    for (qw(LogObject ConfigObject EncodeObject)) {
+    for (qw(MainObject LogObject ConfigObject EncodeObject)) {
         $Self->{$_} = $Param{$_} || die "Got no $_!";
     }
 
@@ -137,6 +138,9 @@ sub new {
             }
             $Param{Email} = \@Content;
         }
+
+        # save copy of unmodified message
+        $Self->{OrigEmail} = join('', @{$Param{Email}});
 
         # create Mail::Internet object
         $Self->{Email} = Mail::Internet->new( $Param{Email} );
@@ -180,6 +184,20 @@ sub GetPlainEmail {
     my $Self = shift;
 
     return $Self->{Email}->as_string();
+}
+
+=item GetPlainOrigEmail()
+
+To get an original email as a string back (plain email).
+
+    my $Email = $ParserObject->GetPlainOrigEmail();
+
+=cut
+
+sub GetPlainOrigEmail {
+    my $Self = shift;
+
+    return $Self->{OrigEmail};
 }
 
 =item GetParam()
@@ -473,7 +491,7 @@ sub GetMessageBody {
     my ( $Self, %Param ) = @_;
 
     # check if message body is already there
-    return $Self->{MessageBody} if $Self->{MessageBody};
+    return $Self->{MessageBody} if defined $Self->{MessageBody};
 
     if ( !$Self->{EntityMode} && $Self->{ParserParts}->parts() == 0 ) {
         $Self->{MimeEmail} = 0;
@@ -527,7 +545,9 @@ sub GetMessageBody {
         my @Attachments = $Self->GetAttachments();
         if ( @Attachments > 0 ) {
             $Self->{Charset}     = $Attachments[0]->{Charset};
+
             $Self->{ContentType} = $Attachments[0]->{ContentType};
+
             if ( $Self->{Debug} > 0 ) {
                 $Self->{LogObject}->Log(
                     Priority => 'debug',
@@ -684,9 +704,8 @@ sub PartsAttachments {
         if ( !$PartData{Content} ) {
             $Self->{LogObject}->Log(
                 Priority => 'notice',
-                Message  => "Totally empty attachment part ($PartCounter)",
+                Message  => "Empty attachment part ($PartCounter)",
             );
-            return;
         }
     }
 
@@ -740,8 +759,9 @@ sub PartsAttachments {
             }
         }
 
-        # trim whitespace
-        $Subject =~ s/^\s+|\n|\s+$//g;
+        # only whitelisted characters allowed in filenames for security
+        $Subject =~ s/[^\w\-+.#_]/_/g;
+
         if ( length($Subject) > 246 ) {
             $Subject = substr( $Subject, 0, 246 );
         }

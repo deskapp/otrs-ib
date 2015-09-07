@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/AdminLog.pm - provides a log view for admins
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -37,7 +38,7 @@ sub Run {
     $Output .= $Self->{LayoutObject}->NavigationBar();
 
     # get log data
-    my $Log = $Self->{LogObject}->GetLog( Limit => 400 ) || '';
+    my $Log = $Self->{LogObject}->GetLog() || '';
 
     # split data to lines
     my @Message = split /\n/, $Log;
@@ -46,7 +47,7 @@ sub Run {
     ROW:
     for my $Row (@Message) {
 
-        my @Parts = split /;;/, $Row;
+        my @Parts = split /\t/, $Row;
 
         next ROW if !$Parts[3];
 
@@ -58,8 +59,8 @@ sub Run {
                 ErrorClass => $ErrorClass,
                 Time       => $Parts[0],
                 Priority   => $Parts[1],
-                Facility   => $Parts[2],
-                Message    => $Parts[3],
+                Facility   => $Parts[3],
+                Message    => $Parts[4],
             },
         );
     }

@@ -1,6 +1,7 @@
 // --
 // Core.Agent.TicketZoom.js - provides the special module functions for TicketZoom
 // Copyright (C) 2001-2013 OTRS AG, http://otrs.org/
+// Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -231,7 +232,7 @@ Core.Agent.TicketZoom = (function (TargetNS) {
             var Position, HTML, $HTMLObject;
             if ($(this).attr('rel') && $('#' + $(this).attr('rel')).length) {
                 Position = $(this).offset();
-                Core.UI.Dialog.ShowContentDialog($('#' + $(this).attr('rel'))[0].innerHTML, 'Attachments', Position.top - $(window).scrollTop(), parseInt(Position.left, 10) + 25);
+                Core.UI.Dialog.ShowContentDialog($('#' + $(this).attr('rel'))[0].innerHTML, '', Position.top - $(window).scrollTop(), parseInt(Position.left, 10) + 25);
             }
             Event.preventDefault();
             Event.stopPropagation();

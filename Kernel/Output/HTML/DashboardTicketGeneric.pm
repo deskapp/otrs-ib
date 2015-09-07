@@ -1,6 +1,7 @@
 # --
 # Kernel/Output/HTML/DashboardTicketGeneric.pm
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -283,22 +284,12 @@ sub new {
 sub Preferences {
     my ( $Self, %Param ) = @_;
 
-    # configure columns
+    # read user preferences and config to get columns that
+    # should be shown in the dashboard widget perferences
+    # (the user prefereces have precedence)
     my @ColumnsEnabled;
     my @ColumnsAvailable;
     my @ColumnsAvailableNotEnabled;
-
-    # check for default settings
-    if (
-        $Self->{Config}->{DefaultColumns}
-        && IsHashRefWithData( $Self->{Config}->{DefaultColumns} )
-        )
-    {
-        @ColumnsAvailable = grep { $Self->{Config}->{DefaultColumns}->{$_} }
-            keys %{ $Self->{Config}->{DefaultColumns} };
-        @ColumnsEnabled = grep { $Self->{Config}->{DefaultColumns}->{$_} eq '2' }
-            keys %{ $Self->{Config}->{DefaultColumns} };
-    }
 
     # check if the user has filter preferences for this widget
     my %Preferences = $Self->{UserObject}->GetPreferences(
@@ -317,6 +308,22 @@ sub Preferences {
 
         if ( $ColumnsEnabled->{Order} && @{ $ColumnsEnabled->{Order} } ) {
             @ColumnsEnabled = @{ $ColumnsEnabled->{Order} };
+        }
+    }
+
+    # check for default settings
+    if (
+        $Self->{Config}->{DefaultColumns}
+        && IsHashRefWithData( $Self->{Config}->{DefaultColumns} )
+        )
+    {
+        @ColumnsAvailable = grep { $Self->{Config}->{DefaultColumns}->{$_} > 0 }
+            keys %{ $Self->{Config}->{DefaultColumns} };
+
+        if (!@ColumnsEnabled) {
+            @ColumnsEnabled = grep { $Self->{Config}->{DefaultColumns}->{$_} >= 2 }
+                sort { $Self->{Config}->{DefaultColumns}->{$a} <=> $Self->{Config}->{DefaultColumns}->{$b} }
+                    keys %{ $Self->{Config}->{DefaultColumns} };
         }
     }
 
@@ -573,7 +580,7 @@ sub Run {
                 %{ $TicketSearchSummary{$Type} },
                 %{ $Self->{ColumnFilter} },
                 %ColumnFilter,
-            );
+            ) || 0;
         }
     }
 
@@ -1741,32 +1748,40 @@ sub _SearchParamsGet {
     # read user preferences and config to get columns that
     # should be shown in the dashboard widget (the prefereces
     # have precedence)
+    my @Columns;
+
+    # check if the user has filter preferences for this widget
     my %Preferences = $Self->{UserObject}->GetPreferences(
         UserID => $Self->{UserID},
     );
 
-    # get column names from Preferences
-    my $PreferencesColumn = $Self->{JSONObject}->Decode(
-        Data => $Preferences{ $Self->{PrefKeyColumns} },
-    );
+    # if preference settings are available, take them
+    if ( $Preferences{ $Self->{PrefKeyColumns} } ) {
 
-    # check for default settings
-    my @Columns;
-    if (
-        $Self->{Config}->{DefaultColumns}
+       # get column names from Preferences
+        my $PreferencesColumn = $Self->{JSONObject}->Decode(
+            Data => $Preferences{ $Self->{PrefKeyColumns} },
+        );
+
+        if ($PreferencesColumn) {
+            @Columns = grep { $PreferencesColumn->{Columns}->{$_} == 1 }
+                sort keys %{ $PreferencesColumn->{Columns} };
+
+            if ( $PreferencesColumn->{Order} && @{ $PreferencesColumn->{Order} } ) {
+                @Columns = @{ $PreferencesColumn->{Order} };
+            }
+        }
+    }
+
+    # check for default settings if no user preferences found
+    if ( !@Columns
+        && $Self->{Config}->{DefaultColumns}
         && IsHashRefWithData( $Self->{Config}->{DefaultColumns} )
         )
     {
-        @Columns = grep { $Self->{Config}->{DefaultColumns}->{$_} eq '2' }
-            sort _DefaultColumnSort keys %{ $Self->{Config}->{DefaultColumns} };
-    }
-    if ($PreferencesColumn) {
-        @Columns = grep { $PreferencesColumn->{Columns}->{$_} == 1 }
-            sort _DefaultColumnSort keys %{ $PreferencesColumn->{Columns} };
-
-        if ( $PreferencesColumn->{Order} && @{ $PreferencesColumn->{Order} } ) {
-            @Columns = @{ $PreferencesColumn->{Order} };
-        }
+        @Columns = grep { $Self->{Config}->{DefaultColumns}->{$_} >= 2 }
+            sort { $Self->{Config}->{DefaultColumns}->{$a} <=> $Self->{Config}->{DefaultColumns}->{$b} }
+                keys %{ $Self->{Config}->{DefaultColumns} };
     }
 
     # always set TicketNumber
@@ -1933,52 +1948,6 @@ sub _SearchParamsGet {
         TicketSearchSummary => \%TicketSearchSummary,
     );
 
-}
-
-sub _DefaultColumnSort {
-
-    my %DefaultColumns = (
-        TicketNumber           => 100,
-        Age                    => 110,
-        Changed                => 111,
-        PendingTime            => 112,
-        EscalationTime         => 113,
-        EscalationSolutionTime => 114,
-        EscalationResponseTime => 115,
-        EscalationUpdateTime   => 116,
-        Title                  => 120,
-        State                  => 130,
-        Lock                   => 140,
-        Queue                  => 150,
-        Owner                  => 160,
-        Responsible            => 161,
-        CustomerID             => 170,
-        CustomerName           => 171,
-        CustomerUserID         => 172,
-        Type                   => 180,
-        Service                => 191,
-        SLA                    => 192,
-        Priority               => 193,
-    );
-
-    # dynamic fields can not be on the DefaultColumns sorting hash
-    # when comparing 2 dynamic fields sorting must be alphabetical
-    if ( !$DefaultColumns{$a} && !$DefaultColumns{$b} ) {
-        return $a cmp $b;
-    }
-
-    # when a dynamic field is compared to a ticket attribute it must be higher
-    elsif ( !$DefaultColumns{$a} ) {
-        return 1;
-    }
-
-    # when a ticket attribute is compared to a dynamic field it must be lower
-    elsif ( !$DefaultColumns{$b} ) {
-        return -1;
-    }
-
-    # otherwise do a numerical comparison with the ticket attributes
-    return $DefaultColumns{$a} <=> $DefaultColumns{$b};
 }
 
 1;

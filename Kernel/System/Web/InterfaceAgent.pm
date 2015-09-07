@@ -1,6 +1,7 @@
 # --
 # Kernel/System/Web/InterfaceAgent.pm - the agent interface file (incl. auth)
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -68,11 +69,11 @@ sub new {
 
     # create common framework objects 1/2
     $Self->{ConfigObject} = Kernel::Config->new();
+    $Self->{EncodeObject} = Kernel::System::Encode->new( %{$Self} );
     $Self->{LogObject}    = Kernel::System::Log->new(
         LogPrefix => $Self->{ConfigObject}->Get('CGILogPrefix'),
         %{$Self},
     );
-    $Self->{EncodeObject} = Kernel::System::Encode->new( %{$Self} );
     $Self->{MainObject}   = Kernel::System::Main->new( %{$Self} );
     $Self->{TimeObject}   = Kernel::System::Time->new( %{$Self} );
     $Self->{ParamObject}  = Kernel::System::Web::Request->new(
@@ -614,9 +615,25 @@ sub Run {
 
             # automatic login
             $Param{RequestedURL} = $LayoutObject->LinkEncode( $Param{RequestedURL} );
-            print $LayoutObject->Redirect(
+
+            my $Result = $LayoutObject->Redirect(
                 OP => "Action=Login&RequestedURL=$Param{RequestedURL}",
             );
+
+            # "Premature end of script headers" bug occurs when STDOUT uses :encoding(utf8)
+            # and length (headers + \n\n) exceeds 1024 bytes; problem may be connected with
+            # 1024 buffer in Encode::PerlIO and its flushes and mod_perl ParseHeaders; no
+            # such problem with less safe :utf8 - will be used as workaround here;
+            # see also http://search.cpan.org/dist/Encode/lib/Encode/PerlIO.pod and
+            # https://github.com/OTRS/otrs/commit/28996cf88f8a57e70d52fed7ab8963b7f1b4771b
+            my @SplitResult = split("\n\n", $Result);
+            if ( length($SplitResult[0]) > 1022 ) {
+                # replaces :encoding(utf8) with :utf8
+                binmode(*STDOUT, ':pop(encoding):utf8');
+            }
+
+            print $Result;
+
             return;
         }
         elsif ( $Self->{ConfigObject}->Get('LoginURL') ) {

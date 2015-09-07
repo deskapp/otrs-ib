@@ -1,0 +1,33 @@
+/**
+ * Core.Table.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Customer Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 207 */
+.Overview tbody tr:hover td {
+    background: #D2E2EF !important;
+}
+
+/* 219 */
+.Overview tbody tr:hover td,
+.Overview tbody tr:hover a {
+    color: #000000;
+    text-shadow: none;
+}
+
+/* 224 */
+.Overview tbody tr:hover .Title div {
+    color: #000000;
+    text-shadow: none;
+}
+
+} /* end @media */

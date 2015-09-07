@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/CustomerTicketZoom.pm - to get a closer view
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -398,6 +399,7 @@ sub Run {
             );
             $Self->{UploadCacheObject}->FormIDAddFile(
                 FormID => $Self->{FormID},
+                Disposition => 'attachment',
                 %UploadStuff,
             );
             $IsUpload = 1;
@@ -653,10 +655,29 @@ sub Run {
         ATTACHMENT:
         for my $Attachment (@AttachmentData) {
 
-            # skip deleted inline images
-            next ATTACHMENT if $Attachment->{ContentID}
-                && $Attachment->{ContentID} =~ /^inline/
-                && $GetParam{Body} !~ /$Attachment->{ContentID}/;
+            # skip, deleted not used inline images
+            my $ContentID = $Attachment->{ContentID};
+            if (
+                $ContentID
+                && ( $Attachment->{ContentType} =~ /image/i )
+                && ( $Attachment->{Disposition} =~ /inline/i )
+               )
+            {
+                my $ContentIDHTMLQuote = $Self->{LayoutObject}->Ascii2Html(
+                    Text => $ContentID,
+                );
+
+                # workaround for link encode of rich text editor, see bug#5053
+                my $ContentIDLinkEncode = $Self->{LayoutObject}->LinkEncode($ContentID);
+                $GetParam{Body} =~ s/(ContentID=)$ContentIDLinkEncode/$1$ContentID/g;
+
+                # ignore attachment if not linked in body
+                next ATTACHMENT
+                    if $GetParam{Body}
+                    !~ /(\Q$ContentIDHTMLQuote\E|\Q$ContentID\E)/i;
+            }
+
+            # write existing file to backend
             $Self->{TicketObject}->ArticleWriteAttachment(
                 %{$Attachment},
                 ArticleID => $ArticleID,
@@ -1660,7 +1681,16 @@ sub _Mask {
 
         ATTACHMENT:
         for my $Attachment (@Attachments) {
-            next ATTACHMENT if $Attachment->{ContentID} && $Self->{LayoutObject}->{BrowserRichText};
+            if (
+                $Attachment->{ContentID}
+                && $Self->{LayoutObject}->{BrowserRichText}
+                && ( $Attachment->{ContentType} =~ /image/i )
+                && ( $Attachment->{Disposition} =~ /inline/i )
+                )
+            {
+                next ATTACHMENT;
+            }
+
             $Self->{LayoutObject}->Block(
                 Name => 'FollowUpAttachment',
                 Data => $Attachment,

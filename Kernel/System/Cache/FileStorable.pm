@@ -1,6 +1,7 @@
 # --
 # Kernel/System/Cache/FileStorable.pm - all cache functions
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -87,12 +88,13 @@ sub Set {
         }
     }
     my $FileLocation = $Self->{MainObject}->FileWrite(
-        Directory  => $CacheDirectory,
-        Filename   => $Filename,
-        Content    => \$Dump,
-        Type       => 'Local',
-        Mode       => 'binmode',
-        Permission => '660',
+        Directory       => $CacheDirectory,
+        Filename        => $Filename,
+        Content         => \$Dump,
+        Type            => 'Local',
+        Mode            => 'binmode',
+        Permission      => '660',
+        DisableWarnings => 1,
     );
 
     return if !$FileLocation;

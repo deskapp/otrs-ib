@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/AgentTicketResponsibleView.pm - to view all locked tickets
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -349,7 +350,7 @@ sub Run {
             %{ $Filters{$Filter}->{Search} },
             %ColumnFilter,
             Result => 'COUNT',
-        );
+        ) || 0;
 
         # prepare count for new article tickets
         if ( $Filter eq 'New' ) {
@@ -357,7 +358,7 @@ sub Run {
                 %{ $Filters{All}->{Search} },
                 %ColumnFilter,
                 Result => 'COUNT',
-            );
+            ) || 0;
             $Count = $CountAll - $Count;
         }
 

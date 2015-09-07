@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/AgentTicketEmail.pm - to compose initial email to customer
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -737,6 +738,7 @@ sub Run {
             );
             $Self->{UploadCacheObject}->FormIDAddFile(
                 FormID => $Self->{FormID},
+                Disposition => 'attachment',
                 %UploadStuff,
             );
         }
@@ -1247,13 +1249,22 @@ sub Run {
         my $MimeType = 'text/plain';
         if ( $Self->{LayoutObject}->{BrowserRichText} ) {
             $MimeType = 'text/html';
-            $GetParam{Body} .= '<br/><br/>' . $Signature;
+
+            my $RichTextEnterMode = $Self->{ConfigObject}->Get('Frontend::RichText::EnterMode');
+            my $Separator = '<br/><br/>';
+            $Separator = '' if ($RichTextEnterMode && $RichTextEnterMode == 1);
+            $GetParam{Body} .= $Separator . $Signature;
 
             # remove unused inline images
             my @NewAttachmentData;
             for my $Attachment (@Attachments) {
                 my $ContentID = $Attachment->{ContentID};
-                if ($ContentID) {
+                if (
+                    $ContentID
+                    && ( $Attachment->{ContentType} =~ /image/i )
+                    && ( $Attachment->{Disposition} =~ /inline/i )
+                    )
+                {
                     my $ContentIDHTMLQuote = $Self->{LayoutObject}->Ascii2Html(
                         Text => $ContentID,
                     );
@@ -2639,7 +2650,16 @@ sub _MaskEmailNew {
 
     # show attachments
     for my $Attachment ( @{ $Param{Attachments} } ) {
-        next if $Attachment->{ContentID} && $Self->{LayoutObject}->{BrowserRichText};
+        if (
+            $Attachment->{ContentID}
+            && $Self->{LayoutObject}->{BrowserRichText}
+            && ( $Attachment->{ContentType} =~ /image/i )
+            && ( $Attachment->{Disposition} =~ /inline/i )
+            )
+        {
+            next;
+        }
+
         $Self->{LayoutObject}->Block(
             Name => 'Attachment',
             Data => $Attachment,

@@ -2,6 +2,7 @@
 # --
 # bin/otrs.SetPermissions.pl - to set the otrs permissions
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU AFFERO General Public License as published by
@@ -155,7 +156,7 @@ else {
 
 # add empty files
 my @EmptyFiles = (
-    "$DestDir/var/log/TicketCounter.log",
+    "/var/opt/otrs/file/counter/TicketCounter.log",
 );
 for my $File (@EmptyFiles) {
     open( my $Fh, '>>', $File ) || die "Could not open $File: $!\n";    ## no critic

@@ -261,7 +261,7 @@ sub _ProcessFailed {
         $Content .= $Line;
     }
 
-    my $Home = $Self->{ConfigObject}->Get('Home') . '/var/spool/';
+    my $Home = '/var/opt/otrs/spool/new/';
     my $MD5  = $Self->{MainObject}->MD5sum(
         String => \$Content,
     );

@@ -1,6 +1,7 @@
 # --
 # Kernel/System/User.pm - some user functions
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -330,7 +331,7 @@ sub GetUserData {
             my $TillDate
                 = "$Preferences{OutOfOfficeEndYear}-$Preferences{OutOfOfficeEndMonth}-$Preferences{OutOfOfficeEndDay}";
             if ( $TimeStart < $Time && $TimeEnd > $Time ) {
-                $Preferences{OutOfOfficeMessage} = "*** out of office till $TillDate/$Till d ***";
+                $Preferences{OutOfOfficeMessage} = "*** poza biurem do $TillDate/$Till d ***";
                 $Data{UserLastname} .= ' ' . $Preferences{OutOfOfficeMessage};
             }
         }
@@ -374,6 +375,7 @@ to add new users
         UserEmail     => 'email@example.com',
         ValidID       => 1,
         ChangeUserID  => 123,
+        Extended      => 0,           # set extended properties also; disabled by default
     );
 
 =cut
@@ -460,6 +462,24 @@ sub UserAdd {
     # set email address
     $Self->SetPreferences( UserID => $UserID, Key => 'UserEmail', Value => $Param{UserEmail} );
 
+    # set extended user preferences if enabled
+    if ( $Param{Extended} ) {
+        foreach my $key ( keys %Param ) {
+            # skip standard and tech (not prefixed with "User") properties
+            next if $key !~ '^User.+';
+            next if $key eq 'UserID';
+            next if $key eq 'UserType';
+            next if $key eq 'UserTitle';
+            next if $key eq 'UserFirstname';
+            next if $key eq 'UserLastname';
+            next if $key eq 'UserLogin';
+            next if $key eq 'UserPw';
+            next if $key eq 'UserEmail';
+
+            $Self->SetPreferences( UserID => $UserID, Key => $key, Value => $Param{$key} );
+        }
+    }
+
     # delete cache
     $Self->{CacheInternalObject}->CleanUp();
     $Self->{CacheInternalObject}->CleanUp( OtherType => 'Group' );
@@ -480,6 +500,7 @@ to update users
         UserEmail     => 'email@example.com',
         ValidID       => 1,
         ChangeUserID  => 123,
+        Extended      => 0,           # update extended properties also; disabled by default
     );
 
 =cut
@@ -538,6 +559,24 @@ sub UserUpdate {
         Key    => 'UserEmail',
         Value  => $Param{UserEmail}
     );
+
+    # set extended user preferences if enabled
+    if ( $Param{Extended} ) {
+        foreach my $key ( keys %Param ) {
+            # skip standard and tech (not prefixed with "User") properties
+            next if $key !~ '^User.+';
+            next if $key eq 'UserID';
+            next if $key eq 'UserType';
+            next if $key eq 'UserTitle';
+            next if $key eq 'UserFirstname';
+            next if $key eq 'UserLastname';
+            next if $key eq 'UserLogin';
+            next if $key eq 'UserPw';
+            next if $key eq 'UserEmail';
+
+            $Self->SetPreferences( UserID => $Param{UserID}, Key => $key, Value => $Param{$key} );
+        }
+    }
 
     # delete cache
     $Self->{CacheInternalObject}->CleanUp();
@@ -690,6 +729,22 @@ sub SetPassword {
         $CryptedPw = $Pw;
     }
 
+    # crypt with SSHA256 and 48-bit salt; switch to default sha256 if no Crypt::SaltedHash available
+    elsif ( $CryptType eq 'ssha256' && $Self->{MainObject}->Require('Crypt::SaltedHash') ) {
+        my $SaltedHashObject;
+        $SaltedHashObject = Crypt::SaltedHash->new(algorithm => 'SHA-256', salt_len => 6);
+        $SaltedHashObject->add($Pw);
+        $CryptedPw = $SaltedHashObject->generate;
+    }
+
+    # crypt with SSHA512 and 128-bit salt; switch to default sha256 if no Crypt::SaltedHash available
+    elsif ( $CryptType eq 'ssha512' && $Self->{MainObject}->Require('Crypt::SaltedHash') ) {
+        my $SaltedHashObject;
+        $SaltedHashObject = Crypt::SaltedHash->new(algorithm => 'SHA-512', salt_len => 16);
+        $SaltedHashObject->add($Pw);
+        $CryptedPw = $SaltedHashObject->generate;
+    }
+
     # crypt with unix crypt
     elsif ( $CryptType eq 'crypt' ) {
 
@@ -734,7 +789,12 @@ sub SetPassword {
             return;
         }
 
-        my $Cost = 9;
+        # get cost from config; use 12 if not configured; don't allow values smaller than 9 for security;
+        # current Crypt::Eksblowfish::Bcrypt limit is 31
+        my $Cost = $Self->{ConfigObject}->Get('AuthModule::DB::bcryptCost') // 12;
+        $Cost = 9 if $Cost < 9;
+        $Cost = 31 if $Cost > 31;
+
         my $Salt = $Self->{MainObject}->GenerateRandomString( Length => 16 );
 
         # remove UTF8 flag, required by Crypt::Eksblowfish::Bcrypt
@@ -744,7 +804,7 @@ sub SetPassword {
         my $Octets = Crypt::Eksblowfish::Bcrypt::bcrypt_hash(
             {
                 key_nul => 1,
-                cost    => 9,
+                cost    => $Cost,
                 salt    => $Salt,
             },
             $Pw
@@ -793,7 +853,8 @@ user login or id lookup
     );
 
     my $UserID = $UserObject->UserLookup(
-        UserLogin => 'some_user_login',
+        UserLogin       => 'some_user_login',
+        DisableWarnings => 1,         # optional
     );
 
 =cut
@@ -831,10 +892,12 @@ sub UserLookup {
         }
 
         if ( !$ID ) {
-            $Self->{LogObject}->Log(
-                Priority => 'error',
-                Message  => "No UserID found for '$Param{UserLogin}'!",
-            );
+            if (!$Param{DisableWarnings}) {
+                $Self->{LogObject}->Log(
+                    Priority => 'error',
+                    Message  => "No UserID found for '$Param{UserLogin}'!",
+                );
+            }
             return;
         }
 
@@ -866,10 +929,12 @@ sub UserLookup {
         }
 
         if ( !$Login ) {
-            $Self->{LogObject}->Log(
-                Priority => 'error',
-                Message  => "No UserLogin found for '$Param{UserID}'!",
-            );
+            if (!$Param{DisableWarnings}) {
+                $Self->{LogObject}->Log(
+                    Priority => 'error',
+                    Message  => "No UserLogin found for '$Param{UserID}'!",
+                );
+            }
             return;
         }
 
@@ -1062,10 +1127,9 @@ sub SetPreferences {
     );
 
     # no updated needed
-    return 1
-        if exists $User{ $Param{Key} }
-        && defined $Param{Value}
-        && $User{ $Param{Key} } eq $Param{Value};
+    my $UserValue = $User{ $Param{Key} } || '';
+    my $ParamValue = $Param{Value} || '';
+    return 1 if $UserValue eq $ParamValue;
 
     # delete cache
     my $Login = $Self->UserLookup( UserID => $Param{UserID} );

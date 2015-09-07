@@ -8,6 +8,7 @@
 # Copyright (C) 2004-2008 Yann Richard <ze at nbox.org>
 # Copyright (C) 2009-2010 Olivier Sallou <olivier.sallou at irisa.fr>
 # Copyright (C) 2013 Evans Bernier <ebernier@libergia.com>
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -6971,7 +6972,7 @@ sub Data {
         'Logfile' => 'fichier journal',
         'Logfile just needed for File-LogModule!' => 'Fichier journal nécessaire pour le module de journalisation (File-LogModule).',
         'Logfile too large, you need to reset it!' => 'Fichier journal trop lourd, une réinitialisation est nécessaire.',
-        'Login failed! Your username or password was entered incorrectly.' =>
+        'Login failed! Your user name or password was entered incorrectly.' =>
             'La connexion a échoué. Votre nom d\'utilisateur ou votre mot de passe sont erronés.',
         'Logout of customer panel' => 'Déconnection de la page client ',
         'Logout successful. Thank you for using OTRS!' => 'Déconnexion réussie. Le groupe OTRS vous remercie!',

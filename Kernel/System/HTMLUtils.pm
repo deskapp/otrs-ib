@@ -1,6 +1,7 @@
 # --
 # Kernel/System/HTMLUtils.pm - creating and modifying html strings
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -63,7 +64,7 @@ sub new {
     $Self->{Debug} = $Param{Debug} || 0;
 
     # check needed objects
-    for (qw(LogObject ConfigObject)) {
+    for (qw(MainObject LogObject ConfigObject)) {
         $Self->{$_} = $Param{$_} || die "Got no $_!";
     }
 
@@ -605,12 +606,14 @@ sub DocumentComplete {
     my $Css = $Self->{ConfigObject}->Get('Frontend::RichText::DefaultCSS')
         || 'font-size: 12px; font-family:Courier,monospace,fixed;';
 
+    my $Style = $Self->{ConfigObject}->Get('Frontend::RichText::MailCSS');
+    $Style = ($Style) ? "<style type='text/css'><!--\n" . $Style . "\n--></style>" : '';
+
     # Use the HTML5 doctype because it is compatible with HTML4 and causes the browsers
     #   to render the content in standards mode, which is more safe than quirks mode.
     my $Body = '<!DOCTYPE html><html><head>';
-    $Body
-        .= '<meta http-equiv="Content-Type" content="text/html; charset=' . $Param{Charset} . '"/>';
-    $Body .= '</head><body style="' . $Css . '">' . $Param{String} . '</body></html>';
+    $Body .= '<meta http-equiv="Content-Type" content="text/html; charset=' . $Param{Charset} . '"/>';
+    $Body .= $Style . '</head><body><div style="' . $Css . '">' . $Param{String} . '</div></body></html>';
     return $Body;
 }
 
@@ -770,104 +773,126 @@ sub LinkQuote {
         }egxsi;
     }
 
-    # remove existing "<a href" on all other tags (to find not linked urls) and remember it
+    # Replace all anhors and HTML tags and comments with temporary HTML comment to avoid
+    # breaking legitimate links; save strings before replacement in hash to restore it after
+    # link detection is done. Replace &nbsp; also to avoid joining it to URL-s found.
     my $Counter = 0;
-    my %LinkHash;
+    my %Replacement;
     ${$String} =~ s{
-        (<a\s.+?>.+?</a>)
+        (<a\s[^>]*?>.+?</a>|<[^>]*?>|\&nbsp;)
     }
     {
         my $Content = $1;
         $Counter++;
-        my $Key  = "############LinkHash-$Counter############";
-        $LinkHash{$Key} = $Content;
+        my $Key  = "<!-- Replacement$Counter -->";
+        $Replacement{$Key} = $Content;
         $Key;
     }egxism;
 
-    # replace not "<a href" found urls and link it
     my $Target = '';
     if ( $Param{Target} ) {
         $Target = " target=\"$Param{Target}\"";
     }
-    ${$String} =~ s{
-        (                                          # $1 greater-than and less-than sign
-            > | < | \s+ | \#{6} |
-            (?: &[a-zA-Z0-9]+; )                   # get html entities
-        )
-        (                                          # $2
-            (?:                                    # http or only www
-                (?: (?: http s? | ftp ) :\/\/) |   # http://,https:// and ftp://
-                (?: (?: www | ftp ) \.)            # www. and ftp.
-            )
-        )
-        (                                          # $3
-            (?: [a-z0-9\-]+ \. )*                  # get subdomains, optional
-            [a-z0-9\-]+                            # get top level domain
-            (?:                                    # file path element
-                [\/\.]
-                | [a-zA-Z0-9\-]
-            )*
-            (?:                                    # param string
-                [\?]                               # if param string is there, "?" must be present
-                [a-zA-Z0-9&;=%]*                   # param string content, this will also catch entities like &amp;
-            )?
-            (?:                                    # link hash string
-                [\#]                               #
-                [a-zA-Z0-9&;=%]*                   # hash string content, this will also catch entities like &amp;
-            )?
-        )
-        (?=                                        # $4
-            (?:
-                [\?,;!\.\)] (?: \s | $ )           # \)\s this construct is because of bug# 2450
-                | \"
-                | \]
-                | \s+
-                | '
-                | >                               # greater-than and less-than sign
-                | <                               # "
-                | (?: &[a-zA-Z0-9]+; )+            # html entities
-                | $                                # bug# 2715
-            )
-            | \#{6}                                # ending LinkHash
-        )
-    }
-    {
-        my $Start    = $1;
-        my $Protocol = $2;
-        my $Link     = $3;
-        my $End      = $4 || '';
 
-        # there may different links for href and link body
-        my $HrefLink;
-        my $DisplayLink;
+    if ( $Self->{ConfigObject}->Get('FindURIEnabled')
+            && $Self->{MainObject}->Require('URI::Find::Schemeless') ) {
 
-        if ( $Protocol =~ m{\A ( http | https | ftp ) : \/ \/ }xi ) {
-            $DisplayLink = $Protocol . $Link;
-            $HrefLink    = $DisplayLink;
+        # new way if URI::Find::Schemeless available and FindURI enabled in SysConfig
+
+        require Kernel::System::FindURI;
+
+        my $finder = Kernel::System::FindURI->new(sub {
+            my($uri, $orig_uri) = @_;
+            return qq|<a href="$uri"$Target title="$uri">$orig_uri</a>|;
+        });
+
+        $finder->find(\${$String});
+
+    } else {
+
+        # old OTRS way
+
+        ${$String} =~ s{
+            (                                          # $1 greater-than and less-than sign
+                > | < | \s+ | \#{6} |
+                (?: &[a-zA-Z0-9]+; )                   # get html entities
+            )
+            (                                          # $2
+                (?:                                    # http or only www
+                    (?: (?: http s? | ftp ) :\/\/) |   # http://,https:// and ftp://
+                    (?: (?: www | ftp ) \.)            # www. and ftp.
+                )
+            )
+            (                                          # $3
+                (?: [a-z0-9\-]+ \. )*                  # get subdomains, optional
+                [a-z0-9\-]+                            # get top level domain
+                (?:                                    # file path element
+                    [\/\.]
+                    | [a-zA-Z0-9\-]
+                )*
+                (?:                                    # param string
+                    [\?]                               # if param string is there, "?" must be present
+                    [a-zA-Z0-9&;=%]*                   # param string content, this will also catch entities like &amp;
+                )?
+                (?:                                    # link hash string
+                    [\#]                               #
+                    [a-zA-Z0-9&;=%]*                   # hash string content, this will also catch entities like &amp;
+                )?
+            )
+            (?=                                        # $4
+                (?:
+                    [\?,;!\.\)] (?: \s | $ )           # \)\s this construct is because of bug# 2450
+                    | \"
+                    | \]
+                    | \s+
+                    | '
+                    | >                               # greater-than and less-than sign
+                    | <                               # "
+                    | (?: &[a-zA-Z0-9]+; )+            # html entities
+                    | $                                # bug# 2715
+                )
+                | \#{6}                                # ending Replacement
+            )
         }
-        else {
-            if ($Protocol =~ m{\A ftp }smx ) {
-                $HrefLink = 'ftp://';
+        {
+            my $Start    = $1;
+            my $Protocol = $2;
+            my $Link     = $3;
+            my $End      = $4 || '';
+
+            # there may different links for href and link body
+            my $HrefLink;
+            my $DisplayLink;
+
+            if ( $Protocol =~ m{\A ( http | https | ftp ) : \/ \/ }xi ) {
+                $DisplayLink = $Protocol . $Link;
+                  $HrefLink    = $DisplayLink;
             }
             else {
-                $HrefLink = 'http://';
-            }
+                if ($Protocol =~ m{\A ftp }smx ) {
+                    $HrefLink = 'ftp://';
+                }
+                    else {
+                    $HrefLink = 'http://';
+                }
 
-            if ( $Protocol ) {
-                $HrefLink   .= $Protocol;
-                $DisplayLink = $Protocol;
-            }
+                if ( $Protocol ) {
+                    $HrefLink   .= $Protocol;
+                    $DisplayLink = $Protocol;
+                }
 
-            $DisplayLink .= $Link;
-            $HrefLink    .= $Link;
-        }
-        $Start . "<a href=\"$HrefLink\"$Target title=\"$HrefLink\">$DisplayLink<\/a>" . $End;
-    }egxism;
+                $DisplayLink .= $Link;
+                $HrefLink    .= $Link;
+            }
+            $Start . "<a href=\"$HrefLink\"$Target title=\"$HrefLink\">$DisplayLink<\/a>" . $End;
+        }egxism;
+
+    }
 
     my ( $Key, $Value );
 
-    # add already existing "<a href" again
-    while ( ( $Key, $Value ) = each(%LinkHash) ) {
+    # Restore saved HTML tags and comments
+    while ( ( $Key, $Value ) = each(%Replacement) ) {
         ${$String} =~ s{$Key}{$Value};
     }
 
@@ -1119,7 +1144,7 @@ sub Safety {
     } while ($Replaced);    ## no critic
 
     # check ref && return result like called
-    if ($StringScalar) {
+    if (defined $StringScalar) {
         $Safety{String} = ${$String};
     }
     else {
@@ -1151,11 +1176,11 @@ sub EmbeddedImagesExtract {
         return;
     }
     if ( ref $Param{AttachmentsRef} ne 'ARRAY' ) {
-        $Self->{LogObject}->Log( Priority => 'error', Message => "Need DocumentRef!" );
+        $Self->{LogObject}->Log( Priority => 'error', Message => "Need AttachmentsRef!" );
         return;
     }
 
-    my $FQDN = $Self->{ConfigObject}->Get('FQDN');
+    my $FQDN = $Self->{ConfigObject}->Get('ExtFQDN');
     ${ $Param{DocumentRef} } =~ s{(src=")(data:image/)(png|gif|jpg|jpeg|bmp)(;base64,)(.+?)(")}{
 
         my $Base64String = $5;
@@ -1169,6 +1194,7 @@ sub EmbeddedImagesExtract {
             ContentType => $ContentType,
             ContentID   => $ContentID,
             Filename    => $FileName,
+            Disposition => 'inline',
         };
         push @{$Param{AttachmentsRef}}, $AttachmentData;
 

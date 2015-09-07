@@ -1,6 +1,7 @@
 # --
 # CustomerTicketZoom.dtl - provides HTML TicketZoom for CustomerTicketZoom.pm
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -107,10 +108,10 @@
 <!-- dtl:block:ArticleAttachmentRow -->
                                     <span class="DownloadAttachment" title="$QData{"Filename"} - $QData{"Filesize"}">
 <!-- dtl:block:ArticleAttachmentRowLink -->
-                                        <a href="$Data{"Link"}" $Data{"Target"} title="$Text{"$Data{"Action"}"}">$QData{"Filename"}</a>, $QData{"Filesize"}
+                                        <a href="$Data{"Link"}" $Data{"Target"} title="$Text{"$Data{"Action"}"}">$QData{"Filename"}</a> ($QData{"Filesize"})
 <!-- dtl:block:ArticleAttachmentRowLink -->
 <!-- dtl:block:ArticleAttachmentRowNoLink -->
-                                        $QData{"Filename"}, $QData{"Filesize"}
+                                        $QData{"Filename"} ($QData{"Filesize"})
 <!-- dtl:block:ArticleAttachmentRowNoLink -->
                                     </span>
 <!-- dtl:block:ArticleAttachmentRow -->
@@ -128,7 +129,7 @@
 <!-- dtl:block:BodyPlain -->
 <!-- dtl:block:BodyHTMLLoad -->
 # Use the HTML5 sandbox attribute to prevent plugins and scripts from being executed in the browser.
-# Use IE's (non-standard) security attribute to achieve something similar in older IE browsers. Append session info to URL because IE will not send cookies.
+# Use IE's (non-standard) security attribute to achieve something similar in older IE browsers (may be disabled in SysConfig if breakes SSO). Append session info to URL because IE will not send cookies.
 # Set 'allow-popups' to allow IE10+ to open links. ref: http://www.w3.org/html/wg/wiki/ChangeProposals/sandbox_allow_popups
                             <iframe sandbox="allow-same-origin allow-popups" $Data{"MSSecurityRestricted"} title="about:blank" frameborder="0" id="VisibleFrame" class="VisibleFrame" src="$Env{"Baselink"}Action=CustomerTicketAttachment;Subaction=HTMLView;ArticleID=$QData{"ArticleID"};FileID=$QData{"AttachmentIDOfHTMLBody"};$QEnv{"SessionName"}=$QEnv{"SessionID"}"></iframe>
 <!-- dtl:block:BodyHTMLLoad -->

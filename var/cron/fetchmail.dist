@@ -1,4 +1,4 @@
 
 # fetch every 5 minutes emails via fetchmail
-#*/5 * * * * [ -x /usr/bin/fetchmail ] && /usr/bin/fetchmail -a >> /dev/null
-#*/5 * * * *    /usr/bin/fetchmail -a --ssl >> /dev/null
+#*/5 * * * * [ -x /usr/bin/fetchmail ] && (/bin/date; /usr/bin/fetchmail -a) >> /var/opt/otrs/file/log/fetchmail.log
+#*/5 * * * *    (/bin/date; /usr/bin/fetchmail -a --ssl) >> /var/opt/otrs/file/log/fetchmail.log

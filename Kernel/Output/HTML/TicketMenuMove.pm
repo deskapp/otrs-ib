@@ -1,6 +1,7 @@
 # --
 # Kernel/Output/HTML/TicketMenuMove.pm
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -92,27 +93,37 @@ sub Run {
         && !$Param{ACL}->{ $Param{Config}->{Action} };
 
     $Param{Link} = 'Action=AgentTicketMove;TicketID=$QData{"TicketID"}';
+    if ( $Param{Config}->{MoveType} && $Param{Config}->{MoveType} =~ /form/i ) {
+        if ($Self->{ConfigObject}->Get('Ticket::Frontend::MoveType') =~ /form/i ) {
+            $Param{Target} = '';
+            $Param{Block}  = 'DocumentMenuItemMoveForm';
 
-    if ( $Self->{ConfigObject}->Get('Ticket::Frontend::MoveType') =~ /^form$/i ) {
-        $Param{Target} = '';
-        $Param{Block}  = 'DocumentMenuItemMoveForm';
-
-        # get move queues
-        my %MoveQueues = $Self->{TicketObject}->MoveList(
-            TicketID => $Param{Ticket}->{TicketID},
-            UserID   => $Self->{UserID},
-            Action   => $Self->{LayoutObject}->{Action},
-            Type     => 'move_into',
-        );
-        $MoveQueues{0}
-            = '- ' . $Self->{LayoutObject}->{LanguageObject}->Get('Move') . ' -';
-        $Param{MoveQueuesStrg} = $Self->{LayoutObject}->AgentQueueListOption(
-            Name => 'DestQueueID',
-            Data => \%MoveQueues,
-        );
+            # get move queues
+            my %MoveQueues = $Self->{TicketObject}->MoveList(
+                TicketID => $Param{Ticket}->{TicketID},
+                UserID   => $Self->{UserID},
+                Action   => $Self->{LayoutObject}->{Action},
+                Type     => 'move_into',
+            );
+            $MoveQueues{0}
+                = '- ' . $Self->{LayoutObject}->{LanguageObject}->Get('Move') . ' -';
+            $Param{MoveQueuesStrg} = $Self->{LayoutObject}->AgentQueueListOption(
+                Name => 'DestQueueID',
+                Data => \%MoveQueues,
+            );
+        }
+        else {
+            return;
+        }
     }
-    else {
-        $Param{PopupType} = 'TicketAction';
+
+    if ( $Param{Config}->{MoveType} && $Param{Config}->{MoveType} =~ /link/i ) {
+        if ($Self->{ConfigObject}->Get('Ticket::Frontend::MoveType') =~ /link/i ) {
+            $Param{PopupType} = 'TicketAction';
+        }
+        else {
+            return;
+        }
     }
 
     # return item

@@ -1,6 +1,7 @@
 # --
 # Kernel/System/Web/UploadCache/FS.pm - a fs upload cache
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -56,7 +57,10 @@ sub FormIDRemove {
     );
     my @Data;
     for my $File (@List) {
-        $Self->{MainObject}->FileDelete( Location => $File, );
+        $Self->{MainObject}->FileDelete(
+            Location => $File,
+            DisableWarnings => $Param{DisableWarnings},
+        );
     }
     return 1;
 }
@@ -64,12 +68,14 @@ sub FormIDRemove {
 sub FormIDAddFile {
     my ( $Self, %Param ) = @_;
 
-    for (qw(FormID Filename Content ContentType)) {
+    for (qw(FormID Filename ContentType)) {
         if ( !$Param{$_} ) {
             $Self->{LogObject}->Log( Priority => 'error', Message => "Need $_!" );
             return;
         }
     }
+
+    $Param{Content} = '' if !defined($Param{Content});
 
     # create content id
     my $ContentID = $Param{ContentID};
@@ -102,6 +108,13 @@ sub FormIDAddFile {
         Mode       => 'binmode',
         Permission => '640',
     );
+    return if !$Self->{MainObject}->FileWrite(
+        Directory  => $Self->{TempDir},
+        Filename   => "$Param{FormID}.$Param{Filename}.Disposition",
+        Content    => \$Disposition,
+        Mode       => 'binmode',
+        Permission => '644',
+    );
     return 1;
 }
 
@@ -114,7 +127,11 @@ sub FormIDRemoveFile {
             return;
         }
     }
+
     my @Index = @{ $Self->FormIDGetAllFilesMeta(%Param) };
+
+    return if !@Index;
+
     my $ID    = $Param{FileID} - 1;
     my %File  = %{ $Index[$ID] };
     $Self->{MainObject}->FileDelete(
@@ -128,6 +145,10 @@ sub FormIDRemoveFile {
     $Self->{MainObject}->FileDelete(
         Directory => $Self->{TempDir},
         Filename  => "$Param{FormID}.$File{Filename}.ContentID",
+    );
+    $Self->{MainObject}->FileDelete(
+        Directory => $Self->{TempDir},
+        Filename  => "$Param{FormID}.$File{Filename}.Disposition",
     );
     return 1;
 }
@@ -152,25 +173,26 @@ sub FormIDGetAllFilesData {
         # ignore meta files
         next if $File =~ /\.ContentType$/;
         next if $File =~ /\.ContentID$/;
+        next if $File =~ /\.Disposition$/;
 
         $Counter++;
         my $FileSize = -s $File;
 
         # human readable file size
-        if ($FileSize) {
+        if (defined $FileSize) {
 
             # remove meta data in files
             if ( $FileSize > 30 ) {
                 $FileSize = $FileSize - 30
             }
             if ( $FileSize > 1048576 ) {    # 1024 * 1024
-                $FileSize = sprintf "%.1f MBytes", ( $FileSize / 1048576 );    # 1024 * 1024
+                $FileSize = sprintf "%.1f MB", ( $FileSize / 1048576 );    # 1024 * 1024
             }
             elsif ( $FileSize > 1024 ) {
-                $FileSize = sprintf "%.1f KBytes", ( ( $FileSize / 1024 ) );
+                $FileSize = sprintf "%.1f KB", ( ( $FileSize / 1024 ) );
             }
             else {
-                $FileSize = $FileSize . ' Bytes';
+                $FileSize = $FileSize . ' B';
             }
         }
         my $Content = $Self->{MainObject}->FileRead(
@@ -196,6 +218,12 @@ sub FormIDGetAllFilesData {
             ${$ContentID} = undef;
         }
 
+        my $Disposition = $Self->{MainObject}->FileRead(
+            Location => "$File.Disposition",
+            Mode     => 'binmode',             # optional - binmode|utf8
+        );
+        next if !$Disposition;
+
         # strip filename
         $File =~ s/^.*\/$Param{FormID}\.(.+?)$/$1/;
         push(
@@ -207,6 +235,7 @@ sub FormIDGetAllFilesData {
                 Filename    => $File,
                 Filesize    => $FileSize,
                 FileID      => $Counter,
+                Disposition => ${$Disposition},
             },
         );
     }
@@ -234,25 +263,26 @@ sub FormIDGetAllFilesMeta {
         # ignore meta files
         next if $File =~ /\.ContentType$/;
         next if $File =~ /\.ContentID$/;
+        next if $File =~ /\.Disposition$/;
 
         $Counter++;
         my $FileSize = -s $File;
 
         # human readable file size
-        if ($FileSize) {
+        if (defined $FileSize) {
 
             # remove meta data in files
             if ( $FileSize > 30 ) {
                 $FileSize = $FileSize - 30
             }
             if ( $FileSize > 1048576 ) {    # 1024 * 1024
-                $FileSize = sprintf "%.1f MBytes", ( $FileSize / 1048576 );    # 1024 * 1024
+                $FileSize = sprintf "%.1f MB", ( $FileSize / 1048576 );    # 1024 * 1024
             }
             elsif ( $FileSize > 1024 ) {
-                $FileSize = sprintf "%.1f KBytes", ( ( $FileSize / 1024 ) );
+                $FileSize = sprintf "%.1f KB", ( ( $FileSize / 1024 ) );
             }
             else {
-                $FileSize = $FileSize . ' Bytes';
+                $FileSize = $FileSize . ' B';
             }
         }
 
@@ -273,6 +303,12 @@ sub FormIDGetAllFilesMeta {
             ${$ContentID} = undef;
         }
 
+        my $Disposition = $Self->{MainObject}->FileRead(
+            Location => "$File.Disposition",
+            Mode     => 'binmode',             # optional - binmode|utf8
+        );
+        next if !$Disposition;
+
         # strip filename
         $File =~ s/^.*\/$Param{FormID}\.(.+?)$/$1/;
         push(
@@ -283,6 +319,7 @@ sub FormIDGetAllFilesMeta {
                 Filename    => $File,
                 Filesize    => $FileSize,
                 FileID      => $Counter,
+                Disposition => ${$Disposition},
             },
         );
     }
@@ -309,7 +346,10 @@ sub FormIDCleanUp {
         }
     }
     for ( sort keys %RemoveFormIDs ) {
-        $Self->FormIDRemove( FormID => $_ );
+        $Self->FormIDRemove(
+            FormID => $_,
+            DisableWarnings => 1,
+        );
     }
     return 1;
 }

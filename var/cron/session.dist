@@ -1,3 +1,3 @@
 
 # delete every 120 minutes old/idle session ids
-55 */2 * * *    $HOME/bin/otrs.DeleteSessionIDs.pl --expired >> /dev/null
+55 */2 * * *    (/bin/date; $HOME/bin/otrs.DeleteSessionIDs.pl --expired) >> /var/opt/otrs/file/log/otrs.DeleteSessionIDs.pl.log

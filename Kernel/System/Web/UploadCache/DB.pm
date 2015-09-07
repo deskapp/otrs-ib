@@ -1,6 +1,7 @@
 # --
 # Kernel/System/Web/UploadCache/DB.pm - a db upload cache
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -58,12 +59,14 @@ sub FormIDRemove {
 sub FormIDAddFile {
     my ( $Self, %Param ) = @_;
 
-    for (qw(FormID Filename Content ContentType)) {
+    for (qw(FormID Filename ContentType)) {
         if ( !$Param{$_} ) {
             $Self->{LogObject}->Log( Priority => 'error', Message => "Need $_!" );
             return;
         }
     }
+
+    $Param{Content} = '' if !defined($Param{Content});
 
     # get file size
     $Param{Filesize} = bytes::length( $Param{Content} );
@@ -107,7 +110,11 @@ sub FormIDRemoveFile {
             return;
         }
     }
+
     my @Index = @{ $Self->FormIDGetAllFilesMeta(%Param) };
+
+    return if !@Index;
+
     my $ID    = $Param{FileID} - 1;
     $Param{Filename} = $Index[$ID]->{Filename};
 
@@ -140,15 +147,15 @@ sub FormIDGetAllFilesData {
         $Counter++;
 
         # human readable file size
-        if ( $Row[2] ) {
+        if ( defined $Row[2] ) {
             if ( $Row[2] > ( 1024 * 1024 ) ) {
-                $Row[2] = sprintf "%.1f MBytes", ( $Row[2] / ( 1024 * 1024 ) );
+                $Row[2] = sprintf "%.1f MB", ( $Row[2] / ( 1024 * 1024 ) );
             }
             elsif ( $Row[2] > 1024 ) {
-                $Row[2] = sprintf "%.1f KBytes", ( ( $Row[2] / 1024 ) );
+                $Row[2] = sprintf "%.1f KB", ( ( $Row[2] / 1024 ) );
             }
             else {
-                $Row[2] = $Row[2] . ' Bytes';
+                $Row[2] = $Row[2] . ' B';
             }
         }
 
@@ -194,15 +201,15 @@ sub FormIDGetAllFilesMeta {
         $Counter++;
 
         # human readable file size
-        if ( $Row[2] ) {
+        if ( defined $Row[2] ) {
             if ( $Row[2] > ( 1024 * 1024 ) ) {
-                $Row[2] = sprintf "%.1f MBytes", ( $Row[2] / ( 1024 * 1024 ) );
+                $Row[2] = sprintf "%.1f MB", ( $Row[2] / ( 1024 * 1024 ) );
             }
             elsif ( $Row[2] > 1024 ) {
-                $Row[2] = sprintf "%.1f KBytes", ( ( $Row[2] / 1024 ) );
+                $Row[2] = sprintf "%.1f KB", ( ( $Row[2] / 1024 ) );
             }
             else {
-                $Row[2] = $Row[2] . ' Bytes';
+                $Row[2] = $Row[2] . ' B';
             }
         }
 

@@ -15,9 +15,9 @@
                 <h2>$Text{"Insufficient Rights"}</h2>
             </div>
             <div class="Content">
-                <h4>
+                <p>
                     $Text{"Message"}: <span class="Error">$Data{"Message"}</span>
-                </h4>
+                </p>
 
                 <p class="SpacingTop">
                     $Data{"Comment"}

@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/CustomerTicketProcess.pm - to create process tickets
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -2036,8 +2037,15 @@ sub _RenderArticle {
     # show attachments
     ATTACHMENT:
     for my $Attachment (@Attachments) {
-
-        next ATTACHMENT if $Attachment->{ContentID} && $Self->{LayoutObject}->{BrowserRichText};
+        if (
+            $Attachment->{ContentID}
+            && $Self->{LayoutObject}->{BrowserRichText}
+            && ( $Attachment->{ContentType} =~ /image/i )
+            && ( $Attachment->{Disposition} =~ /inline/i )
+            )
+        {
+            next ATTACHMENT;
+        }
 
         $Self->{LayoutObject}->Block(
             Name => 'Attachment',
@@ -3016,6 +3024,7 @@ sub _StoreActivityDialog {
         );
         $Self->{UploadCacheObject}->FormIDAddFile(
             FormID => $Self->{FormID},
+            Disposition => 'attachment',
             %UploadStuff,
         );
     }
@@ -3456,7 +3465,12 @@ sub _StoreActivityDialog {
 
                     # skip, deleted not used inline images
                     my $ContentID = $Attachment->{ContentID};
-                    if ($ContentID) {
+                    if (
+                        $ContentID
+                        && ( $Attachment->{ContentType} =~ /image/i )
+                        && ( $Attachment->{Disposition} =~ /inline/i )
+                        )
+                    {
                         my $ContentIDHTMLQuote = $Self->{LayoutObject}->Ascii2Html(
                             Text => $ContentID,
                         );

@@ -1,0 +1,21 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <title>Trwa przerwa techniczna | Under maintenance</title>
+	<meta http-equiv="refresh" content="60;url=/otrs/customer.pl">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+
+<div style="padding: 50px;">
+   <p>Z powodu trwających prac konserwacyjnych ten serwis jest chwilowo niedostępny.</p>
+	<p>Prosimy, <a href="/otrs/customer.pl"><u>spróbuj</u></a> ponownie za chwilę.</p>
+</div>
+
+<div style="padding: 0px 50px 50px 50px;">
+   <p>This service is currently under maintenance.</p>
+	<p>Please, <a href="/otrs/customer.pl"><u>try</u></a> again later.</p>
+</div>
+
+</body>
+</html>

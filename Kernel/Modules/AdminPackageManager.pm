@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/AdminPackageManager.pm - manage software packages
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -346,18 +347,18 @@ sub Run {
                     elsif ( $Hash->{Tag} =~ /^(File)$/ ) {
 
                         # add human readable file size
-                        if ( $Hash->{Size} ) {
+                        if ( defined $Hash->{Size} ) {
 
                             # remove meta data in files
                             if ( $Hash->{Size} > ( 1024 * 1024 ) ) {
-                                $Hash->{Size} = sprintf "%.1f MBytes",
+                                $Hash->{Size} = sprintf "%.1f MB",
                                     ( $Hash->{Size} / ( 1024 * 1024 ) );
                             }
                             elsif ( $Hash->{Size} > 1024 ) {
-                                $Hash->{Size} = sprintf "%.1f KBytes", ( ( $Hash->{Size} / 1024 ) );
+                                $Hash->{Size} = sprintf "%.1f KB", ( ( $Hash->{Size} / 1024 ) );
                             }
                             else {
-                                $Hash->{Size} = $Hash->{Size} . ' Bytes';
+                                $Hash->{Size} = $Hash->{Size} . ' B';
                             }
                         }
                         $Self->{LayoutObject}->Block(
@@ -571,18 +572,18 @@ sub Run {
                     elsif ( $Hash->{Tag} =~ /^(File)$/ ) {
 
                         # add human readable file size
-                        if ( $Hash->{Size} ) {
+                        if ( defined $Hash->{Size} ) {
 
                             # remove meta data in files
                             if ( $Hash->{Size} > ( 1024 * 1024 ) ) {
-                                $Hash->{Size} = sprintf "%.1f MBytes",
+                                $Hash->{Size} = sprintf "%.1f MB",
                                     ( $Hash->{Size} / ( 1024 * 1024 ) );
                             }
                             elsif ( $Hash->{Size} > 1024 ) {
-                                $Hash->{Size} = sprintf "%.1f KBytes", ( ( $Hash->{Size} / 1024 ) );
+                                $Hash->{Size} = sprintf "%.1f KB", ( ( $Hash->{Size} / 1024 ) );
                             }
                             else {
-                                $Hash->{Size} = $Hash->{Size} . ' Bytes';
+                                $Hash->{Size} = $Hash->{Size} . ' B';
                             }
                         }
                         $Self->{LayoutObject}->Block(

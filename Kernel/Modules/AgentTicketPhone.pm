@@ -1,6 +1,7 @@
 # --
 # Kernel/Modules/AgentTicketPhone.pm - to handle phone calls
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -125,7 +126,12 @@ sub Run {
                 my $CustomerDisabled = '';
 
                 if ( !$IsUpload ) {
-                    $GetParam{From} .= $CustomerElement . ',';
+
+                    if ($GetParam{From}) {
+    	                $GetParam{From} .= ',';
+                    }
+
+                    $GetParam{From} .= $CustomerElement;
 
                     # check email address
                     for my $Email ( Mail::Address->parse($CustomerElement) ) {
@@ -784,6 +790,7 @@ sub Run {
             );
             $Self->{UploadCacheObject}->FormIDAddFile(
                 FormID => $Self->{FormID},
+                Disposition => 'attachment',
                 %UploadStuff,
             );
         }
@@ -1247,7 +1254,12 @@ sub Run {
             my @NewAttachmentData;
             for my $Attachment (@AttachmentData) {
                 my $ContentID = $Attachment->{ContentID};
-                if ($ContentID) {
+                if (
+                    $ContentID
+                    && ( $Attachment->{ContentType} =~ /image/i )
+                    && ( $Attachment->{Disposition} =~ /inline/i )
+                    )
+                {
                     my $ContentIDHTMLQuote = $Self->{LayoutObject}->Ascii2Html(
                         Text => $ContentID,
                     );
@@ -2480,7 +2492,16 @@ sub _MaskPhoneNew {
 
     # show attachments
     for my $Attachment ( @{ $Param{Attachments} } ) {
-        next if $Attachment->{ContentID} && $Self->{LayoutObject}->{BrowserRichText};
+       if (
+            $Attachment->{ContentID}
+            && $Self->{LayoutObject}->{BrowserRichText}
+            && ( $Attachment->{ContentType} =~ /image/i )
+            && ( $Attachment->{Disposition} =~ /inline/i )
+            )
+        {
+            next;
+        }
+
         $Self->{LayoutObject}->Block(
             Name => 'Attachment',
             Data => $Attachment,

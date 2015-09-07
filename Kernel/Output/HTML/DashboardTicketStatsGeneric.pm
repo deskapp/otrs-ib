@@ -1,6 +1,7 @@
 # --
 # Kernel/Output/HTML/DashboardTicketStatsGeneric.pm
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -70,8 +71,15 @@ sub Run {
     for my $Key ( 0 .. 6 ) {
 
         my $TimeNow = $Self->{TimeObject}->SystemTime();
+
+        # cache results for 30 min. for todays stats
+        my $CacheTTL = 60 * 30;
+
         if ($Key) {
             $TimeNow = $TimeNow - ( 60 * 60 * 24 * $Key );
+
+            # for past 6 days cache results for 8 days (should not change)
+            $CacheTTL = 60 * 60 * 24 * 8;
         }
         my ( $Sec, $Min, $Hour, $Day, $Month, $Year, $WeekDay )
             = $Self->{TimeObject}->SystemTime2Date(
@@ -85,8 +93,8 @@ sub Run {
 
         my $CountCreated = $Self->{TicketObject}->TicketSearch(
 
-            # cache search result 30 min
-            CacheTTL => 60 * 30,
+            # cache search result
+            CacheTTL => $CacheTTL,
 
             # tickets with create time after ... (ticket newer than this date) (optional)
             TicketCreateTimeNewerDate => "$Year-$Month-$Day 00:00:00",
@@ -100,7 +108,7 @@ sub Run {
             # search with user permissions
             Permission => $Self->{Config}->{Permission} || 'ro',
             UserID => $Self->{UserID},
-        );
+        ) || 0;
         if ( $CountCreated && $CountCreated > $Max ) {
             $Max = $CountCreated;
         }
@@ -108,8 +116,8 @@ sub Run {
 
         my $CountClosed = $Self->{TicketObject}->TicketSearch(
 
-            # cache search result 30 min
-            CacheTTL => 60 * 30,
+            # cache search result
+            CacheTTL => $CacheTTL,
 
             # tickets with create time after ... (ticket newer than this date) (optional)
             TicketCloseTimeNewerDate => "$Year-$Month-$Day 00:00:00",
@@ -123,7 +131,7 @@ sub Run {
             # search with user permissions
             Permission => $Self->{Config}->{Permission} || 'ro',
             UserID => $Self->{UserID},
-        );
+        ) || 0;
         if ( $CountClosed && $CountClosed > $Max ) {
             $Max = $CountClosed;
         }
@@ -163,12 +171,12 @@ sub Run {
         {
             data  => \@TicketsClosed,
             label => $ClosedText,
-            color => "#BF8A2F"
+            color => $Self->{Config}->{TicketsClosedColor} || '#BF8A2F'
         },
         {
             data  => \@TicketsCreated,
             label => $CreatedText,
-            color => "#6F98DF"
+            color => $Self->{Config}->{TicketsCreatedColor} || '#6F98DF'
         }
     );
 

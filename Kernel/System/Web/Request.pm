@@ -1,6 +1,7 @@
 # --
 # Kernel/System/Web/Request.pm - a wrapper for CGI.pm or Apache::Request.pm
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -255,14 +256,11 @@ sub GetUploadAll {
     $NewFileName =~ s/.*\\(.+?)/$1/g;
 
     # return a string
-    my $Content;
+    my $Content = '';
     while (<$Upload>) {
         $Content .= $_;
     }
     close $Upload;
-
-    # Check if content is there, IE is always sending file uploads without content.
-    return if !$Content;
 
     my $ContentType = $Self->_GetUploadInfo(
         Filename => $UploadFilenameOrig,

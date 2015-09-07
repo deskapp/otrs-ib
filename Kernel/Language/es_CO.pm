@@ -1,6 +1,7 @@
 # --
 # Kernel/Language/es_CO.pm - provides Spanish language translation for Colombia
 # Copyright (C) 2013 John Edisson Ortiz Roman <jortiz@slabinfo.com.co>
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -5255,7 +5256,7 @@ sub Data {
         'Bounce Ticket: ' => 'Rebotar Ticket',
         'Bounce ticket' => 'Ticket rebotado',
         'Can not create link with %s!' => 'No se puede vincular con %s!',
-        'Can not delete link with %s' => 'No se puede eliminar v√≠nculo con %s',
+        'Can not delete link with %s!' => 'No se puede eliminar v√≠nculo con %s',
         'Can\'t update password, invalid characters!' => 'No se puede actualizar la contrase√±a, caracteres inv√°lidos',
         'Can\'t update password, must be at least %s characters!' => 'No se puede actualizar la contrase√±a, se necesitan al menos %s caracteres',
         'Can\'t update password, must contain 2 lower and 2 upper characters!' =>
@@ -5799,7 +5800,7 @@ sub Data {
         'Log file location is only needed for File-LogModule!' => '¬°La ubicaci√≥n del archivo log s√≥lo se requiere para el Archivo-M√≥duloLog!',
         'Logfile' => 'Archivo de log',
         'Logfile too large, you need to reset it!' => 'Archivo de log muy grande, necesita reinicializarlo',
-        'Login failed! Your username or password was entered incorrectly.' =>
+        'Login failed! Your user name or password was entered incorrectly.' =>
             'Inicio de sesi√≥n fallido. El nombre de usuario o contrase√±a fue introducido incorrectamente.',
         'Logout successful. Thank you for using OTRS!' => 'Sesi√≥n terminada satisfactoriamente.',
         'Lookup' => 'Observar',

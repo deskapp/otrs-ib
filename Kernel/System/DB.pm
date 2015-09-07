@@ -1,6 +1,7 @@
 # --
 # Kernel/System/DB.pm - the global database wrapper to support different databases
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -444,7 +445,7 @@ sub Do {
     if ( $Param{Bind} ) {
         for my $Data ( @{ $Param{Bind} } ) {
             if ( ref $Data eq 'SCALAR' ) {
-                push @Array, $$Data;
+                push @Array, $Self->_ReplaceNonBMPUTF8($$Data);
             }
             else {
                 $Self->{LogObject}->Log(
@@ -490,6 +491,8 @@ sub Do {
                 . 'databases. Use bind instead! SQL: ' . $Param{SQL},
         );
     }
+
+    $Param{SQL} = $Self->_ReplaceNonBMPUTF8($Param{SQL});
 
     for my $DBListener ( @{ $Self->{DBListeners} } ) {
         $DBListener->PreDo( SQL => $Param{SQL}, Bind => \@Array );
@@ -609,7 +612,7 @@ sub Prepare {
     if ( $Param{Bind} ) {
         for my $Data ( @{ $Param{Bind} } ) {
             if ( ref $Data eq 'SCALAR' ) {
-                push @Array, $$Data;
+                push @Array, $Self->_ReplaceNonBMPUTF8($$Data);
             }
             else {
                 $Self->{LogObject}->Log(
@@ -621,6 +624,8 @@ sub Prepare {
             }
         }
     }
+
+    $SQL = $Self->_ReplaceNonBMPUTF8($SQL);
 
     for my $DBListener ( @{ $Self->{DBListeners} } ) {
         $DBListener->PrePrepare( SQL => $SQL, Bind => \@Array );
@@ -1576,6 +1581,22 @@ sub _SpecialCharactersGet {
     );
 
     return \%SpecialCharacter;
+}
+
+
+sub _ReplaceNonBMPUTF8 {
+    my ( $Self, $String ) = @_;
+
+    if ( $String && $Self->{'DB::Type'} eq 'mysql' ) {
+        # utf8 charset in MySQL does not handle non-BMP UTF-8 characters and
+        # truncates strings on first such character. This wrapper will
+        # replace such characters with Replacement character. In the
+        # future better solution might be to use utf8mb4 available in MySQL 5.5.3+
+        # see http://mathiasbynens.be/notes/mysql-utf8mb4
+        $String =~ s/([\x{10000}-\x{10FFFF}])/"\x{FFFD}"/eg;
+    }
+
+    return $String;
 }
 
 sub DESTROY {

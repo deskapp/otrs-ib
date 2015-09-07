@@ -1,6 +1,7 @@
 # --
 # Kernel/System/Ticket/ArticleStorageDB.pm - article storage module for OTRS kernel
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -224,7 +225,7 @@ sub ArticleWriteAttachment {
     my ( $Self, %Param ) = @_;
 
     # check needed stuff
-    for (qw(Content Filename ContentType ArticleID UserID)) {
+    for (qw(Filename ContentType ArticleID UserID)) {
         if ( !$Param{$_} ) {
             $Self->{LogObject}->Log( Priority => 'error', Message => "Need $_!" );
             return;
@@ -377,15 +378,15 @@ sub ArticleAttachmentIndexRaw {
 
         # human readable file size
         my $FileSizeRaw = $Row[2];
-        if ( $Row[2] ) {
+        if ( defined $Row[2] ) {
             if ( $Row[2] > ( 1024 * 1024 ) ) {
-                $Row[2] = sprintf "%.1f MBytes", ( $Row[2] / ( 1024 * 1024 ) );
+                $Row[2] = sprintf "%.1f MB", ( $Row[2] / ( 1024 * 1024 ) );
             }
             elsif ( $Row[2] > 1024 ) {
-                $Row[2] = sprintf "%.1f KBytes", ( ( $Row[2] / 1024 ) );
+                $Row[2] = sprintf "%.1f KB", ( ( $Row[2] / 1024 ) );
             }
             else {
-                $Row[2] = $Row[2] . ' Bytes';
+                $Row[2] = $Row[2] . ' B';
             }
         }
 
@@ -425,15 +426,15 @@ sub ArticleAttachmentIndexRaw {
         next if $Filename =~ /\/plain.txt$/;
 
         # human readable file size
-        if ($FileSize) {
+        if (defined $FileSize) {
             if ( $FileSize > ( 1024 * 1024 ) ) {
-                $FileSize = sprintf "%.1f MBytes", ( $FileSize / ( 1024 * 1024 ) );
+                $FileSize = sprintf "%.1f MB", ( $FileSize / ( 1024 * 1024 ) );
             }
             elsif ( $FileSize > 1024 ) {
-                $FileSize = sprintf "%.1f KBytes", ( ( $FileSize / 1024 ) );
+                $FileSize = sprintf "%.1f KB", ( ( $FileSize / 1024 ) );
             }
             else {
-                $FileSize = $FileSize . ' Bytes';
+                $FileSize = $FileSize . ' B';
             }
         }
 

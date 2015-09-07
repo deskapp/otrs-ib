@@ -1,6 +1,7 @@
 # --
 # Kernel/System/VirtualFS.pm - all virtual fs functions
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
+# Copyright (C) 2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -110,7 +111,7 @@ returns
         Preferences => {
 
             # generated automatically
-            Filesize           => '12.4 KBytes',
+            Filesize           => '12.4 KB',
             FilesizeRaw        => 12345,
 
             # optional
@@ -237,13 +238,13 @@ sub Write {
     $Param{Preferences}->{FilesizeRaw} = bytes::length( ${ $Param{Content} } );
     my $Filesize = $Param{Preferences}->{FilesizeRaw};
     if ( $Filesize > ( 1024 * 1024 ) ) {
-        $Filesize = sprintf "%.1f MBytes", ( $Filesize / ( 1024 * 1024 ) );
+        $Filesize = sprintf "%.1f MB", ( $Filesize / ( 1024 * 1024 ) );
     }
     elsif ( $Filesize > 1024 ) {
-        $Filesize = sprintf "%.1f KBytes", ( $Filesize / 1024 );
+        $Filesize = sprintf "%.1f KB", ( $Filesize / 1024 );
     }
     else {
-        $Filesize = $Filesize . ' Bytes';
+        $Filesize = $Filesize . ' B';
     }
     $Param{Preferences}->{Filesize} = $Filesize;
 

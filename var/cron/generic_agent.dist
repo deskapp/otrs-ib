@@ -1,7 +1,7 @@
 
 # start generic agent every 20 minutes
-*/20 * * * *    $HOME/bin/otrs.GenericAgent.pl >> /dev/null
+#6,26,46 * * * *    (/bin/date; $HOME/bin/otrs.GenericAgent.pl) >> /var/opt/otrs/file/log/otrs.GenericAgent.pl.log
 
 # example to execute otrs.GenericAgent.pl on 23:00 with
 # Kernel::Config::GenericAgentMove job file
-#0 23 * * * $HOME/bin/otrs.GenericAgent.pl -c "Kernel::Config::GenericAgentMove" >> /dev/null
+#0 23 * * * (/bin/date; $HOME/bin/otrs.GenericAgent.pl -c "Kernel::Config::GenericAgentMove") >> /var/opt/otrs/file/log/otrs.GenericAgent.pl.log

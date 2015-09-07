@@ -15,9 +15,9 @@
                 <h2>$Text{"Oops! An Error occurred."}</h2>
             </div>
             <div class="Content">
-                <h4>
+                <p>
                     $Text{"Error Message"}: <span class="Error">$QData{"Message"}</span>
-                </h4>
+                </p>
                 <p class="SpacingTop">
                     $QData{"Comment"}.
                 </p>

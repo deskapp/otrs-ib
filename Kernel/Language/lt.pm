@@ -2,6 +2,7 @@
 # Kernel/Language/lt.pm - provides Lithuanian language translation
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
 # Copyright (C) 2011 Edgaras Lukoševičius <edgaras[eta]kauko.lt or admin[eta]sysadmin.lt>
+# Copyright (C) 2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -2942,7 +2943,7 @@ sub Data {
         # Template: CustomerTicketSearchResultShort
         'of' => 'iš',
         'Page' => 'Puslapis',
-        'Search Results for' => 'Paieškos rezultatai: ',
+        'Search Results for' => 'Paieškos rezultatai',
 
         # Template: CustomerTicketZoom
         'Expand article' => 'Išplėsti straipsnį',
