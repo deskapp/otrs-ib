@@ -233,7 +233,6 @@ sub Run {
         $Page{PageCount}++;
         $Page{HeadlineLeft} = '';
 
-        # set new position
         $Self->{PDFObject}->PositionSet(
             Move => 'relativ',
             Y    => -10,
