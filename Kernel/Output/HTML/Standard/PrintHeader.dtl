@@ -296,10 +296,4 @@ fieldset.TableLike.FixedLabelSmall > .Value {
                 <table border="0" width="$Data{"Width"}" cellpadding="5" cellspacing="0" bgcolor="#ffffff">
                     <tr>
                         <td>
-                            <table border="0" cellspacing="1" cellpadding="0" width="100%">
-                                <tr>
-                                    <td align="right" valign="top">
-                                        <font size="-2">$Text{"printed by"} $QEnv{"UserFirstname"} $QEnv{"UserLastname"} ($QEnv{"UserEmail"}) $QEnv{"Time"}</font>
-                                    </td>
-                                </tr>
-                            </table>
+<p>
