@@ -1,4 +1,5 @@
 #5.0.3 2015-??-??
+ - 2015-11-02 Added memcached cache module for OTRS (IB#1046574).
  - 2015-10-30 Fixed bug#[11608](http://bugs.otrs.org/show_bug.cgi?id=11608) - Console command Dev::Tools::TranslationsUpdate skips the first language.
  - 2015-10-30 Fixed bug#[11552](http://bugs.otrs.org/show_bug.cgi?id=11552) - No modernized input fields in the dashboard stat settings.
  - 2015-10-30 Fixed bug#[11575](http://bugs.otrs.org/show_bug.cgi?id=11575) - Logo overlaps toolbar when using slim skins.
