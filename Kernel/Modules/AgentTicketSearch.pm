@@ -1,5 +1,6 @@
 # --
 # Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2014-2015 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -316,6 +317,17 @@ sub Run {
             $Self->{Profile} = 'last-search';
         }
 
+        # check and remember if it's fulltext search from toolbar
+        if (
+            $GetParam{Fulltext}
+            && $ParamObject->GetParam( Param => 'CheckTicketNumberAndRedirect' )
+            && $GetParam{ResultForm} ne 'Normal'
+            && $GetParam{ResultForm} ne 'Print'
+            )
+        {
+            $GetParam{FulltextToolBarSearch} = 1;
+        }
+
         # save search profile (under last-search or real profile name)
         $Self->{SaveProfile} = 1;
 
@@ -487,7 +499,15 @@ sub Run {
                 $GetParam{ArchiveFlags} = ['y'];
             }
             else {
-                $GetParam{ArchiveFlags} = ['n'];
+                # by default search only unarchived tickets; search all
+                # if configured for toolbar fulltext searches
+                if ($GetParam{FulltextToolBarSearch}
+                        && $ConfigObject->Get('Ticket::ArchiveSystem::ToolBarSearchFulltextAllTickets')) {
+                    $GetParam{ArchiveFlags} = [ 'y', 'n' ];
+                }
+                else {
+                    $GetParam{ArchiveFlags} = ['n'];
+                }
             }
         }
 
