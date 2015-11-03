@@ -1,5 +1,6 @@
 # --
 # Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2015 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -31,7 +32,18 @@ sub Configure {
         HasValue    => 1,
         ValueRegex  => qr/^\d+$/smx,
     );
-
+    $Self->AddOption(
+        Name        => 'all-tickets',
+        Description => 'Rebuild index of all tickets (only unarchived tickets by default).',
+        Required    => 0,
+        HasValue    => 0,
+    );
+    $Self->AddOption(
+        Name        => 'main-index-only',
+        Description => 'Rebuild only main index without any parent indexes.',
+        Required    => 0,
+        HasValue    => 0,
+    );
     return;
 }
 
@@ -45,9 +57,11 @@ sub Run {
 
     my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
 
-    # get all tickets
+    # get all unarchived tickets (or all tickets if --all-tickets option given)
+    my $ArchiveFlags = ( $Self->GetOption('all-tickets') ) ? ['y', 'n'] : ['n'];
+
     my @TicketIDs = $TicketObject->TicketSearch(
-        ArchiveFlags => [ 'y', 'n' ],
+        ArchiveFlags => $ArchiveFlags,
         OrderBy      => 'Down',
         SortBy       => 'Age',
         Result       => 'ARRAY',
@@ -72,8 +86,9 @@ sub Run {
 
         for my $ArticleID (@ArticleIndex) {
             $TicketObject->ArticleIndexBuild(
-                ArticleID => $ArticleID,
-                UserID    => 1,
+                ArticleID     => $ArticleID,
+                UserID        => 1,
+                MainIndexOnly => $Self->GetOption('main-index-only'),
             );
         }
 
