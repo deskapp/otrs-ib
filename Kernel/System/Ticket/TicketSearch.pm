@@ -1,5 +1,6 @@
 # --
 # Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2015 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -1226,6 +1227,40 @@ sub TicketSearch {
         }
     }
 
+    # archive flag
+    if ( $Kernel::OM->Get('Kernel::Config')->Get('Ticket::ArchiveSystem') ) {
+
+        # if no flag is given, only search for not archived ticket
+        if ( !$Param{ArchiveFlags} ) {
+            $Param{ArchiveFlags} = ['n'];
+        }
+
+        # prepare search with archive flags, check arguments
+        if ( ref $Param{ArchiveFlags} ne 'ARRAY' ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "Invalid attribute ArchiveFlags '$Param{ArchiveFlags}'!",
+            );
+            return;
+        }
+
+        # prepare options
+        my %Options;
+        for my $Key ( @{ $Param{ArchiveFlags} } ) {
+            $Options{$Key} = 1;
+        }
+
+        # search for archived
+        if ( $Options{y} && !$Options{n} ) {
+            $SQLExt .= ' AND archive_flag = 1';
+        }
+
+        # search for not archived
+        elsif ( !$Options{y} && $Options{n} ) {
+            $SQLExt .= ' AND archive_flag = 0';
+        }
+    }
+
     # search article attributes
     my $ArticleIndexSQLExt = $Self->_ArticleIndexQuerySQLExt( Data => \%Param );
     $SQLExt .= $ArticleIndexSQLExt;
@@ -2048,37 +2083,8 @@ sub TicketSearch {
     }
 
     # archive flag
-    if ( $Kernel::OM->Get('Kernel::Config')->Get('Ticket::ArchiveSystem') ) {
-
-        # if no flag is given, only search for not archived ticket
-        if ( !$Param{ArchiveFlags} ) {
-            $Param{ArchiveFlags} = ['n'];
-        }
-
-        # prepare search with archive flags, check arguments
-        if ( ref $Param{ArchiveFlags} ne 'ARRAY' ) {
-            $Kernel::OM->Get('Kernel::System::Log')->Log(
-                Priority => 'error',
-                Message  => "Invalid attribute ArchiveFlags '$Param{ArchiveFlags}'!",
-            );
-            return;
-        }
-
-        # prepare options
-        my %Options;
-        for my $Key ( @{ $Param{ArchiveFlags} } ) {
-            $Options{$Key} = 1;
-        }
-
-        # search for archived
-        if ( $Options{y} && !$Options{n} ) {
-            $SQLExt .= ' AND archive_flag = 1';
-        }
-
-        # search for not archived
-        elsif ( !$Options{y} && $Options{n} ) {
-            $SQLExt .= ' AND archive_flag = 0';
-        }
+    if ( defined $Param{ArchiveFlag} ) {
+        $SQLExt .= ' AND archive_flag = ' . $Param{ArchiveFlag};
     }
 
     # database query for sort/order by option

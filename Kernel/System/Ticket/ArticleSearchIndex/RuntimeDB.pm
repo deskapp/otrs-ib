@@ -1,5 +1,6 @@
 # --
 # Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2015 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -16,6 +17,10 @@ our @ObjectDependencies = (
     'Kernel::System::Log',
 );
 
+sub ArticleIndexBackendInit {
+    return 1;
+}
+
 sub ArticleIndexBuild {
     my ( $Self, %Param ) = @_;
 
@@ -30,6 +35,20 @@ sub ArticleIndexDelete {
 
 sub ArticleIndexDeleteTicket {
     my ( $Self, %Param ) = @_;
+
+    return 1;
+}
+
+sub ArticleIndexMergeTicket {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    for my $Needed (qw(MainTicketID MergeTicketID UserID)) {
+        if ( !$Param{$Needed} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log( Priority => 'error', Message => "Need $Needed!" );
+            return;
+        }
+    }
 
     return 1;
 }
@@ -155,6 +174,20 @@ sub _ArticleIndexQuerySQLExt {
         $SQLExt = ' AND (' . $FullTextSQL . ')';
     }
     return $SQLExt;
+}
+
+sub ArticleIndexUpdateAttr {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    for (qw(TicketID UserID)) {
+        if ( !$Param{$_} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log( Priority => 'error', Message => "Need $_!" );
+            return;
+        }
+    }
+
+    return 1;
 }
 
 1;

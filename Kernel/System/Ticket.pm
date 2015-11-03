@@ -1,5 +1,6 @@
 # --
 # Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2015 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -160,6 +161,9 @@ sub new {
 
     # init of article backend
     $Self->ArticleStorageInit();
+
+    # init of article index backend
+    $Self->ArticleIndexBackendInit(%Param);
 
     return $Self;
 }
@@ -5903,12 +5907,8 @@ sub TicketMerge {
         Bind => [ \$Param{MainTicketID}, \$Param{UserID}, \$Param{MergeTicketID} ],
     );
 
-    # bug 9635
-    # do the same with article_search (harmless if not used)
-    return if !$DBObject->Do(
-        SQL  => 'UPDATE article_search SET ticket_id = ? WHERE ticket_id = ?',
-        Bind => [ \$Param{MainTicketID}, \$Param{MergeTicketID} ],
-    );
+    # change ticket id of merge ticket to main ticket in article search index
+    return if !$Self->ArticleIndexMergeTicket(%Param);
 
     # reassign article history
     return if !$DBObject->Do(
