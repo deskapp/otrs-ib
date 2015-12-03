@@ -24,7 +24,7 @@ sub Data {
     $Self->{DateFormatShort}     = '%D/%M/%Y';
     $Self->{DateInputFormat}     = '%D/%M/%Y';
     $Self->{DateInputFormatLong} = '%D/%M/%Y - %T';
-    $Self->{Completeness}        = 0.921554252199413;
+    $Self->{Completeness}        = 0.911502290812636;
 
     # csv separator
     $Self->{Separator} = ';';
@@ -889,8 +889,8 @@ sub Data {
         # Template: AdminCloudServices
         'System registration is a service of OTRS Group, which provides a lot of advantages!' =>
             'O rexistro do sistema é un servizo do Grupo OTRS, que fornece numerosas vantaxes!',
-        'Please note that you using OTRS cloud services requires the system to be registered.' =>
-            'Por favor fíxese en que que vostede utiliza servizos na nube de OTRS que esixen o sistema estar rexistrado.',
+        'Please note that the use of OTRS cloud services requires the system to be registered.' =>
+            '',
         'Register this system' => 'Rexistrar este sistema',
         'Here you can configure available cloud services that communicate securely with %s.' =>
             'Aquí pode configurar os servizos na nube dispoñibles que comunican de forma segura con %s.',
@@ -1656,6 +1656,7 @@ sub Data {
         'You are about to downgrade to OTRS Free and will lose the following features and all data related to these:' =>
             'Vostede está a punto de degradar a OTRS Gratis e perderá as seguintes carácteristicas e todos os datos relatacionados a estes:',
         'Chat' => 'Conversa',
+        'Report Generator' => '',
         'Timeline view in ticket zoom' => 'Vista da liña de tempo no zoom do Ticket',
         'DynamicField ContactWithData' => 'CampoDinamico ContactoConDatos',
         'DynamicField Database' => 'CampoDinamico BaseDeDatos',
@@ -1838,7 +1839,6 @@ sub Data {
         'Filter available fields' => 'Campos de filtro dispoñibles',
         'Available Fields' => 'Campos dispoñíbeis',
         'Assigned Fields' => 'Campos asignados',
-        'Edit Details for Field' => 'Edite Detalles para Campo',
         'ArticleType' => 'Tipo de Artigo',
         'Display' => 'Mostrar',
         'Edit Field Details' => 'Edite Detalles Campo',
@@ -1946,9 +1946,9 @@ sub Data {
         'Type of Linking between Conditions' => 'Tipo de ligazón entre condicións',
         'Remove this Condition' => 'Elimine esta Condición',
         'Type of Linking' => 'Tipo de ligazón',
+        'Add a new Field' => 'Engadir un campo novo',
         'Remove this Field' => 'Elimine este Campo',
         'And can\'t be repeated on the same condition.' => 'E non pode repetirse na mesma condición.',
-        'Add a new Field' => 'Engadir un campo novo',
         'Add New Condition' => 'Engadir unha condición nova',
 
         # Template: AdminProcessManagementTransitionAction
@@ -1958,8 +1958,8 @@ sub Data {
         'Transition Action Name' => 'Nome Acción Transición',
         'Transition Action Module' => 'Módulo Acción Transición',
         'Config Parameters' => 'Parámetros Configurables',
-        'Remove this Parameter' => 'Elimine este Parámetro',
         'Add a new Parameter' => 'Engada un novo Parámetro',
+        'Remove this Parameter' => 'Elimine este Parámetro',
 
         # Template: AdminQueue
         'Manage Queues' => 'Xestionar as filas',
@@ -2633,6 +2633,8 @@ sub Data {
 
         # Template: AgentTicketCompose
         'Compose Answer for %s%s' => 'Composición Resposta para %s%s',
+        'This address is registered as system address and cannot be used: %s' =>
+            '',
         'Please include at least one recipient' => 'Por favor inclúa polo menos un receptor',
         'Remove Ticket Customer' => 'Elimine Ticket Cliente',
         'Please remove this entry and enter a new one with the correct value.' =>
@@ -3121,9 +3123,89 @@ sub Data {
         'No user configurable notifications found.' => 'Non se atoparon notificacións configurables de usuario.',
         'Receive messages for notification \'%s\' by transport method \'%s\'.' =>
             'Recibir mensaxes para notificación \'%s\' polo método de transporte \'%s\'.',
+        'Please note that you can\'t completely disable notifications marked as mandatory.' =>
+            '',
+        'Sorry, but you can\'t disable all methods for notifications marked as mandatory.' =>
+            '',
+        'Sorry, but you can\'t disable all methods for this notification.' =>
+            '',
+
+        # Template: ActivityDialogHeader
+        'Process Information' => 'Información do proceso',
+        'Dialog' => '',
+
+        # Template: Article
+        'Inform Agent' => 'Informar o Axente',
 
         # Template: PublicDefault
         'Welcome' => 'Benvido',
+
+        # Template: GeneralSpecificationsWidget
+        'Permissions' => 'Permisos',
+        'You can select one or more groups to define access for different agents.' =>
+            'Pode seleccionar un ou mais grupos para definir o acceso para distintos axentes.',
+        'Result formats' => '',
+        'The selected time periods in the statistic are time zone neutral.' =>
+            '',
+        'Create summation row' => '',
+        'Generate an additional row containing sums for all data columns.' =>
+            '',
+        'Create summation column' => '',
+        'Generate an additional column containing sums for all data rows.' =>
+            '',
+        'Cache results' => '',
+        'Stores statistics result data in a cache to be used in subsequent views with the same configuration.' =>
+            '',
+        'Provide the statistic as a widget that agents can activate in their dashboard.' =>
+            'Proporcione a estatística como un widget que os axentes poden activar no seu cadro de mando.',
+        'Please note that enabling the dashboard widget will activate caching for this statistic in the dashboard.' =>
+            '',
+        'If set to invalid end users can not generate the stat.' => 'Se se establece a inválido os usuarios finales non poden xerar o stat.',
+
+        # Template: PreviewWidget
+        'There are problems in the configuration of this statistic:' => '',
+        'You may now configure the X-axis of your statistic.' => '',
+        'This statistic does not provide preview data.' => '',
+        'Preview format:' => '',
+        'Please note that the preview uses random data and does not consider data filters.' =>
+            '',
+        'Configure X-Axis' => '',
+        'X-axis' => 'Eixo X',
+        'Configure Y-Axis' => '',
+        'Y-axis' => 'Eixo Y',
+        'Configure Filter' => '',
+
+        # Template: RestrictionsWidget
+        'Please select only one element or turn off the button \'Fixed\'.' =>
+            'Por favor seleccione soamente un elemento ou apague o botón \'Fixo\'.',
+        'Absolute period' => '',
+        'Between' => 'Entre',
+        'Relative period' => '',
+        'The past complete %s and the current+upcoming complete %s %s' =>
+            '',
+        'Do not allow changes to this element when the statistic is generated.' =>
+            '',
+
+        # Template: StatsParamsWidget
+        'Format' => 'Formato',
+        'Exchange Axis' => 'Eixe de Intercambio',
+        'Configurable params of static stat' => 'Parámetros configurables de estaísticas estaticas',
+        'No element selected.' => 'Non hai ningún elemento seleccionado.',
+        'Scale' => 'Escala',
+
+        # Template: D3
+        'Download SVG' => '',
+        'Download PNG' => '',
+
+        # Template: XAxisWidget
+        'The selected time period defines the default time frame for this statistic to collect data from.' =>
+            '',
+        'Defines the time unit that will be used to split the selected time period into reporting data points.' =>
+            '',
+
+        # Template: YAxisWidget
+        'Please remember that the scale for the Y-axis has to be larger than the scale for the X-axis (e.g. X-axis => Month, Y-Axis => Year).' =>
+            '',
 
         # Template: Test
         'OTRS Test Page' => 'Páxina de probas do OTRS',
@@ -3159,6 +3241,7 @@ sub Data {
         'All agents subscribed to both the ticket\'s queue and service' =>
             'Tódolos axentes suscritos aos dous cola e servizo de ticket',
         'Customer of the ticket' => 'Cliente do ticket',
+        'Yes, but require at least one active notification method' => '',
 
         # Perl Module: Kernel/Modules/AdminPackageManager.pm
         'Package not verified due a communication issue with verification server!' =>
@@ -3227,6 +3310,9 @@ sub Data {
             'Sentímolo, pero non ten permisos nunca mais para acceder a este ticket no seu estado actual.',
         ' You can take one of the next actions:' => 'Pode coller unha das seguintes accións:',
 
+        # Perl Module: Kernel/Output/HTML/Layout/LinkObject.pm
+        'Linked as' => '',
+
         # Perl Module: Kernel/Output/HTML/Notification/AgentOTRSBusiness.pm
         '%s Upgrade to %s now! %s' => '%s Actualice a %s agora! %s',
 
@@ -3239,6 +3325,10 @@ sub Data {
         # Perl Module: Kernel/Output/HTML/Preferences/Language.pm
         '(in process)' => '(en proceso)',
 
+        # Perl Module: Kernel/Output/HTML/Preferences/NotificationEvent.pm
+        'Please make sure you\'ve chosen at least one transport method for mandatory notifications.' =>
+            '',
+
         # Perl Module: Kernel/Output/HTML/Preferences/OutOfOffice.pm
         'Please specify an end date that is after the start date.' => '',
 
@@ -3246,8 +3336,6 @@ sub Data {
         'Please supply your new password!' => 'Por favor proporcione o seu novo contrasinal!',
 
         # Perl Module: Kernel/Output/HTML/Statistics/View.pm
-        'X-axis' => 'Eixo X',
-        'Y-axis' => 'Eixo Y',
         'No past complete or the current+upcoming complete relative time value selected.' =>
             'Ningún pasado completo ou o actual+vindeiro valor de tempo relativo completo seleccionado.',
         'The selected time period is larger than the allowed time period.' =>
@@ -3275,6 +3363,12 @@ sub Data {
 
         # Perl Module: Kernel/Output/HTML/TicketOverviewMenu/Sort.pm
         'Order by' => 'Ordene por',
+
+        # Perl Module: Kernel/System/Console/Command/Dev/Tools/Config2Docbook.pm
+        'Configuration Options Reference' => '',
+        'This setting can not be changed.' => '',
+        'This setting is not active by default.' => '',
+        'This setting can not be deactivated.' => '',
 
         # Perl Module: Kernel/System/Stats/Dynamic/Ticket.pm
         'State Type' => '',
@@ -4473,6 +4567,8 @@ Thanks for your help!
         'Defines the postmaster default queue.' => 'Define a cola por defecto de postmaster.',
         'Defines the priority in which the information is logged and presented.' =>
             'Define a prioridade na que á información é logeada e presentada. ',
+        'Defines the queues the creator check will be active.' => '',
+        'Defines the queues the involved check will be active.' => '',
         'Defines the receipent target of the phone ticket and the sender of the email ticket ("Queue" shows all queues, "System address" displays all system addresses) in the agent interface.' =>
             'Define ó receptor obxectivo do ticket telefónico e o remitente do ticket de correo electrónico ("Cola" mostra todas as colas, "Enderezo de sistema" mostra todos os enderezos de sistema) na interface de axente.',
         'Defines the receipent target of the tickets ("Queue" shows all queues, "SystemAddress" displays all system addresses) in the customer interface.' =>
@@ -4593,6 +4689,8 @@ Thanks for your help!
         'Displays the accounted time for an article in the ticket zoom view.' =>
             'Mostra o tempo rexistrado para un artigo na vista zoom de ticket.',
         'Dropdown' => 'Despregable',
+        'Dutch stop words for fulltext index. These words will be removed from the search index.' =>
+            '',
         'Dynamic Fields Checkbox Backend GUI' => 'Campos Dinámicos Checkbox Backend GUI',
         'Dynamic Fields Date Time Backend GUI' => 'Campos Dinámicos Data Hora Backend GUI',
         'Dynamic Fields Drop-down Backend GUI' => 'Campos Dinámicos Despregable Backend GUI',
@@ -5031,7 +5129,8 @@ Thanks for your help!
             'Tamaño máximo (en filas) da caixa de axentes informados na interface de axente.',
         'Max size (in rows) of the involved agents box in the agent interface.' =>
             'Tamaño máximo (en filas) da caixa de axentes implicados na interface de axente.',
-        'Max size of the subjects in an email reply.' => 'Tamaño máximo dos temas nunha resposta de correo electrónico.',
+        'Max size of the subjects in an email reply and in some overview screens.' =>
+            '',
         'Maximal auto email responses to own email-address a day (Loop-Protection).' =>
             'Maximas auto respostas de correo electrónico que son propiedade dun enderezo de correo electrónico por día (Protección de Bucle).',
         'Maximal size in KBytes for mails that can be fetched via POP3/POP3S/IMAP/IMAPS (KBytes).' =>
@@ -5056,9 +5155,11 @@ Thanks for your help!
         'Module to check customer permissions.' => 'Módulo para comprobar os permisos do cliente.',
         'Module to check if a user is in a special group. Access is granted, if the user is in the specified group and has ro and rw permissions.' =>
             'Módulo para comprobar se un usuario pertence a algún grupo especial. Concédeselle acceso se o usuario está no grupo indicado e ten os permisos ro e rw.',
+        'Module to check if an agent is involved to a ticket.' => '',
         'Module to check if arrived emails should be marked as email-internal (because of original forwarded internal email). ArticleType and SenderType define the values for the arrived email/article.' =>
             'Módulo para comprobar se hai que marcar o correo recibido como correo interno (por causa do correo interno encamiñado orixinal). ArticleType e SenderType definen os valores para as mensaxes/artigos recibidos.',
         'Module to check the agent responsible of a ticket.' => 'Módulo para comprobar o axente responsable dun ticket.',
+        'Module to check the creator of a ticket.' => '',
         'Module to check the group permissions for the access to customer tickets.' =>
             'Módulo para comprobar permisos de grupo para ó acceso a tickets de cliente.',
         'Module to check the owner of a ticket.' => 'Módulo para comprobar o propietario dun ticket.',
@@ -5180,7 +5281,6 @@ Thanks for your help!
         'Portuguese (Brasil)' => '',
         'PostMaster Filters' => 'Filtros PostMaster',
         'PostMaster Mail Accounts' => 'Contas Correo PostMaster',
-        'Process Information' => 'Información do proceso',
         'Process Management Activity Dialog GUI' => 'Diálogo de Actividade de Proceso de Xestión GUI',
         'Process Management Activity GUI' => 'Actividade de Proceso de Xestión GUI',
         'Process Management Path GUI' => 'Ruta Proceso Xestión GUI',

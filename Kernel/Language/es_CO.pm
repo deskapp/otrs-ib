@@ -24,7 +24,7 @@ sub Data {
     $Self->{DateFormatShort}     = '%D/%M/%Y';
     $Self->{DateInputFormat}     = '%D/%M/%Y';
     $Self->{DateInputFormatLong} = '%D/%M/%Y - %T';
-    $Self->{Completeness}        = 0.549853372434018;
+    $Self->{Completeness}        = 0.5449722691102;
 
     # csv separator
     $Self->{Separator} = ';';
@@ -577,10 +577,10 @@ sub Data {
         'Watched Tickets Reminder Reached' => 'Recordatorio Alcanzado de Tickets Monitoreados',
         'All tickets' => 'Todos los tickets',
         'Available tickets' => 'Tickets disponibles',
-        'Escalation' => 'Escalado',
+        'Escalation' => 'Escalada',
         'last-search' => 'Ultima busqueda',
         'QueueView' => 'Ver la fila',
-        'Ticket Escalation View' => 'Ver Escalado del Ticket',
+        'Ticket Escalation View' => 'Vista de Escaladas de Ticket',
         'Message from' => 'Mensaje de',
         'End message' => 'Fin del mensaje',
         'Forwarded message from' => 'Mensaje reenviado de',
@@ -889,7 +889,7 @@ sub Data {
         # Template: AdminCloudServices
         'System registration is a service of OTRS Group, which provides a lot of advantages!' =>
             '',
-        'Please note that you using OTRS cloud services requires the system to be registered.' =>
+        'Please note that the use of OTRS cloud services requires the system to be registered.' =>
             '',
         'Register this system' => '',
         'Here you can configure available cloud services that communicate securely with %s.' =>
@@ -1138,17 +1138,17 @@ sub Data {
         'No pending time settings.' => 'No existen configuraciones para tiempo en espera',
         'Ticket pending time reached' => 'El tiempo en espera del Ticket ha sido alcanzado',
         'Ticket pending time reached between' => 'El tiempo en espera del Ticket ha sido alcanzado entre',
-        'Escalation times' => 'Tiempos de escalado',
-        'No escalation time settings.' => 'No existen configuraciones para tiempo de escalado',
-        'Ticket escalation time reached' => 'El tiempo de escalado del Ticket ha sido alcanzado',
-        'Ticket escalation time reached between' => 'El tiempo de escalado del Ticket ha sido alcanzado entre',
-        'Escalation - first response time' => 'Escalado - tiempo para la primer respuesta',
+        'Escalation times' => 'Tiempos de escalada',
+        'No escalation time settings.' => 'No existen configuraciones para tiempo de escalada',
+        'Ticket escalation time reached' => 'El tiempo de escalada del Ticket ha sido alcanzado',
+        'Ticket escalation time reached between' => 'El tiempo de escalada del Ticket ha sido alcanzado entre',
+        'Escalation - first response time' => 'Escalada - tiempo para la primera respuesta',
         'Ticket first response time reached' => 'El tiempo para la primer respuesta del Ticket ha sido alcanzado',
         'Ticket first response time reached between' => 'El tiempo para la primer respuesta del Ticket ha sido alcanzado entre',
-        'Escalation - update time' => 'Escalado - tiempo para la actualización',
+        'Escalation - update time' => 'Escalada - tiempo para la actualización',
         'Ticket update time reached' => 'El tiempo para la actualización del Ticket ha sido alcanzado',
         'Ticket update time reached between' => 'El tiempo para la actualización del Ticket ha sido alcanzado entre',
-        'Escalation - solution time' => 'Escalado - tiempo para la solución',
+        'Escalation - solution time' => 'Escalada - tiempo para la solución',
         'Ticket solution time reached' => 'El tiempo para la solución del Ticket ha sido alcanzado',
         'Ticket solution time reached between' => 'El tiempo para la solución del Ticket ha sido alcanzado entre',
         'Archive search option' => 'Opción de búsqueda en el archivo',
@@ -1656,6 +1656,7 @@ sub Data {
         'You are about to downgrade to OTRS Free and will lose the following features and all data related to these:' =>
             '',
         'Chat' => '',
+        'Report Generator' => '',
         'Timeline view in ticket zoom' => '',
         'DynamicField ContactWithData' => '',
         'DynamicField Database' => '',
@@ -1838,7 +1839,6 @@ sub Data {
         'Filter available fields' => '',
         'Available Fields' => '',
         'Assigned Fields' => '',
-        'Edit Details for Field' => '',
         'ArticleType' => '',
         'Display' => '',
         'Edit Field Details' => '',
@@ -1946,9 +1946,9 @@ sub Data {
         'Type of Linking between Conditions' => '',
         'Remove this Condition' => '',
         'Type of Linking' => '',
+        'Add a new Field' => '',
         'Remove this Field' => '',
         'And can\'t be repeated on the same condition.' => '',
-        'Add a new Field' => '',
         'Add New Condition' => '',
 
         # Template: AdminProcessManagementTransitionAction
@@ -1958,8 +1958,8 @@ sub Data {
         'Transition Action Name' => '',
         'Transition Action Module' => '',
         'Config Parameters' => '',
-        'Remove this Parameter' => '',
         'Add a new Parameter' => '',
+        'Remove this Parameter' => '',
 
         # Template: AdminQueue
         'Manage Queues' => 'Gestionar Filas',
@@ -1974,11 +1974,11 @@ sub Data {
         'If an agent locks a ticket and does not close it before the unlock timeout has passed, the ticket will unlock and will become available for other agents.' =>
             'Si un agente bloquea un ticket y no lo cierra antes de que el tiempo de espera termine, dicho ticket se desbloqueará y estará disponible para otros agentes.',
         'Notify by' => 'Notificado por',
-        '0 = no escalation' => '0 = sin escalado',
+        '0 = no escalation' => '0 = sin escalada',
         'If there is not added a customer contact, either email-external or phone, to a new ticket before the time defined here expires, the ticket is escalated.' =>
             'Si no se ha contactado al cliente, ya sea por medio de una nota externa o por teléfono, de un ticket nuevo antes de que el tiempo definido aquí termine, el ticket escalará.',
         'If there is an article added, such as a follow-up via email or the customer portal, the escalation update time is reset. If there is no customer contact, either email-external or phone, added to a ticket before the time defined here expires, the ticket is escalated.' =>
-            'Si se añade un artículo, como seguimiento vía correo electrónico o la interfaz del cliente, el tiempo de escalado de actualización se reinicia. Si no se ha contactado al cliente, ya sea por medio de una nota externa o por teléfono, de un ticket antes de que el tiempo definido aquí termine, el ticket escalará.',
+            'Si se añade un artículo, como seguimiento vía correo electrónico o la interfaz del cliente, el tiempo de escalada de actualización se reinicia. Si no se ha contactado al cliente, ya sea por medio de una nota externa o por teléfono, de un ticket antes de que el tiempo definido aquí termine, el ticket escalará.',
         'If the ticket is not set to closed before the time defined here expires, the ticket is escalated.' =>
             'Si el ticket no se cierra antes de que el tiempo definido aquí termine, dicho ticket escalará.',
         'Follow up Option' => 'Opción de seguimiento',
@@ -2633,6 +2633,8 @@ sub Data {
 
         # Template: AgentTicketCompose
         'Compose Answer for %s%s' => '',
+        'This address is registered as system address and cannot be used: %s' =>
+            '',
         'Please include at least one recipient' => '',
         'Remove Ticket Customer' => '',
         'Please remove this entry and enter a new one with the correct value.' =>
@@ -3121,9 +3123,89 @@ sub Data {
         'No user configurable notifications found.' => '',
         'Receive messages for notification \'%s\' by transport method \'%s\'.' =>
             '',
+        'Please note that you can\'t completely disable notifications marked as mandatory.' =>
+            '',
+        'Sorry, but you can\'t disable all methods for notifications marked as mandatory.' =>
+            '',
+        'Sorry, but you can\'t disable all methods for this notification.' =>
+            '',
+
+        # Template: ActivityDialogHeader
+        'Process Information' => '',
+        'Dialog' => '',
+
+        # Template: Article
+        'Inform Agent' => 'Notificar a Agente',
 
         # Template: PublicDefault
         'Welcome' => '',
+
+        # Template: GeneralSpecificationsWidget
+        'Permissions' => 'Permisos',
+        'You can select one or more groups to define access for different agents.' =>
+            'Puede seleccionar uno o más grupos para definir el acceso para los diferentes agentes.',
+        'Result formats' => '',
+        'The selected time periods in the statistic are time zone neutral.' =>
+            '',
+        'Create summation row' => '',
+        'Generate an additional row containing sums for all data columns.' =>
+            '',
+        'Create summation column' => '',
+        'Generate an additional column containing sums for all data rows.' =>
+            '',
+        'Cache results' => '',
+        'Stores statistics result data in a cache to be used in subsequent views with the same configuration.' =>
+            '',
+        'Provide the statistic as a widget that agents can activate in their dashboard.' =>
+            '',
+        'Please note that enabling the dashboard widget will activate caching for this statistic in the dashboard.' =>
+            '',
+        'If set to invalid end users can not generate the stat.' => 'Si se define como inválida, los usuarios finales no podrán generar la estadística.',
+
+        # Template: PreviewWidget
+        'There are problems in the configuration of this statistic:' => '',
+        'You may now configure the X-axis of your statistic.' => '',
+        'This statistic does not provide preview data.' => '',
+        'Preview format:' => '',
+        'Please note that the preview uses random data and does not consider data filters.' =>
+            '',
+        'Configure X-Axis' => '',
+        'X-axis' => 'EjeX',
+        'Configure Y-Axis' => '',
+        'Y-axis' => '',
+        'Configure Filter' => '',
+
+        # Template: RestrictionsWidget
+        'Please select only one element or turn off the button \'Fixed\'.' =>
+            'Por favor seleccione sólo un elemento o desactive el botón \'Fijo\.',
+        'Absolute period' => '',
+        'Between' => 'Entre',
+        'Relative period' => '',
+        'The past complete %s and the current+upcoming complete %s %s' =>
+            '',
+        'Do not allow changes to this element when the statistic is generated.' =>
+            '',
+
+        # Template: StatsParamsWidget
+        'Format' => 'Formato',
+        'Exchange Axis' => 'Intercambiar Ejes',
+        'Configurable params of static stat' => 'Parámetro configurable de estadística estática',
+        'No element selected.' => 'No hay elemento seleccionado',
+        'Scale' => 'Escala',
+
+        # Template: D3
+        'Download SVG' => '',
+        'Download PNG' => '',
+
+        # Template: XAxisWidget
+        'The selected time period defines the default time frame for this statistic to collect data from.' =>
+            '',
+        'Defines the time unit that will be used to split the selected time period into reporting data points.' =>
+            '',
+
+        # Template: YAxisWidget
+        'Please remember that the scale for the Y-axis has to be larger than the scale for the X-axis (e.g. X-axis => Month, Y-Axis => Year).' =>
+            '',
 
         # Template: Test
         'OTRS Test Page' => 'Página de Prueba de OTRS',
@@ -3159,6 +3241,7 @@ sub Data {
         'All agents subscribed to both the ticket\'s queue and service' =>
             '',
         'Customer of the ticket' => '',
+        'Yes, but require at least one active notification method' => '',
 
         # Perl Module: Kernel/Modules/AdminPackageManager.pm
         'Package not verified due a communication issue with verification server!' =>
@@ -3227,6 +3310,9 @@ sub Data {
             '',
         ' You can take one of the next actions:' => '',
 
+        # Perl Module: Kernel/Output/HTML/Layout/LinkObject.pm
+        'Linked as' => '',
+
         # Perl Module: Kernel/Output/HTML/Notification/AgentOTRSBusiness.pm
         '%s Upgrade to %s now! %s' => '',
 
@@ -3239,6 +3325,10 @@ sub Data {
         # Perl Module: Kernel/Output/HTML/Preferences/Language.pm
         '(in process)' => '',
 
+        # Perl Module: Kernel/Output/HTML/Preferences/NotificationEvent.pm
+        'Please make sure you\'ve chosen at least one transport method for mandatory notifications.' =>
+            '',
+
         # Perl Module: Kernel/Output/HTML/Preferences/OutOfOffice.pm
         'Please specify an end date that is after the start date.' => '',
 
@@ -3246,8 +3336,6 @@ sub Data {
         'Please supply your new password!' => '',
 
         # Perl Module: Kernel/Output/HTML/Statistics/View.pm
-        'X-axis' => 'EjeX',
-        'Y-axis' => '',
         'No past complete or the current+upcoming complete relative time value selected.' =>
             '',
         'The selected time period is larger than the allowed time period.' =>
@@ -3275,6 +3363,12 @@ sub Data {
 
         # Perl Module: Kernel/Output/HTML/TicketOverviewMenu/Sort.pm
         'Order by' => 'Ordenar por',
+
+        # Perl Module: Kernel/System/Console/Command/Dev/Tools/Config2Docbook.pm
+        'Configuration Options Reference' => '',
+        'This setting can not be changed.' => '',
+        'This setting is not active by default.' => '',
+        'This setting can not be deactivated.' => '',
 
         # Perl Module: Kernel/System/Stats/Dynamic/Ticket.pm
         'State Type' => '',
@@ -3723,7 +3817,7 @@ Thanks for your help!
         'Allows defining new types for ticket (if ticket type feature is enabled).' =>
             'Permite definir nuevos tipos para los tickets (si la funcionalidad de tipo de ticket está habilitada).',
         'Allows defining services and SLAs for tickets (e. g. email, desktop, network, ...), and escalation attributes for SLAs (if ticket service/SLA feature is enabled).' =>
-            'Permite definir servicios y SLAs para los tickets (por ejemplo: correo electrónico, escritorio, red, etc.), así mismo como atributos para los SLAs (si la funcionalidad servicio/SLA está habilitada).',
+            'Permite definir servicios y SLAs para los tickets (por ejemplo: correo electrónico, escritorio, red, etc.), así mismo como atributos de escalada para los SLAs (si la funcionalidad servicio/SLA está habilitada).',
         'Allows extended search conditions in ticket search of the agent interface. With this feature you can search e. g. with this kind of conditions like "(key1&&key2)" or "(key1||key2)".' =>
             '',
         'Allows extended search conditions in ticket search of the customer interface. With this feature you can search w. g. with this kind of conditions like "(key1&&key2)" or "(key1||key2)".' =>
@@ -4171,7 +4265,7 @@ Thanks for your help!
         'Defines the default ticket attribute for ticket sorting in a ticket search of the customer interface.' =>
             'Define el atributo de ticket por defecto para ordenar los tickets en la búsqueda, en la interfaz del cliente.',
         'Defines the default ticket attribute for ticket sorting in the escalation view of the agent interface.' =>
-            'Define el atributo de ticket por defecto para ordenar los tickets en la vista de escalado, en la interfaz del agente.',
+            'Define el atributo de ticket por defecto para ordenar los tickets en la vista de escaladas, en la interfaz del agente.',
         'Defines the default ticket attribute for ticket sorting in the locked ticket view of the agent interface.' =>
             'Define el atributo de ticket por defecto para ordenar los tickets en la vista de tickets bloqueados, en la interfaz del agente.',
         'Defines the default ticket attribute for ticket sorting in the responsible view of the agent interface.' =>
@@ -4191,7 +4285,7 @@ Thanks for your help!
         'Defines the default ticket next state after adding a phone note in the ticket phone outbound screen of the agent interface.' =>
             'Define el valor por defecto del siguiente estado de un ticket, luego de haber añadido una nota telefónica, en la ventana de ticket telefónico saliente de la interfaz del agente.',
         'Defines the default ticket order (after priority sort) in the escalation view of the agent interface. Up: oldest on top. Down: latest on top.' =>
-            'Define el orden por defecto de los tickets (luego de haberse ordenado por prioridad), en la vista de escalado de la interfaz del agente. Arriba: más antiguo al principio. Abajo: más reciente al principio.',
+            'Define el orden por defecto de los tickets (luego de haberse ordenado por prioridad), en la vista de escaladas de la interfaz del agente. Arriba: más antiguo al principio. Abajo: más reciente al principio.',
         'Defines the default ticket order (after priority sort) in the status view of the agent interface. Up: oldest on top. Down: latest on top.' =>
             'Define el orden por defecto de los tickets (luego de haberse ordenado por prioridad), en la vista de estados de la interfaz del agente. Arriba: más antiguo al principio. Abajo: más reciente al principio.',
         'Defines the default ticket order in the responsible view of the agent interface. Up: oldest on top. Down: latest on top.' =>
@@ -4473,6 +4567,8 @@ Thanks for your help!
         'Defines the postmaster default queue.' => 'Define la fila por defecto del administrador de correos.',
         'Defines the priority in which the information is logged and presented.' =>
             '',
+        'Defines the queues the creator check will be active.' => '',
+        'Defines the queues the involved check will be active.' => '',
         'Defines the receipent target of the phone ticket and the sender of the email ticket ("Queue" shows all queues, "System address" displays all system addresses) in the agent interface.' =>
             '',
         'Defines the receipent target of the tickets ("Queue" shows all queues, "SystemAddress" displays all system addresses) in the customer interface.' =>
@@ -4593,6 +4689,8 @@ Thanks for your help!
         'Displays the accounted time for an article in the ticket zoom view.' =>
             'Despliega la contabilidad de tiempo para un artículo, en la vista detallada del ticket.',
         'Dropdown' => '',
+        'Dutch stop words for fulltext index. These words will be removed from the search index.' =>
+            '',
         'Dynamic Fields Checkbox Backend GUI' => '',
         'Dynamic Fields Date Time Backend GUI' => '',
         'Dynamic Fields Drop-down Backend GUI' => '',
@@ -4709,7 +4807,7 @@ Thanks for your help!
         'Escalation update time finished' => '',
         'Escalation update time forewarned' => '',
         'Escalation update time in effect' => '',
-        'Escalation view' => 'Vista de escalado',
+        'Escalation view' => 'Vista de escaladas',
         'EscalationTime' => '',
         'Estonian' => '',
         'Event module registration. For more performance you can define a trigger event (e. g. Event => TicketCreate).' =>
@@ -5031,7 +5129,8 @@ Thanks for your help!
             '',
         'Max size (in rows) of the involved agents box in the agent interface.' =>
             '',
-        'Max size of the subjects in an email reply.' => 'Tamaño máximo para los asuntos en la respuesta a un correo electrónico.',
+        'Max size of the subjects in an email reply and in some overview screens.' =>
+            '',
         'Maximal auto email responses to own email-address a day (Loop-Protection).' =>
             'Número máximo de respuestas automáticas (vía correos electrónicos) al día para la dirección de correo electrónico propia (protección de bucle).',
         'Maximal size in KBytes for mails that can be fetched via POP3/POP3S/IMAP/IMAPS (KBytes).' =>
@@ -5056,9 +5155,11 @@ Thanks for your help!
         'Module to check customer permissions.' => 'Módulo para verificar los permisos del cliente.',
         'Module to check if a user is in a special group. Access is granted, if the user is in the specified group and has ro and rw permissions.' =>
             'Módulo para verificar si un usuario se encuentra en un grupo específico. Se permite el acceso si el usuario está en cierto grupo y tiene permisos ro y rw.',
+        'Module to check if an agent is involved to a ticket.' => '',
         'Module to check if arrived emails should be marked as email-internal (because of original forwarded internal email). ArticleType and SenderType define the values for the arrived email/article.' =>
             '',
         'Module to check the agent responsible of a ticket.' => 'Módulo para verificar el agente responsable de un ticket.',
+        'Module to check the creator of a ticket.' => '',
         'Module to check the group permissions for the access to customer tickets.' =>
             'Módulo para verificar los permisos de grupo para el acceso a los tickets de los clientes.',
         'Module to check the owner of a ticket.' => 'Módulo para verificar el propietario de un ticket.',
@@ -5078,7 +5179,7 @@ Thanks for your help!
             'Módulo para generar estadísticas del tiempo de solución y respuesta de los tickets.',
         'Module to generate ticket statistics.' => 'Módulo para generar estadísticas de tickets.',
         'Module to show notifications and escalations (ShownMax: max. shown escalations, EscalationInMinutes: Show ticket which will escalation in, CacheTime: Cache of calculated escalations in seconds).' =>
-            'Módulo para mostrar notificaciones y escalados (ShownMax: Número máximo de escalados que se muestran, EscalationInMinutes: Mostrar el ticket que escalará en estos minutos, CacheTime: Caché de los escalados calculados en segundos).',
+            'Módulo para mostrar notificaciones y escaladas (ShownMax: Número máximo de escaladas que se muestran, EscalationInMinutes: Mostrar el ticket que escalará en estos minutos, CacheTime: Caché de las escaladas calculadas en segundos).',
         'Module to use database filter storage.' => 'Módulo para utilizar el almacenamiento de base de datos del filtro.',
         'Multiselect' => '',
         'My Services' => '',
@@ -5180,7 +5281,6 @@ Thanks for your help!
         'Portuguese (Brasil)' => '',
         'PostMaster Filters' => 'Filtros del Administrador de Correos',
         'PostMaster Mail Accounts' => 'Cuentas del Administrador de Correos',
-        'Process Information' => '',
         'Process Management Activity Dialog GUI' => '',
         'Process Management Activity GUI' => '',
         'Process Management Path GUI' => '',
@@ -5599,7 +5699,7 @@ Thanks for your help!
         'Shows all both ro and rw queues in the queue view.' => 'Muestra las filas ro y rw en la vista de filas.',
         'Shows all both ro and rw tickets in the service view.' => '',
         'Shows all open tickets (even if they are locked) in the escalation view of the agent interface.' =>
-            'Muestra todos los tickets abiertos (inclusive si están bloqueados), en la vista de escalado de la interfaz del agente.',
+            'Muestra todos los tickets abiertos (inclusive si están bloqueados), en la vista de escaladas de la interfaz del agente.',
         'Shows all open tickets (even if they are locked) in the status view of the agent interface.' =>
             'Muestra todos los tickets abiertos (inclusive si están bloqueados), en la vista de estados de la interfaz del agente.',
         'Shows all the articles of the ticket (expanded) in the zoom view.' =>
@@ -5852,7 +5952,7 @@ Thanks for your help!
         'Updated: %s' => 'Actualizado: %s',
         'Updated: %s=%s;%s=%s;%s=%s;' => 'Actualizado: %s=%s;%s=%s;%s=%s;',
         'Updates the ticket escalation index after a ticket attribute got updated.' =>
-            'Actualiza el índice de escalado de ticket, luego de que un atributo de ticket se actualizó.',
+            'Actualiza el índice de escaladas de ticket, luego de que un atributo de ticket se actualizó.',
         'Updates the ticket index accelerator.' => 'Actualiza el acelerador de índice de ticket.',
         'Use new type of select and autocomplete fields in agent interface, where applicable (InputFields).' =>
             '',

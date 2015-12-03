@@ -36,33 +36,54 @@ sub new {
     $Self->{ArticleID}      = $ParamObject->GetParam( Param => 'ArticleID' );
     $Self->{ZoomExpand}     = $ParamObject->GetParam( Param => 'ZoomExpand' );
     $Self->{ZoomExpandSort} = $ParamObject->GetParam( Param => 'ZoomExpandSort' );
-
-    # Please note: ZoomTimeline is an OTRSBusiness feature
-    $Self->{ZoomTimeline} = $ParamObject->GetParam( Param => 'ZoomTimeline' );
-    if ( !$ConfigObject->Get('TimelineViewEnabled') ) {
-        $Self->{ZoomTimeline} = 0;
-    }
-
-    # save last used view type in preferences
-    if ( defined $Self->{ZoomExpand} || defined $Self->{ZoomTimeline} ) {
-
-        my $LastUsedZoomViewType = '';
-        if ( $Self->{ZoomExpand} && $Self->{ZoomExpand} == 1 ) {
-            $LastUsedZoomViewType = 'Expand';
-        }
-        elsif ( $Self->{ZoomTimeline} && $Self->{ZoomTimeline} == 1 ) {
-            $LastUsedZoomViewType = 'Timeline';
-        }
-        $UserObject->SetPreferences(
-            UserID => $Self->{UserID},
-            Key    => 'UserLastUsedZoomViewType',
-            Value  => $LastUsedZoomViewType,
-        );
-    }
+    $Self->{ZoomTimeline}   = $ParamObject->GetParam( Param => 'ZoomTimeline' );
 
     my %UserPreferences = $UserObject->GetPreferences(
         UserID => $Self->{UserID},
     );
+
+    # save last used view type in preferences
+    if ( !$Self->{Subaction} ) {
+
+        if ( !defined $Self->{ZoomExpand} && !defined $Self->{ZoomTimeline} ) {
+            $Self->{ZoomExpand} = $ConfigObject->Get('Ticket::Frontend::ZoomExpand');
+            if ( $UserPreferences{UserLastUsedZoomViewType} ) {
+                if ( $UserPreferences{UserLastUsedZoomViewType} eq 'Expand' ) {
+                    $Self->{ZoomExpand} = 1;
+                }
+                elsif ( $UserPreferences{UserLastUsedZoomViewType} eq 'Collapse' ) {
+                    $Self->{ZoomExpand} = 0;
+                }
+                elsif ( $UserPreferences{UserLastUsedZoomViewType} eq 'Timeline' ) {
+                    $Self->{ZoomTimeline} = 1;
+                }
+            }
+        }
+
+        if ( defined $Self->{ZoomExpand} || defined $Self->{ZoomTimeline} ) {
+
+            my $LastUsedZoomViewType = '';
+            if ( defined $Self->{ZoomExpand} && $Self->{ZoomExpand} == 1 ) {
+                $LastUsedZoomViewType = 'Expand';
+            }
+            elsif ( defined $Self->{ZoomExpand} && $Self->{ZoomExpand} == 0 ) {
+                $LastUsedZoomViewType = 'Collapse';
+            }
+            elsif ( defined $Self->{ZoomTimeline} && $Self->{ZoomTimeline} == 1 ) {
+                $LastUsedZoomViewType = 'Timeline';
+            }
+            $UserObject->SetPreferences(
+                UserID => $Self->{UserID},
+                Key    => 'UserLastUsedZoomViewType',
+                Value  => $LastUsedZoomViewType,
+            );
+        }
+    }
+
+    # Please note: ZoomTimeline is an OTRSBusiness feature
+    if ( !$ConfigObject->Get('TimelineViewEnabled') ) {
+        $Self->{ZoomTimeline} = 0;
+    }
 
     if ( !defined $Self->{DoNotShowBrowserLinkMessage} ) {
         if ( $UserPreferences{UserAgentDoNotShowBrowserLinkMessage} ) {
@@ -71,28 +92,6 @@ sub new {
         else {
             $Self->{DoNotShowBrowserLinkMessage} = 0;
         }
-    }
-
-    if ( !defined $Self->{ZoomExpand} ) {
-        if (
-            $UserPreferences{UserLastUsedZoomViewType}
-            && $UserPreferences{UserLastUsedZoomViewType} eq 'Expand'
-            )
-        {
-            $Self->{ZoomExpand} = 1;
-        }
-        else {
-            $Self->{ZoomExpand} = $ConfigObject->Get('Ticket::Frontend::ZoomExpand');
-        }
-    }
-
-    if (
-        !defined $Self->{ZoomTimeline}
-        && $UserPreferences{UserLastUsedZoomViewType}
-        && $UserPreferences{UserLastUsedZoomViewType} eq 'Timeline'
-        )
-    {
-        $Self->{ZoomTimeline} = 1;
     }
 
     if ( !defined $Self->{ZoomExpandSort} ) {
@@ -3362,7 +3361,7 @@ sub _ArticleMenu {
                 Name        => 'Print',
                 Class       => 'AsPopup PopupType_TicketAction',
                 Link =>
-                    "Action=AgentTicketPrint;TicketID=$Ticket{TicketID};ArticleID=$Article{ArticleID}"
+                    "Action=AgentTicketPrint;TicketID=$Ticket{TicketID};ArticleID=$Article{ArticleID};ArticleNumber=$Article{Count}"
             };
         }
     }

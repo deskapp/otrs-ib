@@ -207,7 +207,7 @@
                 <Item Key="el">Ελληνικά</Item>
                 <Item Key="fa">فارسى</Item>
                 <Item Key="fi">Suomi</Item>
-                <Item Key="fr">Fraçais</Item>
+                <Item Key="fr">Français</Item>
                 <Item Key="fr_CA">Français (Canada)</Item>
                 <Item Key="gl">Galego</Item>
                 <Item Key="he">עברית</Item>
@@ -289,7 +289,7 @@
                 <Item Key="URL">skins/Agent/default/img/logo_bg.png</Item>
                 <Item Key="StyleTop">4px</Item>
                 <Item Key="StyleRight">38px</Item>
-                <Item Key="StyleHeight">67px</Item>
+                <Item Key="StyleHeight">85px</Item>
                 <Item Key="StyleWidth">270px</Item>
             </Hash>
         </Setting>
@@ -5803,7 +5803,7 @@ via the Preferences button after logging in.
             </Option>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="DashboardBackend###0000-ProductNotify" Required="0" Valid="1">
+    <ConfigItem Name="DashboardBackend###0000-ProductNotify" Required="0" Valid="0">
         <Description Translatable="1">Defines the parameters for the dashboard backend. "Group" is used to restrict access to the plugin (e. g. Group: admin;group1;group2;). "Default" indicates if the plugin is enabled by default or if the user needs to enable it manually. "CacheTTLLocal" defines the cache expiration period in minutes for the plugin.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Agent::Dashboard</SubGroup>
@@ -5859,7 +5859,7 @@ via the Preferences button after logging in.
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="DashboardBackend###0405-News" Required="0" Valid="1">
+    <ConfigItem Name="DashboardBackend###0405-News" Required="0" Valid="0">
         <Description Translatable="1">Defines the parameters for the dashboard backend. "Limit" defines the number of entries displayed by default. "Group" is used to restrict access to the plugin (e. g. Group: admin;group1;group2;). "Default" indicates if the plugin is enabled by default or if the user needs to enable it manually. "CacheTTL" indicates the cache expiration period in minutes for the plugin.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Agent::Dashboard</SubGroup>

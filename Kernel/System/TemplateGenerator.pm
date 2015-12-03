@@ -771,67 +771,69 @@ sub NotificationEvent {
         StripPlainBodyAsAttachment => 2,
     );
 
-    ARTICLEBOX:
-    for my $ArticleItem ( reverse @ArticleBox ) {
+    if ( $Self->{RichText} ) {
+        ARTICLEBOX:
+        for my $ArticleItem ( reverse @ArticleBox ) {
 
-        if ( $CustomerArticleID ne $ArticleItem->{ArticleID} && $AgentArticleID ne $ArticleItem->{ArticleID} ) {
-            next ARTICLEBOX;
-        }
-
-        if ( $ArticleItem->{AttachmentIDOfHTMLBody} ) {
-
-            # get a attachment
-            my %Data = $TicketObject->ArticleAttachment(
-                ArticleID => $ArticleItem->{ArticleID},
-                FileID    => $ArticleItem->{AttachmentIDOfHTMLBody},
-                UserID    => $Param{UserID},
-            );
-
-            # get charset and convert content to internal charset
-            my $Charset;
-            if ( $Data{ContentType} =~ m/.+?charset=("|'|)(.+)/ig ) {
-                $Charset = $2;
-                $Charset =~ s/"|'//g;
-            }
-            if ( !$Charset ) {
-                $Charset = 'us-ascii';
-                $Data{ContentType} .= '; charset="us-ascii"';
+            if ( $CustomerArticleID ne $ArticleItem->{ArticleID} && $AgentArticleID ne $ArticleItem->{ArticleID} ) {
+                next ARTICLEBOX;
             }
 
-            # convert charset
-            if ($Charset) {
-                $Data{Content} = $Kernel::OM->Get('Kernel::System::Encode')->Convert(
-                    Text => $Data{Content},
-                    From => $Charset,
-                    To   => 'utf-8',
+            if ( $ArticleItem->{AttachmentIDOfHTMLBody} ) {
+
+                # get a attachment
+                my %Data = $TicketObject->ArticleAttachment(
+                    ArticleID => $ArticleItem->{ArticleID},
+                    FileID    => $ArticleItem->{AttachmentIDOfHTMLBody},
+                    UserID    => $Param{UserID},
                 );
 
-                # replace charset in content
-                $Data{ContentType} =~ s/\Q$Charset\E/utf-8/gi;
-                $Data{Content} =~ s/(charset=("|'|))\Q$Charset\E/$1utf-8/gi;
-            }
+                # get charset and convert content to internal charset
+                my $Charset;
+                if ( $Data{ContentType} =~ m/.+?charset=("|'|)(.+)/ig ) {
+                    $Charset = $2;
+                    $Charset =~ s/"|'//g;
+                }
+                if ( !$Charset ) {
+                    $Charset = 'us-ascii';
+                    $Data{ContentType} .= '; charset="us-ascii"';
+                }
 
-            $Data{Content} =~ s/&amp;/&/g;
-            $Data{Content} =~ s/&lt;/</g;
-            $Data{Content} =~ s/&gt;/>/g;
-            $Data{Content} =~ s/&quot;/"/g;
+                # convert charset
+                if ($Charset) {
+                    $Data{Content} = $Kernel::OM->Get('Kernel::System::Encode')->Convert(
+                        Text => $Data{Content},
+                        From => $Charset,
+                        To   => 'utf-8',
+                    );
 
-            # strip head, body and meta elements
-            my $HTMLBody = $Kernel::OM->Get('Kernel::System::HTMLUtils')->DocumentStrip(
-                String => $Data{Content},
-            );
+                    # replace charset in content
+                    $Data{ContentType} =~ s/\Q$Charset\E/utf-8/gi;
+                    $Data{Content} =~ s/(charset=("|'|))\Q$Charset\E/$1utf-8/gi;
+                }
 
-            # set HTML body for customer article
-            if ( $CustomerArticleID eq $ArticleItem->{ArticleID} ) {
-                $Param{CustomerMessageParams}->{HTMLBody} = $HTMLBody;
+                $Data{Content} =~ s/&amp;/&/g;
+                $Data{Content} =~ s/&lt;/</g;
+                $Data{Content} =~ s/&gt;/>/g;
+                $Data{Content} =~ s/&quot;/"/g;
 
-                # set flag for customer HTML body
-                $CustomerHTMLBodyPresent = 1;
-            }
+                # strip head, body and meta elements
+                my $HTMLBody = $Kernel::OM->Get('Kernel::System::HTMLUtils')->DocumentStrip(
+                    String => $Data{Content},
+                );
 
-            # set HTML body for agent article
-            if ( $AgentArticleID eq $ArticleItem->{ArticleID} ) {
-                $ArticleAgent{HTMLBody} = $HTMLBody;
+                # set HTML body for customer article
+                if ( $CustomerArticleID eq $ArticleItem->{ArticleID} ) {
+                    $Param{CustomerMessageParams}->{HTMLBody} = $HTMLBody;
+
+                    # set flag for customer HTML body
+                    $CustomerHTMLBodyPresent = 1;
+                }
+
+                # set HTML body for agent article
+                if ( $AgentArticleID eq $ArticleItem->{ArticleID} ) {
+                    $ArticleAgent{HTMLBody} = $HTMLBody;
+                }
             }
         }
     }
@@ -856,20 +858,23 @@ sub NotificationEvent {
     # get system default language
     my $DefaultLanguage = $Kernel::OM->Get('Kernel::Config')->Get('DefaultLanguage') || 'en';
 
-    # get user language
-    my $Language = $Param{Recipient}->{UserLanguage} || $DefaultLanguage;
+    my $Languages = [ $Param{Recipient}->{UserLanguage}, $DefaultLanguage, 'en' ];
 
-    # make sure a message in the user language exists
-    if ( !$Notification{Message}->{$Language} ) {
+    my $Language;
+    LANGUAGE:
+    for my $Item ( @{$Languages} ) {
+        next LANGUAGE if !$Item;
+        next LANGUAGE if !$Notification{Message}->{$Item};
 
-        # otherwise use default language
-        $Language = $DefaultLanguage;
+        # set language
+        $Language = $Item;
+        last LANGUAGE;
+    }
 
-        # if no message exists in default language, then take the first available language
-        if ( !$Notification{Message}->{$Language} ) {
-            my @Languages = sort keys %{ $Notification{Message} };
-            $Language = $Languages[0];
-        }
+    # if no language, then take the first one available
+    if ( !$Language ) {
+        my @NotificationLanguages = sort keys %{ $Notification{Message} };
+        $Language = $NotificationLanguages[0];
     }
 
     # copy the correct language message attributes to a flat structure

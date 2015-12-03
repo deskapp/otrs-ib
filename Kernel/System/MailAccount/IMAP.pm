@@ -229,11 +229,12 @@ sub _Fetch {
                                 . "$File, report it on http://bugs.otrs.org/)!",
                         );
                     }
-                    undef $PostMasterObject;
-                }
 
-                # mark email to delete if it got processed
-                $IMAPObject->delete($Messageno);
+                    # mark email to delete once it was processed
+                    $IMAPObject->delete($Messageno);
+                    undef $PostMasterObject;
+
+                }
 
                 # check limit
                 $Self->{Limit}++;

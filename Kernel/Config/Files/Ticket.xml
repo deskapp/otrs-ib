@@ -17,7 +17,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Ticket::SubjectSize" Required="1" Valid="1">
-        <Description Translatable="1">Max size of the subjects in an email reply.</Description>
+        <Description Translatable="1">Max size of the subjects in an email reply and in some overview screens.</Description>
         <Group>Ticket</Group>
         <SubGroup>Core::Ticket</SubGroup>
         <Setting>
@@ -866,6 +866,158 @@
                 <Item>zum</Item>
                 <Item>zur</Item>
                 <Item>über</Item>
+            </Array>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Ticket::SearchIndex::StopWords###nl" Required="0" Valid="1" ConfigLevel="200">
+        <Description Translatable="1">Dutch stop words for fulltext index. These words will be removed from the search index.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Core::FulltextSearch</SubGroup>
+        <Setting>
+            <Array>
+                <Item>de</Item>
+                <Item>zijn</Item>
+                <Item>een</Item>
+                <Item>en</Item>
+                <Item>in</Item>
+                <Item>je</Item>
+                <Item>het</Item>
+                <Item>van</Item>
+                <Item>op</Item>
+                <Item>ze</Item>
+                <Item>hebben</Item>
+                <Item>het</Item>
+                <Item>hij</Item>
+                <Item>niet</Item>
+                <Item>met</Item>
+                <Item>er</Item>
+                <Item>dat</Item>
+                <Item>die</Item>
+                <Item>te</Item>
+                <Item>wat</Item>
+                <Item>voor</Item>
+                <Item>naar</Item>
+                <Item>gaan</Item>
+                <Item>kunnen</Item>
+                <Item>zeggen</Item>
+                <Item>dat</Item>
+                <Item>maar</Item>
+                <Item>aan</Item>
+                <Item>veel</Item>
+                <Item>zijn</Item>
+                <Item>worden</Item>
+                <Item>uit</Item>
+                <Item>ook</Item>
+                <Item>komen</Item>
+                <Item>als</Item>
+                <Item>om</Item>
+                <Item>moeten</Item>
+                <Item>we</Item>
+                <Item>doen</Item>
+                <Item>bij</Item>
+                <Item>goed</Item>
+                <Item>haar</Item>
+                <Item>dan</Item>
+                <Item>nog</Item>
+                <Item>of</Item>
+                <Item>maken</Item>
+                <Item>zo</Item>
+                <Item>wel</Item>
+                <Item>mijn</Item>
+                <Item>zien</Item>
+                <Item>over</Item>
+                <Item>willen</Item>
+                <Item>staan</Item>
+                <Item>door</Item>
+                <Item>kijken</Item>
+                <Item>zullen</Item>
+                <Item>heel</Item>
+                <Item>nu</Item>
+                <Item>weten</Item>
+                <Item>zitten</Item>
+                <Item>hem</Item>
+                <Item>schrijven</Item>
+                <Item>vinden</Item>
+                <Item>woord</Item>
+                <Item>hoe</Item>
+                <Item>geen</Item>
+                <Item>dit</Item>
+                <Item>mens</Item>
+                <Item>al</Item>
+                <Item>jij</Item>
+                <Item>ander</Item>
+                <Item>groot</Item>
+                <Item>waar</Item>
+                <Item>maar</Item>
+                <Item>weer</Item>
+                <Item>kind</Item>
+                <Item>me</Item>
+                <Item>vragen</Item>
+                <Item>een</Item>
+                <Item>denken</Item>
+                <Item>twee</Item>
+                <Item>horen</Item>
+                <Item>iets</Item>
+                <Item>deze</Item>
+                <Item>krijgen</Item>
+                <Item>ons</Item>
+                <Item>zich</Item>
+                <Item>lezen</Item>
+                <Item>hun</Item>
+                <Item>welk</Item>
+                <Item>zin</Item>
+                <Item>laten</Item>
+                <Item>mogen</Item>
+                <Item>hier</Item>
+                <Item>jullie</Item>
+                <Item>toch</Item>
+                <Item>geven</Item>
+                <Item>jaar</Item>
+                <Item>tegen</Item>
+                <Item>al</Item>
+                <Item>eens</Item>
+                <Item>echt</Item>
+                <Item>houden</Item>
+                <Item>alleen</Item>
+                <Item>lopen</Item>
+                <Item>mee</Item>
+                <Item>ja</Item>
+                <Item>roepen</Item>
+                <Item>tijd</Item>
+                <Item>dag</Item>
+                <Item>elkaar</Item>
+                <Item>even</Item>
+                <Item>lang</Item>
+                <Item>land</Item>
+                <Item>liggen</Item>
+                <Item>waarom</Item>
+                <Item>zetten</Item>
+                <Item>vader</Item>
+                <Item>laat</Item>
+                <Item>beginnen</Item>
+                <Item>blijven</Item>
+                <Item>nee</Item>
+                <Item>moeder</Item>
+                <Item>huis</Item>
+                <Item>nou</Item>
+                <Item>na</Item>
+                <Item>af</Item>
+                <Item>keer</Item>
+                <Item>dus</Item>
+                <Item>tot</Item>
+                <Item>vertellen</Item>
+                <Item>wie</Item>
+                <Item>net</Item>
+                <Item>jou</Item>
+                <Item>les</Item>
+                <Item>want</Item>
+                <Item>man</Item>
+                <Item>nieuw</Item>
+                <Item>elk</Item>
+                <Item>tekst</Item>
+                <Item>omdat</Item>
+                <Item>gebruiken</Item>
+                <Item>u</Item>
             </Array>
         </Setting>
     </ConfigItem>
@@ -6563,7 +6715,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Ticket::Permission###1-OwnerCheck" Required="0" Valid="1">
-        <Description Translatable="1">Module to check the owner of a ticket.</Description>
+        <Description Translatable="1">Module to grant access to the owner of a ticket.</Description>
         <Group>Ticket</Group>
         <SubGroup>Core::Ticket</SubGroup>
         <Setting>
@@ -6574,8 +6726,20 @@
             </Hash>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="Ticket::Permission::OwnerCheck::Queues" Required="0" Valid="0">
+        <Description Translatable="1">Optional queue limitation for the OwnerCheck permission module. If set, permission is only granted for tickets in the specified queues.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Core::Ticket</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Postmaster">ro, move, note</Item>
+                <Item Key="Raw">rw</Item>
+                <Item Key="Misc">note</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="Ticket::Permission###2-ResponsibleCheck" Required="0" Valid="1">
-        <Description Translatable="1">Module to check the agent responsible of a ticket.</Description>
+        <Description Translatable="1">Module to grant access to the agent responsible of a ticket.</Description>
         <Group>Ticket</Group>
         <SubGroup>Core::Ticket</SubGroup>
         <Setting>
@@ -6586,8 +6750,20 @@
             </Hash>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="Ticket::Permission::ResponsibleCheck::Queues" Required="0" Valid="0">
+        <Description Translatable="1">Optional queue limitation for the ResponsibleCheck permission module. If set, permission is only granted for tickets in the specified queues.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Core::Ticket</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Postmaster">ro, move, note</Item>
+                <Item Key="Raw">rw</Item>
+                <Item Key="Misc">note</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="Ticket::Permission###3-GroupCheck" Required="0" Valid="1">
-        <Description Translatable="1">Module to check if a user is in a special group. Access is granted, if the user is in the specified group and has ro and rw permissions.</Description>
+        <Description Translatable="1">Module to check the group permissions for the access to tickets.</Description>
         <Group>Ticket</Group>
         <SubGroup>Core::Ticket</SubGroup>
         <Setting>
@@ -6599,7 +6775,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Ticket::Permission###4-WatcherCheck" Required="0" Valid="1">
-        <Description Translatable="1">Module to check the watcher agents of a ticket.</Description>
+        <Description Translatable="1">Module to grant access to the watcher agents of a ticket.</Description>
         <Group>Ticket</Group>
         <SubGroup>Core::Ticket</SubGroup>
         <Setting>
@@ -6610,8 +6786,56 @@
             </Hash>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="Ticket::Permission###5-CreatorCheck" Required="0" Valid="0">
+        <Description Translatable="1">Module to grant access to the creator of a ticket.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Core::Ticket</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Module">Kernel::System::Ticket::Permission::CreatorCheck</Item>
+                <Item Key="Required">0</Item>
+                <Item Key="Granted">1</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Ticket::Permission::CreatorCheck::Queues" Required="0" Valid="0">
+        <Description Translatable="1">Optional queue limitation for the CreatorCheck permission module. If set, permission is only granted for tickets in the specified queues.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Core::Ticket</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Postmaster">ro, move, note</Item>
+                <Item Key="Raw">rw</Item>
+                <Item Key="Misc">note</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Ticket::Permission###6-InvolvedCheck" Required="0" Valid="0">
+        <Description Translatable="1">Module to grant access to any agent that has been involved in a ticket in the past (based on ticket history entries).</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Core::Ticket</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Module">Kernel::System::Ticket::Permission::InvolvedCheck</Item>
+                <Item Key="Required">0</Item>
+                <Item Key="Granted">1</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Ticket::Permission::InvolvedCheck::Queues" Required="0" Valid="0">
+        <Description Translatable="1">Optional queue limitation for the InvolvedCheck permission module. If set, permission is only granted for tickets in the specified queues.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Core::Ticket</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Postmaster">ro, move, note</Item>
+                <Item Key="Raw">rw</Item>
+                <Item Key="Misc">note</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="CustomerTicket::Permission###1-GroupCheck" Required="0" Valid="1">
-        <Description Translatable="1">Module to check the group permissions for the access to customer tickets.</Description>
+        <Description Translatable="1">Module to check the group permissions for customer access to tickets.</Description>
         <Group>Ticket</Group>
         <SubGroup>Core::Ticket</SubGroup>
         <Setting>
@@ -6623,7 +6847,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="CustomerTicket::Permission###2-CustomerUserIDCheck" Required="0" Valid="1">
-        <Description Translatable="1">Grants access, if the customer ID of the ticket matches the customer user's ID and the customer user has group permissions on the queue the ticket is in.</Description>
+        <Description Translatable="1">Module to grant access if the CustomerUserID of the ticket matches the CustomerUserID of the customer.</Description>
         <Group>Ticket</Group>
         <SubGroup>Core::Ticket</SubGroup>
         <Setting>
@@ -6635,7 +6859,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="CustomerTicket::Permission###3-CustomerIDCheck" Required="0" Valid="1">
-        <Description Translatable="1">Module to check customer permissions.</Description>
+        <Description Translatable="1">Module to grant access if the CustomerID of the ticket matches the CustomerID of the customer.</Description>
         <Group>Ticket</Group>
         <SubGroup>Core::Ticket</SubGroup>
         <Setting>

@@ -30,7 +30,7 @@ sub Data {
     $Self->{DateFormatShort}     = '%D-%M-%Y';
     $Self->{DateInputFormat}     = '%D-%M-%Y';
     $Self->{DateInputFormatLong} = '%D-%M-%Y - %T';
-    $Self->{Completeness}        = 0.556207233626588;
+    $Self->{Completeness}        = 0.552447552447552;
 
     # csv separator
     $Self->{Separator} = ';';
@@ -482,7 +482,7 @@ sub Data {
         'User Profile' => 'Gebruikersprofiel',
         'Email Settings' => 'E-mail voorkeuren',
         'Other Settings' => 'Overige voorkeuren',
-        'Notification Settings' => '',
+        'Notification Settings' => 'Notificatie Instellingen',
         'Change Password' => 'Wachtwoord Wijzigen',
         'Current password' => 'Huidig wachtwoord',
         'New password' => 'Nieuw wachtwoord',
@@ -895,8 +895,8 @@ sub Data {
         # Template: AdminCloudServices
         'System registration is a service of OTRS Group, which provides a lot of advantages!' =>
             'Systeemregistratie is een service van de OTRS Groep, die een aantal voordelen biedt.',
-        'Please note that you using OTRS cloud services requires the system to be registered.' =>
-            'Gelieve er rekening mee te houden dat om gebruik te maken van de OTRS cloud diensten uw systeem geregistreerd moet zijn.',
+        'Please note that the use of OTRS cloud services requires the system to be registered.' =>
+            '',
         'Register this system' => 'Registreer dit systeem',
         'Here you can configure available cloud services that communicate securely with %s.' =>
             'Hier kan u beschikbare Cloud diensten configureren die beveiligd communiceren met %s.',
@@ -1281,7 +1281,7 @@ sub Data {
 
         # Template: AdminGenericInterfaceMappingXSLT
         'GenericInterface Mapping XSLT for Web Service %s' => '',
-        'Mapping XML' => '',
+        'Mapping XML' => 'Mapping XML',
         'Template' => 'Sjabloon',
         'The entered data is not a valid XSLT stylesheet.' => 'De ingevoerde data is geen geldig XSLT stylesheet.',
         'Insert XSLT stylesheet.' => 'XLST stylesheet toevoegen.',
@@ -1345,14 +1345,14 @@ sub Data {
         'Show or hide SSL options to connect to the remote system.' => 'Toon of verberg SSL opties om te verbinden naar het andere systeem',
         'Certificate File' => 'Certificaat-bestand',
         'The full path and name of the SSL certificate file.' => 'Het volledige pad en naam van het SSL certificaat bestand.',
-        'e.g. /opt/otrs/var/certificates/REST/ssl.crt' => '',
+        'e.g. /opt/otrs/var/certificates/REST/ssl.crt' => 'e.g. /opt/otrs/var/certificates/REST/ssl.crt',
         'Certificate Password File' => 'Bestand dat wachtwoord van het certificaaat bevat',
         'The full path and name of the SSL key file.' => 'Het volledige pad en naam van het SSL sleutel bestand.',
-        'e.g. /opt/otrs/var/certificates/REST/ssl.key' => '',
+        'e.g. /opt/otrs/var/certificates/REST/ssl.key' => 'e.g. /opt/otrs/var/certificates/REST/ssl.key',
         'Certification Authority (CA) File' => 'Certification Authority (CA) bestand',
         'The full path and name of the certification authority certificate file that validates the SSL certificate.' =>
             '',
-        'e.g. /opt/otrs/var/certificates/REST/CA/ca.file' => '',
+        'e.g. /opt/otrs/var/certificates/REST/CA/ca.file' => 'e.g. /opt/otrs/var/certificates/REST/CA/ca.file',
 
         # Template: AdminGenericInterfaceTransportHTTPSOAP
         'GenericInterface Transport HTTP::SOAP for Web Service %s' => 'GenericInterface Transport HTTP::SOAP voor web service %s',
@@ -1662,6 +1662,7 @@ sub Data {
         'You are about to downgrade to OTRS Free and will lose the following features and all data related to these:' =>
             '',
         'Chat' => '',
+        'Report Generator' => '',
         'Timeline view in ticket zoom' => '',
         'DynamicField ContactWithData' => '',
         'DynamicField Database' => '',
@@ -1844,7 +1845,6 @@ sub Data {
         'Filter available fields' => 'Filter beschikbare velden',
         'Available Fields' => 'Beschikbare velden',
         'Assigned Fields' => 'Toegewezen velden',
-        'Edit Details for Field' => 'Bewerk details voor veld',
         'ArticleType' => 'Interactie-type',
         'Display' => 'Weergave',
         'Edit Field Details' => 'Bewerk veld-details',
@@ -1952,9 +1952,9 @@ sub Data {
         'Type of Linking between Conditions' => 'Type koppeling tussen condities',
         'Remove this Condition' => 'Verwijder conditie',
         'Type of Linking' => 'Type koppeling',
+        'Add a new Field' => 'Nieuw veld',
         'Remove this Field' => 'Verwijder dit veld',
         'And can\'t be repeated on the same condition.' => '',
-        'Add a new Field' => 'Nieuw veld',
         'Add New Condition' => 'Nieuwe conditie',
 
         # Template: AdminProcessManagementTransitionAction
@@ -1964,8 +1964,8 @@ sub Data {
         'Transition Action Name' => 'Naam',
         'Transition Action Module' => 'Transitie-actiemodule',
         'Config Parameters' => 'Configuratie',
-        'Remove this Parameter' => 'Verwijder deze parameter',
         'Add a new Parameter' => 'Nieuwe parameter',
+        'Remove this Parameter' => 'Verwijder deze parameter',
 
         # Template: AdminQueue
         'Manage Queues' => 'Wachtrijenbeheer',
@@ -2639,6 +2639,8 @@ sub Data {
 
         # Template: AgentTicketCompose
         'Compose Answer for %s%s' => '',
+        'This address is registered as system address and cannot be used: %s' =>
+            '',
         'Please include at least one recipient' => 'Voeg tenminste één ontvanger toe',
         'Remove Ticket Customer' => 'Verwijder ',
         'Please remove this entry and enter a new one with the correct value.' =>
@@ -3127,9 +3129,89 @@ sub Data {
         'No user configurable notifications found.' => '',
         'Receive messages for notification \'%s\' by transport method \'%s\'.' =>
             '',
+        'Please note that you can\'t completely disable notifications marked as mandatory.' =>
+            '',
+        'Sorry, but you can\'t disable all methods for notifications marked as mandatory.' =>
+            '',
+        'Sorry, but you can\'t disable all methods for this notification.' =>
+            '',
+
+        # Template: ActivityDialogHeader
+        'Process Information' => 'Procesinformatie',
+        'Dialog' => '',
+
+        # Template: Article
+        'Inform Agent' => 'Informeer behandelaar',
 
         # Template: PublicDefault
         'Welcome' => '',
+
+        # Template: GeneralSpecificationsWidget
+        'Permissions' => 'Permissies',
+        'You can select one or more groups to define access for different agents.' =>
+            'U kunt één of meerdere groepen definiëren die deze rapportage kunnen gebruiken.',
+        'Result formats' => '',
+        'The selected time periods in the statistic are time zone neutral.' =>
+            '',
+        'Create summation row' => '',
+        'Generate an additional row containing sums for all data columns.' =>
+            '',
+        'Create summation column' => '',
+        'Generate an additional column containing sums for all data rows.' =>
+            '',
+        'Cache results' => '',
+        'Stores statistics result data in a cache to be used in subsequent views with the same configuration.' =>
+            '',
+        'Provide the statistic as a widget that agents can activate in their dashboard.' =>
+            'Maak een dashboard-widget van dit rapport die behandelaars in hun dashboard kunnen activeren.',
+        'Please note that enabling the dashboard widget will activate caching for this statistic in the dashboard.' =>
+            '',
+        'If set to invalid end users can not generate the stat.' => 'Als deze op ongeldig staat, kan het rapport niet gebruikt worden.',
+
+        # Template: PreviewWidget
+        'There are problems in the configuration of this statistic:' => '',
+        'You may now configure the X-axis of your statistic.' => '',
+        'This statistic does not provide preview data.' => '',
+        'Preview format:' => '',
+        'Please note that the preview uses random data and does not consider data filters.' =>
+            '',
+        'Configure X-Axis' => '',
+        'X-axis' => 'X-as',
+        'Configure Y-Axis' => '',
+        'Y-axis' => '',
+        'Configure Filter' => '',
+
+        # Template: RestrictionsWidget
+        'Please select only one element or turn off the button \'Fixed\'.' =>
+            'Kies een element, of schakel de optie \'Statisch\' uit.',
+        'Absolute period' => '',
+        'Between' => 'Tussen',
+        'Relative period' => '',
+        'The past complete %s and the current+upcoming complete %s %s' =>
+            '',
+        'Do not allow changes to this element when the statistic is generated.' =>
+            '',
+
+        # Template: StatsParamsWidget
+        'Format' => 'Formaat',
+        'Exchange Axis' => 'Wissel assen',
+        'Configurable params of static stat' => 'Configureerbare parameters voor rapport',
+        'No element selected.' => 'Geen element geselecteerd.',
+        'Scale' => 'Schaal',
+
+        # Template: D3
+        'Download SVG' => '',
+        'Download PNG' => '',
+
+        # Template: XAxisWidget
+        'The selected time period defines the default time frame for this statistic to collect data from.' =>
+            '',
+        'Defines the time unit that will be used to split the selected time period into reporting data points.' =>
+            '',
+
+        # Template: YAxisWidget
+        'Please remember that the scale for the Y-axis has to be larger than the scale for the X-axis (e.g. X-axis => Month, Y-Axis => Year).' =>
+            '',
 
         # Template: Test
         'OTRS Test Page' => 'OTRS Testpagina',
@@ -3165,6 +3247,7 @@ sub Data {
         'All agents subscribed to both the ticket\'s queue and service' =>
             '',
         'Customer of the ticket' => '',
+        'Yes, but require at least one active notification method' => '',
 
         # Perl Module: Kernel/Modules/AdminPackageManager.pm
         'Package not verified due a communication issue with verification server!' =>
@@ -3233,6 +3316,9 @@ sub Data {
             '',
         ' You can take one of the next actions:' => '',
 
+        # Perl Module: Kernel/Output/HTML/Layout/LinkObject.pm
+        'Linked as' => '',
+
         # Perl Module: Kernel/Output/HTML/Notification/AgentOTRSBusiness.pm
         '%s Upgrade to %s now! %s' => '',
 
@@ -3245,6 +3331,10 @@ sub Data {
         # Perl Module: Kernel/Output/HTML/Preferences/Language.pm
         '(in process)' => '',
 
+        # Perl Module: Kernel/Output/HTML/Preferences/NotificationEvent.pm
+        'Please make sure you\'ve chosen at least one transport method for mandatory notifications.' =>
+            '',
+
         # Perl Module: Kernel/Output/HTML/Preferences/OutOfOffice.pm
         'Please specify an end date that is after the start date.' => '',
 
@@ -3252,8 +3342,6 @@ sub Data {
         'Please supply your new password!' => '',
 
         # Perl Module: Kernel/Output/HTML/Statistics/View.pm
-        'X-axis' => 'X-as',
-        'Y-axis' => '',
         'No past complete or the current+upcoming complete relative time value selected.' =>
             '',
         'The selected time period is larger than the allowed time period.' =>
@@ -3281,6 +3369,12 @@ sub Data {
 
         # Perl Module: Kernel/Output/HTML/TicketOverviewMenu/Sort.pm
         'Order by' => 'Sorteren op',
+
+        # Perl Module: Kernel/System/Console/Command/Dev/Tools/Config2Docbook.pm
+        'Configuration Options Reference' => '',
+        'This setting can not be changed.' => '',
+        'This setting is not active by default.' => '',
+        'This setting can not be deactivated.' => '',
 
         # Perl Module: Kernel/System/Stats/Dynamic/Ticket.pm
         'State Type' => '',
@@ -4479,6 +4573,8 @@ Thanks for your help!
         'Defines the postmaster default queue.' => '',
         'Defines the priority in which the information is logged and presented.' =>
             '',
+        'Defines the queues the creator check will be active.' => '',
+        'Defines the queues the involved check will be active.' => '',
         'Defines the receipent target of the phone ticket and the sender of the email ticket ("Queue" shows all queues, "System address" displays all system addresses) in the agent interface.' =>
             '',
         'Defines the receipent target of the tickets ("Queue" shows all queues, "SystemAddress" displays all system addresses) in the customer interface.' =>
@@ -4599,6 +4695,8 @@ Thanks for your help!
         'Displays the accounted time for an article in the ticket zoom view.' =>
             '',
         'Dropdown' => '',
+        'Dutch stop words for fulltext index. These words will be removed from the search index.' =>
+            '',
         'Dynamic Fields Checkbox Backend GUI' => '',
         'Dynamic Fields Date Time Backend GUI' => '',
         'Dynamic Fields Drop-down Backend GUI' => '',
@@ -5037,7 +5135,8 @@ Thanks for your help!
             '',
         'Max size (in rows) of the involved agents box in the agent interface.' =>
             '',
-        'Max size of the subjects in an email reply.' => '',
+        'Max size of the subjects in an email reply and in some overview screens.' =>
+            '',
         'Maximal auto email responses to own email-address a day (Loop-Protection).' =>
             '',
         'Maximal size in KBytes for mails that can be fetched via POP3/POP3S/IMAP/IMAPS (KBytes).' =>
@@ -5062,9 +5161,11 @@ Thanks for your help!
         'Module to check customer permissions.' => '',
         'Module to check if a user is in a special group. Access is granted, if the user is in the specified group and has ro and rw permissions.' =>
             '',
+        'Module to check if an agent is involved to a ticket.' => '',
         'Module to check if arrived emails should be marked as email-internal (because of original forwarded internal email). ArticleType and SenderType define the values for the arrived email/article.' =>
             '',
         'Module to check the agent responsible of a ticket.' => '',
+        'Module to check the creator of a ticket.' => '',
         'Module to check the group permissions for the access to customer tickets.' =>
             '',
         'Module to check the owner of a ticket.' => '',
@@ -5186,7 +5287,6 @@ Thanks for your help!
         'Portuguese (Brasil)' => '',
         'PostMaster Filters' => 'E-mail filters',
         'PostMaster Mail Accounts' => 'E-mail accounts',
-        'Process Information' => 'Procesinformatie',
         'Process Management Activity Dialog GUI' => 'Procesbeheer dialoog',
         'Process Management Activity GUI' => 'Procesbeheer activiteit',
         'Process Management Path GUI' => 'Procesbeheer pad',
