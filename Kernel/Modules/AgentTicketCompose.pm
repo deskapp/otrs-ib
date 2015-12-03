@@ -136,8 +136,8 @@ sub Run {
                 );
                 $Output .= $LayoutObject->Warning(
                     Message => $LayoutObject->{LanguageObject}
-                        ->Get('Sorry, you need to be the ticket owner to perform this action.'),
-                    Comment => $LayoutObject->{LanguageObject}->Get('Please change the owner first.'),
+                        ->Translate('Sorry, you need to be the ticket owner to perform this action.'),
+                    Comment => $LayoutObject->{LanguageObject}->Translate('Please change the owner first.'),
                 );
                 $Output .= $LayoutObject->Footer(
                     Type => 'Small',
@@ -434,6 +434,48 @@ sub Run {
         my %StateData = $Kernel::OM->Get('Kernel::System::State')->StateGet( ID => $GetParam{StateID} );
 
         my %Error;
+
+        # get check item object
+        my $CheckItemObject = $Kernel::OM->Get('Kernel::System::CheckItem');
+
+        # check some values
+        LINE:
+        for my $Line (qw(To Cc Bcc)) {
+            next LINE if !$GetParam{$Line};
+            for my $Email ( Mail::Address->parse( $GetParam{$Line} ) ) {
+                if ( !$CheckItemObject->CheckEmail( Address => $Email->address() ) ) {
+                    $Error{ $Line . 'ErrorType' } = $Line . $CheckItemObject->CheckErrorType() . 'ServerErrorMsg';
+                    $Error{ $Line . 'Invalid' }   = 'ServerError';
+                }
+                my $IsLocal = $Kernel::OM->Get('Kernel::System::SystemAddress')->SystemAddressIsLocalAddress(
+                    Address => $Email->address()
+                );
+                if ($IsLocal) {
+                    $Error{ $Line . 'IsLocalAddress' } = 'ServerError';
+                }
+            }
+        }
+
+        if ( $Error{ToIsLocalAddress} ) {
+            $LayoutObject->Block(
+                Name => 'ToIsLocalAddressServerErrorMsg',
+                Data => \%GetParam,
+            );
+        }
+
+        if ( $Error{CcIsLocalAddress} ) {
+            $LayoutObject->Block(
+                Name => 'CcIsLocalAddressServerErrorMsg',
+                Data => \%GetParam,
+            );
+        }
+
+        if ( $Error{BccIsLocalAddress} ) {
+            $LayoutObject->Block(
+                Name => 'BccIsLocalAddressServerErrorMsg',
+                Data => \%GetParam,
+            );
+        }
 
         # If is an action about attachments
         my $IsUpload = 0;

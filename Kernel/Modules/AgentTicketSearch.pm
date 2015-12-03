@@ -13,6 +13,7 @@ use strict;
 use warnings;
 
 use Kernel::System::VariableCheck qw(:all);
+use Kernel::Language qw(Translatable);
 
 our $ObjectManagerDisabled = 1;
 
@@ -314,7 +315,7 @@ sub Run {
 
         # fill up profile name (e.g. with last-search)
         if ( !$Self->{Profile} || !$Self->{SaveProfile} ) {
-            $Self->{Profile} = 'last-search';
+            $Self->{Profile} = Translatable('last-search');
         }
 
         # check and remember if it's fulltext search from toolbar
@@ -346,10 +347,47 @@ sub Run {
                 $GetParam{ShownAttributes} = [ split /;/, $GetParam{ShownAttributes} ];
             }
 
+            # replace StateType to StateIDs
+            if ( $GetParam{StateType} ) {
+                my @StateIDs;
+
+                if ( $GetParam{StateType} eq 'Open' ) {
+                    @StateIDs = $Kernel::OM->Get('Kernel::System::State')->StateGetStatesByType(
+                        Type   => 'Viewable',
+                        Result => 'ID',
+                    );
+                }
+                elsif ( $Param{StateType} eq 'Closed' ) {
+                    @StateIDs = $Kernel::OM->Get('Kernel::System::State')->StateGetStatesByType(
+                        Type   => 'Viewable',
+                        Result => 'ID',
+                    );
+                }
+
+                # current ticket state type
+                else {
+                    @StateIDs = $Kernel::OM->Get('Kernel::System::State')->StateGetStatesByType(
+                        StateType => $GetParam{StateType},
+                        Result    => 'ID',
+                    );
+                }
+
+                # merge with StateIDs
+                if ( @StateIDs && $GetParam{StateIDs} ) {
+                    my %StateIDs = map { $_ => 1 } @StateIDs;
+                    @StateIDs = grep { exists $StateIDs{$_} } @{ $GetParam{StateIDs} };
+                }
+
+                if (@StateIDs) {
+                    $GetParam{StateIDs} = \@StateIDs;
+                }
+            }
+
             # insert new profile params
             KEY:
             for my $Key ( sort keys %GetParam ) {
                 next KEY if !defined $GetParam{$Key};
+                next KEY if $Key eq 'StateType';
                 $SearchProfileObject->SearchProfileAdd(
                     Base      => 'TicketSearch',
                     Name      => $Self->{Profile},
@@ -638,7 +676,7 @@ sub Run {
 
                     # set missing information
                     $Data{Subject} = $Data{Title} || 'Untitled';
-                    $Data{Body} = $LayoutObject->{LanguageObject}->Get(
+                    $Data{Body} = $LayoutObject->{LanguageObject}->Translate(
                         'This item has no articles yet.'
                     );
                     $Data{From} = '--';

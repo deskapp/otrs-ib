@@ -4,13 +4,14 @@
 # bb16390 <bb16390@gmail.com>, 2014
 # 文浩坚 <never.min@gmail.com>, 2015
 # 文浩坚 <never.min@gmail.com>, 2015
+# shizhao <shizhao@gmail.com>, 2015
 # 文浩坚 <never.min@gmail.com>, 2015
 # 陈德文 <sggggy@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: OTRS\n"
 "POT-Creation-Date: 2014-08-08 19:10+0200\n"
-"PO-Revision-Date: 2015-10-28 18:26+0000\n"
+"PO-Revision-Date: 2015-11-25 17:57+0000\n"
 "Last-Translator: Carlos Rodríguez <carlos.rodriguez@otrs.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/otrs/OTRS/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -193,11 +194,11 @@ msgstr "一刻钟"
 
 #. Template: AAABase
 msgid "half-year"
-msgstr ""
+msgstr "半年"
 
 #. Template: AAABase
 msgid "half-year(s)"
-msgstr ""
+msgstr "半年"
 
 #. Template: AAABase
 msgid "year"
@@ -3215,7 +3216,7 @@ msgstr "系统注册是OTRS集团的一项服务，它为您提供了很多好�
 
 #. Template: AdminCloudServices
 msgid ""
-"Please note that you using OTRS cloud services requires the system to be "
+"Please note that the use of OTRS cloud services requires the system to be "
 "registered."
 msgstr ""
 
@@ -5350,17 +5351,17 @@ msgstr "编辑通知"
 
 #. Template: AdminNotificationEvent
 msgid "Show in agent preferences"
-msgstr ""
+msgstr "在服务人员偏好设置里显示"
 
 #. Template: AdminNotificationEvent
 msgid "Agent preferences tooltip"
-msgstr ""
+msgstr "服务人员偏好设置提示"
 
 #. Template: AdminNotificationEvent
 msgid ""
 "This message will be shown on the agent preferences screen as a tooltip for "
 "this notification."
-msgstr ""
+msgstr "该信息将会在服务人员配置他的个人偏好时显示."
 
 #. Template: AdminNotificationEvent
 msgid ""
@@ -5752,6 +5753,10 @@ msgstr ""
 #. Template: AdminOTRSBusinessUninstall
 msgid "Chat"
 msgstr "对话"
+
+#. Template: AdminOTRSBusinessUninstall
+msgid "Report Generator"
+msgstr ""
 
 #. Template: AdminOTRSBusinessUninstall
 msgid "Timeline view in ticket zoom"
@@ -6368,10 +6373,6 @@ msgid "Assigned Fields"
 msgstr "指派的字段"
 
 #. Template: AdminProcessManagementActivityDialog
-msgid "Edit Details for Field"
-msgstr "编辑字段详情"
-
-#. Template: AdminProcessManagementActivityDialog
 msgid "ArticleType"
 msgstr "信件类型"
 
@@ -6716,16 +6717,16 @@ msgid "Type of Linking"
 msgstr "链接类型"
 
 #. Template: AdminProcessManagementTransition
+msgid "Add a new Field"
+msgstr "添加新的字段"
+
+#. Template: AdminProcessManagementTransition
 msgid "Remove this Field"
 msgstr "删除这个字段"
 
 #. Template: AdminProcessManagementTransition
 msgid "And can't be repeated on the same condition."
 msgstr ""
-
-#. Template: AdminProcessManagementTransition
-msgid "Add a new Field"
-msgstr "添加新的字段"
 
 #. Template: AdminProcessManagementTransition
 msgid "Add New Condition"
@@ -6754,12 +6755,12 @@ msgid "Config Parameters"
 msgstr "配置参数"
 
 #. Template: AdminProcessManagementTransitionAction
-msgid "Remove this Parameter"
-msgstr "删除这个参数"
-
-#. Template: AdminProcessManagementTransitionAction
 msgid "Add a new Parameter"
 msgstr "添加新的参数"
+
+#. Template: AdminProcessManagementTransitionAction
+msgid "Remove this Parameter"
+msgstr "删除这个参数"
 
 #. Template: AdminQueue
 msgid "Manage Queues"
@@ -8498,7 +8499,7 @@ msgstr "编辑个人设置"
 
 #. Template: AgentPreferences
 msgid "Did you know? You can help translating OTRS at %s."
-msgstr ""
+msgstr "你知道吗? 你也可以通过 %s 帮助翻译 OTRS."
 
 #. Template: AgentSpelling
 msgid "Spell Checker"
@@ -8807,6 +8808,10 @@ msgstr "工单解锁"
 
 #. Template: AgentTicketCompose
 msgid "Compose Answer for %s%s"
+msgstr ""
+
+#. Template: AgentTicketCompose
+msgid "This address is registered as system address and cannot be used: %s"
 msgstr ""
 
 #. Template: AgentTicketCompose
@@ -10273,8 +10278,207 @@ msgstr ""
 msgid "Receive messages for notification '%s' by transport method '%s'."
 msgstr ""
 
+#. Template: PreferencesNotificationEvent
+msgid ""
+"Please note that you can't completely disable notifications marked as "
+"mandatory."
+msgstr ""
+
+#. Template: PreferencesNotificationEvent
+msgid ""
+"Sorry, but you can't disable all methods for notifications marked as "
+"mandatory."
+msgstr ""
+
+#. Template: PreferencesNotificationEvent
+msgid "Sorry, but you can't disable all methods for this notification."
+msgstr ""
+
+#. Template: ActivityDialogHeader
+msgid "Process Information"
+msgstr "进程信息"
+
+#. Template: ActivityDialogHeader
+msgid "Dialog"
+msgstr ""
+
+#. Template: Article
+msgid "Inform Agent"
+msgstr "通知服务人员"
+
 #. Template: PublicDefault
 msgid "Welcome"
+msgstr ""
+
+#. Template: GeneralSpecificationsWidget
+msgid "Permissions"
+msgstr "权限"
+
+#. Template: GeneralSpecificationsWidget
+msgid ""
+"You can select one or more groups to define access for different agents."
+msgstr "可选中一个或多个组以便定义不同服务人员。"
+
+#. Template: GeneralSpecificationsWidget
+msgid "Result formats"
+msgstr ""
+
+#. Template: GeneralSpecificationsWidget
+msgid "The selected time periods in the statistic are time zone neutral."
+msgstr ""
+
+#. Template: GeneralSpecificationsWidget
+msgid "Create summation row"
+msgstr ""
+
+#. Template: GeneralSpecificationsWidget
+msgid "Generate an additional row containing sums for all data columns."
+msgstr ""
+
+#. Template: GeneralSpecificationsWidget
+msgid "Create summation column"
+msgstr ""
+
+#. Template: GeneralSpecificationsWidget
+msgid "Generate an additional column containing sums for all data rows."
+msgstr ""
+
+#. Template: GeneralSpecificationsWidget
+msgid "Cache results"
+msgstr ""
+
+#. Template: GeneralSpecificationsWidget
+msgid ""
+"Stores statistics result data in a cache to be used in subsequent views with"
+" the same configuration."
+msgstr ""
+
+#. Template: GeneralSpecificationsWidget
+msgid ""
+"Provide the statistic as a widget that agents can activate in their "
+"dashboard."
+msgstr "将该统计作为部件显示在信息中心中."
+
+#. Template: GeneralSpecificationsWidget
+msgid ""
+"Please note that enabling the dashboard widget will activate caching for "
+"this statistic in the dashboard."
+msgstr ""
+
+#. Template: GeneralSpecificationsWidget
+msgid "If set to invalid end users can not generate the stat."
+msgstr "如果设置为无效，将无法生成统计。"
+
+#. Template: PreviewWidget
+msgid "There are problems in the configuration of this statistic:"
+msgstr ""
+
+#. Template: PreviewWidget
+msgid "You may now configure the X-axis of your statistic."
+msgstr ""
+
+#. Template: PreviewWidget
+msgid "This statistic does not provide preview data."
+msgstr ""
+
+#. Template: PreviewWidget
+msgid "Preview format:"
+msgstr ""
+
+#. Template: PreviewWidget
+msgid ""
+"Please note that the preview uses random data and does not consider data "
+"filters."
+msgstr ""
+
+#. Template: PreviewWidget
+msgid "Configure X-Axis"
+msgstr ""
+
+#. Template: PreviewWidget
+msgid "X-axis"
+msgstr "X轴"
+
+#. Template: PreviewWidget
+msgid "Configure Y-Axis"
+msgstr ""
+
+#. Template: PreviewWidget
+msgid "Y-axis"
+msgstr ""
+
+#. Template: PreviewWidget
+msgid "Configure Filter"
+msgstr ""
+
+#. Template: RestrictionsWidget
+msgid "Please select only one element or turn off the button 'Fixed'."
+msgstr "请只选择一个元素或使“固定”复选框未被选中。"
+
+#. Template: RestrictionsWidget
+msgid "Absolute period"
+msgstr ""
+
+#. Template: RestrictionsWidget
+msgid "Between"
+msgstr ""
+
+#. Template: RestrictionsWidget
+msgid "Relative period"
+msgstr ""
+
+#. Template: RestrictionsWidget
+msgid "The past complete %s and the current+upcoming complete %s %s"
+msgstr ""
+
+#. Template: RestrictionsWidget
+msgid "Do not allow changes to this element when the statistic is generated."
+msgstr ""
+
+#. Template: StatsParamsWidget
+msgid "Format"
+msgstr "格式"
+
+#. Template: StatsParamsWidget
+msgid "Exchange Axis"
+msgstr "转换轴"
+
+#. Template: StatsParamsWidget
+msgid "Configurable params of static stat"
+msgstr "静态统计的配置参数"
+
+#. Template: StatsParamsWidget
+msgid "No element selected."
+msgstr "没有被选参数"
+
+#. Template: StatsParamsWidget
+msgid "Scale"
+msgstr "时间刻度"
+
+#. Template: D3
+msgid "Download SVG"
+msgstr ""
+
+#. Template: D3
+msgid "Download PNG"
+msgstr ""
+
+#. Template: XAxisWidget
+msgid ""
+"The selected time period defines the default time frame for this statistic "
+"to collect data from."
+msgstr ""
+
+#. Template: XAxisWidget
+msgid ""
+"Defines the time unit that will be used to split the selected time period "
+"into reporting data points."
+msgstr ""
+
+#. Template: YAxisWidget
+msgid ""
+"Please remember that the scale for the Y-axis has to be larger than the "
+"scale for the X-axis (e.g. X-axis => Month, Y-Axis => Year)."
 msgstr ""
 
 #. Template: Test
@@ -10353,6 +10557,10 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminNotificationEvent.pm
 msgid "Customer of the ticket"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminNotificationEvent.pm
+msgid "Yes, but require at least one active notification method"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminPackageManager.pm
@@ -10484,6 +10692,10 @@ msgstr ""
 msgid " You can take one of the next actions:"
 msgstr ""
 
+#. Perl Module: Kernel/Output/HTML/Layout/LinkObject.pm
+msgid "Linked as"
+msgstr ""
+
 #. Perl Module: Kernel/Output/HTML/Notification/AgentOTRSBusiness.pm
 msgid "%s Upgrade to %s now! %s"
 msgstr ""
@@ -10501,20 +10713,18 @@ msgstr ""
 msgid "(in process)"
 msgstr ""
 
+#. Perl Module: Kernel/Output/HTML/Preferences/NotificationEvent.pm
+msgid ""
+"Please make sure you've chosen at least one transport method for mandatory "
+"notifications."
+msgstr ""
+
 #. Perl Module: Kernel/Output/HTML/Preferences/OutOfOffice.pm
 msgid "Please specify an end date that is after the start date."
 msgstr ""
 
 #. Perl Module: Kernel/Output/HTML/Preferences/Password.pm
 msgid "Please supply your new password!"
-msgstr ""
-
-#. Perl Module: Kernel/Output/HTML/Statistics/View.pm
-msgid "X-axis"
-msgstr "X轴"
-
-#. Perl Module: Kernel/Output/HTML/Statistics/View.pm
-msgid "Y-axis"
 msgstr ""
 
 #. Perl Module: Kernel/Output/HTML/Statistics/View.pm
@@ -10595,6 +10805,22 @@ msgstr ""
 #. Perl Module: Kernel/Output/HTML/TicketOverviewMenu/Sort.pm
 msgid "Order by"
 msgstr "排序"
+
+#. Perl Module: Kernel/System/Console/Command/Dev/Tools/Config2Docbook.pm
+msgid "Configuration Options Reference"
+msgstr ""
+
+#. Perl Module: Kernel/System/Console/Command/Dev/Tools/Config2Docbook.pm
+msgid "This setting can not be changed."
+msgstr ""
+
+#. Perl Module: Kernel/System/Console/Command/Dev/Tools/Config2Docbook.pm
+msgid "This setting is not active by default."
+msgstr ""
+
+#. Perl Module: Kernel/System/Console/Command/Dev/Tools/Config2Docbook.pm
+msgid "This setting can not be deactivated."
+msgstr ""
 
 #. Perl Module: Kernel/System/Stats/Dynamic/Ticket.pm
 msgid "State Type"
@@ -12107,7 +12333,7 @@ msgstr ""
 #. SysConfig
 msgid ""
 "Choose for which kind of ticket changes you want to receive notifications."
-msgstr ""
+msgstr "选择你需要接收哪一些工单变动通知消息."
 
 #. SysConfig
 msgid "Closed tickets (customer user)"
@@ -12215,7 +12441,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Communication"
-msgstr ""
+msgstr "联络"
 
 #. SysConfig
 msgid "Company Status"
@@ -14294,6 +14520,14 @@ msgid "Defines the priority in which the information is logged and presented."
 msgstr ""
 
 #. SysConfig
+msgid "Defines the queues the creator check will be active."
+msgstr ""
+
+#. SysConfig
+msgid "Defines the queues the involved check will be active."
+msgstr ""
+
+#. SysConfig
 msgid ""
 "Defines the receipent target of the phone ticket and the sender of the email"
 " ticket (\"Queue\" shows all queues, \"System address\" displays all system "
@@ -14681,6 +14915,12 @@ msgstr ""
 #. SysConfig
 msgid "Dropdown"
 msgstr "下拉"
+
+#. SysConfig
+msgid ""
+"Dutch stop words for fulltext index. These words will be removed from the "
+"search index."
+msgstr ""
 
 #. SysConfig
 msgid "Dynamic Fields Checkbox Backend GUI"
@@ -16138,7 +16378,8 @@ msgid "Max size (in rows) of the involved agents box in the agent interface."
 msgstr ""
 
 #. SysConfig
-msgid "Max size of the subjects in an email reply."
+msgid ""
+"Max size of the subjects in an email reply and in some overview screens."
 msgstr ""
 
 #. SysConfig
@@ -16197,7 +16438,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Miscellaneous"
-msgstr ""
+msgstr "杂项"
 
 #. SysConfig
 msgid ""
@@ -16215,6 +16456,10 @@ msgid ""
 msgstr ""
 
 #. SysConfig
+msgid "Module to check if an agent is involved to a ticket."
+msgstr ""
+
+#. SysConfig
 msgid ""
 "Module to check if arrived emails should be marked as email-internal "
 "(because of original forwarded internal email). ArticleType and SenderType "
@@ -16223,6 +16468,10 @@ msgstr ""
 
 #. SysConfig
 msgid "Module to check the agent responsible of a ticket."
+msgstr ""
+
+#. SysConfig
+msgid "Module to check the creator of a ticket."
 msgstr ""
 
 #. SysConfig
@@ -16684,10 +16933,6 @@ msgstr "收件过滤器"
 #. SysConfig
 msgid "PostMaster Mail Accounts"
 msgstr "邮件接收地址"
-
-#. SysConfig
-msgid "Process Information"
-msgstr "进程信息"
 
 #. SysConfig
 msgid "Process Management Activity Dialog GUI"
