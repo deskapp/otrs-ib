@@ -304,14 +304,11 @@
 
     <Insert Table="salutation">
         <Data Key="id" Type="AutoIncrement">1</Data>
-        <Data Key="name" Type="Quote" Translatable="1">system standard salutation (en)</Data>
-        <Data Key="text" Type="Quote">Dear &lt;OTRS_CUSTOMER_REALNAME&gt;,
-
-Thank you for your request.
-
-</Data>
+        <Data Key="name" Type="Quote" Translatable="1">standardowe powitanie</Data>
+        <Data Key="text" Type="Quote"><![CDATA[Witam,
+]]></Data>
         <Data Key="content_type" Type="Quote">text/plain; charset=utf-8</Data>
-        <Data Key="comments" Type="Quote" Translatable="1">Standard Salutation.</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Standardowe powitanie.</Data>
         <Data Key="valid_id">1</Data>
         <Data Key="create_by">1</Data>
         <Data Key="create_time">current_timestamp</Data>
@@ -321,19 +318,13 @@ Thank you for your request.
 
     <Insert Table="signature">
         <Data Key="id" Type="AutoIncrement">1</Data>
-        <Data Key="name" Type="Quote" Translatable="1">system standard signature (en)</Data>
-        <Data Key="text" Type="Quote">
-Your Ticket-Team
-
- &lt;OTRS_Agent_UserFirstname&gt; &lt;OTRS_Agent_UserLastname&gt;
-
---
- Super Support - Waterford Business Park
- 5201 Blue Lagoon Drive - 8th Floor &amp; 9th Floor - Miami, 33126 USA
- Email: hot@example.com - Web: http://www.example.com/
---</Data>
+        <Data Key="name" Type="Quote" Translatable="1">standardowy podpis</Data>
+        <Data Key="text" Type="Quote"><![CDATA[
+Pozdrawiam,
+<OTRS_Agent_UserFirstname> <OTRS_Agent_UserLastname>
+]]></Data>
         <Data Key="content_type" Type="Quote">text/plain; charset=utf-8</Data>
-        <Data Key="comments" Type="Quote" Translatable="1">Standard Signature.</Data>
+        <Data Key="comments" Type="Quote" Translatable="1">Standardowy podpis.</Data>
         <Data Key="valid_id">1</Data>
         <Data Key="create_by">1</Data>
         <Data Key="create_time">current_timestamp</Data>
@@ -387,7 +378,7 @@ Your Ticket-Team
 
     <Insert Table="queue">
         <Data Key="id" Type="AutoIncrement">1</Data>
-        <Data Key="name" Type="Quote">Postmaster</Data>
+        <Data Key="name" Type="Quote"><![CDATA[Zgłoszenia]]></Data>
         <Data Key="group_id">1</Data>
         <Data Key="system_address_id">1</Data>
         <Data Key="salutation_id">1</Data>
@@ -395,58 +386,7 @@ Your Ticket-Team
         <Data Key="follow_up_id">1</Data>
         <Data Key="follow_up_lock">1</Data>
         <Data Key="unlock_timeout">0</Data>
-        <Data Key="comments" Type="Quote" Translatable="1">Postmaster queue.</Data>
-        <Data Key="valid_id">1</Data>
-        <Data Key="create_by">1</Data>
-        <Data Key="create_time">current_timestamp</Data>
-        <Data Key="change_by">1</Data>
-        <Data Key="change_time">current_timestamp</Data>
-    </Insert>
-    <Insert Table="queue">
-        <Data Key="id" Type="AutoIncrement">2</Data>
-        <Data Key="name" Type="Quote">Raw</Data>
-        <Data Key="group_id">1</Data>
-        <Data Key="system_address_id">1</Data>
-        <Data Key="salutation_id">1</Data>
-        <Data Key="signature_id">1</Data>
-        <Data Key="follow_up_id">1</Data>
-        <Data Key="follow_up_lock">1</Data>
-        <Data Key="unlock_timeout">0</Data>
-        <Data Key="comments" Type="Quote" Translatable="1">All default incoming tickets.</Data>
-        <Data Key="valid_id">1</Data>
-        <Data Key="create_by">1</Data>
-        <Data Key="create_time">current_timestamp</Data>
-        <Data Key="change_by">1</Data>
-        <Data Key="change_time">current_timestamp</Data>
-    </Insert>
-    <Insert Table="queue">
-        <Data Key="id" Type="AutoIncrement">3</Data>
-        <Data Key="name" Type="Quote">Junk</Data>
-        <Data Key="group_id">1</Data>
-        <Data Key="system_address_id">1</Data>
-        <Data Key="salutation_id">1</Data>
-        <Data Key="signature_id">1</Data>
-        <Data Key="follow_up_id">1</Data>
-        <Data Key="follow_up_lock">1</Data>
-        <Data Key="unlock_timeout">0</Data>
-        <Data Key="comments" Type="Quote" Translatable="1">All junk tickets.</Data>
-        <Data Key="valid_id">1</Data>
-        <Data Key="create_by">1</Data>
-        <Data Key="create_time">current_timestamp</Data>
-        <Data Key="change_by">1</Data>
-        <Data Key="change_time">current_timestamp</Data>
-    </Insert>
-    <Insert Table="queue">
-        <Data Key="id" Type="AutoIncrement">4</Data>
-        <Data Key="name" Type="Quote">Misc</Data>
-        <Data Key="group_id">1</Data>
-        <Data Key="system_address_id">1</Data>
-        <Data Key="salutation_id">1</Data>
-        <Data Key="signature_id">1</Data>
-        <Data Key="follow_up_id">1</Data>
-        <Data Key="follow_up_lock">1</Data>
-        <Data Key="unlock_timeout">0</Data>
-        <Data Key="comments" Type="Quote" Translatable="1">All misc tickets.</Data>
+        <Data Key="comments" Type="Quote" Translatable="1"><![CDATA[Domyślna kolejka.]]></Data>
         <Data Key="valid_id">1</Data>
         <Data Key="create_by">1</Data>
         <Data Key="create_time">current_timestamp</Data>
@@ -456,8 +396,8 @@ Your Ticket-Team
 
     <Insert Table="standard_template">
         <Data Key="id" Type="AutoIncrement">1</Data>
-        <Data Key="name" Type="Quote">empty answer</Data>
-        <Data Key="text" Type="Quote"></Data>
+        <Data Key="name" Type="Quote"><![CDATA[Obsługa trwa]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Obsługa zgłoszenia o numerze <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber> trwa.]]></Data>
         <Data Key="content_type" Type="Quote">text/plain; charset=utf-8</Data>
         <Data Key="template_type" Type="Quote">Answer</Data>
         <Data Key="valid_id">1</Data>
@@ -468,8 +408,8 @@ Your Ticket-Team
     </Insert>
     <Insert Table="standard_template">
         <Data Key="id" Type="AutoIncrement">2</Data>
-        <Data Key="name" Type="Quote">test answer</Data>
-        <Data Key="text" Type="Quote">Some test answer to show how a standard template can be used.</Data>
+        <Data Key="name" Type="Quote"><![CDATA[Obsługa zakończona]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Obsługa zgłoszenia o numerze <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber> została zakończona.]]></Data>
         <Data Key="content_type" Type="Quote">text/plain; charset=utf-8</Data>
         <Data Key="template_type" Type="Quote">Answer</Data>
         <Data Key="valid_id">1</Data>
@@ -487,25 +427,10 @@ Your Ticket-Team
         <Data Key="change_by">1</Data>
         <Data Key="change_time">current_timestamp</Data>
     </Insert>
+
     <Insert Table="queue_standard_template">
-        <Data Key="queue_id">2</Data>
-        <Data Key="standard_template_id">1</Data>
-        <Data Key="create_by">1</Data>
-        <Data Key="create_time">current_timestamp</Data>
-        <Data Key="change_by">1</Data>
-        <Data Key="change_time">current_timestamp</Data>
-    </Insert>
-    <Insert Table="queue_standard_template">
-        <Data Key="queue_id">3</Data>
-        <Data Key="standard_template_id">1</Data>
-        <Data Key="create_by">1</Data>
-        <Data Key="create_time">current_timestamp</Data>
-        <Data Key="change_by">1</Data>
-        <Data Key="change_time">current_timestamp</Data>
-    </Insert>
-    <Insert Table="queue_standard_template">
-        <Data Key="queue_id">4</Data>
-        <Data Key="standard_template_id">1</Data>
+        <Data Key="queue_id">1</Data>
+        <Data Key="standard_template_id">2</Data>
         <Data Key="create_by">1</Data>
         <Data Key="create_time">current_timestamp</Data>
         <Data Key="change_by">1</Data>
@@ -568,21 +493,21 @@ Your Ticket-Team
         <Data Key="type_id">1</Data>
         <Data Key="system_address_id">1</Data>
         <Data Key="name" Type="Quote" Translatable="1">default reply (after new ticket has been created)</Data>
-        <Data Key="text0" Type="Quote">This is a demo text which is send to every inquiry.
-It could contain something like:
+        <Data Key="text0" Type="Quote"><![CDATA[Ta wiadomość została wygenerowana automatycznie.
 
-Thanks for your email. A new ticket has been created.
+Państwa zgłoszenie, którego fragment zacytowany jest niżej, zostało zarejestrowane pod numerem
 
-You wrote:
-&lt;OTRS_CUSTOMER_EMAIL[6]&gt;
+   <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>
 
-Your email will be answered by a human ASAP
+i wkrótce będzie obsłużone.
 
-Have fun with OTRS! :-)
+________________________________
 
-Your OTRS Team
-</Data>
-        <Data Key="text1" Type="Quote">RE: &lt;OTRS_CUSTOMER_SUBJECT[24]&gt;</Data>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment treści zgłoszenia:
+<OTRS_CUSTOMER_EMAIL[20]>]]></Data>
+        <Data Key="text1" Type="Quote"><![CDATA[RE: <OTRS_CUSTOMER_SUBJECT[50]>]]></Data>
         <Data Key="content_type" Type="Quote">text/plain</Data>
         <Data Key="comments" Type="Quote"></Data>
         <Data Key="valid_id">1</Data>
@@ -596,15 +521,12 @@ Your OTRS Team
         <Data Key="type_id">2</Data>
         <Data Key="system_address_id">1</Data>
         <Data Key="name" Type="Quote" Translatable="1">default reject (after follow-up and rejected of a closed ticket)</Data>
-        <Data Key="text0" Type="Quote">Your previous ticket is closed.
+        <Data Key="text0" Type="Quote"><![CDATA[Ta wiadomość została wygenerowana automatycznie.
 
--- Your follow-up has been rejected. --
+Państwa poprzednie zgłoszenie jest zamknięte a wiadomość do niego została odrzucona.
 
-Please create a new ticket.
-
-Your OTRS Team
-</Data>
-        <Data Key="text1" Type="Quote">Your email has been rejected! (RE: &lt;OTRS_CUSTOMER_SUBJECT[24]&gt;)</Data>
+Prosimy o utworzenie nowego zgłoszenia.]]></Data>
+        <Data Key="text1" Type="Quote"><![CDATA[Wiadomość e-mail została odrzucona! (RE: <OTRS_CUSTOMER_SUBJECT[50]>)]]></Data>
         <Data Key="content_type" Type="Quote">text/plain</Data>
         <Data Key="comments" Type="Quote"></Data>
         <Data Key="valid_id">1</Data>
@@ -618,18 +540,17 @@ Your OTRS Team
         <Data Key="type_id">3</Data>
         <Data Key="system_address_id">1</Data>
         <Data Key="name" Type="Quote" Translatable="1">default follow-up (after a ticket follow-up has been added)</Data>
-        <Data Key="text0" Type="Quote">Thanks for your follow-up email
+        <Data Key="text0" Type="Quote"><![CDATA[Ta wiadomość została wygenerowana automatycznie.
 
-You wrote:
-&lt;OTRS_CUSTOMER_EMAIL[6]&gt;
+Dziękujemy za wiadomość do zgłoszenia.
 
-Your email will be answered by a human ASAP.
+________________________________
 
-Have fun with OTRS!
+Temat: <OTRS_CUSTOMER_SUBJECT>
 
-Your OTRS Team
-</Data>
-        <Data Key="text1" Type="Quote">RE: &lt;OTRS_CUSTOMER_SUBJECT[24]&gt;</Data>
+Fragment treści zgłoszenia:
+<OTRS_CUSTOMER_EMAIL[20]>]]></Data>
+        <Data Key="text1" Type="Quote"><![CDATA[RE: <OTRS_CUSTOMER_SUBJECT[50]>]]></Data>
         <Data Key="content_type" Type="Quote">text/plain</Data>
         <Data Key="comments" Type="Quote"></Data>
         <Data Key="valid_id">1</Data>
@@ -643,20 +564,17 @@ Your OTRS Team
         <Data Key="type_id">4</Data>
         <Data Key="system_address_id">1</Data>
         <Data Key="name" Type="Quote" Translatable="1">default reject/new ticket created (after closed follow-up with new ticket creation)</Data>
-        <Data Key="text0" Type="Quote">Your previous ticket is closed.
+        <Data Key="text0" Type="Quote"><![CDATA[Ta wiadomość została wygenerowana automatycznie.
 
--- A new ticket has been created for you. --
+Państwa poprzednie zgłoszenie jest zamknięte. Utworzone zostało nowe zgłoszenie.
 
-You wrote:
-&lt;OTRS_CUSTOMER_EMAIL[6]&gt;
+________________________________
 
-Your email will be answered by a human ASAP.
+Temat: <OTRS_CUSTOMER_SUBJECT>
 
-Have fun with OTRS!
-
-Your OTRS Team
-</Data>
-        <Data Key="text1" Type="Quote">New ticket has been created! (RE: &lt;OTRS_CUSTOMER_SUBJECT[24]&gt;)</Data>
+Fragment treści zgłoszenia:
+<OTRS_CUSTOMER_EMAIL[20]>]]></Data>
+        <Data Key="text1" Type="Quote"><![CDATA[Utworzono nowe zgłoszenie! (RE: <OTRS_CUSTOMER_SUBJECT[50]>)]]></Data>
         <Data Key="content_type" Type="Quote">text/plain</Data>
         <Data Key="comments" Type="Quote"></Data>
         <Data Key="valid_id">1</Data>
@@ -1323,129 +1241,6 @@ Your OTRS Team
         <Data Key="id" Type="AutoIncrement">3</Data>
         <Data Key="name" Type="Quote" Translatable="1">customer</Data>
         <Data Key="valid_id">1</Data>
-        <Data Key="create_by">1</Data>
-        <Data Key="create_time">current_timestamp</Data>
-        <Data Key="change_by">1</Data>
-        <Data Key="change_time">current_timestamp</Data>
-    </Insert>
-
-    <Insert Table="ticket">
-        <Data Key="id" Type="AutoIncrement">1</Data>
-        <Data Key="tn" Type="Quote">2015071510123456</Data>
-        <Data Key="queue_id">2</Data>
-        <Data Key="ticket_lock_id">1</Data>
-        <Data Key="user_id">1</Data>
-        <Data Key="responsible_user_id">1</Data>
-        <Data Key="ticket_priority_id">3</Data>
-        <Data Key="ticket_state_id">1</Data>
-        <Data Key="title" Type="Quote">Welcome to OTRS!</Data>
-        <Data Key="create_time_unix">1436949030</Data>
-        <Data Key="timeout">0</Data>
-        <Data Key="until_time">0</Data>
-        <Data Key="escalation_time">0</Data>
-        <Data Key="escalation_response_time">0</Data>
-        <Data Key="escalation_update_time">0</Data>
-        <Data Key="escalation_solution_time">0</Data>
-        <Data Key="create_by">1</Data>
-        <Data Key="create_time">current_timestamp</Data>
-        <Data Key="change_by">1</Data>
-        <Data Key="change_time">current_timestamp</Data>
-    </Insert>
-
-    <Insert Table="article">
-        <Data Key="id" Type="AutoIncrement">1</Data>
-        <Data Key="ticket_id">1</Data>
-        <Data Key="article_type_id">1</Data>
-        <Data Key="article_sender_type_id">3</Data>
-        <Data Key="a_from" Type="Quote">OTRS Feedback &lt;marketing@otrs.com&gt;</Data>
-        <Data Key="a_to" Type="Quote">Your OTRS System &lt;otrs@localhost&gt;</Data>
-        <Data Key="a_subject" Type="Quote">Welcome to OTRS!</Data>
-        <Data Key="a_body" Type="Quote">Welcome to OTRS!
-
-Thank you for installing OTRS, the world’s most popular service management software available in 34 languages and used by 150,000 users worldwide.
-
-You can find updates and patches for OTRS Free at
-https://www.otrs.com/download-open-source-help-desk-software-otrs-free/.
-
-Please be aware that we do not offer official vendor support for OTRS Free. In case of questions, please use our:
-
-- online documentation available at http://otrs.github.io/doc/
-- mailing lists available at http://lists.otrs.org/
-- webinars at https://www.otrs.com/category/webinar/
-
-To meet higher business requirements, we recommend to use the OTRS Business Solution™, that offers
-
-- exclusive business features like chat, integration of data from external databases etc.
-- included professional updates &amp; services
-- implementation and configuration by our experts
-
-Find more information about it at https://www.otrs.com/solutions/.
-
-Best regards and ((enjoy)) OTRS,
-
-Your OTRS Group
-</Data>
-        <Data Key="a_message_id" Type="Quote">&lt;007@localhost&gt;</Data>
-        <Data Key="incoming_time">1436949030</Data>
-        <Data Key="content_path" Type="Quote">2015/07/15</Data>
-        <Data Key="valid_id">1</Data>
-        <Data Key="create_by">1</Data>
-        <Data Key="create_time">current_timestamp</Data>
-        <Data Key="change_by">1</Data>
-        <Data Key="change_time">current_timestamp</Data>
-    </Insert>
-
-    <Insert Table="article_plain">
-        <Data Key="id" Type="AutoIncrement">1</Data>
-        <Data Key="article_id">1</Data>
-        <Data Key="body" Type="Quote">From: OTRS Feedback &lt;marketing@otrs.com&gt;
-To: Your OTRS System &lt;otrs@localhost&gt;
-Subject: Welcome to OTRS!
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-
-Welcome to OTRS!
-
-Thank you for installing OTRS, the world’s most popular service management software available in 34 languages and used by 150,000 users worldwide.
-
-You can find updates and patches for OTRS Free at
-https://www.otrs.com/download-open-source-help-desk-software-otrs-free/.
-
-Please be aware that we do not offer official vendor support for OTRS Free. In case of questions, please use our:
-
-- online documentation available at http://otrs.github.io/doc/
-- mailing lists available at http://lists.otrs.org/
-- webinars at https://www.otrs.com/category/webinar/
-
-To meet higher business requirements, we recommend to use the OTRS Business Solution™, that offers
-
-- exclusive business features like chat, integration of data from external databases etc.
-- included professional updates &amp; services
-- implementation and configuration by our experts
-
-Find more information about it at https://www.otrs.com/solutions/.
-
-Best regards and ((enjoy)) OTRS,
-
-Your OTRS Group
-</Data>
-        <Data Key="create_by">1</Data>
-        <Data Key="create_time">current_timestamp</Data>
-        <Data Key="change_by">1</Data>
-        <Data Key="change_time">current_timestamp</Data>
-    </Insert>
-
-    <Insert Table="ticket_history">
-        <Data Key="id" Type="AutoIncrement">1</Data>
-        <Data Key="name" Type="Quote">New Ticket [2015071510123456] created.</Data>
-        <Data Key="history_type_id">1</Data>
-        <Data Key="ticket_id">1</Data>
-        <Data Key="type_id">1</Data>
-        <Data Key="article_id">1</Data>
-        <Data Key="priority_id">3</Data>
-        <Data Key="owner_id">1</Data>
-        <Data Key="state_id">1</Data>
-        <Data Key="queue_id">1</Data>
         <Data Key="create_by">1</Data>
         <Data Key="create_time">current_timestamp</Data>
         <Data Key="change_by">1</Data>
@@ -3067,6 +2862,305 @@ o serviço do ticket [<OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>] foi 
 -- <OTRS_CONFIG_NotificationSenderName>]]></Data>
     </Insert>
 
+    <!-- notification_event_message - pl -->
+    <Insert Table="notification_event_message">
+        <Data Key="notification_id">1</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Nowe zgłoszenie (<OTRS_CUSTOMER_SUBJECT[50]>)]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+W kolejce "<OTRS_TICKET_Queue>" pojawiło się nowe zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="notification_id">2</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Nowa wiadomość do odblokowanego zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+Pojawiła się nowa wiadomość do odblokowanego zgłoszenia <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="notification_id">3</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Nowa wiadomość do zablokowanego zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+Pojawiła się nowa wiadomość do zablokowanego zgłoszenia <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="notification_id">4</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Odblokowanie zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+Przypisane do ciebie zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>, znajdujące się w kolejce "<OTRS_TICKET_Queue>" zostało odblokowane.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="notification_id">5</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Przypisanie zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+<OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> przydzielił(a) tobie zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>.
+
+Komentarz:
+<OTRS_COMMENT>
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="notification_id">6</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Przypisanie odpowiedzialności za zgłoszenie (<OTRS_CUSTOMER_SUBJECT[50]>)]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Witaj <OTRS_RESPONSIBLE_UserFirstname>,
+
+<OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> wskazał ciebie jako osobę odpowiedzialną za zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>.
+
+Komentarz:
+<OTRS_COMMENT>
+
+Zgłoszenie znajduje się na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="notification_id">7</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Nowa notatka do zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+<OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> dodał(a) nową notatkę do zgłoszenia <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>.
+
+Treść notatki:
+<OTRS_CUSTOMER_BODY>
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="notification_id">8</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Przeniesienie zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+Zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber> zostało przeniesione przez <OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> do kolejki "<OTRS_CUSTOMER_QUEUE>".
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="notification_id">9</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Przypomnienie o zablokowanym zgłoszeniu (<OTRS_CUSTOMER_SUBJECT[50]>)]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+W kolejce "<OTRS_TICKET_Queue>" znajduje się zablokowane zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>, dla którego ustawiona została wysyłka tego przypomnienia.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="notification_id">10</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Przypomnienie o odblokowanym zgłoszeniu (<OTRS_CUSTOMER_SUBJECT[50]>)]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+W kolejce "<OTRS_TICKET_Queue>" znajduje się odblokowane zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>, dla którego ustawiona została wysyłka tego przypomnienia.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="notification_id">11</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Eskalacja zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+Zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber> jest eskalowane.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="notification_id">12</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Ostrzeżenie przed eskalacją zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+Zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber> będzie wkrótce eskalowane.
+
+Data eskalacji: <OTRS_TICKET_EscalationDestinationDate>
+Eskalacja za:   <OTRS_TICKET_EscalationDestinationIn>
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>]]></Data>
+    </Insert>
+    <Insert Table="notification_event_message">
+        <Data Key="notification_id">13</Data>
+        <Data Key="content_type" Type="Quote">text/plain</Data>
+        <Data Key="language" Type="Quote">pl</Data>
+        <Data Key="subject" Type="Quote"><![CDATA[Zmiana usługi w zgłoszeniu (<OTRS_CUSTOMER_SUBJECT[50]>)]]></Data>
+        <Data Key="text" Type="Quote"><![CDATA[Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+W zgłoszeniu <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber> <OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> zmienił(a) usługę na <OTRS_TICKET_Service>.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>]]></Data>
+    </Insert>
 
     <!-- Internal dynamic fields for ProcessManagement -->
     <Insert Table="dynamic_field">
