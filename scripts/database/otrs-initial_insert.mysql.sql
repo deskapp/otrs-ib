@@ -30,19 +30,25 @@ INSERT INTO users (id, first_name, last_name, login, pw, valid_id, create_by, cr
 # ----------------------------------------------------------
 INSERT INTO groups (id, name, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    (1, 'users', 'Group for default access.', 1, 1, current_timestamp, 1, current_timestamp);
+    (1, 'users', 'Grupa z domyślnymi uprawnieniami.', 1, 1, current_timestamp, 1, current_timestamp);
 # ----------------------------------------------------------
 #  insert into table groups
 # ----------------------------------------------------------
 INSERT INTO groups (id, name, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    (2, 'admin', 'Group of all administrators.', 1, 1, current_timestamp, 1, current_timestamp);
+    (2, 'admin', 'Grupa z uprawnieniami administratora systemu.', 1, 1, current_timestamp, 1, current_timestamp);
 # ----------------------------------------------------------
 #  insert into table groups
 # ----------------------------------------------------------
 INSERT INTO groups (id, name, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    (3, 'stats', 'Group for statistics access.', 1, 1, current_timestamp, 1, current_timestamp);
+    (3, 'stats', 'Grupa z uprawnieniami do korzystania z modułu statystyk.', 1, 1, current_timestamp, 1, current_timestamp);
+# ----------------------------------------------------------
+#  insert into table groups
+# ----------------------------------------------------------
+INSERT INTO groups (id, name, comments, valid_id, create_by, create_time, change_by, change_time)
+    VALUES
+    (4, 'staff', 'Grupa z uprawnieniami agenta systemu.', 1, 1, current_timestamp, 1, current_timestamp);
 # ----------------------------------------------------------
 #  insert into table group_user
 # ----------------------------------------------------------
@@ -61,6 +67,12 @@ INSERT INTO group_user (user_id, group_id, permission_key, permission_value, cre
 INSERT INTO group_user (user_id, group_id, permission_key, permission_value, create_by, create_time, change_by, change_time)
     VALUES
     (1, 3, 'rw', 1, 1, current_timestamp, 1, current_timestamp);
+# ----------------------------------------------------------
+#  insert into table group_user
+# ----------------------------------------------------------
+INSERT INTO group_user (user_id, group_id, permission_key, permission_value, create_by, create_time, change_by, change_time)
+    VALUES
+    (1, 4, 'rw', 1, 1, current_timestamp, 1, current_timestamp);
 # ----------------------------------------------------------
 #  insert into table link_type
 # ----------------------------------------------------------
@@ -226,7 +238,13 @@ INSERT INTO follow_up_possible (id, name, comments, valid_id, create_by, create_
 # ----------------------------------------------------------
 INSERT INTO queue (id, name, group_id, system_address_id, salutation_id, signature_id, follow_up_id, follow_up_lock, unlock_timeout, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    (1, 'Zgłoszenia', 1, 1, 1, 1, 1, 1, 0, 'Domyślna kolejka.', 1, 1, current_timestamp, 1, current_timestamp);
+    (1, 'Zgłoszenia', 1, 1, 1, 1, 1, 1, 60, 'Domyślna kolejka.', 1, 1, current_timestamp, 1, current_timestamp);
+# ----------------------------------------------------------
+#  insert into table queue
+# ----------------------------------------------------------
+INSERT INTO queue (id, name, group_id, system_address_id, salutation_id, signature_id, follow_up_id, follow_up_lock, unlock_timeout, comments, valid_id, create_by, create_time, change_by, change_time)
+    VALUES
+    (2, 'Kosz', 4, 1, 1, 1, 1, 1, 0, 'Kolejka na niechciane zgłoszenia.', 1, 1, current_timestamp, 1, current_timestamp);
 # ----------------------------------------------------------
 #  insert into table standard_template
 # ----------------------------------------------------------
