@@ -1,4 +1,5 @@
 #5.0.5 2015-??-??
+ - 2015-12-10 Initial payload adapted to Polish (IB#1047543).
  - 2015-12-09 Initial payload adapted to Polish (IB#1047543).
  - 2015-12-02 Fixed bug#[11096](http://bugs.otrs.org/show_bug.cgi?id=11096) - action URL overwrites permission settings thanks to S7.
  - 2015-12-02 Fixed bug#[11709](http://bugs.otrs.org/show_bug.cgi?id=11709) - In move notification <OTRS_CUSTOMER_BODY> is replaced with ticket comment, not last customer body, thanks to S7.
