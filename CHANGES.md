@@ -1,4 +1,5 @@
 #5.0.5 2015-??-??
+ - 2015-12-10 Initial payload adapted to Polish (IB#1047543).
  - 2015-12-09 Fixed problem with UTF-8 argument passed to otrs.Console.pl (IB#1047660).
  - 2015-12-09 Initial payload adapted to Polish (IB#1047543).
  - 2015-12-03 Communication with external services disabled by default (IB#1046362).
