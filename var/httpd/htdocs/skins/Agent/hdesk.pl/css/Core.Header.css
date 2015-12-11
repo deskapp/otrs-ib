@@ -1,0 +1,83 @@
+/**
+ * Core.Header.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 17 */
+#Header {
+    background: #CBDCEA;
+}
+
+/* 83 */
+#ToolBar li.Extended form * {
+    border-color: #619CC9;
+}
+
+/* 99 */
+#ToolBar a i {
+    text-shadow: 1px 1px 0 #CCDBE8;
+}
+
+/* 131 */
+#ToolBar a span.Counter {
+    color: #276A9D;
+}
+
+/* 212 */
+#Navigation > li {
+    background: #619CC9;
+    border-bottom: 5px solid #619CC9;
+}
+
+/* 220 */
+#Navigation > li > a {
+    color: #CBDCEA;
+    font-weight: bold;
+}
+
+/* 251 */
+#Navigation > li:hover {
+    border-color: #276A9D;
+}
+
+/* 261 */
+#Navigation > .Selected {
+    border-color: #276A9D;
+}
+
+/* 292 */
+#Navigation > .Active > ul {
+    background: #619CC9;
+}
+
+/* 307 */
+#Navigation > .Active > ul > li {
+    line-height: 15px;
+}
+
+/* 314 */
+#Navigation > .Active > ul > li:hover {
+    background: #276A9D;
+}
+
+/* 318 */
+#Navigation > .Active > ul > li:hover > a {
+    color: #FFFFFF;
+}
+
+/* 322 */
+#Navigation > .Active > ul > li > a {
+    color: #FFFFFF;
+    border-bottom: 1px solid #CBDCEA;
+}
+
+} /* end @media */

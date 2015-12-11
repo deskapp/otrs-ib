@@ -1,0 +1,43 @@
+/**
+ * Core.Form.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 19 */
+input[type=text],
+input[type=password],
+input[type=email],
+textarea,
+select[multiple=multiple] {
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+/* 66 */
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+textarea:focus {
+    border-color: #276A9D;
+}
+
+/* 246 */
+.ShowTreeSelection:focus {
+    color: #276A9D;
+}
+
+/* 450 */
+.CustomerContainer .CustomerTicketText.MainCustomer {
+    background-color: #CBDCEA;
+    border: 1px solid #276A9D;
+}
+
+} /* end @media */

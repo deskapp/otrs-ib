@@ -1,0 +1,20 @@
+/**
+ * Core.Login.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Customer Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 100 */
+.Login input:focused {
+    border-color: #276A9D;
+}
+
+} /* end @media */

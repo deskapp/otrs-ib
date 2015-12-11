@@ -1,8 +1,21 @@
-#5.0.5 2015-??-??
+#5.0.6 2016-??-??
+ - 2015-12-11 hdesk.pl skin added (IB#1047726).
+ - 2015-12-11 Fixed bug#[11667](http://bugs.otrs.org/show_bug.cgi?id=11667) - Can't perform POST on https://cloud.otrs.com/otrs/public.pl: 500 read timeout.
+
+#5.0.5 2015-12-15
  - 2015-12-10 Initial payload adapted to Polish (IB#1047543).
  - 2015-12-09 Fixed problem with UTF-8 argument passed to otrs.Console.pl (IB#1047660).
  - 2015-12-09 Initial payload adapted to Polish (IB#1047543).
+ - 2015-12-08 Updated translations, thanks to all translators.
+ - 2015-12-08 Fixed bug#[11721](http://bugs.otrs.org/show_bug.cgi?id=11721) - $Self->{Debug} is not passed to frontend modules.
+ - 2015-12-07 Fixed bug#[10266](http://bugs.otrs.org/show_bug.cgi?id=10266) - Time Units can not be displayed and used in process Activity Dialogues.
+ - 2015-12-04 Follow-up fix for bug#[11625](http://bugs.otrs.org/show_bug.cgi?=11625) - Daemon tasks error messages does not show the task name.
+ - 2015-12-04 Fixed bug#[11652](http://bugs.otrs.org/show_bug.cgi?id=11652) - Jobs from the GenericAgent Config file use wrong ticket limit.
+ - 2015-12-04 Fixed bug#[11680](http://bugs.otrs.org/show_bug.cgi?id=11680) - Error in support data collector.
  - 2015-12-03 Communication with external services disabled by default (IB#1046362).
+ - 2015-12-03 Fixed bug#[11666](http://bugs.otrs.org/show_bug.cgi?id=11666) - Problem Creating DynamicField For Article and Including It on an Activity Window.
+ - 2015-12-03 Fixed bug#[11712](http://bugs.otrs.org/show_bug.cgi?id=11712) - Sysconfig validation fills newly added field with default value.
+ - 2015-12-03 Fixed bug#[8511](http://bugs.otrs.org/show_bug.cgi?id=8511) - TemplateGenerator.pm - Use of uninitialized value in substitution iterator at 1028.
  - 2015-12-02 Fixed bug#[11096](http://bugs.otrs.org/show_bug.cgi?id=11096) - action URL overwrites permission settings thanks to S7.
  - 2015-12-02 Fixed bug#[11709](http://bugs.otrs.org/show_bug.cgi?id=11709) - In move notification <OTRS_CUSTOMER_BODY> is replaced with ticket comment, not last customer body, thanks to S7.
  - 2015-12-02 Fixed bug#[11708](http://bugs.otrs.org/show_bug.cgi?id=11708) - Missing Ticket Escalation cron task.

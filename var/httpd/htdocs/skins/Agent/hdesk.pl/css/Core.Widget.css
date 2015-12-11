@@ -1,0 +1,51 @@
+/**
+ * Core.Widget.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 52 */
+ul.Tablelike li:hover {
+    background: #CBDCEA;
+}
+
+/* 193 */
+.WidgetNotice {
+    background-color: #CBDCEA;
+}
+
+/* 197 */
+.WidgetNotice .Content {
+    border: 1px solid #276A9D;
+    color: #000000;
+}
+
+/* 471 */
+.CallForAction, .cke_dialog_footer_buttons a.cke_dialog_ui_button {
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+/* 602 */
+.SearchBox input[type='text'] {
+    font: normal 12px/15px Verdana, Geneva, sans-serif;
+}
+
+/* 627 */
+.SearchBox button {
+    font: bold 11px/14px Verdana, Geneva, sans-serif;
+}
+
+/* 730 */
+#ProgressBar li a {
+    font: 13px/18px Verdana, Geneva, sans-serif;
+}
+
+} /* end @media */
