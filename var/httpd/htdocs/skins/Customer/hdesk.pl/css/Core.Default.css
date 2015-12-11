@@ -1,0 +1,46 @@
+/**
+ * Core.Default.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Customer Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 13 */
+body {
+    font: normal 12px/14px Verdana, Geneva, sans-serif;
+}
+
+/* 32 */
+a {
+    color: #276A9D;
+}
+
+/* 36 */
+a:hover {
+    color: #093557;
+}
+
+/* 73 */
+#Header {
+    background: #CBDCEA;
+    border-bottom: 1px solid #276A9D;
+}
+
+/* 209 */
+#Footer a:hover {
+    color: #276A9D;
+}
+
+/* 493 */
+.BreadCrumb a:hover {
+    border-bottom: 2px solid #276A9D;
+}
+
+} /* end @media */

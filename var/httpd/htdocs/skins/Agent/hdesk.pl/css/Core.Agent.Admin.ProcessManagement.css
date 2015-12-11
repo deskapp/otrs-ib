@@ -1,0 +1,52 @@
+/**
+ * Core.Agent.Admin.ProcessManagement.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 320 */
+.DiagramDeleteLink a:hover,
+.DiagramEditLink a:hover {
+    color: #276A9D;
+}
+
+/* 357 */
+em.EntityID {
+    background: #276A9D;
+}
+
+/* 375 */
+em.EntityID input {
+    background: #276A9D;
+}
+
+/* 386 */
+em.EntityID:after {
+    border-color: rgba(39, 106, 157, 0);
+    border-top-color: #276A9D;
+}
+
+/* 405 */
+#Canvas .Activity.Hovered {
+    border-color: #276A9D;
+}
+
+/* 501 */
+#Canvas .TransitionLabel.Hovered {
+    border-color: #276A9D;
+}
+
+/* 544 */
+#Canvas .TransitionLabel a:hover {
+    color: #276A9D;
+}
+
+} /* end @media */

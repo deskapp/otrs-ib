@@ -1,0 +1,93 @@
+/**
+ * Core.TicketDetail.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 320 */
+.UseArticleColors .agent-phone > td,
+.UseArticleColors .agent-phone .Header {
+    background: #E1FFE1 !important;
+}
+
+/* 324 */
+.UseArticleColors .agent-email-external > td,
+.UseArticleColors .agent-email-external .Header {
+    background: #E1FFE1 !important;
+}
+
+/* 328 */
+.UseArticleColors .agent-email-internal > td,
+.UseArticleColors .agent-email-internal .Header {
+    background: #FFE1E1 !important;
+}
+
+/* 332 */
+.UseArticleColors .agent-note-external > td,
+.UseArticleColors .agent-note-external .Header {
+    background: #E1FFE1 !important;
+}
+
+/* 336 */
+.UseArticleColors .agent-note-internal > td,
+.UseArticleColors .agent-note-internal .Header {
+    background: #FFE1E1 !important;
+}
+
+/* 344 */
+.UseArticleColors .system-note-internal > td,
+.UseArticleColors .system-note-internal .Header,
+.UseArticleColors .system-note-external > td,
+.UseArticleColors .system-note-external .Header,
+.UseArticleColors .system-note-report > td,
+.UseArticleColors .system-note-report .Header,
+.UseArticleColors .system-email-external > td,
+.UseArticleColors .system-email-external .Header,
+.UseArticleColors .system-email-internal > td,
+.UseArticleColors .system-email-internal .Header,
+.UseArticleColors .system-email-notification-int > td,
+.UseArticleColors .system-email-notification-int .Header,
+.UseArticleColors .system-email-notification-ext > td,
+.UseArticleColors .system-email-notification-ext .Header {
+    background: #FFFFCC !important;
+}
+
+/* 365 */
+.UseArticleColors .customer-webrequest > td,
+.UseArticleColors .customer-webrequest .Header,
+.UseArticleColors .customer-email-external > td,
+.UseArticleColors .customer-email-external .Header,
+.UseArticleColors .customer-note-external > td,
+.UseArticleColors .customer-note-external .Header,
+.UseArticleColors .customer-phone > td,
+.UseArticleColors .customer-phone .Header {
+    background: #E1EBF4 !important;
+}
+
+/* 376 */
+.UseArticleColors .agent-phone:hover > td,
+.UseArticleColors .agent-email-external:hover > td,
+.UseArticleColors .agent-email-internal:hover > td,
+.UseArticleColors .agent-note-external:hover > td,
+.UseArticleColors .agent-note-internal:hover > td,
+.UseArticleColors .system-note-internal:hover > td,
+.UseArticleColors .system-note-external:hover > td,
+.UseArticleColors .system-note-report:hover > td,
+.UseArticleColors .system-email-external:hover > td,
+.UseArticleColors .system-email-internal:hover > td,
+.UseArticleColors .customer-webrequest:hover > td,
+.UseArticleColors .customer-email-external:hover > td,
+.UseArticleColors .customer-note-external:hover > td,
+.UseArticleColors .customer-phone:hover > td {
+    background: #CBDCEA !important;
+}
+
+} /* end @media */

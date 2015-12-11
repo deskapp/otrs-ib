@@ -1,0 +1,32 @@
+/**
+ * Core.Form.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Customer Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+/* 12 */
+button,
+.Button,
+.cke_dialog_footer_buttons a.cke_dialog_ui_button {
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+/* 118 */
+input[type=text],
+input[type=email],
+input[type=password],
+textarea,
+select[multiple=multiple] {
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+/* 393 */
+.ShowTreeSelection:focus {
+    color: #276A9D;
+}

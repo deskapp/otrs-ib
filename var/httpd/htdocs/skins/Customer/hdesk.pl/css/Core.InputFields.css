@@ -1,0 +1,40 @@
+/**
+ * Core.InputFields.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Customer Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 84 */
+a.InputField_Action:hover {
+    color: #276A9D;
+}
+
+/* 206 */
+div.InputField_ToolbarContainer ul li a:hover {
+    border-bottom: 2px solid #276A9D;
+    background-color: #CBDCEA;
+}
+
+/* 405 */
+.jstree-InputField .jstree-wholerow-ul .jstree-wholerow:hover,
+.jstree-InputField .jstree-wholerow-ul .jstree-wholerow-hovered,
+.jstree-InputField .jstree-focused > .jstree-wholerow {
+    background-color: #CBDCEA;
+}
+
+/* 411 */
+.jstree-InputField .jstree-wholerow-ul .jstree-wholerow-clicked:hover,
+.jstree-InputField .jstree-wholerow-ul .jstree-wholerow-clicked.jstree-wholerow-hovered,
+.jstree-InputField .jstree-focused > .jstree-wholerow-clicked {
+    background-color: #A0BCD4;
+}
+
+} /* end @media */

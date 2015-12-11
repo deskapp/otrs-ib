@@ -1,0 +1,82 @@
+/**
+ * Core.Default.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 18 */
+body {
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+/* 84 */
+a {
+    color: #276A9D;
+}
+
+/* 89 */
+a:hover,
+a:focus {
+    color: #093557;
+}
+
+/* 435 */
+.BreadCrumb a:hover {
+    border-bottom: 2px solid #276A9D;
+}
+
+/* 551 */
+.MessageBox {
+    background: #CBDCEA;
+}
+
+/* 576 */
+.MessageBox p,
+.MessageBox a {
+    color: #000000;
+}
+
+/* 742 */
+span.UnreadArticles.Remarkable i,
+div.UnreadArticles.Remarkable i {
+    color: #276A9D;
+}
+
+/* 752 */
+tbody tr:hover span.UnreadArticles i {
+    color: #276A9D;
+}
+
+/* 756 */
+span.ImportantArticles {
+    margin: -3px 0px 0px 23px;
+    font-size: 15px;
+}
+
+/* 770 */
+span.ImportantArticles i,
+tr:hover span.ImportantArticles i {
+    color: #276A9D;
+}
+
+/* 1005 */
+.ui-menu-item {
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+/* 1061 */
+input.cke_dialog_ui_input_password:focus,
+input.cke_dialog_ui_input_text:focus,
+textarea.cke_dialog_ui_input_textarea:focus {
+    border-color: #276A9D !important;
+}
+
+} /* end @media */
