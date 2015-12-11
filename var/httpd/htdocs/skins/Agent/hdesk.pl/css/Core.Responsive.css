@@ -1,0 +1,65 @@
+/**
+ * Core.Responsive.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/*  All devices with a smaller resolution than the current OTRS minimum solution */
+@media only screen and (min-width: 0px) and (max-width: 1024px) {
+
+/* 36 */
+    #ToolBar,
+    .RTL #ToolBar {
+        background: #CBDCEA;
+    }
+
+/* 50 */
+    #ToolBar li,
+    .RTL #ToolBar li {
+        background-color: #222222;
+        background-color: rgba(22, 22, 22, 0.25);
+    }
+
+/* 60 */
+    #ToolBar li i {
+        color: #276A9D;
+    }
+
+/* 133 */
+    .ResponsiveHandle {
+        color: #276A9D;
+        background: #222222;
+        background-color: rgba(22, 22, 22, 0.25);
+    }
+
+/* 165 */
+    #NavigationContainer,
+    .RTL #NavigationContainer {
+        background: #276A9D;
+    }
+
+/* 187 */
+    #Navigation > li {
+        border-top: 1px solid #CBDCEA !important;
+    }
+
+/* 217 */
+    #Navigation > .Selected,
+    #Navigation > li:hover {
+        color: #276A9D;
+    }
+
+/* 577 */
+    .LayoutFixedSidebar.SidebarLast .ResponsiveSidebarContainer > .SidebarColumn,
+    .LayoutFixedSidebar.SidebarFirst .ResponsiveSidebarContainer > .SidebarColumn {
+        background: #276A9D;
+    }
+
+/* 1097 */
+    .Cluster ul ul li a:hover {
+        border-bottom: 2px solid #276A9D;
+    }
+
+} /* end @media */

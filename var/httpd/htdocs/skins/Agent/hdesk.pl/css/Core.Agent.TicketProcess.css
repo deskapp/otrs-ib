@@ -1,0 +1,21 @@
+/**
+ * Core.Agent.TicketProcess.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 139 */
+textarea {
+    font-family: Verdana, Geneva, sans-serif;
+    padding: 5px;
+}
+
+} /* end @media */
