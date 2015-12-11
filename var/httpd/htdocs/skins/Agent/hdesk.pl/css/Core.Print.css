@@ -1,0 +1,46 @@
+/**
+ * Core.Print.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media print {
+
+/* 17 */
+body {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 12px;
+}
+
+/* 207 */
+.OverviewMedium .Flag {
+    color: #276A9D;
+}
+
+/* 234 */
+.OverviewMedium .UnreadArticles span{
+    color: #276A9D;
+}
+
+/* 240 */
+.OverviewLarge .Flag {
+    color: #276A9D;
+}
+
+/* 301 */
+.OverviewLarge .UnreadArticles span{
+    color: #276A9D;
+}
+
+/* 314 */
+div.Headline .Flag{
+    color: #276A9D;
+}
+
+} /* end @media */

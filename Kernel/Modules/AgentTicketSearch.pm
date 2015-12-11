@@ -784,8 +784,8 @@ sub Run {
             }
 
             my %HeaderMap = (
-                TicketNumber => 'Ticket Number',
-                CustomerName => 'Customer Realname',
+                TicketNumber => Translatable('Ticket Number'),
+                CustomerName => Translatable('Customer Realname'),
             );
 
             my @CSVHeadTranslated = map { $LayoutObject->{LanguageObject}->Translate( $HeaderMap{$_} || $_ ); }
@@ -1254,15 +1254,15 @@ sub Run {
             # Main fields
             {
                 Key   => 'TicketNumber',
-                Value => 'Ticket Number',
+                Value => Translatable('Ticket Number'),
             },
             {
                 Key   => 'Fulltext',
-                Value => 'Fulltext',
+                Value => Translatable('Fulltext'),
             },
             {
                 Key   => 'Title',
-                Value => 'Title',
+                Value => Translatable('Title'),
             },
             {
                 Key      => '',
@@ -1273,23 +1273,23 @@ sub Run {
             # Article fields
             {
                 Key   => 'From',
-                Value => 'From',
+                Value => Translatable('From'),
             },
             {
                 Key   => 'To',
-                Value => 'To',
+                Value => Translatable('To'),
             },
             {
                 Key   => 'Cc',
-                Value => 'Cc',
+                Value => Translatable('Cc'),
             },
             {
                 Key   => 'Subject',
-                Value => 'Subject',
+                Value => Translatable('Subject'),
             },
             {
                 Key   => 'Body',
-                Value => 'Body',
+                Value => Translatable('Body'),
             },
         );
 
@@ -1301,7 +1301,7 @@ sub Run {
             push @Attributes, (
                 {
                     Key   => 'AttachmentName',
-                    Value => 'Attachment Name',
+                    Value => Translatable('Attachment Name'),
                 },
             );
         }
@@ -1315,31 +1315,31 @@ sub Run {
             },
             {
                 Key   => 'CustomerID',
-                Value => 'CustomerID',
+                Value => Translatable('CustomerID'),
             },
             {
                 Key   => 'CustomerUserLogin',
-                Value => 'Customer User Login',
+                Value => Translatable('Customer User Login'),
             },
             {
                 Key   => 'StateIDs',
-                Value => 'State',
+                Value => Translatable('State'),
             },
             {
                 Key   => 'PriorityIDs',
-                Value => 'Priority',
+                Value => Translatable('Priority'),
             },
             {
                 Key   => 'LockIDs',
-                Value => 'Lock',
+                Value => Translatable('Lock'),
             },
             {
                 Key   => 'QueueIDs',
-                Value => 'Queue',
+                Value => Translatable('Queue'),
             },
             {
                 Key   => 'CreatedQueueIDs',
-                Value => 'Created in Queue',
+                Value => ('Created in Queue'),
             },
         );
 
@@ -1347,7 +1347,7 @@ sub Run {
             push @Attributes, (
                 {
                     Key   => 'TypeIDs',
-                    Value => 'Type',
+                    Value => Translatable('Type'),
                 },
             );
         }
@@ -1356,11 +1356,11 @@ sub Run {
             push @Attributes, (
                 {
                     Key   => 'ServiceIDs',
-                    Value => 'Service',
+                    Value => Translatable('Service'),
                 },
                 {
                     Key   => 'SLAIDs',
-                    Value => 'SLA',
+                    Value => Translatable('SLA'),
                 },
             );
         }
@@ -1368,18 +1368,18 @@ sub Run {
         push @Attributes, (
             {
                 Key   => 'OwnerIDs',
-                Value => 'Owner',
+                Value => Translatable('Owner'),
             },
             {
                 Key   => 'CreatedUserIDs',
-                Value => 'Created by',
+                Value => Translatable('Created by'),
             },
         );
         if ( $ConfigObject->Get('Ticket::Watcher') ) {
             push @Attributes, (
                 {
                     Key   => 'WatchUserIDs',
-                    Value => 'Watcher',
+                    Value => Translatable('Watcher'),
                 },
             );
         }
@@ -1387,7 +1387,7 @@ sub Run {
             push @Attributes, (
                 {
                     Key   => 'ResponsibleIDs',
-                    Value => 'Responsible',
+                    Value => Translatable('Responsible'),
                 },
             );
         }
@@ -1401,51 +1401,51 @@ sub Run {
             },
             {
                 Key   => 'TicketLastChangeTimePoint',
-                Value => 'Ticket Last Change Time (before/after)',
+                Value => Translatable('Ticket Last Change Time (before/after)'),
             },
             {
                 Key   => 'TicketLastChangeTimeSlot',
-                Value => 'Ticket Last Change Time (between)',
+                Value => Translatable('Ticket Last Change Time (between)'),
             },
             {
                 Key   => 'TicketChangeTimePoint',
-                Value => 'Ticket Change Time (before/after)',
+                Value => Translatable('Ticket Change Time (before/after)'),
             },
             {
                 Key   => 'TicketChangeTimeSlot',
-                Value => 'Ticket Change Time (between)',
+                Value => Translatable('Ticket Change Time (between)'),
             },
             {
                 Key   => 'TicketCloseTimePoint',
-                Value => 'Ticket Close Time (before/after)',
+                Value => Translatable('Ticket Close Time (before/after)'),
             },
             {
                 Key   => 'TicketCloseTimeSlot',
-                Value => 'Ticket Close Time (between)',
+                Value => Translatable('Ticket Close Time (between)'),
             },
             {
                 Key   => 'TicketCreateTimePoint',
-                Value => 'Ticket Create Time (before/after)',
+                Value => Translatable('Ticket Create Time (before/after)'),
             },
             {
                 Key   => 'TicketCreateTimeSlot',
-                Value => 'Ticket Create Time (between)',
+                Value => Translatable('Ticket Create Time (between)'),
             },
             {
                 Key   => 'TicketEscalationTimePoint',
-                Value => 'Ticket Escalation Time (before/after)',
+                Value => Translatable('Ticket Escalation Time (before/after)'),
             },
             {
                 Key   => 'TicketEscalationTimeSlot',
-                Value => 'Ticket Escalation Time (between)',
+                Value => Translatable('Ticket Escalation Time (between)'),
             },
             {
                 Key   => 'ArticleCreateTimePoint',
-                Value => 'Article Create Time (before/after)',
+                Value => Translatable('Article Create Time (before/after)'),
             },
             {
                 Key   => 'ArticleCreateTimeSlot',
-                Value => 'Article Create Time (between)',
+                Value => Translatable('Article Create Time (between)'),
             },
         );
 
@@ -1453,7 +1453,7 @@ sub Run {
             push @Attributes, (
                 {
                     Key   => 'SearchInArchive',
-                    Value => 'Archive Search',
+                    Value => Translatable('Archive Search'),
                 },
             );
         }
