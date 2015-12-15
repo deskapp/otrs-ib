@@ -1,4 +1,5 @@
 #5.0.3 2015-??-??
+ - 2015-12-15 Object manager fix in Sphinx module (IB#1046583).
  - 2015-11-03 Added Sphinx full text searching module for OTRS (IB#1046583).
  - 2015-11-02 Fixed bug#[11558](http://bugs.otrs.org/show_bug.cgi?id=11558) - Empty Agent preferences tooltip in AdminNotificationEvent.
  - 2015-11-02 Fixed bug#[11613](http://bugs.otrs.org/show_bug.cgi?id=11613) - Migrating the system to OTRS 5 fails in otrs.DBUpdate.pl, Add Email notification method to all event based notifications.
