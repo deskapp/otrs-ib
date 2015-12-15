@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2015-12-15 Informatyka Boguslawski sp. z o.o. sp.k. author notice moved from upstream file headers to AUTHORS.md
  - 2015-12-15 Copyright added (IB#1047660).
  - 2015-12-15 Object manager fix in Sphinx module (IB#1046583).
  - 2015-12-11 hdesk.pl skin added (IB#1047726).

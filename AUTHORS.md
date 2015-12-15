@@ -27,7 +27,7 @@ The following persons contributed to OTRS:
 * Friedrich Delgado <friedel@nomaden.org>
 * Gerald Young <gerald.young@noynim.com>
 * Henning Oschwald <henning.oschwald@otrs.com>
-* IB Development Team <dev@ib.pl>
+* Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 * Jens Bothe <jens.bothe@otrs.com>
 * Jens Pfeifer <jens.pfeifer@otrs.com>
 * Johannes Hörburger <johannes.hoerburger@otrs.com>
