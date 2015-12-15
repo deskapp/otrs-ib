@@ -20,6 +20,7 @@ use vars qw(@ISA);
 our @ObjectDependencies = (
     'Kernel::System::Log',
     'Kernel::System::Main',
+    'Kernel::System::Queue',
 );
 
 sub ArticleIndexBackendInit {
@@ -237,7 +238,7 @@ sub _ArticleIndexQuerySQLExt {
     my $QueueCondition = '';
     if ( $Param{Data}->{UserID} && $Param{Data}->{UserID} != 1 ) {
         # get list of all queues user that has ro access to
-        my %Queues = $Self->{QueueObject}->GetAllQueues(
+        my %Queues = $Kernel::OM->Get('Kernel::System::Queue')->GetAllQueues(
             UserID => $Param{Data}->{UserID},
             Type => 'ro',
         );
