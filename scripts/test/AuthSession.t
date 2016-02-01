@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -20,10 +20,19 @@ use Kernel::System::AuthSession;
 my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 my $MainObject   = $Kernel::OM->Get('Kernel::System::Main');
 
+# get helper object
+$Kernel::OM->ObjectParamAdd(
+    'Kernel::System::UnitTest::Helper' => {
+        RestoreSystemConfiguration => 1,
+        RestoreDatabase            => 1,
+        }
+);
+my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+
 # get home directory
 my $HomeDir = $ConfigObject->Get('Home');
 
-# get all avaliable backend modules
+# get all available backend modules
 my @BackendModuleFiles = $MainObject->DirectoryRead(
     Directory => $HomeDir . '/Kernel/System/AuthSession/',
     Filter    => '*.pm',
@@ -433,5 +442,7 @@ for my $ModuleFile (@BackendModuleFiles) {
         "#$Module - SessionList() no sessions left",
     );
 }
+
+# restore to the previous state is done by RestoreDatabase
 
 1;

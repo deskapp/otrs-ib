@@ -1,11 +1,12 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
 # did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
 # --
 
+## no critic (Modules::RequireExplicitPackage)
 use strict;
 use warnings;
 use utf8;
@@ -14,62 +15,30 @@ use vars (qw($Self));
 
 use Kernel::System::OTRSBusiness;
 
-## nofilter(TidyAll::Plugin::OTRS::Perl::TestSubs)
-# disable redefine warnings in this scope
-{
-no warnings 'redefine';
-
-sub Kernel::System::OTRSBusiness::OTRSBusinessIsInstalled {
+# override some OTRSBusiness functions, to prevent a real cloud service call
+local *Kernel::System::OTRSBusiness::OTRSBusinessIsInstalled = sub {
     my ( $Self, %Param ) = @_;
 
     return 1;
-}
+};
 
-sub Kernel::System::OTRSBusiness::OTRSBusinessEntitlementStatus {
+# to check, if the cloud service function was called (the value will be set in the overwritten local function)
+my $TestCloudServiceCall = 0;
+
+local *Kernel::System::OTRSBusiness::OTRSBusinessEntitlementStatus = sub {
     my ( $Self, %Param ) = @_;
 
-    my $SystemDataObject = $Kernel::OM->Get('Kernel::System::SystemData');
-
-    my $TestCloudServiceCallKey = 'OTRSBusiness::EntitlementCheck::TestCloudServiceCall';
-
-    if ( defined $SystemDataObject->SystemDataGet( Key => $TestCloudServiceCallKey ) ) {
-        $SystemDataObject->SystemDataUpdate(
-            Key    => $TestCloudServiceCallKey,
-            Value  => 1,
-            UserID => 1,
-        );
-    }
-    else {
-        $SystemDataObject->SystemDataAdd(
-            Key    => $TestCloudServiceCallKey,
-            Value  => 1,
-            UserID => 1,
-        );
-    }
+    $TestCloudServiceCall = 1;
 
     return 1;
-}
-
-# reset all warnings
-}
+};
 
 my $CommandObject = $Kernel::OM->Get('Kernel::System::Console::Command::Maint::OTRSBusiness::EntitlementCheck');
 
 my $HelperObject     = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 my $SystemDataObject = $Kernel::OM->Get('Kernel::System::SystemData');
 
-my $NextUpdateTimeKey       = 'OTRSBusiness::EntitlementCheck::NextUpdateTime';
-my $TestCloudServiceCallKey = 'OTRSBusiness::EntitlementCheck::TestCloudServiceCall';
-
-my $ResetTestCloudServiceCall = sub {
-    my %Param = @_;
-
-    $SystemDataObject->SystemDataUpdate(
-        Key    => $TestCloudServiceCallKey,
-        Value  => 0,
-        UserID => 1,
-    );
-};
+my $NextUpdateTimeKey = 'OTRSBusiness::EntitlementCheck::NextUpdateTime';
 
 # delete the 'OTRSBusiness::EntitlementCheck::NextUpdateTime' from the system data, if it already exists in the system
 if ( defined $SystemDataObject->SystemDataGet( Key => $NextUpdateTimeKey ) ) {
@@ -89,14 +58,13 @@ $Self->Is(
     "Maint::OTRSBusiness::EntitlementCheck exit code",
 );
 
-my $TestCloudService = $SystemDataObject->SystemDataGet( Key => $TestCloudServiceCallKey );
-
 $Self->True(
-    $TestCloudService,
+    $TestCloudServiceCall,
     "The function 'OTRSBusinessEntitlementStatus' was called from the console command.",
 );
 
-$ResetTestCloudServiceCall->();
+# reset the test value
+$TestCloudServiceCall = 0;
 
 # add two hours in seconds to the fixed time
 my $FixedTimeAddSeconds = 60 * 60 * 2;
@@ -112,14 +80,13 @@ $Self->Is(
     "Maint::OTRSBusiness::EntitlementCheck exit code",
 );
 
-$TestCloudService = $SystemDataObject->SystemDataGet( Key => $TestCloudServiceCallKey );
-
 $Self->False(
-    $TestCloudService,
+    $TestCloudServiceCall,
     "The function 'OTRSBusinessEntitlementStatus' was not called from the console command.",
 );
 
-$ResetTestCloudServiceCall->();
+# reset the test value
+$TestCloudServiceCall = 0;
 
 $ExitCode = $CommandObject->Execute('--force');
 
@@ -129,14 +96,13 @@ $Self->Is(
     "Maint::OTRSBusiness::EntitlementCheck exit code",
 );
 
-$TestCloudService = $SystemDataObject->SystemDataGet( Key => $TestCloudServiceCallKey );
-
 $Self->True(
-    $TestCloudService,
+    $TestCloudServiceCall,
     "The function 'OTRSBusinessEntitlementStatus' was called from the console command (with --force).",
 );
 
-$ResetTestCloudServiceCall->();
+# reset the test value
+$TestCloudServiceCall = 0;
 
 # add 28 hours in seconds to the fixed time
 $FixedTimeAddSeconds = 60 * 60 * 28;
@@ -152,14 +118,13 @@ $Self->Is(
     "Maint::OTRSBusiness::EntitlementCheck exit code",
 );
 
-$TestCloudService = $SystemDataObject->SystemDataGet( Key => $TestCloudServiceCallKey );
-
 $Self->True(
-    $TestCloudService,
+    $TestCloudServiceCall,
     "The function 'OTRSBusinessEntitlementStatus' was called from the console command (because next update time reached).",
 );
 
-$ResetTestCloudServiceCall->();
+# reset the test value
+$TestCloudServiceCall = 0;
 
 # add one hours in seconds to the fixed time
 $FixedTimeAddSeconds = 60 * 60 * 1;
@@ -175,10 +140,8 @@ $Self->Is(
     "Maint::OTRSBusiness::EntitlementCheck exit code",
 );
 
-$TestCloudService = $SystemDataObject->SystemDataGet( Key => $TestCloudServiceCallKey );
-
 $Self->False(
-    $TestCloudService,
+    $TestCloudServiceCall,
     "The function 'OTRSBusinessEntitlementStatus' was not called from the console command.",
 );
 
