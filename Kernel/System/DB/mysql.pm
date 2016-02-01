@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -57,12 +57,12 @@ sub LoadPreferences {
 
     $Self->{'DB::ListTables'} = 'SHOW TABLES',
 
-    # DBI/DBD::mysql attributes
-    # disable automatic reconnects as they do not execute DB::Connect, which will
-    # cause charset problems
-    $Self->{'DB::Attribute'} = {
+        # DBI/DBD::mysql attributes
+        # disable automatic reconnects as they do not execute DB::Connect, which will
+        # cause charset problems
+        $Self->{'DB::Attribute'} = {
         mysql_auto_reconnect => 0,
-    };
+        };
 
     # set current time stamp if different to "current_timestamp"
     $Self->{'DB::CurrentTimestamp'} = '';

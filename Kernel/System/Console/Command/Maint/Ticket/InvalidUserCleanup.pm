@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -141,9 +141,11 @@ sub _CleanupLocks {
         }
         Time::HiRes::usleep( $Param{MicroSleep} ) if $Param{MicroSleep};
     }
-    $Self->Print( "  <green>Done</green> (unlocked <yellow>"
+    $Self->Print(
+        "  <green>Done</green> (unlocked <yellow>"
             . @TicketIDs
-            . "</yellow> and changed state of <yellow>$StateCount</yellow> tickets).\n" );
+            . "</yellow> and changed state of <yellow>$StateCount</yellow> tickets).\n"
+    );
 }
 
 sub _CleanupFlags {

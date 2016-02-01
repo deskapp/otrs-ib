@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -188,7 +188,7 @@ sub Run {
 
     my %Filters = (
         Today => {
-            Name   => 'Today',
+            Name   => Translatable('Today'),
             Prio   => 1000,
             Search => {
                 TicketEscalationTimeOlderDate => $TimeStampToday,
@@ -199,7 +199,7 @@ sub Run {
             },
         },
         Tomorrow => {
-            Name   => 'Tomorrow',
+            Name   => Translatable('Tomorrow'),
             Prio   => 2000,
             Search => {
                 TicketEscalationTimeOlderDate => $TimeStampTomorrow,
@@ -210,7 +210,7 @@ sub Run {
             },
         },
         NextWeek => {
-            Name   => 'Next week',
+            Name   => Translatable('Next week'),
             Prio   => 3000,
             Search => {
                 TicketEscalationTimeOlderDate => $TimeStampNextWeek,

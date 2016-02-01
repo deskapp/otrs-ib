@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -17,14 +17,31 @@ my $HelperObject       = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 my $DBObject           = $Kernel::OM->Get('Kernel::System::DB');
 my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
 
-my $RandomID = $HelperObject->GetRandomID();
+my $RandomID = $HelperObject->GetRandomNumber();
 my $UserID   = 1;
 
 my @Tests = (
     {
-        Name          => 'test1',
+        Name          => 'Test1',
         SuccessAdd    => 1,
         SuccessUpdate => 1,
+        Add           => {
+            Config => {
+                Name        => 'AnyName',
+                Description => 'Description for Dynamic Field.',
+            },
+            Label      => 'something for label',
+            FieldOrder => 10000,
+            FieldType  => 'Text',
+            ObjectType => 'Article',
+            ValidID    => 1,
+            UserID     => $UserID,
+        },
+    },
+    {
+        Name          => 'Test1', # add same field again - fail
+        SuccessAdd    => 0,
+        SuccessUpdate => 0,
         Add           => {
             Config => {
                 Name        => 'AnyName',
@@ -220,23 +237,6 @@ my @Tests = (
             UserID     => $UserID,
         },
     },
-    {
-        Name          => 'Test1',
-        SuccessAdd    => 0,
-        SuccessUpdate => 0,
-        Add           => {
-            Config => {
-                Name        => 'AnyName',
-                Description => 'Description for Dynamic Field.',
-            },
-            Label      => 'something for label',
-            FieldOrder => 10000,
-            FieldType  => 'Text',
-            ObjectType => 'Article',
-            ValidID    => 1,
-            UserID     => $UserID,
-        },
-    },
 );
 
 my $OriginalDynamicFields = $DynamicFieldObject->DynamicFieldListGet( Valid => 0 );
@@ -254,11 +254,7 @@ for my $Test (@Tests) {
         Name => $FieldName,
     );
 
-    if (
-        !$DBObject->GetDatabaseFunction('CaseSensitive')
-        && $FieldNames{ lc $FieldName }
-        )
-    {
+    if ( $FieldNames{ $FieldName } ) {
         $Self->IsNotDeeply(
             $GetResult,
             {},

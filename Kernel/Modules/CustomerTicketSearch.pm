@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -1285,8 +1285,8 @@ sub Run {
                 else {
 
                     my $Mapping = {
-                        'Last'   => 'Created within the last',
-                        'Before' => 'Created more than ... ago',
+                        'Last'   => Translatable('Created within the last'),
+                        'Before' => Translatable('Created more than ... ago'),
                     };
 
                     $Attribute = $Mapping->{ $GetParam{TicketCreateTimePointStart} };
@@ -1708,12 +1708,12 @@ sub MaskForm {
     );
     $Param{TicketCreateTimePointFormat} = $LayoutObject->BuildSelection(
         Data => {
-            minute => 'minute(s)',
-            hour   => 'hour(s)',
-            day    => 'day(s)',
-            week   => 'week(s)',
-            month  => 'month(s)',
-            year   => 'year(s)',
+            minute => Translatable('minute(s)'),
+            hour   => Translatable('hour(s)'),
+            day    => Translatable('day(s)'),
+            week   => Translatable('week(s)'),
+            month  => Translatable('month(s)'),
+            year   => Translatable('year(s)'),
         },
         Translation => 1,
         Name        => 'TicketCreateTimePointFormat',
@@ -1749,9 +1749,9 @@ sub MaskForm {
 
         $Param{SearchInArchiveStrg} = $LayoutObject->BuildSelection(
             Data => {
-                ArchivedTickets    => 'Archived tickets',
-                NotArchivedTickets => 'Unarchived tickets',
-                AllTickets         => 'All tickets',
+                ArchivedTickets    => Translatable('Archived tickets'),
+                NotArchivedTickets => Translatable('Unarchived tickets'),
+                AllTickets         => Translatable('All tickets'),
             },
             Name       => 'SearchInArchive',
             SelectedID => $Param{SearchInArchive} || 'NotArchivedTickets',

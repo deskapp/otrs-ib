@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -118,6 +118,15 @@ sub GroupAdd {
             );
             return;
         }
+    }
+
+    my %GroupList = reverse $Self->GroupList( Valid => 0 );
+    if ( $GroupList{ $Param{Name} } ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "Group '$Param{Name}' already exists!",
+        );
+        return;
     }
 
     # get database object

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -47,8 +47,16 @@ $Self->True(
     "QueueAdd() - $QueueRand, $QueueID",
 );
 
+# get helper object
+$Kernel::OM->ObjectParamAdd(
+    'Kernel::System::UnitTest::Helper' => {
+        RestoreDatabase => 1,
+        }
+);
+my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+
 # add system address
-my $SystemAddressNameRand = 'unittest' . int rand 1000000;
+my $SystemAddressNameRand = 'SystemAddress' . $Helper->GetRandomID();
 my $SystemAddressID       = $SystemAddressObject->SystemAddressAdd(
     Name     => $SystemAddressNameRand . '@example.com',
     Realname => $SystemAddressNameRand,
@@ -68,7 +76,7 @@ my %AutoResponseType = $AutoResponseObject->AutoResponseTypeList(
 
 for my $TypeID ( sort keys %AutoResponseType ) {
 
-    my $AutoResponseNameRand = 'unittest' . int rand 1000000;
+    my $AutoResponseNameRand = 'SystemAddress' . $Helper->GetRandomID();
 
     my %Tests = (
         Created => {
@@ -211,5 +219,7 @@ for my $TypeID ( sort keys %AutoResponseType ) {
         'AutoResponseList() - test Auto Response is in the list of all Auto Responses.',
     );
 }
+
+# cleanup is done by RestoreDatabase
 
 1;

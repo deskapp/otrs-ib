@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -170,7 +170,7 @@ X-OTRS-Login: [% Env("Baselink") %]
 [% RenderBlockStart("LoginBox") %]
             <div id="LoginBox">
                 <p class="[% IF Data.MessageType != 'Logout' %]Error [% END %]Center Spacing">
-                    [% Data.Message | html %]
+                    [% Translate(Data.Message) | html %]
                 </p>
                 <div class="WidgetSimple">
                     <div class="Header">

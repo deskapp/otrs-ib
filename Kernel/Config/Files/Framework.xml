@@ -177,6 +177,7 @@
                 <Item Key="sk_SK" Translatable="1">Slovak</Item>
                 <Item Key="sv" Translatable="1">Swedish</Item>
                 <Item Key="sw" Translatable="1">Swahili</Item>
+                <Item Key="th_TH" Translatable="1">Thai</Item>
                 <Item Key="tr" Translatable="1">Turkish</Item>
                 <Item Key="uk" Translatable="1">Ukrainian</Item>
                 <Item Key="vi_VN" Translatable="1">Vietnam</Item>
@@ -231,6 +232,7 @@
                 <Item Key="sk_SK">Slovenčina</Item>
                 <Item Key="sv">Svenska</Item>
                 <Item Key="sw">Kiswahili</Item>
+                <Item Key="th_TH">ภาษาไทย</Item>
                 <Item Key="tr">Türkçe</Item>
                 <Item Key="uk">Українська</Item>
                 <Item Key="vi_VN">ViɆt Nam</Item>
@@ -409,7 +411,7 @@
         <Group>Framework</Group>
         <SubGroup>Core::Web</SubGroup>
         <Setting>
-            <String Regex="">&lt;OTRS_CONFIG_Frontend::WebPath&gt;js/thirdparty/ckeditor-4.5.4/</String>
+            <String Regex="">&lt;OTRS_CONFIG_Frontend::WebPath&gt;js/thirdparty/ckeditor-4.5.6/</String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::RichTextWidth" Required="1" Valid="1">
@@ -449,6 +451,17 @@
     </ConfigItem>
     <ConfigItem Name="DisableMSIFrameSecurityRestricted" Required="0" Valid="1">
         <Description Translatable="1">Disable restricted security for IFrames in IE. May be required for SSO to work in IE8.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Web</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="DisableIFrameOriginRestricted" Required="0" Valid="1">
+        <Description Translatable="1">Disable HTTP header "X-Frame-Options: SAMEORIGIN" to allow OTRS to be included as an IFrame in other websites. Disabling this HTTP header can be a security issue! Only disable it, if you know what you are doing!</Description>
         <Group>Framework</Group>
         <SubGroup>Core::Web</SubGroup>
         <Setting>
@@ -592,8 +605,8 @@
         <SubGroup>Core::LinkObject</SubGroup>
         <Setting>
             <Hash>
-                <Item Key="SourceName">Normal</Item>
-                <Item Key="TargetName">Normal</Item>
+                <Item Key="SourceName" Translatable="1">Normal</Item>
+                <Item Key="TargetName" Translatable="1">Normal</Item>
             </Hash>
         </Setting>
     </ConfigItem>
@@ -603,8 +616,8 @@
         <SubGroup>Core::LinkObject</SubGroup>
         <Setting>
             <Hash>
-                <Item Key="SourceName">Parent</Item>
-                <Item Key="TargetName">Child</Item>
+                <Item Key="SourceName" Translatable="1">Parent</Item>
+                <Item Key="TargetName" Translatable="1">Child</Item>
             </Hash>
         </Setting>
     </ConfigItem>
@@ -3256,6 +3269,21 @@
             <String Regex="">--homedir /opt/otrs/.gnupg/ --batch --no-tty --yes</String>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="PGP::Options::DigestPreference" Required="0" Valid="1">
+        <Description Translatable="1">Sets the preferred digest to be used for PGP binary.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Crypt::PGP</SubGroup>
+        <Setting>
+            <Option SelectedID="sha256">
+                <Item Key=""></Item>
+                <Item Key="sha1">SHA1</Item>
+                <Item Key="sha224">SHA224</Item>
+                <Item Key="sha256">SHA256</Item>
+                <Item Key="sha384">SHA384</Item>
+                <Item Key="sha512">SHA512</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="PGP::Key::Password" Required="1" Valid="1">
         <Description Translatable="1">Sets the password for private PGP key.</Description>
         <Group>Framework</Group>
@@ -3532,9 +3560,9 @@ You can log in via the following URL:
         </Setting>
     </ConfigItem>
     <ConfigItem Name="PreferencesTable" Required="1" Valid="1">
-        <Description Translatable="1">Defines the name of the table, where the customer preferences are stored.</Description>
+        <Description Translatable="1">Defines the name of the table where the user preferences are stored.</Description>
         <Group>Framework</Group>
-        <SubGroup>Frontend::Customer::Preferences</SubGroup>
+        <SubGroup>Frontend::Agent::Preferences</SubGroup>
         <Setting>
             <String Regex="">user_preferences</String>
         </Setting>
@@ -3542,7 +3570,7 @@ You can log in via the following URL:
     <ConfigItem Name="PreferencesTableKey" Required="1" Valid="1">
         <Description Translatable="1">Defines the column to store the keys for the preferences table.</Description>
         <Group>Framework</Group>
-        <SubGroup>Frontend::Customer::Preferences</SubGroup>
+        <SubGroup>Frontend::Agent::Preferences</SubGroup>
         <Setting>
             <String Regex="">preferences_key</String>
         </Setting>
@@ -4561,7 +4589,7 @@ via the Preferences button after logging in.
         <SubGroup>Frontend::Agent::ModuleRegistration</SubGroup>
         <Setting>
             <FrontendModuleReg>
-                <Description>Customer Information Center</Description>
+                <Description Translatable="1">Customer Information Center.</Description>
                 <Title></Title>
                 <NavBarName>Customers</NavBarName>
                 <NavBar>
@@ -4601,7 +4629,7 @@ via the Preferences button after logging in.
         <SubGroup>Frontend::Agent::ModuleRegistration</SubGroup>
         <Setting>
             <FrontendModuleReg>
-                <Description>Customer Information Center Search</Description>
+                <Description Translatable="1">Customer Information Center Search.</Description>
                 <Title></Title>
             </FrontendModuleReg>
         </Setting>
@@ -4659,7 +4687,7 @@ via the Preferences button after logging in.
         <SubGroup>Frontend::Agent::ModuleRegistration</SubGroup>
         <Setting>
             <FrontendModuleReg>
-                <Description>Agent Preferences</Description>
+                <Description Translatable="1">Agent Preferences.</Description>
                 <Title></Title>
                 <NavBarName>Preferences</NavBarName>
                 <Loader>
@@ -4674,7 +4702,7 @@ via the Preferences button after logging in.
         <SubGroup>Frontend::Agent::ModuleRegistration</SubGroup>
         <Setting>
             <FrontendModuleReg>
-                <Description>Picture upload module</Description>
+                <Description Translatable="1">Picture upload module.</Description>
                 <Title>Picture-Upload</Title>
                 <NavBarName>Ticket</NavBarName>
             </FrontendModuleReg>
@@ -4686,7 +4714,7 @@ via the Preferences button after logging in.
         <SubGroup>Frontend::Agent::ModuleRegistration</SubGroup>
         <Setting>
             <FrontendModuleReg>
-                <Description>Spell checker</Description>
+                <Description Translatable="1">Spell checker.</Description>
                 <Title>Spell Checker</Title>
                 <NavBarName></NavBarName>
                 <Loader>
@@ -4701,7 +4729,7 @@ via the Preferences button after logging in.
         <SubGroup>Frontend::Agent::ModuleRegistration</SubGroup>
         <Setting>
             <FrontendModuleReg>
-                <Description>Spell checker</Description>
+                <Description Translatable="1">Spell checker.</Description>
                 <Title>Spell Checker</Title>
                 <NavBarName></NavBarName>
             </FrontendModuleReg>
@@ -4713,7 +4741,7 @@ via the Preferences button after logging in.
         <SubGroup>Frontend::Agent::ModuleRegistration</SubGroup>
         <Setting>
             <FrontendModuleReg>
-                <Description>Address book of CustomerUser sources</Description>
+                <Description Translatable="1">Address book of CustomerUser sources.</Description>
                 <Title>Address Book</Title>
                 <NavBarName></NavBarName>
                 <Loader>
@@ -4729,7 +4757,7 @@ via the Preferences button after logging in.
         <SubGroup>Frontend::Agent::ModuleRegistration</SubGroup>
         <Setting>
             <FrontendModuleReg>
-                <Description>Link Object</Description>
+                <Description Translatable="1">Link Object.</Description>
                 <Title>Link Object</Title>
                 <NavBarName></NavBarName>
             </FrontendModuleReg>
@@ -4741,7 +4769,7 @@ via the Preferences button after logging in.
         <SubGroup>Frontend::Agent::ModuleRegistration</SubGroup>
         <Setting>
             <FrontendModuleReg>
-                <Description>Generic Info module</Description>
+                <Description Translatable="1">Generic Info module.</Description>
                 <Title>Info</Title>
                 <NavBarName></NavBarName>
             </FrontendModuleReg>
@@ -4753,7 +4781,7 @@ via the Preferences button after logging in.
         <SubGroup>Frontend::Agent::ModuleRegistration</SubGroup>
         <Setting>
             <FrontendModuleReg>
-                <Description>Global Search Module</Description>
+                <Description Translatable="1">Global Search Module.</Description>
                 <Title Translatable="1">Search</Title>
                 <NavBarName></NavBarName>
             </FrontendModuleReg>
@@ -4818,7 +4846,7 @@ via the Preferences button after logging in.
         <Setting>
             <FrontendModuleReg>
                 <Group>admin</Group>
-                <Description>Create and manage agents.</Description>
+                <Description Translatable="1">Create and manage agents.</Description>
                 <Title Translatable="1">Agents</Title>
                 <NavBarName>Admin</NavBarName>
                 <NavBarModule>
@@ -6438,6 +6466,11 @@ via the Preferences button after logging in.
                 <Item Key="3" Translatable="1">Lastname, Firstname (UserLogin)</Item>
                 <Item Key="4" Translatable="1">(UserLogin) Firstname Lastname</Item>
                 <Item Key="5" Translatable="1">(UserLogin) Lastname, Firstname</Item>
+                <!-- Hungarian -->
+                <Item Key="6" Translatable="1">Lastname Firstname</Item>
+                <Item Key="7" Translatable="1">Lastname Firstname (UserLogin)</Item>
+                <Item Key="8" Translatable="1">(UserLogin) Lastname Firstname</Item>
+                <!-- End Hungarian -->
             </Option>
         </Setting>
     </ConfigItem>
@@ -6450,7 +6483,7 @@ via the Preferences button after logging in.
             <Hash>
                 <Item Key="InternalName">default</Item>
                 <Item Key="VisibleName">Default</Item>
-                <Item Key="Description">This is the default orange - black skin.</Item>
+                <Item Key="Description" Translatable="1">This is the default orange - black skin.</Item>
                 <Item Key="HomePage">www.otrs.org</Item>
             </Hash>
         </Setting>
@@ -6463,7 +6496,7 @@ via the Preferences button after logging in.
             <Hash>
                 <Item Key="InternalName">slim</Item>
                 <Item Key="VisibleName">Default (Slim)</Item>
-                <Item Key="Description">"Slim" skin which tries to save screen space for power users.</Item>
+                <Item Key="Description" Translatable="1">"Slim" skin which tries to save screen space for power users.</Item>
                 <Item Key="HomePage">www.otrs.org</Item>
             </Hash>
         </Setting>
@@ -6476,7 +6509,7 @@ via the Preferences button after logging in.
             <Hash>
                 <Item Key="InternalName">ivory</Item>
                 <Item Key="VisibleName">Ivory</Item>
-                <Item Key="Description">Balanced white skin by Felix Niklas.</Item>
+                <Item Key="Description" Translatable="1">Balanced white skin by Felix Niklas.</Item>
                 <Item Key="HomePage">www.felixniklas.de</Item>
             </Hash>
         </Setting>
@@ -6489,7 +6522,7 @@ via the Preferences button after logging in.
             <Hash>
                 <Item Key="InternalName">ivory-slim</Item>
                 <Item Key="VisibleName">Ivory (Slim)</Item>
-                <Item Key="Description">Balanced white skin by Felix Niklas (slim version).</Item>
+                <Item Key="Description" Translatable="1">Balanced white skin by Felix Niklas (slim version).</Item>
                 <Item Key="HomePage">www.felixniklas.de</Item>
             </Hash>
         </Setting>
@@ -6521,7 +6554,7 @@ via the Preferences button after logging in.
             <Hash>
                 <Item Key="InternalName">default</Item>
                 <Item Key="VisibleName">Default</Item>
-                <Item Key="Description">This is the default orange - black skin for the customer interface.</Item>
+                <Item Key="Description" Translatable="1">This is the default orange - black skin for the customer interface.</Item>
                 <Item Key="HomePage">www.otrs.org</Item>
             </Hash>
         </Setting>
