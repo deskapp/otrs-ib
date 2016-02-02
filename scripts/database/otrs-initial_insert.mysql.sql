@@ -244,7 +244,7 @@ INSERT INTO queue (id, name, group_id, system_address_id, salutation_id, signatu
 # ----------------------------------------------------------
 INSERT INTO queue (id, name, group_id, system_address_id, salutation_id, signature_id, follow_up_id, follow_up_lock, unlock_timeout, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    (2, 'Kosz', 4, 1, 1, 1, 1, 1, 0, 'Kolejka na niechciane zgłoszenia.', 1, 1, current_timestamp, 1, current_timestamp);
+    (2, 'Kosz', 4, 1, 1, 1, 1, 1, 60, 'Kolejka na niechciane zgłoszenia.', 1, 1, current_timestamp, 1, current_timestamp);
 # ----------------------------------------------------------
 #  insert into table standard_template
 # ----------------------------------------------------------
