@@ -1,0 +1,3 @@
+
+# cleanup web upload cache every hour
+46 * * * *  (/bin/date; $HOME/bin/otrs.WebUploadCacheCleanup.pl) >> /var/opt/otrs/file/log/otrs.WebUploadCacheCleanup.pl.log

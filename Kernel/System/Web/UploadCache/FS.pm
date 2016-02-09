@@ -1,7 +1,7 @@
 # --
 # Kernel/System/Web/UploadCache/FS.pm - a fs upload cache
 # Copyright (C) 2001-2014 OTRS AG, http://otrs.com/
-# Copyright (C) 2013-2014 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+# Copyright (C) 2013-2016 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -36,9 +36,6 @@ sub new {
 sub FormIDCreate {
     my ( $Self, %Param ) = @_;
 
-    # cleanup temp form ids
-    $Self->FormIDCleanUp();
-
     # return requested form id
     return time() . '.' . rand(12341241);
 }
@@ -51,8 +48,14 @@ sub FormIDRemove {
         return;
     }
 
+    my $Directory = $Self->_GetCacheDirectory(%Param);
+
+    if ( !-d $Directory ) {
+        return 1;
+    }
+
     my @List = $Self->{MainObject}->DirectoryRead(
-        Directory => $Self->{TempDir},
+        Directory => $Directory,
         Filter    => "$Param{FormID}.*",
     );
     my @Data;
@@ -86,30 +89,47 @@ sub FormIDAddFile {
         $ContentID = "$Disposition$Random.$Param{FormID}\@$FQDN";
     }
 
+    # create cache subdirectory if not exist
+    my $Directory = $Self->_GetCacheDirectory(%Param);
+    if ( !-d $Directory ) {
+
+        # Create directory. This could fail if another process creates the
+        #   same directory, so don't use the return value.
+        File::Path::mkpath( $Directory, 0, 0770 );    ## no critic
+
+        if ( !-d $Directory ) {
+            $Self->{LogObject}->Log(
+                Priority => 'error',
+                Message  => "Can't create directory '$Directory': $!",
+            );
+            return;
+        }
+    }
+
     # files must readable for creator
     return if !$Self->{MainObject}->FileWrite(
-        Directory  => $Self->{TempDir},
+        Directory  => $Directory,
         Filename   => "$Param{FormID}.$Param{Filename}",
         Content    => \$Param{Content},
         Mode       => 'binmode',
         Permission => '640',
     );
     return if !$Self->{MainObject}->FileWrite(
-        Directory  => $Self->{TempDir},
+        Directory  => $Directory,
         Filename   => "$Param{FormID}.$Param{Filename}.ContentType",
         Content    => \$Param{ContentType},
         Mode       => 'binmode',
         Permission => '640',
     );
     return if !$Self->{MainObject}->FileWrite(
-        Directory  => $Self->{TempDir},
+        Directory  => $Directory,
         Filename   => "$Param{FormID}.$Param{Filename}.ContentID",
         Content    => \$ContentID,
         Mode       => 'binmode',
         Permission => '640',
     );
     return if !$Self->{MainObject}->FileWrite(
-        Directory  => $Self->{TempDir},
+        Directory  => $Directory,
         Filename   => "$Param{FormID}.$Param{Filename}.Disposition",
         Content    => \$Disposition,
         Mode       => 'binmode',
@@ -134,20 +154,27 @@ sub FormIDRemoveFile {
 
     my $ID    = $Param{FileID} - 1;
     my %File  = %{ $Index[$ID] };
+
+    my $Directory = $Self->_GetCacheDirectory(%Param);
+
+    if ( !-d $Directory ) {
+        return 1;
+    }
+
     $Self->{MainObject}->FileDelete(
-        Directory => $Self->{TempDir},
+        Directory => $Directory,
         Filename  => "$Param{FormID}.$File{Filename}",
     );
     $Self->{MainObject}->FileDelete(
-        Directory => $Self->{TempDir},
+        Directory => $Directory,
         Filename  => "$Param{FormID}.$File{Filename}.ContentType",
     );
     $Self->{MainObject}->FileDelete(
-        Directory => $Self->{TempDir},
+        Directory => $Directory,
         Filename  => "$Param{FormID}.$File{Filename}.ContentID",
     );
     $Self->{MainObject}->FileDelete(
-        Directory => $Self->{TempDir},
+        Directory => $Directory,
         Filename  => "$Param{FormID}.$File{Filename}.Disposition",
     );
     return 1;
@@ -161,13 +188,20 @@ sub FormIDGetAllFilesData {
         return;
     }
 
+    my @Data;
+
+    my $Directory = $Self->_GetCacheDirectory(%Param);
+
+    if ( !-d $Directory ) {
+        return \@Data;
+    }
+
     my @List = $Self->{MainObject}->DirectoryRead(
-        Directory => $Self->{TempDir},
+        Directory => $Directory,
         Filter    => "$Param{FormID}.*",
     );
 
     my $Counter = 0;
-    my @Data;
     for my $File (@List) {
 
         # ignore meta files
@@ -251,13 +285,20 @@ sub FormIDGetAllFilesMeta {
         return;
     }
 
+    my @Data;
+
+    my $Directory = $Self->_GetCacheDirectory(%Param);
+
+    if ( !-d $Directory ) {
+        return \@Data;
+    }
+
     my @List = $Self->{MainObject}->DirectoryRead(
-        Directory => $Self->{TempDir},
+        Directory => $Directory,
         Filter    => "$Param{FormID}.*",
     );
 
     my $Counter = 0;
-    my @Data;
     for my $File (@List) {
 
         # ignore meta files
@@ -329,29 +370,58 @@ sub FormIDGetAllFilesMeta {
 sub FormIDCleanUp {
     my ( $Self, %Param ) = @_;
 
-    my $CurrentTile = time() - 86400;                       # 60 * 60 * 24 * 1
+    my $CurrentTile = int( (time() - 86400) / 1000 ); # remove subdirs older than 24h
     my @List        = $Self->{MainObject}->DirectoryRead(
         Directory => $Self->{TempDir},
         Filter    => '*'
     );
-    my %RemoveFormIDs;
-    for my $File (@List) {
 
-        # get FormID
-        $File =~ s/^.*\/(.+?)\..+?$/$1/;
-        if ( $CurrentTile > $File ) {
-            if ( !$RemoveFormIDs{$File} ) {
-                $RemoveFormIDs{$File} = 1;
+    for my $Subdir (@List) {
+        $Subdir =~ s/^.*\/(.+?)$/$1/;
+        if ( $CurrentTile > $Subdir ) {
+            my @Sublist = $Self->{MainObject}->DirectoryRead(
+                Directory => $Self->{TempDir} . $Subdir,
+                Filter    => "*",
+            );
+
+            for my $File (@Sublist) {
+                $Self->{MainObject}->FileDelete(
+                    Location => $File,
+                );
             }
+
+            if ( !rmdir($Self->{TempDir} . $Subdir) ) {
+                $Self->{LogObject}->Log(
+                    Priority => 'error',
+                    Message  => "Can't remove: $Self->{TempDir}$Subdir: $!!",
+                );
+                return;
+             }
+         }
+    }
+
+    return 1;
+}
+
+sub _GetCacheDirectory {
+    my ( $Self, %Param ) = @_;
+
+    for my $Needed (qw(FormID)) {
+        if ( !defined $Param{$Needed} ) {
+            $Self->{LogObject}->Log(
+                Priority => 'error',
+                Message  => "Need $Needed!"
+            );
+            return;
         }
     }
-    for ( sort keys %RemoveFormIDs ) {
-        $Self->FormIDRemove(
-            FormID => $_,
-            DisableWarnings => 1,
-        );
-    }
-    return 1;
+
+    # create separate cache subdir every 1000 seconds
+    # to avoid too many files in one subdirectory
+    my $Subdir = $Param{FormID};
+    $Subdir =~ s/^(.+?).{3}\..+?$/$1/;
+
+    return $Self->{TempDir} . $Subdir . '/';
 }
 
 1;
