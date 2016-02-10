@@ -1,4 +1,5 @@
 #3.3.x 2016-??-??
+ - 2016-02-19 Improved email address validity check backport to OTRS 3.3.
  - 2016-02-09 Upload cache performance fix.
 
 #3.3.7 2014-05-13
