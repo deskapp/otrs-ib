@@ -1,5 +1,6 @@
 =======
 #5.0.7 2016-??-??
+ - 2016-02-18 Upload cache performance fix.
  - 2016-02-01 Upload cache performance fix.
  - 2016-02-01 Fixed bug#[11820](http://bugs.otrs.org/show_bug.cgi?id=11820) - Match on !~ "int" for external articles not enough.
  - 2016-02-01 Fixed bug#[11838](http://bugs.otrs.org/show_bug.cgi?id=11838) - New tabs opened from links in a sandboxed Iframe cannot execute JavaScript.
