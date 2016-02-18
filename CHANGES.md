@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-02-18 Upload cache performance fix.
  - 2016-02-01 Upload cache performance fix.
  - 2015-12-15 Informatyka Boguslawski sp. z o.o. sp.k. author notice moved from upstream file headers to AUTHORS.md
  - 2015-12-15 Copyright added (IB#1047660).
