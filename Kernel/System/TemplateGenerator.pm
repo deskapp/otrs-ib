@@ -412,6 +412,25 @@ sub Template {
         );
     }
 
+    # get user language
+    my $Language;
+    if ( defined $Param{TicketID} ) {
+
+        # get ticket data
+        my %Ticket = $Kernel::OM->Get('Kernel::System::Ticket')->TicketGet(
+            TicketID => $Param{TicketID},
+        );
+
+        # get recipient
+        my %User = $Kernel::OM->Get('Kernel::System::CustomerUser')->CustomerUserDataGet(
+            User => $Ticket{CustomerUserID},
+        );
+        $Language = $User{UserLanguage};
+    }
+
+    # if customer language is not defined, set default language
+    $Language //= $Kernel::OM->Get('Kernel::Config')->Get('DefaultLanguage') || 'en';
+
     # replace place holder stuff
     my $TemplateText = $Self->_Replace(
         RichText => $Self->{RichText},
@@ -419,9 +438,109 @@ sub Template {
         TicketID => $Param{TicketID} || '',
         Data     => $Param{Data} || {},
         UserID   => $Param{UserID},
+        Language => $Language,
     );
 
     return $TemplateText;
+}
+
+=item GenericAgentArticle()
+
+generate internal or external notes
+
+    my $GenericAgentArticle = $TemplateGeneratorObject->GenericAgentArticle(
+        Notification    => $NotificationDataHashRef,
+        TicketID        => 123,
+        UserID          => 123,
+        Data            => $ArticleHashRef,             # Optional
+    );
+
+=cut
+
+sub GenericAgentArticle {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    for (qw(TicketID Notification UserID)) {
+        if ( !$Param{$_} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "Need $_!"
+            );
+            return;
+        }
+    }
+
+    my %Template = %{ $Param{Notification} };
+
+    # get ticket object
+    my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
+
+    # get ticket
+    my %Ticket = $TicketObject->TicketGet(
+        TicketID      => $Param{TicketID},
+        DynamicFields => 0,
+    );
+
+    # do text/plain to text/html convert
+    if (
+        $Self->{RichText}
+        && $Template{ContentType} =~ /text\/plain/i
+        && $Template{Body}
+        )
+    {
+        $Template{ContentType} = 'text/html';
+        $Template{Body}        = $Kernel::OM->Get('Kernel::System::HTMLUtils')->ToHTML(
+            String => $Template{Body},
+        );
+    }
+
+    # do text/html to text/plain convert
+    if (
+        !$Self->{RichText}
+        && $Template{ContentType} =~ /text\/html/i
+        && $Template{Body}
+        )
+    {
+        $Template{ContentType} = 'text/plain';
+        $Template{Body}        = $Kernel::OM->Get('Kernel::System::HTMLUtils')->ToAscii(
+            String => $Template{Body},
+        );
+    }
+
+    # replace place holder stuff
+    $Template{Body} = $Self->_Replace(
+        RichText  => $Self->{RichText},
+        Text      => $Template{Body},
+        Recipient => $Param{Recipient},
+        Data      => $Param{Data} || {},
+        TicketID  => $Param{TicketID},
+        UserID    => $Param{UserID},
+    );
+    $Template{Subject} = $Self->_Replace(
+        RichText  => 0,
+        Text      => $Template{Subject},
+        Recipient => $Param{Recipient},
+        Data      => $Param{Data} || {},
+        TicketID  => $Param{TicketID},
+        UserID    => $Param{UserID},
+    );
+
+    $Template{Subject} = $TicketObject->TicketSubjectBuild(
+        TicketNumber => $Ticket{TicketNumber},
+        Subject      => $Template{Subject} || '',
+        Type         => 'New',
+    );
+
+    # add URLs and verify to be full HTML document
+    if ( $Self->{RichText} ) {
+
+        $Template{Body} = $Kernel::OM->Get('Kernel::System::HTMLUtils')->LinkQuote(
+            String => $Template{Body},
+        );
+    }
+
+    return %Template;
 }
 
 =item Attributes()
@@ -1127,7 +1246,7 @@ sub _Replace {
             NoOutOfOffice => 1,
         );
 
-        # html quoting of content
+        # HTML quoting of content
         if ( $Param{RichText} ) {
 
             ATTRIBUTE:
@@ -1153,7 +1272,7 @@ sub _Replace {
         NoOutOfOffice => 1,
     );
 
-    # html quoting of content
+    # HTML quoting of content
     if ( $Param{RichText} ) {
 
         ATTRIBUTE:
@@ -1290,7 +1409,7 @@ sub _Replace {
     for my $DataType (qw(OTRS_CUSTOMER_ OTRS_AGENT_)) {
         my %Data = %{ $ArticleData{$DataType} };
 
-        # html quoting of content
+        # HTML quoting of content
         if (
             $Param{RichText}
             && ( !$Data{ContentType} || $Data{ContentType} !~ /application\/json/ )
@@ -1322,7 +1441,7 @@ sub _Replace {
                         Data => $Data{Body},
                     );
 
-                    # replace body with html text
+                    # replace body with HTML text
                     $Data{Body} = $Kernel::OM->Get('Kernel::Output::HTML::Layout')->Output(
                         TemplateFile => "ChatDisplay",
                         Data         => {

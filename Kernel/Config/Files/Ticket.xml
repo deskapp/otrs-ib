@@ -111,7 +111,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Ticket::ResponsibleAutoSet" Required="0" Valid="1">
-        <Description Translatable="1">Automatically sets the owner of a ticket as the responsible for it (if ticket responsible feature is enabled).</Description>
+        <Description Translatable="1">Automatically sets the owner of a ticket as the responsible for it (if ticket responsible feature is enabled). This will only work by manually actions of the logged in user. It does not work for automated actions e.g. GenericAgent, Postmaster and GenericInterface.</Description>
         <Group>Ticket</Group>
         <SubGroup>Core::Ticket</SubGroup>
         <Setting>
@@ -563,7 +563,7 @@
             <Array>
                 <Item><![CDATA[[,\&\<\>\?"\!\*\|;\[\]\(\)\+\$\^=]]]></Item>
                 <Item><![CDATA[^[':.]|[':.]$]]></Item>
-                <Item><![CDATA[^[^a-zA-Z0-9]+$]]></Item>
+                <Item><![CDATA[^[^\w]+$]]></Item>
             </Array>
         </Setting>
     </ConfigItem>
@@ -5805,7 +5805,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::ToolBarModule###1-Ticket::AgentTicketQueue" Required="0" Valid="0">
-        <Description Translatable="1">Toolbar Item for a shortcut.</Description>
+        <Description Translatable="1">Toolbar Item for a shortcut. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2".</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::ToolBarModule</SubGroup>
         <Setting>
@@ -5822,7 +5822,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::ToolBarModule###2-Ticket::AgentTicketStatus" Required="0" Valid="0">
-        <Description Translatable="1">Toolbar Item for a shortcut.</Description>
+        <Description Translatable="1">Toolbar Item for a shortcut. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2".</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::ToolBarModule</SubGroup>
         <Setting>
@@ -5839,7 +5839,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::ToolBarModule###3-Ticket::AgentTicketEscalation" Required="0" Valid="0">
-        <Description Translatable="1">Toolbar Item for a shortcut.</Description>
+        <Description Translatable="1">Toolbar Item for a shortcut. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2".</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::ToolBarModule</SubGroup>
         <Setting>
@@ -5856,7 +5856,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::ToolBarModule###4-Ticket::AgentTicketPhone" Required="0" Valid="0">
-        <Description Translatable="1">Toolbar Item for a shortcut.</Description>
+        <Description Translatable="1">Toolbar Item for a shortcut. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2".</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::ToolBarModule</SubGroup>
         <Setting>
@@ -5873,7 +5873,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::ToolBarModule###5-Ticket::AgentTicketEmail" Required="0" Valid="0">
-        <Description Translatable="1">Toolbar Item for a shortcut.</Description>
+        <Description Translatable="1">Toolbar Item for a shortcut. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2".</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::ToolBarModule</SubGroup>
         <Setting>
@@ -5890,7 +5890,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::ToolBarModule###6-Ticket::AgentTicketProcess" Required="0" Valid="0">
-        <Description Translatable="1">Toolbar Item for a shortcut.</Description>
+        <Description Translatable="1">Toolbar Item for a shortcut. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2".</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::ToolBarModule</SubGroup>
         <Setting>
@@ -5907,7 +5907,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::ToolBarModule###7-Ticket::TicketResponsible" Required="0" Valid="1">
-        <Description Translatable="1">Agent interface notification module to see the number of tickets an agent is responsible for.</Description>
+        <Description Translatable="1">Agent interface notification module to see the number of tickets an agent is responsible for. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2".</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::ToolBarModule</SubGroup>
         <Setting>
@@ -5927,7 +5927,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::ToolBarModule###8-Ticket::TicketWatcher" Required="0" Valid="1">
-        <Description Translatable="1">Agent interface notification module to see the number of watched tickets.</Description>
+        <Description Translatable="1">Agent interface notification module to see the number of watched tickets. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2".</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::ToolBarModule</SubGroup>
         <Setting>
@@ -5947,7 +5947,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::ToolBarModule###9-Ticket::TicketLocked" Required="0" Valid="1">
-        <Description Translatable="1">Agent interface notification module to see the number of locked tickets.</Description>
+        <Description Translatable="1">Agent interface notification module to see the number of locked tickets. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2".</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::ToolBarModule</SubGroup>
         <Setting>
@@ -5970,7 +5970,7 @@
     the standard link module
     -->
     <ConfigItem Name="Frontend::ToolBarModule###10-Ticket::AgentTicketService" Required="0" Valid="0">
-        <Description Translatable="1">Agent interface notification module to see the number of tickets in My Services.</Description>
+        <Description Translatable="1">Agent interface notification module to see the number of tickets in My Services. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2".</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::ToolBarModule</SubGroup>
         <Setting>
@@ -5983,7 +5983,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::ToolBarModule###11-Ticket::TicketSearchProfile" Required="0" Valid="0">
-        <Description Translatable="1">Agent interface module to access search profiles via nav bar.</Description>
+        <Description Translatable="1">Agent interface module to access search profiles via nav bar. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2".</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::ToolBarModule</SubGroup>
         <Setting>
@@ -5998,7 +5998,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::ToolBarModule###12-Ticket::TicketSearchFulltext" Required="0" Valid="0">
-        <Description Translatable="1">Agent interface module to access fulltext search via nav bar.</Description>
+        <Description Translatable="1">Agent interface module to access fulltext search via nav bar. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2".</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::ToolBarModule</SubGroup>
         <Setting>
@@ -6014,7 +6014,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::ToolBarModule###13-CICSearchCustomerID" Required="0" Valid="0">
-        <Description Translatable="1">Agent interface module to access CIC search via nav bar.</Description>
+        <Description Translatable="1">Agent interface module to access CIC search via nav bar. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2".</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::ToolBarModule</SubGroup>
         <Setting>
@@ -6030,7 +6030,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::ToolBarModule###14-CICSearchCustomerUser" Required="0" Valid="0">
-        <Description Translatable="1">Agent interface module to access CIC search via nav bar.</Description>
+        <Description Translatable="1">Agent interface module to access CIC search via nav bar. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2".</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::ToolBarModule</SubGroup>
         <Setting>
@@ -6964,6 +6964,7 @@
                     <Hash>
                         <Item Key="Age">2</Item>
                         <Item Key="Changed">1</Item>
+                        <Item Key="Created">1</Item>
                         <Item Key="CustomerID">1</Item>
                         <Item Key="CustomerName">1</Item>
                         <Item Key="CustomerUserID">1</Item>
@@ -7010,6 +7011,7 @@
                     <Hash>
                         <Item Key="Age">2</Item>
                         <Item Key="Changed">1</Item>
+                        <Item Key="Created">1</Item>
                         <Item Key="CustomerID">1</Item>
                         <Item Key="CustomerName">1</Item>
                         <Item Key="CustomerUserID">1</Item>
@@ -7056,6 +7058,7 @@
                     <Hash>
                         <Item Key="Age">2</Item>
                         <Item Key="Changed">1</Item>
+                        <Item Key="Created">1</Item>
                         <Item Key="CustomerID">1</Item>
                         <Item Key="CustomerName">1</Item>
                         <Item Key="CustomerUserID">1</Item>
@@ -7102,6 +7105,7 @@
                     <Hash>
                         <Item Key="Age">2</Item>
                         <Item Key="Changed">1</Item>
+                        <Item Key="Created">1</Item>
                         <Item Key="CustomerID">1</Item>
                         <Item Key="CustomerName">1</Item>
                         <Item Key="CustomerUserID">1</Item>
@@ -7320,6 +7324,7 @@
                     <Hash>
                         <Item Key="Age">2</Item>
                         <Item Key="Changed">1</Item>
+                        <Item Key="Created">1</Item>
                         <Item Key="CustomerID">1</Item>
                         <Item Key="CustomerName">1</Item>
                         <Item Key="CustomerUserID">1</Item>
@@ -7366,6 +7371,7 @@
                     <Hash>
                         <Item Key="Age">2</Item>
                         <Item Key="Changed">1</Item>
+                        <Item Key="Created">1</Item>
                         <Item Key="CustomerID">1</Item>
                         <Item Key="CustomerName">1</Item>
                         <Item Key="CustomerUserID">1</Item>
@@ -7412,6 +7418,7 @@
                     <Hash>
                         <Item Key="Age">2</Item>
                         <Item Key="Changed">1</Item>
+                        <Item Key="Created">1</Item>
                         <Item Key="CustomerID">1</Item>
                         <Item Key="CustomerName">1</Item>
                         <Item Key="CustomerUserID">1</Item>
@@ -7458,6 +7465,7 @@
                     <Hash>
                         <Item Key="Age">2</Item>
                         <Item Key="Changed">1</Item>
+                        <Item Key="Created">1</Item>
                         <Item Key="CustomerID">1</Item>
                         <Item Key="CustomerName">1</Item>
                         <Item Key="CustomerUserID">1</Item>
@@ -7910,7 +7918,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="CustomerPanelSelectionType" Required="1" Valid="1">
-        <Description Translatable="1">Defines the recipient target of the tickets ("Queue" shows all queues, "SystemAddress" displays all system addresses) in the customer interface.</Description>
+        <Description Translatable="1">Defines the recipient target of the tickets ("Queue" shows all queues, "SystemAddress" shows only the queues which are assigned to system addresses) in the customer interface.</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Customer::Ticket::ViewNew</SubGroup>
         <Setting>
@@ -8101,7 +8109,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Ticket::Frontend::CustomerTicketSearch###ExtendedSearchCondition" Required="1" Valid="1">
-        <Description Translatable="1">Allows extended search conditions in ticket search of the customer interface. With this feature you can search w. g. with this kind of conditions like "(key1&amp;&amp;key2)" or "(key1||key2)".</Description>
+        <Description Translatable="1">Allows extended search conditions in ticket search of the customer interface. With this feature you can search e. g. with this kind of conditions like "(key1&amp;&amp;key2)" or "(key1||key2)".</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Customer::Ticket::ViewSearch</SubGroup>
         <Setting>
@@ -9344,6 +9352,17 @@
             </Option>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="Ticket::IncludeUnknownTicketCustomers" Required="1" Valid="1">
+        <Description Translatable="1">Include unknown customers in ticket filter.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Core::Ticket</SubGroup>
+        <Setting>
+            <Option SelectedID="1">
+                <Item Key="1" Translatable="1">Yes</Item>
+                <Item Key="0" Translatable="1">No</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="Events###Ticket" Required="1" Valid="1">
         <Description Translatable="1">List of all ticket events to be displayed in the GUI.</Description>
         <Group>Ticket</Group>
@@ -9832,6 +9851,7 @@
                 <Item>AgentTicketPhone</Item>
                 <Item>AgentTicketPhoneInbound</Item>
                 <Item>AgentTicketPhoneOutbound</Item>
+                <Item>AgentTicketPlain</Item>
                 <Item>AgentTicketPrint</Item>
                 <Item>AgentTicketPriority</Item>
                 <Item>AgentTicketProcess</Item>
@@ -10325,7 +10345,7 @@ Thanks for your help!
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="PostMaster::CheckFollowUpModule###0100-Subject" Required="1" Valid="1">
+    <ConfigItem Name="PostMaster::CheckFollowUpModule###0100-Subject" Required="0" Valid="1">
         <Description Translatable="1">Checks if an E-Mail is a followup to an existing ticket by searching the subject for a valid ticket number.</Description>
         <Group>Ticket</Group>
         <SubGroup>Core::PostMaster</SubGroup>
@@ -10335,7 +10355,7 @@ Thanks for your help!
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="PostMaster::CheckFollowUpModule###0200-References" Required="1" Valid="1">
+    <ConfigItem Name="PostMaster::CheckFollowUpModule###0200-References" Required="0" Valid="1">
         <Description Translatable="1">Executes follow-up checks on In-Reply-To or References headers for mails that don't have a ticket number in the subject.</Description>
         <Group>Ticket</Group>
         <SubGroup>Core::PostMaster</SubGroup>
@@ -10941,6 +10961,40 @@ Thanks for your help!
             </Hash>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="Ticket::Frontend::AgentTicketZoom###Widgets###0100-TicketInformation" Required="0" Valid="1">
+        <Description Translatable="1">AgentTicketZoom widget that displays ticket data in the side bar.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewZoom</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::TicketZoom::TicketInformation</Item>
+                <Item Key="Location">Sidebar</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Ticket::Frontend::AgentTicketZoom###Widgets###0200-CustomerInformation" Required="0" Valid="1">
+        <Description Translatable="1">AgentTicketZoom widget that displays customer information for the ticket in the side bar.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewZoom</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::TicketZoom::CustomerInformation</Item>
+                <Item Key="Location">Sidebar</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
+
+   <ConfigItem Name="Ticket::Frontend::AgentTicketZoom###Widgets###0300-LinkTable" Required="0" Valid="1">
+        <Description Translatable="1">AgentTicketZoom widget that displays a table of objects linked to the ticket.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewZoom</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::TicketZoom::LinkTable</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
+
     <ConfigItem Name="Ticket::Frontend::CustomerTicketZoom###DynamicField" Required="0" Valid="1">
         <Description Translatable="1">Dynamic fields shown in the ticket zoom screen of the customer interface. Possible settings: 0 = Disabled, 1 = Enabled.</Description>
         <Group>Ticket</Group>
@@ -11512,6 +11566,7 @@ Thanks for your help!
             <Hash>
                 <Item Key="Age">2</Item>
                 <Item Key="Changed">1</Item>
+                <Item Key="Created">1</Item>
                 <Item Key="CustomerCompanyName">1</Item>
                 <Item Key="CustomerID">2</Item>
                 <Item Key="CustomerName">1</Item>
@@ -11543,6 +11598,7 @@ Thanks for your help!
             <Hash>
                 <Item Key="Age">2</Item>
                 <Item Key="Changed">1</Item>
+                <Item Key="Created">1</Item>
                 <Item Key="CustomerCompanyName">1</Item>
                 <Item Key="CustomerID">2</Item>
                 <Item Key="CustomerName">1</Item>
@@ -11574,6 +11630,7 @@ Thanks for your help!
             <Hash>
                 <Item Key="Age">2</Item>
                 <Item Key="Changed">1</Item>
+                <Item Key="Created">1</Item>
                 <Item Key="CustomerCompanyName">1</Item>
                 <Item Key="CustomerID">2</Item>
                 <Item Key="CustomerName">1</Item>
@@ -11605,6 +11662,7 @@ Thanks for your help!
             <Hash>
                 <Item Key="Age">2</Item>
                 <Item Key="Changed">1</Item>
+                <Item Key="Created">1</Item>
                 <Item Key="CustomerCompanyName">1</Item>
                 <Item Key="CustomerID">2</Item>
                 <Item Key="CustomerName">1</Item>
@@ -11636,6 +11694,7 @@ Thanks for your help!
             <Hash>
                 <Item Key="Age">2</Item>
                 <Item Key="Changed">1</Item>
+                <Item Key="Created">1</Item>
                 <Item Key="CustomerCompanyName">1</Item>
                 <Item Key="CustomerID">2</Item>
                 <Item Key="CustomerName">1</Item>
@@ -11667,6 +11726,7 @@ Thanks for your help!
             <Hash>
                 <Item Key="Age">2</Item>
                 <Item Key="Changed">1</Item>
+                <Item Key="Created">1</Item>
                 <Item Key="CustomerCompanyName">1</Item>
                 <Item Key="CustomerID">2</Item>
                 <Item Key="CustomerName">1</Item>
@@ -11698,6 +11758,7 @@ Thanks for your help!
             <Hash>
                 <Item Key="Age">2</Item>
                 <Item Key="Changed">1</Item>
+                <Item Key="Created">1</Item>
                 <Item Key="CustomerCompanyName">1</Item>
                 <Item Key="CustomerID">2</Item>
                 <Item Key="CustomerName">1</Item>
@@ -11729,6 +11790,7 @@ Thanks for your help!
             <Hash>
                 <Item Key="Age">2</Item>
                 <Item Key="Changed">1</Item>
+                <Item Key="Created">1</Item>
                 <Item Key="CustomerCompanyName">1</Item>
                 <Item Key="CustomerID">2</Item>
                 <Item Key="CustomerName">1</Item>

@@ -84,6 +84,14 @@ Please run it as the 'otrs' user or with the help of su:
             Message => 'Check framework version',
             Command => \&_CheckFrameworkVersion,
         },
+        {
+            Message => 'Drop deprecated table gi_object_lock_state',
+            Command => \&_DropObjectLockState,
+        },
+        {
+            Message => 'Migrate PossibleNextActions setting',
+            Command => \&_MigratePossibleNextActions,
+        },
 
         # ...
 
@@ -205,6 +213,115 @@ sub _CheckFrameworkVersion {
     }
 
     return 1;
+}
+
+=item _DropObjectLockState()
+
+Drop deprecated gi_object_lock_state table if empty.
+
+    _DropObjectLockState();
+
+=cut
+
+sub _DropObjectLockState {
+
+    # get needed objects
+    my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
+
+    my %Tables = map { lc($_) => 1 } $DBObject->ListTables();
+    return 1 if !$Tables{gi_object_lock_state};
+
+    # get number of remaining entries
+    return if !$DBObject->Prepare(
+        SQL => 'SELECT COUNT(*) FROM gi_object_lock_state',
+    );
+
+    my $Count;
+    while ( my @Row = $DBObject->FetchrowArray() ) {
+        $Count = $Row[0];
+    }
+
+    # delete table but only if table is empty
+    # if there are some entries left, these must be deleted by other modules
+    # so we give them a chance to be migrated from these modules
+    if ($Count) {
+        print STDERR
+            "\nThere are still entries in your gi_object_lock_state table, therefore it will not be deleted.\n";
+        return 1;
+    }
+
+    # drop table 'notifications'
+    my $XMLString = '<TableDrop Name="gi_object_lock_state"/>';
+
+    my @SQL;
+    my @SQLPost;
+
+    my $XMLObject = $Kernel::OM->Get('Kernel::System::XML');
+
+    # create database specific SQL and PostSQL commands
+    my @XMLARRAY = $XMLObject->XMLParse( String => $XMLString );
+
+    # create database specific SQL
+    push @SQL, $DBObject->SQLProcessor(
+        Database => \@XMLARRAY,
+    );
+
+    # create database specific PostSQL
+    push @SQLPost, $DBObject->SQLProcessorPost();
+
+    # execute SQL
+    for my $SQL ( @SQL, @SQLPost ) {
+        my $Success = $DBObject->Do( SQL => $SQL );
+        if ( !$Success ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "Error during execution of '$SQL'!",
+            );
+            return;
+        }
+    }
+
+    return 1;
+}
+
+# The seetting "PossibleNextActions" was changed in OTRS 6. Make sure that it is adopted also for systems
+#   that had this setting locally modified. Basically keys and values have be swapped, but only once.
+sub _MigratePossibleNextActions {
+    my $PossibleNextActions = $Kernel::OM->Get('Kernel::Config')->Get('PossibleNextActions') || {};
+
+    # create a lookup array to no not modify the looping variable
+    my @Actions = sort keys %{ $PossibleNextActions // {} };
+
+    my $Updated;
+    ACTION:
+    for my $Action (@Actions) {
+
+        # skip all keys that looks like an URL (e.g. TT Env('CGIHandle')
+        #   or staring with http(s), ftp(s), matilto:, ot www.)
+        next ACTION if $Action =~ m{\A \[% [\s]+ Env\( }msxi;
+        next ACTION if $Action =~ m{\A http [s]? :// }msxi;
+        next ACTION if $Action =~ m{\A ftp [s]? :// }msxi;
+        next ACTION if $Action =~ m{\A mailto : }msxi;
+        next ACTION if $Action =~ m{\A www \. }msxi;
+
+        # remember the value for the current key
+        my $ActionValue = $PossibleNextActions->{$Action};
+
+        # remove current key and add the inverted key value pair
+        delete $PossibleNextActions->{$Action};
+        $PossibleNextActions->{$ActionValue} = $Action;
+
+        $Updated = 1;
+    }
+
+    return 1 if !$Updated;
+
+    my $Success = $Kernel::OM->Get('Kernel::System::SysConfig')->ConfigItemUpdate(
+        Valid => 1,
+        Key   => 'PossibleNextActions',
+        Value => $PossibleNextActions,
+    );
+    return $Success;
 }
 
 1;

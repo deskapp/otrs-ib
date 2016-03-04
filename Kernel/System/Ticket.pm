@@ -1054,7 +1054,6 @@ Additional params are:
         FirstResponseInMin              (minutes till first response)
         FirstResponseDiffInMin          (minutes till or over first response)
 
-        SolutionTime                    (timestamp of solution time, also close time)
         SolutionInMin                   (minutes till solution time)
         SolutionDiffInMin               (minutes till or over solution time)
 
@@ -1526,9 +1525,6 @@ sub _TicketGetClosed {
     }
 
     return if !$Data{Closed};
-
-    # for compat. wording reasons
-    $Data{SolutionTime} = $Data{Closed};
 
     # get escalation properties
     my %Escalation = $Self->TicketEscalationPreferences(
@@ -4469,7 +4465,6 @@ sub TicketOwnerSet {
 
     # lookup if no NewUserID is given
     if ( !$Param{NewUserID} ) {
-
         $Param{NewUserID} = $UserObject->UserLookup(
             UserLogin => $Param{NewUser},
         );
@@ -4477,10 +4472,18 @@ sub TicketOwnerSet {
 
     # lookup if no NewUser is given
     if ( !$Param{NewUser} ) {
-
         $Param{NewUser} = $UserObject->UserLookup(
             UserID => $Param{NewUserID},
         );
+    }
+
+    # make sure the user exists
+    if ( !$UserObject->UserLookup( UserID => $Param{NewUserID} ) ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "User does not exist.",
+        );
+        return;
     }
 
     # check if update is needed!
@@ -4693,6 +4696,15 @@ sub TicketResponsibleSet {
     # lookup if no NewUser is given
     if ( !$Param{NewUser} ) {
         $Param{NewUser} = $UserObject->UserLookup( UserID => $Param{NewUserID} );
+    }
+
+    # make sure the user exists
+    if ( !$UserObject->UserLookup( UserID => $Param{NewUserID} ) ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "User does not exist.",
+        );
+        return;
     }
 
     # check if update is needed!
@@ -6934,7 +6946,6 @@ sub TicketArticleStorageSwitch {
                     %{$Attachment},
                     ArticleID => $ArticleID,
                     UserID    => $Param{UserID},
-                    Force     => 1,
                 );
             }
 
@@ -7186,6 +7197,55 @@ sub TicketCalendarGet {
 
     # use default calendar
     return '';
+}
+
+=item SearchUnknownTicketCustomers()
+
+search customer users that are not saved in any backend
+
+    my $UnknownTicketCustomerList = $TicketObject->SearchUnknownTicketCustomers(
+        SearchTerm => 'SomeSearchTerm',
+    );
+
+Returns:
+
+    %UnknownTicketCustomerList = (
+        {
+            CustomerID    => 'SomeCustomerID',
+            CustomerUser  => 'SomeCustomerUser',
+        },
+        {
+            CustomerID    => 'SomeCustomerID',
+            CustomerUser  => 'SomeCustomerUser',
+        },
+    );
+
+=cut
+
+sub SearchUnknownTicketCustomers {
+    my ( $Self, %Param ) = @_;
+
+    my $SearchTerm = $Param{SearchTerm} || '';
+
+    # get database object
+    my $DBObject         = $Kernel::OM->Get('Kernel::System::DB');
+    my $LikeEscapeString = $DBObject->GetDatabaseFunction('LikeEscapeString');
+    my $QuotedSearch     = '%' . $DBObject->Quote( $SearchTerm, 'Like' ) . '%';
+
+    # db query
+    return if !$DBObject->Prepare(
+        SQL =>
+            "SELECT DISTINCT customer_user_id, customer_id FROM ticket WHERE customer_user_id LIKE ? $LikeEscapeString",
+        Bind => [ \$QuotedSearch ],
+    );
+    my $UnknownTicketCustomerList;
+
+    CUSTOMERUSER:
+    while ( my @Row = $DBObject->FetchrowArray() ) {
+        $UnknownTicketCustomerList->{ $Row[0] } = $Row[1];
+    }
+
+    return $UnknownTicketCustomerList;
 }
 
 sub DESTROY {

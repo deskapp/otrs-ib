@@ -125,8 +125,8 @@ sub Run {
             my $Output = $LayoutObject->Header();
             $Output .= $LayoutObject->NavigationBar();
             $Output .= $LayoutObject->Warning(
-                Message => 'Don\'t use :: in queue name!',
-                Comment => 'Click back and change it!',
+                Message => Translatable('Don\'t use :: in queue name!'),
+                Comment => Translatable('Click back and change it!'),
             );
             $Output .= $LayoutObject->Footer();
             return $Output;
@@ -301,8 +301,8 @@ sub Run {
             my $Output = $LayoutObject->Header();
             $Output .= $LayoutObject->NavigationBar();
             $Output .= $LayoutObject->Warning(
-                Message => 'Don\'t use :: in queue name!',
-                Comment => 'Click back and change it!',
+                Message => Translatable('Don\'t use :: in queue name!'),
+                Comment => Translatable('Click back and change it!'),
             );
             $Output .= $LayoutObject->Footer();
 
@@ -664,10 +664,12 @@ sub _Edit {
     );
     my %Calendar = ( '' => '-' );
 
-    for my $Number ( '', 1 .. 50 ) {
-        if ( $ConfigObject->Get("TimeVacationDays::Calendar$Number") ) {
-            $Calendar{$Number} = "Calendar $Number - "
-                . $ConfigObject->Get( "TimeZone::Calendar" . $Number . "Name" );
+    my $Maximum = $ConfigObject->Get("MaximumCalendarNumber") || 50;
+
+    for my $CalendarNumber ( '', 1 .. $Maximum ) {
+        if ( $ConfigObject->Get("TimeVacationDays::Calendar$CalendarNumber") ) {
+            $Calendar{$CalendarNumber} = "Calendar $CalendarNumber - "
+                . $ConfigObject->Get( "TimeZone::Calendar" . $CalendarNumber . "Name" );
         }
     }
     $Param{CalendarOption} = $LayoutObject->BuildSelection(

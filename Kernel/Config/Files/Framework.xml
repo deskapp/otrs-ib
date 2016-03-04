@@ -1129,6 +1129,14 @@
             </Option>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="MaximumCalendarNumber" Required="0" Valid="0">
+        <Description Translatable="1">Maximum Number of a calendar shown in a dropdown.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Time</SubGroup>
+        <Setting>
+            <String Regex="^[0-9]{1,3}$">50</String>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="CalendarWeekDayStart" Required="1" Valid="1">
         <Description Translatable="1">Define the start day of the week for the date picker.</Description>
         <Group>Framework</Group>
@@ -3053,6 +3061,17 @@
         <SubGroup>Core::Package</SubGroup>
         <Setting>
             <String Regex="">http://proxy.sn.no:8001/</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Package::AllowLocalModifications" Required="0" Valid="0" ConfigLevel="200">
+        <Description Translatable="1">If this setting is active, local modifications will not be highlighted as errors in the package manager and support data collector.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Package</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Package::ShowFeatureAddons" Required="0" Valid="1" ConfigLevel="200">
@@ -6802,12 +6821,12 @@ via the Preferences button after logging in.
         </Setting>
     </ConfigItem>
     <ConfigItem Name="PossibleNextActions" Required="0" Valid="1">
-        <Description Translatable="1">Defines the list of possible next actions on an error screen.</Description>
+        <Description Translatable="1">Defines the list of possible next actions on an error screen, a full path is required, then is possible to add external links if needed.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Agent</SubGroup>
         <Setting>
             <Hash>
-                <Item Key="Go to dashboard!">[% Env("CGIHandle") %]?Action=AgentDashboard</Item>
+                <Item Key="[% Env('CGIHandle') %]?Action=AgentDashboard" Translatable="1">Go to dashboard!</Item>
             </Hash>
         </Setting>
     </ConfigItem>

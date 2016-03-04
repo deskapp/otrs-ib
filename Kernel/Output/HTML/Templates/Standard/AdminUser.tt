@@ -151,7 +151,7 @@
                     <input type="hidden" name="Search" value="[% Data.Search | html %]"/>
                     <fieldset class="TableLike">
 
-                        <label for="UserTitle">[% Translate("Title") | html %]:</label>
+                        <label for="UserTitle">[% Translate("Title or salutation") | html %]:</label>
                         <div class="Field">
                             <input type="text" name="UserTitle" id="UserTitle" value="[% Data.UserTitle | html %]" class="W50pc" maxlength="50"/>
                         </div>
@@ -308,7 +308,7 @@
 [% RenderBlockEnd("RawHTML") %]
 [% RenderBlockEnd("Item") %]
                         <div class="Field SpacingTop">
-                            <button class="Primary CallForAction" type="submit" value="[% Translate("Submit") | html %]"><span>[% Translate("Submit") | html %]</span></button>
+                            <button class="Primary CallForAction" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
                             [% Translate("or") | html %]
                             <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
                         </div>

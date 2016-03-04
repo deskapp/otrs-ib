@@ -228,6 +228,28 @@ dd {
 }
 
 /**
+ * @subsection  Errors
+ * @note        Error fields for forms
+ */
+
+.ErrorBox,
+.SuccessBox {
+    display: block;
+    padding: 5px 8px 4px;
+    cursor: default;
+}
+
+.ErrorBox {
+    color: #FFF;
+    background: #D41111;
+}
+
+.SuccessBox {
+    color: #FFF;
+    background: #08A503;
+}
+
+/**
  * @note    Use the class InvisibleText to hide text from the screen,
  *          while it is still recognized and read by screen readers.
  */
@@ -540,6 +562,7 @@ dd {
  */
 #LoginLogo {
     background: transparent url(../img/loginlogo_default.png) center no-repeat;
+    background-size: contain;
     height: 100px;
 }
 
@@ -808,13 +831,13 @@ span.ImportantArticles i {
 /* Vacation Days */
 td.Highlight a.ui-state-default {
     border: 1px solid #fad42e;
-    background: #ffe45c;
-    background: -moz-linear-gradient(top,  #fff0a5 0%, #ffe45c 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff0a5), color-stop(100%,#ffe45c));
-    background: -webkit-linear-gradient(top,  #fff0a5 0%,#ffe45c 100%);
-    background: -o-linear-gradient(top,  #fff0a5 0%,#ffe45c 100%);
-    background: -ms-linear-gradient(top,  #fff0a5 0%,#ffe45c 100%);
-    background: linear-gradient(to bottom,  #fff0a5 0%,#ffe45c 100%);
+    background: #ffe45c !important;
+    background: -moz-linear-gradient(top,  #fff0a5 0%, #ffe45c 100%) !important;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff0a5), color-stop(100%,#ffe45c)) !important;
+    background: -webkit-linear-gradient(top,  #fff0a5 0%,#ffe45c 100%) !important;
+    background: -o-linear-gradient(top,  #fff0a5 0%,#ffe45c 100%) !important;
+    background: -ms-linear-gradient(top,  #fff0a5 0%,#ffe45c 100%) !important;
+    background: linear-gradient(to bottom,  #fff0a5 0%,#ffe45c 100%) !important;
 }
 
 /* Today */
@@ -1134,5 +1157,10 @@ iframe.PopupIframe {
 
     .ResponsiveHandle {
         display: none !important;
+    }
+
+    .ErrorBox, .SuccessBox {
+        margin: 0px 0px 20px 0px;
+        line-height: 150%;
     }
 }
