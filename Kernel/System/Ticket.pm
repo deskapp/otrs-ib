@@ -4469,7 +4469,6 @@ sub TicketOwnerSet {
 
     # lookup if no NewUserID is given
     if ( !$Param{NewUserID} ) {
-
         $Param{NewUserID} = $UserObject->UserLookup(
             UserLogin => $Param{NewUser},
         );
@@ -4477,10 +4476,18 @@ sub TicketOwnerSet {
 
     # lookup if no NewUser is given
     if ( !$Param{NewUser} ) {
-
         $Param{NewUser} = $UserObject->UserLookup(
             UserID => $Param{NewUserID},
         );
+    }
+
+    # make sure the user exists
+    if ( !$UserObject->UserLookup( UserID => $Param{NewUserID} ) ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "User does not exist.",
+        );
+        return;
     }
 
     # check if update is needed!
@@ -4693,6 +4700,15 @@ sub TicketResponsibleSet {
     # lookup if no NewUser is given
     if ( !$Param{NewUser} ) {
         $Param{NewUser} = $UserObject->UserLookup( UserID => $Param{NewUserID} );
+    }
+
+    # make sure the user exists
+    if ( !$UserObject->UserLookup( UserID => $Param{NewUserID} ) ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "User does not exist.",
+        );
+        return;
     }
 
     # check if update is needed!
@@ -5145,6 +5161,13 @@ sub HistoryTicketStatusGet {
         $SQLExt .= ')';
     }
 
+    # assemble stop date/time string for database comparison
+    my $TimeObject = $Kernel::OM->Get('Kernel::System::Time');
+    my $StopSystemTime
+        = $TimeObject->TimeStamp2SystemTime( String => "$Param{StopYear}-$Param{StopMonth}-$Param{StopDay} 00:00:00" );
+    my ( $StopSec, $StopMin, $StopHour, $StopDay, $StopMonth, $StopYear, $StopWDay )
+        = $TimeObject->SystemTime2Date( SystemTime => $StopSystemTime + 24 * 60 * 60 );    # add a day
+
     # get database object
     my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
 
@@ -5152,8 +5175,8 @@ sub HistoryTicketStatusGet {
         SQL => "
             SELECT DISTINCT(th.ticket_id), th.create_time
             FROM ticket_history th
-            WHERE th.create_time <= '$Param{StopYear}-$Param{StopMonth}-$Param{StopDay} 23:59:59'
-                AND th.create_time >= '$Param{StartYear}-$Param{StartMonth}-$Param{StartDay} 00:00:01'
+            WHERE th.create_time < '$StopYear-$StopMonth-$StopDay 00:00:00'
+                AND th.create_time >= '$Param{StartYear}-$Param{StartMonth}-$Param{StartDay} 00:00:00'
                 $SQLExt
             ORDER BY th.create_time DESC",
         Limit => 150000,
@@ -5336,7 +5359,7 @@ sub HistoryTicketGet {
             }
         }
         elsif (
-            $Row[1] eq 'StateUpdate'
+            $Row[1]    eq 'StateUpdate'
             || $Row[1] eq 'Close successful'
             || $Row[1] eq 'Close unsuccessful'
             || $Row[1] eq 'Open'
@@ -5344,7 +5367,7 @@ sub HistoryTicketGet {
             )
         {
             if (
-                $Row[0] =~ /^\%\%(.+?)\%\%(.+?)(\%\%|)$/
+                $Row[0]    =~ /^\%\%(.+?)\%\%(.+?)(\%\%|)$/
                 || $Row[0] =~ /^Old: '(.+?)' New: '(.+?)'/
                 || $Row[0] =~ /^Changed Ticket State from '(.+?)' to '(.+?)'/
                 )
@@ -6934,7 +6957,6 @@ sub TicketArticleStorageSwitch {
                     %{$Attachment},
                     ArticleID => $ArticleID,
                     UserID    => $Param{UserID},
-                    Force     => 1,
                 );
             }
 
@@ -7186,6 +7208,55 @@ sub TicketCalendarGet {
 
     # use default calendar
     return '';
+}
+
+=item SearchUnknownTicketCustomers()
+
+search customer users that are not saved in any backend
+
+    my $UnknownTicketCustomerList = $TicketObject->SearchUnknownTicketCustomers(
+        SearchTerm => 'SomeSearchTerm',
+    );
+
+Returns:
+
+    %UnknownTicketCustomerList = (
+        {
+            CustomerID    => 'SomeCustomerID',
+            CustomerUser  => 'SomeCustomerUser',
+        },
+        {
+            CustomerID    => 'SomeCustomerID',
+            CustomerUser  => 'SomeCustomerUser',
+        },
+    );
+
+=cut
+
+sub SearchUnknownTicketCustomers {
+    my ( $Self, %Param ) = @_;
+
+    my $SearchTerm = $Param{SearchTerm} || '';
+
+    # get database object
+    my $DBObject         = $Kernel::OM->Get('Kernel::System::DB');
+    my $LikeEscapeString = $DBObject->GetDatabaseFunction('LikeEscapeString');
+    my $QuotedSearch     = '%' . $DBObject->Quote( $SearchTerm, 'Like' ) . '%';
+
+    # db query
+    return if !$DBObject->Prepare(
+        SQL =>
+            "SELECT DISTINCT customer_user_id, customer_id FROM ticket WHERE customer_user_id LIKE ? $LikeEscapeString",
+        Bind => [ \$QuotedSearch ],
+    );
+    my $UnknownTicketCustomerList;
+
+    CUSTOMERUSER:
+    while ( my @Row = $DBObject->FetchrowArray() ) {
+        $UnknownTicketCustomerList->{ $Row[0] } = $Row[1];
+    }
+
+    return $UnknownTicketCustomerList;
 }
 
 sub DESTROY {

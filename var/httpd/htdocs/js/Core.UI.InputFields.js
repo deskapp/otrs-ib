@@ -1050,6 +1050,11 @@ Core.UI.InputFields = (function (TargetNS) {
                     .attr('role', 'search')
                     .attr('autocomplete', 'off');
 
+                // If original field has class small, add it to the input field, too
+                if ($SelectObj.hasClass('Small')) {
+                    $SearchObj.addClass('Small');
+                }
+
                 // Set width of search field to that of the select field
                 $SearchObj.width(SelectWidth);
 
@@ -1301,6 +1306,12 @@ Core.UI.InputFields = (function (TargetNS) {
                     $TreeContainerObj.addClass('InputField_TreeContainer')
                         .attr('tabindex', '-1');
 
+                    // Subtract approx. filters list height if applicable
+                    if (Filterable) {
+                        AvailableMaxHeight -= $SelectObj.data('filters').Filters.length
+                            * Config.SafeMargin;
+                    }
+
                     // Ensure the minimum height of the list
                     if (AvailableMaxHeight < 90) {
                         AvailableMaxHeight = 90;
@@ -1507,7 +1518,7 @@ Core.UI.InputFields = (function (TargetNS) {
                     })
 
                     // Handle node deselection in tree list
-                    .on('deselect_node.jstree', function (Node, Selected) {
+                    .on('deselect_node.jstree', function () {
 
                         var SelectedNodesIDs,
                             HasEmptyElement = $SelectObj.find('option[value=""]').length === 0 ? false : true;
@@ -1538,8 +1549,6 @@ Core.UI.InputFields = (function (TargetNS) {
 
                             // Delay triggering change event on original field (see bug#11419)
                             $SelectObj.data('changed', true);
-                        } else {
-                            $TreeObj.jstree('select_node', Selected.node);
                         }
                     })
 
@@ -1565,18 +1574,12 @@ Core.UI.InputFields = (function (TargetNS) {
                             // Tab
                             // Find correct input, if element is selected in dropdown and tab key is used
                             case $.ui.keyCode.TAB:
-                                // Multiple selects should not select an element with tab but only
-                                // leave the field and confirm the selected values
+                                // On pressing tab the active element will be selected and the field will be left
+                                $HoveredNode = $TreeObj.find('.jstree-hovered');
                                 if (!Multiple) {
-                                    $HoveredNode = $TreeObj.find('.jstree-hovered');
-                                    if ($HoveredNode.hasClass('jstree-clicked')) {
-                                        $TreeObj.jstree('deselect_node', $HoveredNode.get(0));
-                                    }
-                                    else {
-                                        $TreeObj.jstree('deselect_all');
-                                        $TreeObj.jstree('select_node', $HoveredNode.get(0));
-                                    }
+                                    $TreeObj.jstree('deselect_all');
                                 }
+                                $TreeObj.jstree('select_node', $HoveredNode.get(0));
 
                                 if (Event.shiftKey) {
                                     FocusPreviousElement($SearchObj);
@@ -2048,6 +2051,12 @@ Core.UI.InputFields = (function (TargetNS) {
                     var $TreeObj = $TreeContainerObj.find('.jstree');
 
                     switch (Event.which) {
+
+                        // Return (do not submit form on pressing enter key in search field)
+                        case $.ui.keyCode.ENTER:
+                            Event.preventDefault();
+                            Event.stopPropagation();
+                            break;
 
                         // Tab
                         case $.ui.keyCode.TAB:

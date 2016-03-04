@@ -53,12 +53,9 @@ sub Run {
                 }
                 if ( !$ApacheReload ) {
                     return $LayoutObject->ErrorScreen(
-                        Message =>
-                            'Sorry, Apache::Reload is needed as PerlModule and '
-                            .
-                            'PerlInitHandler in Apache config file. See also scripts/apache2-httpd.include.conf. '
-                            .
-                            'Alternatively, you can use the commandline tool bin/otrs.Console.pl to install packages!'
+                        Message => Translatable(
+                            'Sorry, Apache::Reload is needed as PerlModule and PerlInitHandler in Apache config file. See also scripts/apache2-httpd.include.conf. Alternatively, you can use the commandline tool bin/otrs.Console.pl to install packages!'
+                        ),
                     );
                 }
             }
@@ -91,7 +88,9 @@ sub Run {
             Result  => 'SCALAR',
         );
         if ( !$Package ) {
-            return $LayoutObject->ErrorScreen( Message => 'No such package!' );
+            return $LayoutObject->ErrorScreen(
+                Message => Translatable('No such package!'),
+            );
         }
         my %Structure = $PackageObject->PackageParse( String => $Package );
         my $File = '';
@@ -113,7 +112,7 @@ sub Run {
                     Location => $Location,
                     Name     => $Name,
                     Version  => $Version,
-                    Diff     => "No such file $LocalFile in package!",
+                    Diff     => $LayoutObject->{LanguageObject}->Translate('No such file %s in package!', $LocalFile),
                 },
             );
         }
@@ -124,7 +123,7 @@ sub Run {
                     Location => $Location,
                     Name     => $Name,
                     Version  => $Version,
-                    Diff     => "No such file $LocalFile in local file system!",
+                    Diff     => $LayoutObject->{LanguageObject}->Translate('No such file %s in local file system!', $LocalFile),
                 },
             );
         }
@@ -153,7 +152,7 @@ sub Run {
                         Location => $Location,
                         Name     => $Name,
                         Version  => $Version,
-                        Diff     => "Can't read $LocalFile!",
+                        Diff     => $LayoutObject->{LanguageObject}->Translate('Can\'t read %s!', $LocalFile),
                     },
                 );
             }
@@ -185,7 +184,9 @@ sub Run {
             Result  => 'SCALAR',
         );
         if ( !$Package ) {
-            return $LayoutObject->ErrorScreen( Message => 'No such package!' );
+            return $LayoutObject->ErrorScreen(
+                Message => Translatable('No such package!'),
+            );
         }
 
         # parse package
@@ -231,7 +232,9 @@ sub Run {
             && !$Structure{PackageIsVisible}->{Content}
             )
         {
-            return $LayoutObject->ErrorScreen( Message => 'No such package!' );
+            return $LayoutObject->ErrorScreen(
+                Message => Translatable('No such package!'),
+            );
         }
 
         PACKAGEACTION:
@@ -495,12 +498,18 @@ sub Run {
         my $Output = $LayoutObject->Header();
         $Output .= $LayoutObject->NavigationBar();
         if ( !$Deployed ) {
+            my $Priority = 'Error';
+            my $Message  = $LayoutObject->{LanguageObject}
+                ->Translate("Package not correctly deployed! Please reinstall the package.");
+            if ( $Kernel::OM->Get('Kernel::Config')->Get('Package::AllowLocalModifications') ) {
+                $Priority = 'Notice';
+                $Message  = $LayoutObject->{LanguageObject}->Translate("Package has locally modified files.");
+            }
+
             $Output .= $LayoutObject->Notify(
-                Priority => 'Error',
-                Data     => "$Name $Version - "
-                    . $LayoutObject->{LanguageObject}
-                    ->Translate("Package not correctly deployed! Please reinstall the package."),
-                Link => $LayoutObject->{Baselink}
+                Priority => $Priority,
+                Data     => "$Name $Version - $Message",
+                Link     => $LayoutObject->{Baselink}
                     . 'Action=AdminPackageManager;Subaction=View;Name='
                     . $Name
                     . ';Version='
@@ -774,7 +783,9 @@ sub Run {
             Version => $Version,
         );
         if ( !$Package ) {
-            return $LayoutObject->ErrorScreen( Message => 'No such package!' );
+            return $LayoutObject->ErrorScreen(
+                Message => Translatable('No such package!'),
+            );
         }
         return $LayoutObject->Attachment(
             Content     => $Package,
@@ -798,7 +809,9 @@ sub Run {
 
         # check
         if ( !$Package ) {
-            return $LayoutObject->ErrorScreen( Message => 'No such package!' );
+            return $LayoutObject->ErrorScreen(
+                Message => Translatable('No such package!'),
+            );
         }
         return $LayoutObject->Attachment(
             Content     => $Package,
@@ -912,7 +925,9 @@ sub Run {
             Result  => 'SCALAR',
         );
         if ( !$Package ) {
-            return $LayoutObject->ErrorScreen( Message => 'No such package!' );
+            return $LayoutObject->ErrorScreen(
+                Message => Translatable('No such package!'),
+            );
         }
 
         # check if we have to show reinstall intro pre
@@ -992,7 +1007,9 @@ sub Run {
             Version => $Version,
         );
         if ( !$Package ) {
-            return $LayoutObject->ErrorScreen( Message => 'No such package!' );
+            return $LayoutObject->ErrorScreen(
+                Message => Translatable('No such package!'),
+            );
         }
 
         # check if we have to show reinstall intro pre
@@ -1056,7 +1073,9 @@ sub Run {
             Result  => 'SCALAR',
         );
         if ( !$Package ) {
-            return $LayoutObject->ErrorScreen( Message => 'No such package!' );
+            return $LayoutObject->ErrorScreen(
+                Message => Translatable('No such package!'),
+            );
         }
 
         # check if we have to show uninstall intro pre
@@ -1135,7 +1154,9 @@ sub Run {
             Version => $Version,
         );
         if ( !$Package ) {
-            return $LayoutObject->ErrorScreen( Message => 'No such package!' );
+            return $LayoutObject->ErrorScreen(
+                Message => Translatable('No such package!'),
+            );
         }
 
         # parse package
@@ -1257,7 +1278,9 @@ sub Run {
             Result  => 'SCALAR',
         );
         if ( !$Package ) {
-            return $LayoutObject->ErrorScreen( Message => 'No such package!' );
+            return $LayoutObject->ErrorScreen(
+                Message => Translatable('No such package!'),
+            );
         }
         my %Structure = $PackageObject->PackageParse(
             String => $Package,
@@ -1329,7 +1352,7 @@ sub Run {
             if ( !$OutputNotify ) {
                 $OutputNotify .= $LayoutObject->Notify(
                     Priority => 'Info',
-                    Info     => 'No packages, or no new packages, found in selected repository.',
+                    Info     => Translatable('No packages or no new packages found in selected repository.'),
                 );
             }
             $LayoutObject->Block(
@@ -1592,12 +1615,19 @@ sub Run {
     $Output .= $LayoutObject->NavigationBar();
     $Output .= $OutputNotify;
     for my $ReinstallKey ( sort keys %NeedReinstall ) {
+
+        my $Priority = 'Error';
+        my $Message  = $LayoutObject->{LanguageObject}
+            ->Translate("Package not correctly deployed! Please reinstall the package.");
+        if ( $Kernel::OM->Get('Kernel::Config')->Get('Package::AllowLocalModifications') ) {
+            $Priority = 'Notice';
+            $Message  = $LayoutObject->{LanguageObject}->Translate("Package has locally modified files.");
+        }
+
         $Output .= $LayoutObject->Notify(
-            Priority => 'Error',
-            Data     => "$ReinstallKey $NeedReinstall{$ReinstallKey} - "
-                . $LayoutObject->{LanguageObject}
-                ->Translate("Package not correctly deployed! Please reinstall the package."),
-            Link => $LayoutObject->{Baselink}
+            Priority => $Priority,
+            Data     => "$ReinstallKey $NeedReinstall{$ReinstallKey} - $Message",
+            Link     => $LayoutObject->{Baselink}
                 . 'Action=AdminPackageManager;Subaction=View;Name='
                 . $ReinstallKey
                 . ';Version='
@@ -1764,7 +1794,9 @@ sub _InstallHandling {
 
     # check needed params
     if ( !$Param{Package} ) {
-        return $LayoutObject->ErrorScreen( Message => 'No such package!' );
+        return $LayoutObject->ErrorScreen(
+            Message => Translatable('No such package!'),
+        );
     }
 
     my $ParamObject = $Kernel::OM->Get('Kernel::System::Web::Request');
@@ -1936,7 +1968,9 @@ sub _UpgradeHandling {
 
     # check needed params
     if ( !$Param{Package} ) {
-        return $LayoutObject->ErrorScreen( Message => 'No such package!' );
+        return $LayoutObject->ErrorScreen(
+            Message => Translatable('No such package!'),
+        );
     }
 
     my $ParamObject = $Kernel::OM->Get('Kernel::System::Web::Request');

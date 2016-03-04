@@ -15,22 +15,47 @@ use vars (qw($Self));
 # get needed objects
 my $AutoResponseObject  = $Kernel::OM->Get('Kernel::System::AutoResponse');
 my $SystemAddressObject = $Kernel::OM->Get('Kernel::System::SystemAddress');
+my $QueueObject         = $Kernel::OM->Get('Kernel::System::Queue');
 
 # get helper object
 $Kernel::OM->ObjectParamAdd(
     'Kernel::System::UnitTest::Helper' => {
         RestoreDatabase => 1,
-        }
+    },
 );
-my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+my $HelperObject = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+
+# get random id
+my $RandomID = $HelperObject->GetRandomID();
+
+# set queue name
+my $QueueName = 'Some::Queue' . $RandomID;
+
+# create new queue
+my $QueueID   = $QueueObject->QueueAdd(
+
+    Name            => $QueueName,
+    ValidID         => 1,
+    GroupID         => 1,
+    SystemAddressID => 1,
+    SalutationID    => 1,
+    SignatureID     => 1,
+    Comment         => 'Some comment',
+    UserID          => 1,
+);
+
+$Self->True(
+    $QueueID,
+    "QueueAdd() - $QueueName, $QueueID",
+);
 
 # add system address
-my $SystemAddressNameRand = 'SystemAddress' . $Helper->GetRandomID();
+my $SystemAddressNameRand = 'SystemAddress' . $HelperObject->GetRandomID();
 my $SystemAddressID       = $SystemAddressObject->SystemAddressAdd(
     Name     => $SystemAddressNameRand . '@example.com',
     Realname => $SystemAddressNameRand,
     ValidID  => 1,
-    QueueID  => 1,
+    QueueID  => $QueueID,
     Comment  => 'Some Comment',
     UserID   => 1,
 );
@@ -40,7 +65,7 @@ $Self->True(
 );
 
 # add auto response
-my $AutoResponseNameRand = 'AutoResponse' . $Helper->GetRandomID();
+my $AutoResponseNameRand = 'AutoResponse' . $HelperObject->GetRandomID();
 
 my $AutoResponseID = $AutoResponseObject->AutoResponseAdd(
     Name        => $AutoResponseNameRand,
@@ -109,8 +134,16 @@ $Self->True(
     'AutoResponseList()',
 );
 
+# get a list of the queues that do not have auto response
+my %AutoResponseWithoutQueue = $AutoResponseObject->AutoResponseWithoutQueue();
+
+$Self->True(
+    exists $AutoResponseWithoutQueue{$QueueID} && $AutoResponseWithoutQueue{$QueueID} eq $QueueName,
+    'AutoResponseWithoutQueue() contains queue ' . $QueueName . ' with ID ' . $QueueID,
+);
+
 my $AutoResponseQueue = $AutoResponseObject->AutoResponseQueue(
-    QueueID         => 1,
+    QueueID         => $QueueID,
     AutoResponseIDs => [$AutoResponseID],
     UserID          => 1,
 );
@@ -119,8 +152,15 @@ $Self->True(
     'AutoResponseQueue()',
 );
 
+# check again after assigning auto response to queue
+%AutoResponseWithoutQueue = $AutoResponseObject->AutoResponseWithoutQueue();
+$Self->False(
+    exists $AutoResponseWithoutQueue{$QueueID} && $AutoResponseWithoutQueue{$QueueID} eq $QueueName,
+    'AutoResponseWithoutQueue() does not contain queue ' . $QueueName . ' with ID ' . $QueueID,
+);
+
 my %Address = $AutoResponseObject->AutoResponseGetByTypeQueueID(
-    QueueID => 1,
+    QueueID => $QueueID,
     Type    => 'auto reply',
 );
 $Self->Is(
@@ -135,7 +175,7 @@ $Self->Is(
 );
 
 $AutoResponseQueue = $AutoResponseObject->AutoResponseQueue(
-    QueueID         => 1,
+    QueueID         => $QueueID,
     AutoResponseIDs => [],
     UserID          => 1,
 );

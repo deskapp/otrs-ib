@@ -115,15 +115,10 @@ sub new {
         File => 'ARRAY',
     };
 
-    $Self->{PackageVerifyURL} = 'https://pav.otrs.com/otrs/public.pl';
-
     $Self->{Home} = $Self->{ConfigObject}->Get('Home');
 
     # permission check
-    if ( !$Self->_FileSystemCheck() ) {
-        die "ERROR: Need write permission in OTRS home\n"
-            . "Try: \$OTRS_HOME/bin/otrs.SetPermissions.pl !!!\n";
-    }
+    die if !$Self->_FileSystemCheck();
 
     # init of event handler
     $Self->EventHandlerInit(
@@ -227,9 +222,10 @@ get a package from local repository
     );
 
     my $PackageScalar = $PackageObject->RepositoryGet(
-        Name    => 'Application A',
-        Version => '1.0',
-        Result  => 'SCALAR',
+        Name            => 'Application A',
+        Version         => '1.0',
+        Result          => 'SCALAR',
+        DisableWarnings => 1,         # optional
     );
 
 =cut
@@ -277,10 +273,14 @@ sub RepositoryGet {
     }
 
     if ( !$Package ) {
-        $Kernel::OM->Get('Kernel::System::Log')->Log(
-            Priority => 'notice',
-            Message  => "No such package: $Param{Name}-$Param{Version}!",
-        );
+
+        if ( !$Param{DisableWarnings} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'notice',
+                Message  => "No such package: $Param{Name}-$Param{Version}!",
+            );
+        }
+
         return;
     }
 
@@ -349,9 +349,10 @@ sub RepositoryAdd {
 
     # check if package already exists
     my $PackageExists = $Self->RepositoryGet(
-        Name    => $Structure{Name}->{Content},
-        Version => $Structure{Version}->{Content},
-        Result  => 'SCALAR',
+        Name            => $Structure{Name}->{Content},
+        Version         => $Structure{Version}->{Content},
+        Result          => 'SCALAR',
+        DisableWarnings => 1,
     );
 
     # get database object
@@ -894,8 +895,8 @@ sub PackageUpgrade {
             if ( !$UseInstalled ) {
 
                 if (
-                    $Part->{TagType} eq 'End'
-                    && $Part->{Tag} eq $NotUseTag
+                    $Part->{TagType}     eq 'End'
+                    && $Part->{Tag}      eq $NotUseTag
                     && $Part->{TagLevel} eq $NotUseTagLevel
                     )
                 {
@@ -992,7 +993,7 @@ sub PackageUpgrade {
 
                 if (
                     $Part->{TagType} eq 'End'
-                    && ( defined $NotUseTag      && $Part->{Tag} eq $NotUseTag )
+                    && ( defined $NotUseTag      && $Part->{Tag}      eq $NotUseTag )
                     && ( defined $NotUseTagLevel && $Part->{TagLevel} eq $NotUseTagLevel )
                     )
                 {
@@ -2232,7 +2233,7 @@ sub PackageBuild {
                         for my $Key ( sort keys %{$Tag} ) {
 
                             if (
-                                $Key ne 'Tag'
+                                $Key    ne 'Tag'
                                 && $Key ne 'Content'
                                 && $Key ne 'TagType'
                                 && $Key ne 'TagLevel'
@@ -3534,7 +3535,7 @@ sub _FileSystemCheck {
         qw(/bin/ /Kernel/ /Kernel/System/ /Kernel/Output/ /Kernel/Output/HTML/ /Kernel/Modules/)
         )
     {
-        my $Location = "$Home/$Filepath/check_permissons.$$";
+        my $Location = $Home . $Filepath . "check_permissions.$$";
         my $Content  = 'test';
 
         # create test file
@@ -3543,8 +3544,14 @@ sub _FileSystemCheck {
             Content  => \$Content,
         );
 
-        # return false if not created
-        return if !$Write;
+        if ( !$Write ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "ERROR: Need write permissions for directory $Home$Filepath\n"
+                    . " Try: $Home/bin/otrs.SetPermissions.pl!",
+            );
+            return;
+        }
 
         # delete test file
         $Self->{MainObject}->FileDelete( Location => $Location );
@@ -3895,8 +3902,8 @@ sub _CheckDBMerged {
         if ( $Use eq 0 ) {
 
             if (
-                $Part->{TagType} eq 'End'
-                && $Part->{Tag} eq $NotUseTag
+                $Part->{TagType}     eq 'End'
+                && $Part->{Tag}      eq $NotUseTag
                 && $Part->{TagLevel} eq $NotUseTagLevel
                 )
             {
