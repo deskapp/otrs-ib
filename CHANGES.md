@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-03-07 Out of office message should is now translatable.
  - 2016-03-07 Replace link of inline content regexp fix.
  - 2016-03-04 Fixed empty sender name in response.
  - 2016-03-04 Fixed bug#[11787](http://bugs.otrs.org/show_bug.cgi?id=11787) - No Ticket::StateAfterPending found with manual state update.
