@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-03-08 Fixed error while self-creating customer account.
  - 2016-03-07 Out of office message should is now translatable.
  - 2016-03-07 Replace link of inline content regexp fix.
  - 2016-03-04 Fixed empty sender name in response.
