@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-03-15 OTRS version number removed from HTTP and e-mail headers.
  - 2016-03-15 OTRS version number removed from PDF properties.
  - 2016-03-11 Enhanced CSS styling of rich text editor and HTML e-mails.
  - 2016-03-11 Allow quoted font family names in Frontend::RichText::DefaultCSS.
