@@ -1,4 +1,5 @@
 #5.0.8 2016-??-??
+ - 2016-03-15 OTRS version number removed from HTTP and e-mail headers.
  - 2016-03-15 OTRS version number removed from PDF properties.
  - 2016-03-08 Fixed bug#[11914](http://bugs.otrs.org/show_bug.cgi?id=11914) - Modernized InputField Dropdowns not working after AJAX reload.
  - 2016-03-06 Fixed bug#[11899](http://bugs.otrs.org/show_bug.cgi?id=11899) - Columns are stored multiple times in preferences.
