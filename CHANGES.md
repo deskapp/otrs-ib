@@ -1,4 +1,5 @@
 #5.0.8 2016-??-??
+ - 2016-03-15 OTRS version number removed from PDF properties.
  - 2016-03-11 Enhanced CSS styling of rich text editor and HTML e-mails.
  - 2016-03-11 Allow quoted font family names in Frontend::RichText::DefaultCSS.
  - 2016-03-08 Fixed bug#[11914](http://bugs.otrs.org/show_bug.cgi?id=11914) - Modernized InputField Dropdowns not working after AJAX reload.
