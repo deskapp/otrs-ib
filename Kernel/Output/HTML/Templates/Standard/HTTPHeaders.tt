@@ -9,7 +9,9 @@ Content-Type: text/html; charset=utf-8;
 [% IF Data.ContentDisposition -%]
 Content-Disposition: [% Data.ContentDisposition %]
 [% END -%]
-X-Powered-By: [% Config("Product") %] - Open Ticket Request System (http://www.otrs.com/)
+[% IF Config("HTTPHeader::XPoweredBy") -%]
+X-Powered-By: [% Config("HTTPHeader::XPoweredBy") %]
+[% END -%]
 X-UA-Compatible: IE=edge,chrome=1
 [% IF !Config("DisableIFrameOriginRestricted") -%]
 X-Frame-Options: SAMEORIGIN

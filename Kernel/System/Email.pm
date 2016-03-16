@@ -278,8 +278,12 @@ sub Send {
     }
 
     if ( !$ConfigObject->Get('Secure::DisableBanner') ) {
-        $Header{'X-Mailer'} = $ConfigObject->Get('Product') . ' Mail Service';
-        $Header{'X-Powered-By'} = 'OTRS - Open Ticket Request System (http://otrs.org/)';
+        if ($ConfigObject->Get('EmailHeader::XMailer')) {
+            $Header{'X-Mailer'} = $ConfigObject->Get('EmailHeader::XMailer');
+        }
+        if ($ConfigObject->Get('EmailHeader::XPoweredBy')) {
+            $Header{'X-Powered-By'} = $ConfigObject->Get('EmailHeader::XPoweredBy');
+        }
     }
     $Header{Type} = $Param{MimeType} || 'text/plain';
 

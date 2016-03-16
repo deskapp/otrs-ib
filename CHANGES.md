@@ -1,4 +1,5 @@
 #5.0.8 2016-??-??
+ - 2016-03-16 Configurable footers, headers and login message.
  - 2016-03-15 OTRS version number removed from HTTP and e-mail headers.
  - 2016-03-15 OTRS version number removed from PDF properties.
  - 2016-03-11 Enhanced CSS styling of rich text editor and HTML e-mails.

@@ -48,6 +48,14 @@
                 </form>
             </div>
 [% RenderBlockEnd("PreLogin") %]
+
+[% IF Config("CustomerLoginMessage") -%]
+            <div id="LoginMessage">
+[% Config("CustomerLoginMessage") %]
+            </div>
+            <div class="Clear"></div>
+[% END -%]
+
 [% RenderBlockStart("LoginBox") %]
             <div id="Login">
                 <h2>[% Translate("Login") | html %]</h2>
