@@ -99,7 +99,7 @@ sub DocumentNew {
     # get config object
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
-    my $PDFCreator = $ConfigObject->Get('Product') . ' PDF Creator';
+    my $PDFCreator = $ConfigObject->Get('PDF::Creator') || 'OTRS PDF Creator';
 
     # set document title
     $Self->{Document}->{Title} = $Param{Title} || $PDFCreator;
