@@ -167,6 +167,13 @@ X-OTRS-Login: [% Env("Baselink") %]
             </div>
 [% RenderBlockEnd("PreLogin") %]
 
+[% IF Config("AgentLoginMessage") -%]
+            <div id="LoginMessage">
+[% Config("AgentLoginMessage") %]
+            </div>
+            <div class="Clear"></div>
+[% END -%]
+
 [% RenderBlockStart("LoginBox") %]
             <div id="LoginBox">
                 <p class="[% IF Data.MessageType != 'Logout' %]Error [% END %]Center Spacing">

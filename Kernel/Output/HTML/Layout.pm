@@ -1531,13 +1531,6 @@ sub Footer {
         },
     );
 
-    # Banner
-    if ( !$ConfigObject->Get('Secure::DisableBanner') ) {
-        $Self->Block(
-            Name => 'Banner',
-        );
-    }
-
     # Don't check for business package if the database was not yet configured (in the installer)
     if ( $Kernel::OM->Get('Kernel::Config')->Get('SecureMode') ) {
         $Param{OTRSBusinessIsInstalled} = $Kernel::OM->Get('Kernel::System::OTRSBusiness')->OTRSBusinessIsInstalled();
@@ -3689,13 +3682,6 @@ sub CustomerFooter {
 
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
-    # Banner
-    if ( !$ConfigObject->Get('Secure::DisableBanner') ) {
-        $Self->Block(
-            Name => 'Banner',
-        );
-    }
-
     # AutoComplete-Config
     my $AutocompleteConfig = $ConfigObject->Get('AutoComplete::Customer');
 
@@ -5229,7 +5215,7 @@ sub _DisableBannerCheck {
 
     # remove the version tag from the header
     ${ $Param{OutputRef} } =~ s{
-                ^ X-Powered-By: .+? Open \s Ticket \s Request \s System \s \(http .+? \)$ \n
+                ^ X-Powered-By: .+?$ \n
             }{}smx;
 
     return 1;
