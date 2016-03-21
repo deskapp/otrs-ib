@@ -1,5 +1,5 @@
 #5.0.8 2016-??-??
- - 2016-03-07 Out of office message should is now translatable.
+ - 2016-03-21 Configurable out of office message.
  - 2016-03-04 Fixed bug#[11913](http://bugs.otrs.org/show_bug.cgi?id=11913) - Description in SysConfig breakes when you click 'more'.
  - 2016-03-04 Fixed bug#[11787](http://bugs.otrs.org/show_bug.cgi?id=11787) - No Ticket::StateAfterPending found with manual state update.
  - 2016-03-03 Fixed bug#[9441](http://bugs.otrs.org/show_bug.cgi?id=9441) - Display of seconds after attachment upload.
