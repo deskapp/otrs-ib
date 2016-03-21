@@ -1,4 +1,5 @@
 #5.0.8 2016-??-??
+ - 2016-03-21 Configurable out of office message.
  - 2016-03-18 Disabled comsat and added postmaster pipe waiting in procmail sample config.
  - 2016-03-16 Configurable footers, headers and login message.
  - 2016-03-15 OTRS version number removed from HTTP and e-mail headers.
@@ -6,7 +7,6 @@
  - 2016-03-11 Enhanced CSS styling of rich text editor and HTML e-mails.
  - 2016-03-11 Allow quoted font family names in Frontend::RichText::DefaultCSS.
  - 2016-03-08 Fixed bug#[11914](http://bugs.otrs.org/show_bug.cgi?id=11914) - Modernized InputField Dropdowns not working after AJAX reload.
- - 2016-03-07 Out of office message should is now translatable.
  - 2016-03-07 Replace link of inline content regexp fix.
  - 2016-03-06 Fixed bug#[11899](http://bugs.otrs.org/show_bug.cgi?id=11899) - Columns are stored multiple times in preferences.
  - 2016-03-04 Fixed empty sender name in response.
