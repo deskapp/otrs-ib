@@ -3365,8 +3365,8 @@
         <SubGroup>Frontend::Agent::Ticket::ViewPhoneNew</SubGroup>
         <Setting>
             <Hash>
-                <Item Key="LinkType">ParentChild</Item>
-                <Item Key="Direction">Target</Item>
+                <Item Key="LinkType" Translatable="1">ParentChild</Item>
+                <Item Key="Direction" Translatable="1">Target</Item>
             </Hash>
         </Setting>
     </ConfigItem>
@@ -8697,7 +8697,7 @@
             <FrontendModuleReg>
                 <Description Translatable="1">A TicketWatcher Module.</Description>
                 <NavBarName>Ticket-Watcher</NavBarName>
-                <Title Translatable="1">Ticket-Watcher</Title>
+                <Title Translatable="1">Ticket Watcher</Title>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
@@ -8953,7 +8953,7 @@
         <Setting>
             <FrontendModuleReg>
                 <Description Translatable="1">Ticket bulk module.</Description>
-                <Title Translatable="1">Bulk-Action</Title>
+                <Title Translatable="1">Bulk Action</Title>
                 <NavBarName>Ticket</NavBarName>
                 <Loader>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
@@ -9357,6 +9357,17 @@
         <Group>Ticket</Group>
         <SubGroup>Core::Ticket</SubGroup>
         <Setting>
+            <Option SelectedID="1">
+                <Item Key="1" Translatable="1">Yes</Item>
+                <Item Key="0" Translatable="1">No</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Ticket::IncludeUnknownTicketCustomers" Required="1" Valid="1">
+        <Description Translatable="1">Include unknown customers in ticket filter.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Core::Ticket</SubGroup>
+        <Setting>
             <Option SelectedID="0">
                 <Item Key="1" Translatable="1">Yes</Item>
                 <Item Key="0" Translatable="1">No</Item>
@@ -9498,7 +9509,7 @@
         <Setting>
             <Hash>
                 <Item Key="Module">Kernel::System::Ticket::Event::NotificationEvent::Transport::Email</Item>
-                <Item Key="Name">Email</Item>
+                <Item Key="Name" Translatable="1">Email</Item>
                 <Item Key="Icon">fa fa-envelope</Item>
                 <Item Key="Prio">100</Item>
                 <Item Key="IsOTRSBusinessTransport">0</Item>
@@ -9513,7 +9524,7 @@
         <Setting>
             <Hash>
                 <Item Key="Module">Kernel::System::Ticket::Event::NotificationEvent::Transport::NotificationView</Item>
-                <Item Key="Name">Web View</Item>
+                <Item Key="Name" Translatable="1">Web View</Item>
                 <Item Key="Icon">fa fa-th-list</Item>
                 <Item Key="Prio">110</Item>
                 <Item Key="IsOTRSBusinessTransport">1</Item>
@@ -9528,7 +9539,7 @@
         <Setting>
             <Hash>
                 <Item Key="Module">Kernel::System::Ticket::Event::NotificationEvent::Transport::SMS</Item>
-                <Item Key="Name">SMS (Short Message Service)</Item>
+                <Item Key="Name" Translatable="1">SMS (Short Message Service)</Item>
                 <Item Key="Icon">fa fa-mobile</Item>
                 <Item Key="Prio">120</Item>
                 <Item Key="IsOTRSBusinessTransport">1</Item>
@@ -9891,10 +9902,10 @@
         <SubGroup>Core::TicketACL</SubGroup>
         <Setting>
             <Option SelectedID="debug">
-                <Item Key="debug">Debug</Item>
-                <Item Key="info">Info</Item>
-                <Item Key="notice">Notice</Item>
-                <Item Key="error">Error</Item>
+                <Item Key="debug" Translatable="1">Debug</Item>
+                <Item Key="info" Translatable="1">Info</Item>
+                <Item Key="notice" Translatable="1">Notice</Item>
+                <Item Key="error" Translatable="1">Error</Item>
             </Option>
         </Setting>
     </ConfigItem>
@@ -10529,8 +10540,8 @@ Thanks for your help!
         <SubGroup>Frontend::Agent::Ticket::ViewZoom</SubGroup>
         <Setting>
             <Option SelectedID="1">
-                <Item Key="0">Based on global RichText setting</Item>
-                <Item Key="1">Always show RichText if available</Item>
+                <Item Key="0" Translatable="1">Based on global RichText setting</Item>
+                <Item Key="1" Translatable="1">Always show RichText if available</Item>
             </Option>
         </Setting>
     </ConfigItem>

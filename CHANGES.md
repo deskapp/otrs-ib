@@ -1,13 +1,34 @@
-#5.0.8 2016-??-??
+<<<<<<< HEAD
+#5.0.9 2016-??-??
  - 2016-03-22 Added hdesk.pl notification e-mail template.
  - 2016-03-22 CustomerNotificationsDisabled option added.
+ - 2016-03-22 Fixed bug#[11954](http://bugs.otrs.org/show_bug.cgi?id=11954) - Can't handle double quotes as option value in modernized InputFields, thanks to Thorsten Eckel.
+ - 2016-03-22 Fixed bug#[11944](http://bugs.otrs.org/show_bug.cgi?id=11944) - Inline images possible although image functionality is disabled.
  - 2016-03-21 Configurable out of office message.
+ - 2016-03-21 Fixed bug#[11067](http://bugs.otrs.org/show_bug.cgi?id=11067) - Using a filter breaks the role - agent allocation in the admin interface.
+ - 2016-03-18 Fixed bug#[11952](http://bugs.otrs.org/show_bug.cgi?id=11952) - Generic Interface - TicketUpdate operation - DynamicFields not possible empty value.
+ - 2016-01-15 Follow-up fix for bug#[11560](http://bugs.otrs.org/show_bug.cgi?id=11560) - Error for connection to cloud on OTRS in a network which outbound access is blocked.
  - 2016-03-18 Disabled comsat and added postmaster pipe waiting in procmail sample config.
+ - 2016-03-18 Fixed bug#[11811](http://bugs.otrs.org/show_bug.cgi?id=11811) - Error processing mail with incorrectly encoded emoticons.
+ - 2016-03-18 Fixed bug#[11939](http://bugs.otrs.org/show_bug.cgi?id=11939) - Ticket move permission problem.
+ - 2016-03-18 Fixed bug#[11894](http://bugs.otrs.org/show_bug.cgi?id=11894) - Notification to agents with write permissions ignores user roles.
+ - 2016-03-18 Fixed bug#[11930](http://bugs.otrs.org/show_bug.cgi?id=11930) - Error 500 when searching string that ends with "\" in AdminCustomerUser.
+ - 2016-03-17 Fixed bug#[11937](http://bugs.otrs.org/show_bug.cgi?id=11937) - Error opening PackageManager.
  - 2016-03-16 Configurable footers, headers and login message.
  - 2016-03-15 OTRS version number removed from HTTP and e-mail headers.
  - 2016-03-15 OTRS version number removed from PDF properties.
+ - 2016-03-14 Fixed bug#[11528](http://bugs.otrs.org/show_bug.cgi?id=11528) - Group Name like 'test::Support::1st Line' is not possible to use for group restrictions.
  - 2016-03-11 Enhanced CSS styling of rich text editor and HTML e-mails.
  - 2016-03-11 Allow quoted font family names in Frontend::RichText::DefaultCSS.
+ - 2016-03-11 Fixed bug#[11324](http://bugs.otrs.org/show_bug.cgi?id=11324) - OTRS webservices TicketGet operation returns always all articles.
+ - 2016-03-10 Fixed bug#[10117](http://bugs.otrs.org/show_bug.cgi?id=10117) - Filter in queue view for customer userID shows only customers from given backend.
+ - 2016-03-10 Fixed bug#[7301](http://bugs.otrs.org/show_bug.cgi?id=7301) - Customer can reply to merged tickets, wrong ticket will be reopened.
+
+#5.0.8 2016-03-15
+ - 2016-03-09 Updated translations, thanks to all translators.
+ - 2016-03-09 Fixed bug#[11560](http://bugs.otrs.org/show_bug.cgi?id=11560) - Error for connection to cloud on OTRS in a network which outbound access is blocked.
+ - 2016-03-08 Fixed bug#[11893](http://bugs.otrs.org/show_bug.cgi?id=11893) - Pending reminder events not triggered if there are no valid pending auto states.
+ - 2016-03-08 Fixed bug#[11840](http://bugs.otrs.org/show_bug.cgi?id=11840) - Inline images not displayed after ticket create via ProcessManagement.
  - 2016-03-08 Fixed bug#[11914](http://bugs.otrs.org/show_bug.cgi?id=11914) - Modernized InputField Dropdowns not working after AJAX reload.
  - 2016-03-07 Replace link of inline content regexp fix.
  - 2016-03-06 Fixed bug#[11899](http://bugs.otrs.org/show_bug.cgi?id=11899) - Columns are stored multiple times in preferences.
