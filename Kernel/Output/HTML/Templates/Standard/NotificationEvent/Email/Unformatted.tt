@@ -16,9 +16,11 @@
     [% Data.Subject | html %]
     <br /><br />
     [% Data.Body %]
+[% IF Config("NotificationEmailFooter") -%]
     <br />
     <hr>
-    [% Translate("Powered by") | html %] [% Config("Product") %] [% Config("Version").remove('\.0\..*') %]
+    [% Config("NotificationEmailFooter") %]
+[% END -%]
     <br /><br />
 </body>
 

@@ -171,6 +171,7 @@
                                         </table>
                                     </td>
                                 </tr>
+[% IF Config("NotificationEmailFooter") -%]
                                 <tr>
                                     <td align="center" valign="top">
                                         <table border="0" cellpadding="10" cellspacing="0" id="templateFooter">
@@ -182,7 +183,7 @@
                                                                 <tr>
                                                                     <td colspan="2" valign="middle">
                                                                         <div style="color: #999; font-size: 11px; text-align: center;">
-                                                                            [% Translate("Powered by") | html %] [% Config("Product") %] [% Config("Version").remove('\.0\..*') %]
+                                                                            [% Config("NotificationEmailFooter") %]
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -194,6 +195,7 @@
                                         </table>
                                     </td>
                                 </tr>
+[% END -%]
                             </tbody>
                         </table>
                         <br />
