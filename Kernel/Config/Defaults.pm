@@ -684,6 +684,10 @@ sub LoadDefaults {
     # agent interface notification module to check the admin user id
     # (don't work with user id 1 notification)
     $Self->{'Frontend::NotifyModule'} = {
+        '100-CloudServicesDisabled' => {
+          'Group' => 'admin',
+          'Module' => 'Kernel::Output::HTML::Notification::AgentCloudServicesDisabled'
+        },
         '100-OTRSBusiness' => {
             'Group' => 'admin',
             'Module' => 'Kernel::Output::HTML::Notification::AgentOTRSBusiness'
@@ -1640,7 +1644,7 @@ via the Preferences button after logging in.
 
     # admin interface
     $Self->{'Frontend::Module'}->{Admin} = {
-        'Description' => 'Admin-Area',
+        'Description' => 'Admin Area.',
         'Group' => [
             'admin'
         ],
