@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-03-22 Added hdesk.pl notification e-mail template.
  - 2016-03-22 CustomerNotificationsDisabled option added.
  - 2016-03-21 Configurable out of office message.
  - 2016-03-18 Disabled comsat and added postmaster pipe waiting in procmail sample config.
