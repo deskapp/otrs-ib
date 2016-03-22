@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 #5.0.9 2016-??-??
+ - 2016-03-22 NotificationEmailDefaultTemplate option added.
  - 2016-03-22 Added hdesk.pl notification e-mail template.
  - 2016-03-22 CustomerNotificationsDisabled option added.
  - 2016-03-22 Fixed bug#[11954](http://bugs.otrs.org/show_bug.cgi?id=11954) - Can't handle double quotes as option value in modernized InputFields, thanks to Thorsten Eckel.
