@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-03-23 Fixed handling whitespaces around = in Content-Type/charset token.
  - 2016-03-22 NotificationEmailDefaultTemplate option added.
  - 2016-03-22 Added hdesk.pl notification e-mail template.
  - 2016-03-22 CustomerNotificationsDisabled option added.
