@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-03-30 Fixed link recognition.
  - 2016-03-25 Parameter name corrected in message in EmbeddedImagesExtract().
  - 2016-03-23 Fixed handling whitespaces around = in Content-Type/charset token.
  - 2016-03-22 NotificationEmailDefaultTemplate option added.
