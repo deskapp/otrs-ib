@@ -1,4 +1,5 @@
 #5.0.9 2016-??-??
+ - 2016-03-31 Removed unnecessary comma at the end of list.
  - 2016-03-30 Fixed link recognition.
  - 2016-03-25 Parameter name corrected in message in EmbeddedImagesExtract().
  - 2016-03-23 Fixed handling whitespaces around = in Content-Type/charset token.
