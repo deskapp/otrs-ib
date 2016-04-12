@@ -99,7 +99,10 @@ sub DocumentNew {
     # get config object
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
-    my $PDFCreator = $ConfigObject->Get('PDF::Creator') || 'OTRS PDF Creator';
+    my $PDFCreator = '';    # set to empty value if Secure::DisableBanner is active
+    if ( !$ConfigObject->Get('Secure::DisableBanner') ) {
+        $PDFCreator = $ConfigObject->Get('PDF::Creator') || 'OTRS PDF Creator';
+    }
 
     # set document title
     $Self->{Document}->{Title} = $Param{Title} || $PDFCreator;
