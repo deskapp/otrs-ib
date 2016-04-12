@@ -89,6 +89,7 @@ sub Auth {
     my $UserID     = '';
     my $GetPw      = '';
     my $Method;
+    my $PassOK     = 0;
 
     # get database object
     my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
@@ -124,7 +125,7 @@ sub Auth {
         $Method    = 'plain';
     }
 
-    # md5, bcrypt or sha pw
+    # md5, bcrypt or sha or ssha256 pw
     elsif ( $GetPw !~ /^.{13}$/ ) {
 
         # md5 pw
@@ -195,6 +196,26 @@ sub Auth {
             $Method    = 'bcrypt';
         }
 
+        elsif ( $GetPw =~ /^\{SSHA256\}/ ) {
+
+            # require module, log errors if module was not found
+            if ( !$Kernel::OM->Get('Kernel::System::Main')->Require('Crypt::SaltedHash') )
+            {
+                $Kernel::OM->Get('Kernel::System::Log')->Log(
+                    Priority => 'error',
+                    Message =>
+                        "User: '$User' tried to authenticate with ssha256 but 'Crypt::SaltedHash' is not installed!",
+                );
+                return;
+            }
+
+            # remove UTF8 flag, required by Crypt::SaltedHash
+            $EncodeObject->EncodeOutput( \$Pw );
+
+            $PassOK = Crypt::SaltedHash->validate($GetPw, $Pw, 6);
+            $Method = 'ssha256';
+        }
+
         # fallback: sha1 pw
         else {
 
@@ -243,7 +264,7 @@ sub Auth {
     }
 
     # login note
-    elsif ( ( ($GetPw) && ($User) && ($UserID) ) && $CryptedPw eq $GetPw ) {
+    elsif ( ( ($GetPw) && ($User) && ($UserID) ) && ( $PassOK || ( $CryptedPw eq $GetPw ) ) ) {
 
         $Kernel::OM->Get('Kernel::System::Log')->Log(
             Priority => 'notice',
