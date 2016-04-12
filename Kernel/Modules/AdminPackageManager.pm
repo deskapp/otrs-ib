@@ -58,7 +58,7 @@ sub Run {
                 if ( !$ApacheReload ) {
                     return $LayoutObject->ErrorScreen(
                         Message => Translatable(
-                            'Sorry, Apache::Reload is needed as PerlModule and PerlInitHandler in Apache config file. See also scripts/apache2-httpd.include.conf. Alternatively, you can use the commandline tool bin/otrs.Console.pl to install packages!'
+                            'Sorry, Apache::Reload is needed as PerlModule and PerlInitHandler in Apache config file. See also scripts/apache2-httpd.include.conf. Alternatively, you can use the command line tool bin/otrs.Console.pl to install packages!'
                         ),
                     );
                 }
@@ -527,7 +527,7 @@ sub Run {
             $Output .= $LayoutObject->Notify(
                 Priority => 'Error',
                 Data     => "$Name $Version - "
-                    . $LayoutObject->{LanguageObject}->Translate(
+                    . Translatable(
                     "Package not verified by the OTRS Group! It is recommended not to use this package."
                     ),
             );
@@ -1660,9 +1660,7 @@ sub Run {
         $Output .= $LayoutObject->Notify(
             Priority => 'Error',
             Data     => "$Package $NotVerifiedPackages{$Package} - "
-                . $LayoutObject->{LanguageObject}->Translate(
-                "Package not verified by the OTRS Group! It is recommended not to use this package."
-                ),
+                . Translatable("Package not verified by the OTRS Group! It is recommended not to use this package."),
         );
     }
 
@@ -1677,9 +1675,7 @@ sub Run {
             $Output .= $LayoutObject->Notify(
                 Priority => 'Error',
                 Data     => "$Package $UnknownVerficationPackages{$Package} - "
-                    . $LayoutObject->{LanguageObject}->Translate(
-                    "Package not verified due a communication issue with verification server!"
-                    ),
+                    . Translatable("Package not verified due a communication issue with verification server!"),
             );
         }
     }
@@ -2126,7 +2122,7 @@ sub _GetFeatureAddonData {
     # as this is the only operation an unsuccessful request means that the operation was also
     # unsuccessful
     if ( !IsHashRefWithData($RequestResult) ) {
-        return "Can't connect to OTRS Feature Add-on list server!";
+        return Translatable('Can\'t connect to OTRS Feature Add-on list server!');
     }
 
     my $OperationResult = $CloudServiceObject->OperationResultGet(
@@ -2136,10 +2132,10 @@ sub _GetFeatureAddonData {
     );
 
     if ( !IsHashRefWithData($OperationResult) ) {
-        return "Can't get OTRS Feature Add-on list from server";
+        return Translatable('Can\'t get OTRS Feature Add-on list from server!');
     }
     elsif ( !$OperationResult->{Success} ) {
-        return $OperationResult->{ErrorMessage} || "Can't get OTRS Feature Add-on from server!";
+        return $OperationResult->{ErrorMessage} || Translatable('Can\'t get OTRS Feature Add-on from server!');
     }
 
     my $FAOFeed = $OperationResult->{Data}->{FAOs};

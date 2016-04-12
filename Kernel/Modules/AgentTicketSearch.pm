@@ -12,6 +12,7 @@ use strict;
 use warnings;
 
 use Kernel::System::VariableCheck qw(:all);
+use Kernel::Language qw(Translatable);
 
 our $ObjectManagerDisabled = 1;
 
@@ -314,7 +315,7 @@ sub Run {
 
         # fill up profile name (e.g. with last-search)
         if ( !$Self->{Profile} || !$Self->{SaveProfile} ) {
-            $Self->{Profile} = 'last-search';
+            $Self->{Profile} = Translatable('last-search');
         }
 
         # check and remember if it's fulltext search from toolbar
@@ -681,8 +682,8 @@ sub Run {
                     );
 
                     # set missing information
-                    $Data{Subject} = $Data{Title} || 'Untitled';
-                    $Data{Body} = $LayoutObject->{LanguageObject}->Get(
+                    $Data{Subject} = $Data{Title} || Translatable('Untitled');
+                    $Data{Body} = $LayoutObject->{LanguageObject}->Translate(
                         'This item has no articles yet.'
                     );
                     $Data{From} = '--';
@@ -705,8 +706,9 @@ sub Run {
                     );
 
                     if ( $#Article == -1 ) {
-                        $Data{ArticleTree}
-                            .= 'This item has no articles yet.';
+                        $Data{ArticleTree} .= $LayoutObject->{LanguageObject}->Translate(
+                            'This item has no articles yet.'
+                        );
                     }
                     else
                     {
@@ -790,8 +792,8 @@ sub Run {
             }
 
             my %HeaderMap = (
-                TicketNumber => 'Ticket Number',
-                CustomerName => 'Customer Realname',
+                TicketNumber => Translatable('Ticket Number'),
+                CustomerName => Translatable('Customer Realname'),
             );
 
             my @CSVHeadTranslated = map { $LayoutObject->{LanguageObject}->Translate( $HeaderMap{$_} || $_ ); }
@@ -867,7 +869,7 @@ sub Run {
                     );
 
                     # set missing information
-                    $Data{Subject} = $Data{Title} || 'Untitled';
+                    $Data{Subject} = $Data{Title} || Translatable('Untitled');
                     $Data{From} = '--';
                 }
 
@@ -1149,7 +1151,7 @@ sub Run {
                 LinkBack   => $LinkBack,
                 Profile    => $Self->{Profile},
 
-                TitleName => 'Search Results',
+                TitleName => Translatable('Search Results'),
                 Bulk      => 1,
                 Limit     => $Self->{SearchLimit},
 
@@ -1263,15 +1265,15 @@ sub Run {
             # Main fields
             {
                 Key   => 'TicketNumber',
-                Value => 'Ticket Number',
+                Value => Translatable('Ticket Number'),
             },
             {
                 Key   => 'Fulltext',
-                Value => 'Fulltext',
+                Value => Translatable('Fulltext'),
             },
             {
                 Key   => 'Title',
-                Value => 'Title',
+                Value => Translatable('Title'),
             },
             {
                 Key      => '',
@@ -1282,23 +1284,23 @@ sub Run {
             # Article fields
             {
                 Key   => 'From',
-                Value => 'From',
+                Value => Translatable('From'),
             },
             {
                 Key   => 'To',
-                Value => 'To',
+                Value => Translatable('To'),
             },
             {
                 Key   => 'Cc',
-                Value => 'Cc',
+                Value => Translatable('Cc'),
             },
             {
                 Key   => 'Subject',
-                Value => 'Subject',
+                Value => Translatable('Subject'),
             },
             {
                 Key   => 'Body',
-                Value => 'Body',
+                Value => Translatable('Body'),
             },
         );
 
@@ -1310,7 +1312,7 @@ sub Run {
             push @Attributes, (
                 {
                     Key   => 'AttachmentName',
-                    Value => 'Attachment Name',
+                    Value => Translatable('Attachment Name'),
                 },
             );
         }
@@ -1324,31 +1326,31 @@ sub Run {
             },
             {
                 Key   => 'CustomerID',
-                Value => 'CustomerID',
+                Value => Translatable('CustomerID'),
             },
             {
                 Key   => 'CustomerUserLogin',
-                Value => 'Customer User Login',
+                Value => Translatable('Customer User Login'),
             },
             {
                 Key   => 'StateIDs',
-                Value => 'State',
+                Value => Translatable('State'),
             },
             {
                 Key   => 'PriorityIDs',
-                Value => 'Priority',
+                Value => Translatable('Priority'),
             },
             {
                 Key   => 'LockIDs',
-                Value => 'Lock',
+                Value => Translatable('Lock'),
             },
             {
                 Key   => 'QueueIDs',
-                Value => 'Queue',
+                Value => Translatable('Queue'),
             },
             {
                 Key   => 'CreatedQueueIDs',
-                Value => 'Created in Queue',
+                Value => Translatable('Created in Queue'),
             },
         );
 
@@ -1356,7 +1358,7 @@ sub Run {
             push @Attributes, (
                 {
                     Key   => 'TypeIDs',
-                    Value => 'Type',
+                    Value => Translatable('Type'),
                 },
             );
         }
@@ -1365,11 +1367,11 @@ sub Run {
             push @Attributes, (
                 {
                     Key   => 'ServiceIDs',
-                    Value => 'Service',
+                    Value => Translatable('Service'),
                 },
                 {
                     Key   => 'SLAIDs',
-                    Value => 'SLA',
+                    Value => Translatable('SLA'),
                 },
             );
         }
@@ -1377,18 +1379,18 @@ sub Run {
         push @Attributes, (
             {
                 Key   => 'OwnerIDs',
-                Value => 'Owner',
+                Value => Translatable('Owner'),
             },
             {
                 Key   => 'CreatedUserIDs',
-                Value => 'Created by',
+                Value => Translatable('Created by'),
             },
         );
         if ( $ConfigObject->Get('Ticket::Watcher') ) {
             push @Attributes, (
                 {
                     Key   => 'WatchUserIDs',
-                    Value => 'Watcher',
+                    Value => Translatable('Watcher'),
                 },
             );
         }
@@ -1396,7 +1398,7 @@ sub Run {
             push @Attributes, (
                 {
                     Key   => 'ResponsibleIDs',
-                    Value => 'Responsible',
+                    Value => Translatable('Responsible'),
                 },
             );
         }
@@ -1410,51 +1412,51 @@ sub Run {
             },
             {
                 Key   => 'TicketLastChangeTimePoint',
-                Value => 'Ticket Last Change Time (before/after)',
+                Value => Translatable('Ticket Last Change Time (before/after)'),
             },
             {
                 Key   => 'TicketLastChangeTimeSlot',
-                Value => 'Ticket Last Change Time (between)',
+                Value => Translatable('Ticket Last Change Time (between)'),
             },
             {
                 Key   => 'TicketChangeTimePoint',
-                Value => 'Ticket Change Time (before/after)',
+                Value => Translatable('Ticket Change Time (before/after)'),
             },
             {
                 Key   => 'TicketChangeTimeSlot',
-                Value => 'Ticket Change Time (between)',
+                Value => Translatable('Ticket Change Time (between)'),
             },
             {
                 Key   => 'TicketCloseTimePoint',
-                Value => 'Ticket Close Time (before/after)',
+                Value => Translatable('Ticket Close Time (before/after)'),
             },
             {
                 Key   => 'TicketCloseTimeSlot',
-                Value => 'Ticket Close Time (between)',
+                Value => Translatable('Ticket Close Time (between)'),
             },
             {
                 Key   => 'TicketCreateTimePoint',
-                Value => 'Ticket Create Time (before/after)',
+                Value => Translatable('Ticket Create Time (before/after)'),
             },
             {
                 Key   => 'TicketCreateTimeSlot',
-                Value => 'Ticket Create Time (between)',
+                Value => Translatable('Ticket Create Time (between)'),
             },
             {
                 Key   => 'TicketEscalationTimePoint',
-                Value => 'Ticket Escalation Time (before/after)',
+                Value => Translatable('Ticket Escalation Time (before/after)'),
             },
             {
                 Key   => 'TicketEscalationTimeSlot',
-                Value => 'Ticket Escalation Time (between)',
+                Value => Translatable('Ticket Escalation Time (between)'),
             },
             {
                 Key   => 'ArticleCreateTimePoint',
-                Value => 'Article Create Time (before/after)',
+                Value => Translatable('Article Create Time (before/after)'),
             },
             {
                 Key   => 'ArticleCreateTimeSlot',
-                Value => 'Article Create Time (between)',
+                Value => Translatable('Article Create Time (between)'),
             },
         );
 
@@ -1767,10 +1769,10 @@ sub Run {
 
         $Param{ResultFormStrg} = $LayoutObject->BuildSelection(
             Data => {
-                Normal => 'Normal',
-                Print  => 'Print',
-                CSV    => 'CSV',
-                Excel  => 'Excel',
+                Normal => Translatable('Normal'),
+                Print  => Translatable('Print'),
+                CSV    => Translatable('CSV'),
+                Excel  => Translatable('Excel'),
             },
             Name       => 'ResultForm',
             SelectedID => $GetParam{ResultForm} || 'Normal',
@@ -1781,9 +1783,9 @@ sub Run {
 
             $Param{SearchInArchiveStrg} = $LayoutObject->BuildSelection(
                 Data => {
-                    ArchivedTickets    => 'Archived tickets',
-                    NotArchivedTickets => 'Unarchived tickets',
-                    AllTickets         => 'All tickets',
+                    ArchivedTickets    => Translatable('Archived tickets'),
+                    NotArchivedTickets => Translatable('Unarchived tickets'),
+                    AllTickets         => Translatable('All tickets'),
                 },
                 Name       => 'SearchInArchive',
                 SelectedID => $GetParam{SearchInArchive} || 'NotArchivedTickets',
@@ -1883,20 +1885,20 @@ sub Run {
         );
         $Param{ArticleCreateTimePointStart} = $LayoutObject->BuildSelection(
             Data => {
-                'Last'   => 'within the last ...',
-                'Before' => 'more than ... ago',
+                'Last'   => Translatable('within the last ...'),
+                'Before' => Translatable('more than ... ago'),
             },
             Name       => 'ArticleCreateTimePointStart',
             SelectedID => $GetParam{ArticleCreateTimePointStart} || 'Last',
         );
         $Param{ArticleCreateTimePointFormat} = $LayoutObject->BuildSelection(
             Data => {
-                minute => 'minute(s)',
-                hour   => 'hour(s)',
-                day    => 'day(s)',
-                week   => 'week(s)',
-                month  => 'month(s)',
-                year   => 'year(s)',
+                minute => Translatable('minute(s)'),
+                hour   => Translatable('hour(s)'),
+                day    => Translatable('day(s)'),
+                week   => Translatable('week(s)'),
+                month  => Translatable('month(s)'),
+                year   => Translatable('year(s)'),
             },
             Name       => 'ArticleCreateTimePointFormat',
             SelectedID => $GetParam{ArticleCreateTimePointFormat},
@@ -1919,20 +1921,20 @@ sub Run {
         );
         $Param{TicketCreateTimePointStart} = $LayoutObject->BuildSelection(
             Data => {
-                'Last'   => 'within the last ...',
-                'Before' => 'more than ... ago',
+                'Last'   => Translatable('within the last ...'),
+                'Before' => Translatable('more than ... ago'),
             },
             Name       => 'TicketCreateTimePointStart',
             SelectedID => $GetParam{TicketCreateTimePointStart} || 'Last',
         );
         $Param{TicketCreateTimePointFormat} = $LayoutObject->BuildSelection(
             Data => {
-                minute => 'minute(s)',
-                hour   => 'hour(s)',
-                day    => 'day(s)',
-                week   => 'week(s)',
-                month  => 'month(s)',
-                year   => 'year(s)',
+                minute => Translatable('minute(s)'),
+                hour   => Translatable('hour(s)'),
+                day    => Translatable('day(s)'),
+                week   => Translatable('week(s)'),
+                month  => Translatable('month(s)'),
+                year   => Translatable('year(s)'),
             },
             Name       => 'TicketCreateTimePointFormat',
             SelectedID => $GetParam{TicketCreateTimePointFormat},
@@ -1964,12 +1966,12 @@ sub Run {
         );
         $Param{TicketChangeTimePointFormat} = $LayoutObject->BuildSelection(
             Data => {
-                minute => 'minute(s)',
-                hour   => 'hour(s)',
-                day    => 'day(s)',
-                week   => 'week(s)',
-                month  => 'month(s)',
-                year   => 'year(s)',
+                minute => Translatable('minute(s)'),
+                hour   => Translatable('hour(s)'),
+                day    => Translatable('day(s)'),
+                week   => Translatable('week(s)'),
+                month  => Translatable('month(s)'),
+                year   => Translatable('year(s)'),
             },
             Name       => 'TicketChangeTimePointFormat',
             SelectedID => $GetParam{TicketChangeTimePointFormat},
@@ -1993,20 +1995,20 @@ sub Run {
         );
         $Param{TicketCloseTimePointStart} = $LayoutObject->BuildSelection(
             Data => {
-                'Last'   => 'within the last ...',
-                'Before' => 'more than ... ago',
+                'Last'   => Translatable('within the last ...'),
+                'Before' => Translatable('more than ... ago'),
             },
             Name       => 'TicketCloseTimePointStart',
             SelectedID => $GetParam{TicketCloseTimePointStart} || 'Last',
         );
         $Param{TicketCloseTimePointFormat} = $LayoutObject->BuildSelection(
             Data => {
-                minute => 'minute(s)',
-                hour   => 'hour(s)',
-                day    => 'day(s)',
-                week   => 'week(s)',
-                month  => 'month(s)',
-                year   => 'year(s)',
+                minute => Translatable('minute(s)'),
+                hour   => Translatable('hour(s)'),
+                day    => Translatable('day(s)'),
+                week   => Translatable('week(s)'),
+                month  => Translatable('month(s)'),
+                year   => Translatable('year(s)'),
             },
             Name       => 'TicketCloseTimePointFormat',
             SelectedID => $GetParam{TicketCloseTimePointFormat},
@@ -2030,20 +2032,20 @@ sub Run {
         );
         $Param{TicketLastChangeTimePointStart} = $LayoutObject->BuildSelection(
             Data => {
-                'Last'   => 'within the last ...',
-                'Before' => 'more than ... ago',
+                'Last'   => Translatable('within the last ...'),
+                'Before' => Translatable('more than ... ago'),
             },
             Name       => 'TicketLastChangeTimePointStart',
             SelectedID => $GetParam{TicketLastChangeTimePointStart} || 'Last',
         );
         $Param{TicketLastChangeTimePointFormat} = $LayoutObject->BuildSelection(
             Data => {
-                minute => 'minute(s)',
-                hour   => 'hour(s)',
-                day    => 'day(s)',
-                week   => 'week(s)',
-                month  => 'month(s)',
-                year   => 'year(s)',
+                minute => Translatable('minute(s)'),
+                hour   => Translatable('hour(s)'),
+                day    => Translatable('day(s)'),
+                week   => Translatable('week(s)'),
+                month  => Translatable('month(s)'),
+                year   => Translatable('year(s)'),
             },
             Name       => 'TicketLastChangeTimePointFormat',
             SelectedID => $GetParam{TicketLastChangeTimePointFormat},
@@ -2067,21 +2069,21 @@ sub Run {
         );
         $Param{TicketEscalationTimePointStart} = $LayoutObject->BuildSelection(
             Data => {
-                'Last'   => 'within the last ...',
-                'Next'   => 'within the next ...',
-                'Before' => 'more than ... ago',
+                'Last'   => Translatable('within the last ...'),
+                'Next'   => Translatable('within the next ...'),
+                'Before' => Translatable('more than ... ago'),
             },
             Name       => 'TicketEscalationTimePointStart',
             SelectedID => $GetParam{TicketEscalationTimePointStart} || 'Last',
         );
         $Param{TicketEscalationTimePointFormat} = $LayoutObject->BuildSelection(
             Data => {
-                minute => 'minute(s)',
-                hour   => 'hour(s)',
-                day    => 'day(s)',
-                week   => 'week(s)',
-                month  => 'month(s)',
-                year   => 'year(s)',
+                minute => Translatable('minute(s)'),
+                hour   => Translatable('hour(s)'),
+                day    => Translatable('day(s)'),
+                week   => Translatable('week(s)'),
+                month  => Translatable('month(s)'),
+                year   => Translatable('year(s)'),
             },
             Name       => 'TicketEscalationTimePointFormat',
             SelectedID => $GetParam{TicketEscalationTimePointFormat},

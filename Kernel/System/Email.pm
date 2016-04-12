@@ -277,6 +277,9 @@ sub Send {
 
     }
 
+    # Set this to undef to avoid having a value like "MIME-tools 5.507 (Entity 5.507)"
+    # which could lead to the mail being treated as SPAM.
+    $Header{'X-Mailer'} = undef;
     if ( !$ConfigObject->Get('Secure::DisableBanner') ) {
         if ($ConfigObject->Get('EmailHeader::XMailer')) {
             $Header{'X-Mailer'} = $ConfigObject->Get('EmailHeader::XMailer');
@@ -285,6 +288,7 @@ sub Send {
             $Header{'X-Powered-By'} = $ConfigObject->Get('EmailHeader::XPoweredBy');
         }
     }
+
     $Header{Type} = $Param{MimeType} || 'text/plain';
 
     # define email encoding

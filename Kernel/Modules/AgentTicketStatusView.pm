@@ -98,10 +98,12 @@ sub Run {
 
         if ( $ColumnName eq 'CustomerID' ) {
             push @{ $ColumnFilter{$ColumnName} }, $FilterValue;
+            push @{ $ColumnFilter{ $ColumnName . 'Raw' } }, $FilterValue;
             $GetColumnFilter{$ColumnName} = $FilterValue;
         }
         elsif ( $ColumnName eq 'CustomerUserID' ) {
-            push @{ $ColumnFilter{CustomerUserLogin} }, $FilterValue;
+            push @{ $ColumnFilter{CustomerUserLogin} },    $FilterValue;
+            push @{ $ColumnFilter{CustomerUserLoginRaw} }, $FilterValue;
             $GetColumnFilter{$ColumnName} = $FilterValue;
         }
         else {
@@ -161,7 +163,7 @@ sub Run {
     # define filter
     my %Filters = (
         Open => {
-            Name   => 'Open tickets',
+            Name   => Translatable('Open tickets'),
             Prio   => 1000,
             Search => {
                 StateType  => 'Open',
@@ -172,7 +174,7 @@ sub Run {
             },
         },
         Closed => {
-            Name   => 'Closed tickets',
+            Name   => Translatable('Closed tickets'),
             Prio   => 1001,
             Search => {
                 StateType  => 'Closed',
@@ -357,7 +359,7 @@ sub Run {
         View       => $View,
         Bulk       => 1,
         Limit      => $Limit,
-        TitleName  => 'Status View',
+        TitleName  => Translatable('Status View'),
         TitleValue => $Filters{$Filter}->{Name},
 
         Filter     => $Filter,

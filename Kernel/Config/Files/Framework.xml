@@ -571,8 +571,8 @@
         <SubGroup>Core::Time</SubGroup>
         <Setting>
             <Option SelectedID="Option">
-                <Item Key="Option">Option</Item>
-                <Item Key="Input">Input</Item>
+                <Item Key="Option" Translatable="1">Option</Item>
+                <Item Key="Input" Translatable="1">Input</Item>
             </Option>
         </Setting>
     </ConfigItem>
@@ -661,8 +661,8 @@
         <SubGroup>Core::LinkObject</SubGroup>
         <Setting>
             <Hash>
-                <Item Key="SourceName">Normal</Item>
-                <Item Key="TargetName">Normal</Item>
+                <Item Key="SourceName" Translatable="1">Normal</Item>
+                <Item Key="TargetName" Translatable="1">Normal</Item>
             </Hash>
         </Setting>
     </ConfigItem>
@@ -672,8 +672,8 @@
         <SubGroup>Core::LinkObject</SubGroup>
         <Setting>
             <Hash>
-                <Item Key="SourceName">Parent</Item>
-                <Item Key="TargetName">Child</Item>
+                <Item Key="SourceName" Translatable="1">Parent</Item>
+                <Item Key="TargetName" Translatable="1">Child</Item>
             </Hash>
         </Setting>
     </ConfigItem>
@@ -1193,6 +1193,14 @@
             </Option>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="MaximumCalendarNumber" Required="0" Valid="0">
+        <Description Translatable="1">Maximum Number of a calendar shown in a dropdown.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Time</SubGroup>
+        <Setting>
+            <String Regex="^[0-9]{1,3}$">50</String>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="CalendarWeekDayStart" Required="1" Valid="1">
         <Description Translatable="1">Define the start day of the week for the date picker.</Description>
         <Group>Framework</Group>
@@ -1386,12 +1394,12 @@
         <SubGroup>Core::Time::Calendar1</SubGroup>
         <Setting>
             <TimeVacationDays>
-                <Item Month="1" Day="1">New Year's Day</Item>
-                <Item Month="5" Day="1">International Workers' Day</Item>
-                <Item Month="12" Day="24">Christmas Eve</Item>
-                <Item Month="12" Day="25">First Christmas Day</Item>
-                <Item Month="12" Day="26">Second Christmas Day</Item>
-                <Item Month="12" Day="31">New Year's Eve</Item>
+                <Item Month="1" Day="1" Translatable="1">New Year's Day</Item>
+                <Item Month="5" Day="1" Translatable="1">International Workers' Day</Item>
+                <Item Month="12" Day="24" Translatable="1">Christmas Eve</Item>
+                <Item Month="12" Day="25" Translatable="1">First Christmas Day</Item>
+                <Item Month="12" Day="26" Translatable="1">Second Christmas Day</Item>
+                <Item Month="12" Day="31" Translatable="1">New Year's Eve</Item>
             </TimeVacationDays>
         </Setting>
     </ConfigItem>
@@ -1557,12 +1565,12 @@
         <SubGroup>Core::Time::Calendar2</SubGroup>
         <Setting>
             <TimeVacationDays>
-                <Item Month="1" Day="1">New Year's Day</Item>
-                <Item Month="5" Day="1">International Workers' Day</Item>
-                <Item Month="12" Day="24">Christmas Eve</Item>
-                <Item Month="12" Day="25">First Christmas Day</Item>
-                <Item Month="12" Day="26">Second Christmas Day</Item>
-                <Item Month="12" Day="31">New Year's Eve</Item>
+                <Item Month="1" Day="1" Translatable="1">New Year's Day</Item>
+                <Item Month="5" Day="1" Translatable="1">International Workers' Day</Item>
+                <Item Month="12" Day="24" Translatable="1">Christmas Eve</Item>
+                <Item Month="12" Day="25" Translatable="1">First Christmas Day</Item>
+                <Item Month="12" Day="26" Translatable="1">Second Christmas Day</Item>
+                <Item Month="12" Day="31" Translatable="1">New Year's Eve</Item>
             </TimeVacationDays>
         </Setting>
     </ConfigItem>
@@ -1728,12 +1736,12 @@
         <SubGroup>Core::Time::Calendar3</SubGroup>
         <Setting>
             <TimeVacationDays>
-                <Item Month="1" Day="1">New Year's Day</Item>
-                <Item Month="5" Day="1">International Workers' Day</Item>
-                <Item Month="12" Day="24">Christmas Eve</Item>
-                <Item Month="12" Day="25">First Christmas Day</Item>
-                <Item Month="12" Day="26">Second Christmas Day</Item>
-                <Item Month="12" Day="31">New Year's Eve</Item>
+                <Item Month="1" Day="1" Translatable="1">New Year's Day</Item>
+                <Item Month="5" Day="1" Translatable="1">International Workers' Day</Item>
+                <Item Month="12" Day="24" Translatable="1">Christmas Eve</Item>
+                <Item Month="12" Day="25" Translatable="1">First Christmas Day</Item>
+                <Item Month="12" Day="26" Translatable="1">Second Christmas Day</Item>
+                <Item Month="12" Day="31" Translatable="1">New Year's Eve</Item>
             </TimeVacationDays>
         </Setting>
     </ConfigItem>
@@ -1899,12 +1907,12 @@
         <SubGroup>Core::Time::Calendar4</SubGroup>
         <Setting>
             <TimeVacationDays>
-                <Item Month="1" Day="1">New Year's Day</Item>
-                <Item Month="5" Day="1">International Workers' Day</Item>
-                <Item Month="12" Day="24">Christmas Eve</Item>
-                <Item Month="12" Day="25">First Christmas Day</Item>
-                <Item Month="12" Day="26">Second Christmas Day</Item>
-                <Item Month="12" Day="31">New Year's Eve</Item>
+                <Item Month="1" Day="1" Translatable="1">New Year's Day</Item>
+                <Item Month="5" Day="1" Translatable="1">International Workers' Day</Item>
+                <Item Month="12" Day="24" Translatable="1">Christmas Eve</Item>
+                <Item Month="12" Day="25" Translatable="1">First Christmas Day</Item>
+                <Item Month="12" Day="26" Translatable="1">Second Christmas Day</Item>
+                <Item Month="12" Day="31" Translatable="1">New Year's Eve</Item>
             </TimeVacationDays>
         </Setting>
     </ConfigItem>
@@ -2070,12 +2078,12 @@
         <SubGroup>Core::Time::Calendar5</SubGroup>
         <Setting>
             <TimeVacationDays>
-                <Item Month="1" Day="1">New Year's Day</Item>
-                <Item Month="5" Day="1">International Workers' Day</Item>
-                <Item Month="12" Day="24">Christmas Eve</Item>
-                <Item Month="12" Day="25">First Christmas Day</Item>
-                <Item Month="12" Day="26">Second Christmas Day</Item>
-                <Item Month="12" Day="31">New Year's Eve</Item>
+                <Item Month="1" Day="1" Translatable="1">New Year's Day</Item>
+                <Item Month="5" Day="1" Translatable="1">International Workers' Day</Item>
+                <Item Month="12" Day="24" Translatable="1">Christmas Eve</Item>
+                <Item Month="12" Day="25" Translatable="1">First Christmas Day</Item>
+                <Item Month="12" Day="26" Translatable="1">Second Christmas Day</Item>
+                <Item Month="12" Day="31" Translatable="1">New Year's Eve</Item>
             </TimeVacationDays>
         </Setting>
     </ConfigItem>
@@ -2241,12 +2249,12 @@
         <SubGroup>Core::Time::Calendar6</SubGroup>
         <Setting>
             <TimeVacationDays>
-                <Item Month="1" Day="1">New Year's Day</Item>
-                <Item Month="5" Day="1">International Workers' Day</Item>
-                <Item Month="12" Day="24">Christmas Eve</Item>
-                <Item Month="12" Day="25">First Christmas Day</Item>
-                <Item Month="12" Day="26">Second Christmas Day</Item>
-                <Item Month="12" Day="31">New Year's Eve</Item>
+                <Item Month="1" Day="1" Translatable="1">New Year's Day</Item>
+                <Item Month="5" Day="1" Translatable="1">International Workers' Day</Item>
+                <Item Month="12" Day="24" Translatable="1">Christmas Eve</Item>
+                <Item Month="12" Day="25" Translatable="1">First Christmas Day</Item>
+                <Item Month="12" Day="26" Translatable="1">Second Christmas Day</Item>
+                <Item Month="12" Day="31" Translatable="1">New Year's Eve</Item>
             </TimeVacationDays>
         </Setting>
     </ConfigItem>
@@ -2412,12 +2420,12 @@
         <SubGroup>Core::Time::Calendar7</SubGroup>
         <Setting>
             <TimeVacationDays>
-                <Item Month="1" Day="1">New Year's Day</Item>
-                <Item Month="5" Day="1">International Workers' Day</Item>
-                <Item Month="12" Day="24">Christmas Eve</Item>
-                <Item Month="12" Day="25">First Christmas Day</Item>
-                <Item Month="12" Day="26">Second Christmas Day</Item>
-                <Item Month="12" Day="31">New Year's Eve</Item>
+                <Item Month="1" Day="1" Translatable="1">New Year's Day</Item>
+                <Item Month="5" Day="1" Translatable="1">International Workers' Day</Item>
+                <Item Month="12" Day="24" Translatable="1">Christmas Eve</Item>
+                <Item Month="12" Day="25" Translatable="1">First Christmas Day</Item>
+                <Item Month="12" Day="26" Translatable="1">Second Christmas Day</Item>
+                <Item Month="12" Day="31" Translatable="1">New Year's Eve</Item>
             </TimeVacationDays>
         </Setting>
     </ConfigItem>
@@ -2583,12 +2591,12 @@
         <SubGroup>Core::Time::Calendar8</SubGroup>
         <Setting>
             <TimeVacationDays>
-                <Item Month="1" Day="1">New Year's Day</Item>
-                <Item Month="5" Day="1">International Workers' Day</Item>
-                <Item Month="12" Day="24">Christmas Eve</Item>
-                <Item Month="12" Day="25">First Christmas Day</Item>
-                <Item Month="12" Day="26">Second Christmas Day</Item>
-                <Item Month="12" Day="31">New Year's Eve</Item>
+                <Item Month="1" Day="1" Translatable="1">New Year's Day</Item>
+                <Item Month="5" Day="1" Translatable="1">International Workers' Day</Item>
+                <Item Month="12" Day="24" Translatable="1">Christmas Eve</Item>
+                <Item Month="12" Day="25" Translatable="1">First Christmas Day</Item>
+                <Item Month="12" Day="26" Translatable="1">Second Christmas Day</Item>
+                <Item Month="12" Day="31" Translatable="1">New Year's Eve</Item>
             </TimeVacationDays>
         </Setting>
     </ConfigItem>
@@ -2754,12 +2762,12 @@
         <SubGroup>Core::Time::Calendar9</SubGroup>
         <Setting>
             <TimeVacationDays>
-                <Item Month="1" Day="1">New Year's Day</Item>
-                <Item Month="5" Day="1">International Workers' Day</Item>
-                <Item Month="12" Day="24">Christmas Eve</Item>
-                <Item Month="12" Day="25">First Christmas Day</Item>
-                <Item Month="12" Day="26">Second Christmas Day</Item>
-                <Item Month="12" Day="31">New Year's Eve</Item>
+                <Item Month="1" Day="1" Translatable="1">New Year's Day</Item>
+                <Item Month="5" Day="1" Translatable="1">International Workers' Day</Item>
+                <Item Month="12" Day="24" Translatable="1">Christmas Eve</Item>
+                <Item Month="12" Day="25" Translatable="1">First Christmas Day</Item>
+                <Item Month="12" Day="26" Translatable="1">Second Christmas Day</Item>
+                <Item Month="12" Day="31" Translatable="1">New Year's Eve</Item>
             </TimeVacationDays>
         </Setting>
     </ConfigItem>
@@ -2931,6 +2939,14 @@
                 <Item Key="0" Translatable="1">No</Item>
                 <Item Key="1" Translatable="1">Yes</Item>
             </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="OutOfOfficeMessageTemplate" Required="0" Valid="1">
+        <Description Translatable="1">Defines out of office message template. Two string parameters (%s) available: end date and number of days left.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core</SubGroup>
+        <Setting>
+            <String Translatable="1">*** out of office until %s (%s d left) ***</String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="SwitchToUser" Required="1" Valid="1">
@@ -3665,9 +3681,9 @@ You can log in via the following URL:
         <SubGroup>Frontend::Agent::Preferences</SubGroup>
         <Setting>
             <Array>
-                <Item>User Profile</Item>
-                <Item>Notification Settings</Item>
-                <Item>Other Settings</Item>
+                <Item Translatable="1">User Profile</Item>
+                <Item Translatable="1">Notification Settings</Item>
+                <Item Translatable="1">Other Settings</Item>
             </Array>
         </Setting>
     </ConfigItem>
@@ -4473,8 +4489,8 @@ via the Preferences button after logging in.
         <SubGroup>Frontend::Customer::Preferences</SubGroup>
         <Setting>
             <Array>
-                <Item>User Profile</Item>
-                <Item>Other Settings</Item>
+                <Item Translatable="1">User Profile</Item>
+                <Item Translatable="1">Other Settings</Item>
             </Array>
         </Setting>
     </ConfigItem>
@@ -4637,6 +4653,7 @@ via the Preferences button after logging in.
                     <JavaScript>thirdparty/fullcalendar-2.4.0/fullcalendar.min.js</JavaScript>
                     <JavaScript>thirdparty/d3-3.5.6/d3.min.js</JavaScript>
                     <JavaScript>thirdparty/nvd3-1.7.1/nvd3.min.js</JavaScript>
+                    <JavaScript>thirdparty/nvd3-1.7.1/models/OTRSLineChart.js</JavaScript>
                     <JavaScript>thirdparty/nvd3-1.7.1/models/OTRSMultiBarChart.js</JavaScript>
                     <JavaScript>thirdparty/nvd3-1.7.1/models/OTRSStackedAreaChart.js</JavaScript>
                     <JavaScript>thirdparty/canvg-1.4/rgbcolor.js</JavaScript>
@@ -4657,7 +4674,7 @@ via the Preferences button after logging in.
         <SubGroup>Frontend::Agent::ModuleRegistration</SubGroup>
         <Setting>
             <FrontendModuleReg>
-                <Description>Customer Information Center</Description>
+                <Description Translatable="1">Customer Information Center.</Description>
                 <Title></Title>
                 <NavBarName>Customers</NavBarName>
                 <NavBar>
@@ -4697,7 +4714,7 @@ via the Preferences button after logging in.
         <SubGroup>Frontend::Agent::ModuleRegistration</SubGroup>
         <Setting>
             <FrontendModuleReg>
-                <Description>Customer Information Center Search</Description>
+                <Description Translatable="1">Customer Information Center Search.</Description>
                 <Title></Title>
             </FrontendModuleReg>
         </Setting>
@@ -5650,6 +5667,7 @@ via the Preferences button after logging in.
                 <Loader>
                     <JavaScript>thirdparty/d3-3.5.6/d3.min.js</JavaScript>
                     <JavaScript>thirdparty/nvd3-1.7.1/nvd3.min.js</JavaScript>
+                    <JavaScript>thirdparty/nvd3-1.7.1/models/OTRSLineChart.js</JavaScript>
                     <JavaScript>thirdparty/nvd3-1.7.1/models/OTRSMultiBarChart.js</JavaScript>
                     <JavaScript>thirdparty/nvd3-1.7.1/models/OTRSStackedAreaChart.js</JavaScript>
                     <JavaScript>thirdparty/canvg-1.4/rgbcolor.js</JavaScript>
@@ -6798,7 +6816,7 @@ via the Preferences button after logging in.
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Cache::InMemory" Required="1" Valid="1" ConfigLevel="200">
-        <Description Translatable="1">Should the cache data be help in memory?</Description>
+        <Description Translatable="1">Should the cache data be held in memory?</Description>
         <Group>Framework</Group>
         <SubGroup>Core::Cache</SubGroup>
         <Setting>

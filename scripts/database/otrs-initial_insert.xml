@@ -141,7 +141,7 @@
     </Insert>
 
     <Insert Table="link_state">
-        <Data Key="name" Type="Quote">Valid</Data>
+        <Data Key="name" Type="Quote" Translatable="1">Valid</Data>
         <Data Key="valid_id">1</Data>
         <Data Key="create_by">1</Data>
         <Data Key="create_time">current_timestamp</Data>
@@ -1303,7 +1303,7 @@ Fragment treści zgłoszenia:
     <Insert Table="notification_event_item">
         <Data Key="notification_id">1</Data>
         <Data Key="event_key" Type="Quote">VisibleForAgentTooltip</Data>
-        <Data Key="event_value" Type="Quote">You will receive a notification each time a new ticket is created in one of your "My Queues" or "My Services".</Data>
+        <Data Key="event_value" Type="Quote" Translatable="1">You will receive a notification each time a new ticket is created in one of your "My Queues" or "My Services".</Data>
     </Insert>
     <Insert Table="notification_event_item">
         <Data Key="notification_id">1</Data>
@@ -1354,7 +1354,7 @@ Fragment treści zgłoszenia:
     <Insert Table="notification_event_item">
         <Data Key="notification_id">2</Data>
         <Data Key="event_key" Type="Quote">VisibleForAgentTooltip</Data>
-        <Data Key="event_value" Type="Quote">You will receive a notification if a customer sends a follow-up to an unlocked ticket which is in your "My Queues" or "My Services".</Data>
+        <Data Key="event_value" Type="Quote" Translatable="1">You will receive a notification if a customer sends a follow-up to an unlocked ticket which is in your "My Queues" or "My Services".</Data>
     </Insert>
     <Insert Table="notification_event_item">
         <Data Key="notification_id">2</Data>
@@ -1420,7 +1420,7 @@ Fragment treści zgłoszenia:
     <Insert Table="notification_event_item">
         <Data Key="notification_id">3</Data>
         <Data Key="event_key" Type="Quote">VisibleForAgentTooltip</Data>
-        <Data Key="event_value" Type="Quote">You will receive a notification if a customer sends a follow-up to a locked ticket of which you are the ticket owner or responsible.</Data>
+        <Data Key="event_value" Type="Quote" Translatable="1">You will receive a notification if a customer sends a follow-up to a locked ticket of which you are the ticket owner or responsible.</Data>
     </Insert>
     <Insert Table="notification_event_item">
         <Data Key="notification_id">3</Data>
@@ -1486,7 +1486,7 @@ Fragment treści zgłoszenia:
     <Insert Table="notification_event_item">
         <Data Key="notification_id">4</Data>
         <Data Key="event_key" Type="Quote">VisibleForAgentTooltip</Data>
-        <Data Key="event_value" Type="Quote">You will receive a notification as soon as a ticket owned by you is automatically unlocked.</Data>
+        <Data Key="event_value" Type="Quote" Translatable="1">You will receive a notification as soon as a ticket owned by you is automatically unlocked.</Data>
     </Insert>
     <Insert Table="notification_event_item">
         <Data Key="notification_id">4</Data>
@@ -1635,7 +1635,7 @@ Fragment treści zgłoszenia:
     <Insert Table="notification_event_item">
         <Data Key="notification_id">8</Data>
         <Data Key="event_key" Type="Quote">VisibleForAgentTooltip</Data>
-        <Data Key="event_value" Type="Quote">You will receive a notification if a ticket is moved into one of your "My Queues".</Data>
+        <Data Key="event_value" Type="Quote" Translatable="1">You will receive a notification if a ticket is moved into one of your "My Queues".</Data>
     </Insert>
     <Insert Table="notification_event_item">
         <Data Key="notification_id">8</Data>
@@ -1865,7 +1865,7 @@ Fragment treści zgłoszenia:
     <Insert Table="notification_event_item">
         <Data Key="notification_id">13</Data>
         <Data Key="event_key" Type="Quote">VisibleForAgentTooltip</Data>
-        <Data Key="event_value" Type="Quote">You will receive a notification if a ticket's service is changed to one of your "My Services".</Data>
+        <Data Key="event_value" Type="Quote" Translatable="1">You will receive a notification if a ticket's service is changed to one of your "My Services".</Data>
     </Insert>
     <Insert Table="notification_event_item">
         <Data Key="notification_id">13</Data>

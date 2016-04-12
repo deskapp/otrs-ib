@@ -45,8 +45,8 @@ $Selenium->RunTest(
         # create directory for certificates and private keys
         my $CertPath    = $ConfigObject->Get('Home') . "/var/tmp/certs";
         my $PrivatePath = $ConfigObject->Get('Home') . "/var/tmp/private";
-        File::Path::rmtree( $CertPath );
-        File::Path::rmtree( $PrivatePath );
+        File::Path::rmtree($CertPath);
+        File::Path::rmtree($PrivatePath);
         File::Path::make_path( $CertPath,    { chmod => 0770 } );    ## no critic
         File::Path::make_path( $PrivatePath, { chmod => 0770 } );    ## no critic
 
@@ -59,6 +59,9 @@ $Selenium->RunTest(
             Key   => 'SMIME',
             Value => 0
         );
+
+        # let mod_perl / Apache2::Reload pick up the changed configuration
+        sleep 1;
 
         # navigate to AdminSMIME screen
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AdminSMIME");
@@ -93,7 +96,7 @@ $Selenium->RunTest(
         );
 
         # let mod_perl / Apache2::Reload pick up the changed configuration
-        sleep 3;
+        sleep 1;
 
         # refresh AdminSMIME screen
         $Selenium->VerifiedRefresh();
@@ -121,7 +124,7 @@ $Selenium->RunTest(
         );
 
         # let mod_perl / Apache2::Reload pick up the changed configuration
-        sleep 3;
+        sleep 1;
 
         # refresh AdminSMIME screen
         $Selenium->VerifiedRefresh();
