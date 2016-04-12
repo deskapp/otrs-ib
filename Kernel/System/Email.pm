@@ -221,9 +221,18 @@ sub Send {
 
     # build header
     my %Header;
-    if ( IsHashRefWithData( $Param{CustomHeaders} ) ) {
-        %Header = %{ $Param{CustomHeaders} };
+
+    my $DefaultHeaders = $ConfigObject->Get('Sendmail::DefaultHeaders') || {};
+    if ( IsHashRefWithData($DefaultHeaders) ) {
+        %Header = %{$DefaultHeaders};
     }
+
+    if ( IsHashRefWithData( $Param{CustomHeaders} ) ) {
+        for my $HeaderName ( sort keys %{ $Param{CustomHeaders} } ) {
+            $Header{$HeaderName} = $Param{CustomHeaders}->{$HeaderName};
+        }
+    }
+
     ATTRIBUTE:
     for my $Attribute (qw(From To Cc Subject Charset Reply-To)) {
         next ATTRIBUTE if !$Param{$Attribute};
@@ -277,14 +286,18 @@ sub Send {
 
     }
 
+    # Set this to undef by default to avoid having a value like "MIME-tools 5.507 (Entity 5.507)"
+    # which could lead to the mail being treated as SPAM.
+    $Header{'X-Mailer'} = undef;
     if ( !$ConfigObject->Get('Secure::DisableBanner') ) {
-        if ($ConfigObject->Get('EmailHeader::XMailer')) {
+        if ( $ConfigObject->Get('EmailHeader::XMailer') ) {
             $Header{'X-Mailer'} = $ConfigObject->Get('EmailHeader::XMailer');
         }
-        if ($ConfigObject->Get('EmailHeader::XPoweredBy')) {
+        if ( $ConfigObject->Get('EmailHeader::XPoweredBy') ) {
             $Header{'X-Powered-By'} = $ConfigObject->Get('EmailHeader::XPoweredBy');
         }
     }
+
     $Header{Type} = $Param{MimeType} || 'text/plain';
 
     # define email encoding

@@ -377,7 +377,7 @@ sub LoadDefaults {
     # --------------------------------------------------- #
     # authentication settings                             #
     # (enable what you need, auth against otrs db,        #
-    # against LDAP directory, against HTTP basic auth      #
+    # against LDAP directory, against HTTP basic auth     #
     # or against Radius server)                           #
     # --------------------------------------------------- #
     # This is the auth. module against the otrs db
@@ -1463,7 +1463,7 @@ via the Preferences button after logging in.
 
             # note: Login, Email and CustomerID needed!
             # var, frontend, storage, shown (1=always,2=lite), required, storage-type, http-link, readonly, http-link-target, link class(es)
-            [ 'UserTitle',      Translatable('Title'),      'title',      1, 0, 'var', '', 0 ],
+            [ 'UserTitle',      Translatable('Title or salutation'), 'title',  1, 0, 'var', '', 0 ],
             [ 'UserFirstname',  Translatable('Firstname'),  'first_name', 1, 1, 'var', '', 0 ],
             [ 'UserLastname',   Translatable('Lastname'),   'last_name',  1, 1, 'var', '', 0 ],
             [ 'UserLogin',      Translatable('Username'),   'login',      1, 1, 'var', '', 0 ],
@@ -1584,7 +1584,7 @@ via the Preferences button after logging in.
         CustomerCompanyValid           => 'valid_id',
         CustomerCompanyListFields      => [ 'customer_id', 'name' ],
         CustomerCompanySearchFields    => ['customer_id', 'name'],
-        CustomerCompanySearchPrefix    => '',
+        CustomerCompanySearchPrefix    => '*',
         CustomerCompanySearchSuffix    => '*',
         CustomerCompanySearchListLimit => 250,
         CacheTTL                       => 60 * 60 * 24, # use 0 to turn off cache
@@ -1812,6 +1812,8 @@ sub Set {
     return 1;
 }
 
+## nofilter(TidyAll::Plugin::OTRS::Perl::Translatable)
+
 =item Translatable()
 
 this is a no-op to mark a text as translatable in the Perl code.
@@ -1998,7 +2000,7 @@ sub new {
                 $File =~ s/^\///g;
                 $File =~ s/\/\//\//g;
                 $File =~ s/\//::/g;
-                $File =~ s/.pm//g;
+                $File =~ s/\.pm$//g;
                 $File->Load($Self);
             }
             else {

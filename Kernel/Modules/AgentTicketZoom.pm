@@ -1034,7 +1034,7 @@ sub MaskAgentZoom {
                 Link  => '#',
                 Class => 'ClusterLink',
                 Items => $MenuClusters{$Cluster}->{Items},
-                }
+                },
         }
 
         # display all items
@@ -2847,22 +2847,13 @@ sub _ArticleMenu {
                 # use this array twice (also for Reply All), so copy it first
                 my @StandardResponseArrayReplyAll = @StandardResponseArray;
 
-                unshift(
-                    @StandardResponseArray,
-                    {
-                        Key   => '0',
-                        Value => '- '
-                            . $LayoutObject->{LanguageObject}->Translate('Reply') . ' -',
-                        Selected => 1,
-                    }
-                );
-
                 # build HTML string
                 my $StandardResponsesStrg = $LayoutObject->BuildSelection(
-                    Name  => 'ResponseID',
-                    ID    => 'ResponseID',
-                    Class => 'Modernize Small',
-                    Data  => \@StandardResponseArray,
+                    Name         => 'ResponseID',
+                    ID           => 'ResponseID',
+                    Class        => 'Modernize Small',
+                    Data         => \@StandardResponseArray,
+                    PossibleNone => 1,
                 );
 
                 push @MenuItems, {
@@ -2906,21 +2897,13 @@ sub _ArticleMenu {
                     }
                 }
                 if ( $RecipientCount > 1 ) {
-                    unshift(
-                        @StandardResponseArrayReplyAll,
-                        {
-                            Key   => '0',
-                            Value => '- '
-                                . $LayoutObject->{LanguageObject}->Translate('Reply All') . ' -',
-                            Selected => 1,
-                        }
-                    );
 
                     $StandardResponsesStrg = $LayoutObject->BuildSelection(
                         Name  => 'ResponseID',
                         ID    => 'ResponseIDAll' . $Article{ArticleID},
                         Class => 'Modernize Small',
                         Data  => \@StandardResponseArrayReplyAll,
+                        PossibleNone => 1
                     );
 
                     push @MenuItems, {
@@ -2990,23 +2973,13 @@ sub _ArticleMenu {
                         }
                     } sort values %StandardForwardHash;
 
-                    unshift(
-                        @StandardForwardArray,
-                        {
-                            Key   => '0',
-                            Value => '- '
-                                . $LayoutObject->{LanguageObject}->Translate('Forward')
-                                . ' -',
-                            Selected => 1,
-                        }
-                    );
-
                     # build HTML string
                     my $StandardForwardsStrg = $LayoutObject->BuildSelection(
-                        Name  => 'ForwardTemplateID',
-                        ID    => 'ForwardTemplateID',
-                        Class => 'Modernize Small',
-                        Data  => \@StandardForwardArray,
+                        Name         => 'ForwardTemplateID',
+                        ID           => 'ForwardTemplateID',
+                        Class        => 'Modernize Small',
+                        Data         => \@StandardForwardArray,
+                        PossibleNone => 1
                     );
 
                     push @MenuItems, {
