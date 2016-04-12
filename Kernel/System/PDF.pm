@@ -101,7 +101,7 @@ sub DocumentNew {
 
     my $PDFCreator = '';    # set to empty value if Secure::DisableBanner is active
     if ( !$ConfigObject->Get('Secure::DisableBanner') ) {
-        my $PDFCreator = $ConfigObject->Get('PDF::Creator') || 'OTRS PDF Creator';
+        $PDFCreator = $ConfigObject->Get('PDF::Creator') || 'OTRS PDF Creator';
     }
 
     # set document title
