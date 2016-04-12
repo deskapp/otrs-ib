@@ -9,7 +9,7 @@ Content-Type: text/html; charset=utf-8;
 [% IF Data.ContentDisposition -%]
 Content-Disposition: [% Data.ContentDisposition %]
 [% END -%]
-[% IF !Config('Secure::DisableBanner') && IF Config("HTTPHeader::XPoweredBy") -%]
+[% IF !Config('Secure::DisableBanner') && Config("HTTPHeader::XPoweredBy") -%]
 X-Powered-By: [% Config("HTTPHeader::XPoweredBy") %]
 [% END -%]
 X-UA-Compatible: IE=edge,chrome=1
