@@ -1,4 +1,10 @@
 #5.0.10 2016-??-??
+ - 2016-04-15 Fixed bug#[12008](http://bugs.otrs.org/show_bug.cgi?id=12008) - Problem with UTF-8 argument passed to otrs.Console.pl.
+ - 2016-04-15 Fixed bug#[11171](http://bugs.otrs.org/show_bug.cgi?id=11171) - Missing translation entries.
+ - 2016-04-15 Fixed bug#[11996](http://bugs.otrs.org/show_bug.cgi?id=11996) - AgentCustomerSearch causes log errors.
+ - 2016-04-15 Fixed bug#[11430](http://bugs.otrs.org/show_bug.cgi?id=11430) - (Ticket )Cache won't get updated on DynamicField ValueDelete.
+ - 2016-04-15 Fixed bug#[11994](http://bugs.otrs.org/show_bug.cgi?id=11994) - Activating  PreferencesGroups###CSVSeparator triggers internal server error.
+ - 2016-04-15 Fixed bug#[11992](http://bugs.otrs.org/show_bug.cgi?id=11992) - Cannot add or update a child row: a foreign key constraint fails when saving customer user theme.
  - 2016-04-14 Daemon::Log::RotationType option added.
  - 2016-04-12 Added ssha256 password hash type login support for backward compatibility.
  - 2016-04-12 Fixed bug#[11749](http://bugs.otrs.org/show_bug.cgi?id=11749) - Customer Search: attributes can't add with '+'.
