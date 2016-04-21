@@ -53,8 +53,8 @@ use CGI::Carp ();
 use Apache::DBI;
 
 # enable this if you use mysql
-#use DBD::mysql ();
-#use Kernel::System::DB::mysql;
+use DBD::mysql ();
+use Kernel::System::DB::mysql;
 
 # enable this if you use postgresql
 #use DBD::Pg ();

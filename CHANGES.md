@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-04-21 Frequently used OTRS modules preload added.
  - 2016-04-20 Image pasting as data URI reenabled.
  - 2016-04-19 Added ExtFQDN option, parameter name fixed, internal data removed from some Message-IDs.
  - 2016-04-15 Added possibility to use multiple named captures in Postmaster filters, thanks to Renée Bäcker.
