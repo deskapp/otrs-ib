@@ -1473,6 +1473,91 @@ sub _TicketGetFirstResponse {
     return %Data;
 }
 
+sub _TicketGetSolutionStart {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    for my $Needed (qw(TicketID Ticket)) {
+        if ( !defined $Param{$Needed} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message => "Need $Needed!"
+            );
+            return;
+        }
+    }
+
+    my %Data;
+
+    # in SolutionStartResetOnReopen mode find solution start event searching
+    # for first history event of type StateUpdate or NewTicket after
+    # last closed-type history entry; use first entry if no such history entry
+    # found
+    if ( $Kernel::OM->Get('Kernel::Config')->Get('Ticket::SolutionStartResetOnReopen') ) {
+
+        # get close state types (ticket state ID's as hash keys)
+        my %ClosedIDs = $Kernel::OM->Get('Kernel::System::State')->StateGetStatesByType(
+            StateType => ['closed'],
+            Result    => 'HASH',
+        );
+
+        return if !%ClosedIDs;
+
+        # Get id for history types StateUpdate and NewTicket
+        my @HistoryTypeIDs;
+        for my $HistoryType (qw ( StateUpdate NewTicket )) {
+            push @HistoryTypeIDs, $Self->HistoryTypeLookup( Type => $HistoryType );
+        }
+
+        # get database object
+        my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
+
+        # get all history events of type StateUpdate and NewTicket (both can change ticket state)
+        return if !$DBObject->Prepare(
+            SQL => "
+                SELECT id, create_time, state_id
+                FROM ticket_history
+                WHERE ticket_id = ?
+                   AND history_type_id IN  (${\(join ', ', sort @HistoryTypeIDs)})
+                ORDER BY create_time ASC, id ASC",
+            Bind  => [ \$Param{TicketID} ],
+        );
+
+        # walk through all history items found and find solution start event;
+        # use first event by default
+        my $TickedClosedInPrevStateChange = 0;
+        while ( my @Row = $DBObject->FetchrowArray() ) {
+
+            if ( ( $TickedClosedInPrevStateChange && ! exists $ClosedIDs{$Row[2]} )
+                    || ! defined $Data{SolutionStartTime} ) {
+                $Data{SolutionStartTime} = $Row[1];
+                $Data{SolutionStartHistoryID} = $Row[0];
+            }
+
+            # set closed in prev state change if this history item has closed type
+            if ( exists $ClosedIDs{$Row[2]} ) {
+                $TickedClosedInPrevStateChange = 1;
+            }
+            else {
+                $TickedClosedInPrevStateChange = 0;
+            }
+
+        }
+
+    }
+
+    # use ticket creation time and SolutionStartHistoryID=0 if
+    # not in SolutionStartResetOnReopen mode (default OTRS mode)
+    # or searching in history not succeeded in SolutionStartResetOnReopen
+    # for some reason (should not happen)
+    if ( ! defined $Data{SolutionStartTime} ) {
+        $Data{SolutionStartTime} = $Param{Ticket}->{Created};
+        $Data{SolutionStartHistoryID} = 0;
+    }
+
+    return %Data;
+}
+
 sub _TicketGetClosed {
     my ( $Self, %Param ) = @_;
 
@@ -1485,6 +1570,22 @@ sub _TicketGetClosed {
             );
             return;
         }
+    }
+
+    # find solution start event
+    my $SolutionStartTime;
+    my $SolutionStartHistoryID;
+
+    my %SolutionStart = $Self->_TicketGetSolutionStart(%Param);
+
+    if (%SolutionStart) {
+        $SolutionStartTime = $SolutionStart{SolutionStartTime};
+        $SolutionStartHistoryID = $SolutionStart{SolutionStartHistoryID};
+    }
+    else {
+        # use ticket creation time as fallback
+        $SolutionStartTime = $Param{TicketID}->{Created};
+        $SolutionStartHistoryID = 0;
     }
 
     # get close state types
@@ -1510,8 +1611,14 @@ sub _TicketGetClosed {
             WHERE ticket_id = ?
                AND state_id IN (${\(join ', ', sort @List)})
                AND history_type_id IN  (${\(join ', ', sort @HistoryTypeIDs)})
+               AND ( (create_time >= ?) OR ( (create_time = ?) AND (id > ?) ) )
             ",
-        Bind => [ \$Param{TicketID} ],
+        Bind  => [
+            \$Param{TicketID},
+            \$SolutionStartTime,
+            \$SolutionStartTime,
+            \$SolutionStartHistoryID
+        ],
     );
 
     my %Data;
@@ -1538,7 +1645,7 @@ sub _TicketGetClosed {
 
     # get unix time stamps
     my $CreateTime = $TimeObject->TimeStamp2SystemTime(
-        String => $Param{Ticket}->{Created},
+        String => $SolutionStartTime,
     );
     my $SolutionTime = $TimeObject->TimeStamp2SystemTime(
         String => $Data{Closed},
@@ -2910,12 +3017,28 @@ sub TicketEscalationIndexBuild {
         }
         else {
 
+            # find solution start event
+            my $SolutionStartTime;
+
+            my %SolutionStart = $Self->_TicketGetSolutionStart(
+                TicketID => $Ticket{TicketID},
+                Ticket   => \%Ticket,
+            );
+
+            if (%SolutionStart) {
+                $SolutionStartTime = $SolutionStart{SolutionStartTime};
+            }
+            else {
+                # use ticket creation time if not found
+                $SolutionStartTime = $Ticket{Created};
+            }
+
             # get time object
             my $TimeObject = $Kernel::OM->Get('Kernel::System::Time');
 
             my $DestinationTime = $TimeObject->DestinationTime(
                 StartTime => $TimeObject->TimeStamp2SystemTime(
-                    String => $Ticket{Created}
+                    String => $SolutionStartTime
                 ),
                 Time     => $Escalation{SolutionTime} * 60,
                 Calendar => $Escalation{Calendar},
