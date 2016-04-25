@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-04-25 Fixed parsing CSV data with quoted values containing newlines.
  - 2016-04-25 SolutionStartResetOnReopen option added.
  - 2016-04-22 Added possibility to set the ticket title in Postmaster filters, thanks to Renée Bäcker.
  - 2016-04-21 Frequently used OTRS modules preload added.
