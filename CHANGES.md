@@ -1,4 +1,5 @@
 #5.0.10 2016-??-??
+ - 2016-04-26 Added option to disable nag notifications.
  - 2016-04-25 Fixed parsing CSV data with quoted values containing newlines.
  - 2016-04-25 SolutionStartResetOnReopen option added.
  - 2016-04-22 Fixed bug#[12017](http://bugs.otrs.org/show_bug.cgi?id=12017) - Modernized forms do not work as exspected in conjunction with ACLs.
