@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-04-27 Fixed wrong proposed default article type when replying/forwarding.
  - 2016-04-26 Unlocked options to disable nag notifications.
  - 2016-04-25 Fixed parsing CSV data with quoted values containing newlines.
  - 2016-04-25 SolutionStartResetOnReopen option added.
