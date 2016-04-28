@@ -1,4 +1,5 @@
 #5.0.10 2016-??-??
+ - 2016-04-28 Fixed error log flooding with less important messages.
  - 2016-04-27 Added extended agent properties synchronization from LDAP backend.
  - 2016-04-27 Fixed wrong proposed default article type when replying/forwarding.
  - 2016-04-27 Fixed bug#[11783](http://bugs.otrs.org/show_bug.cgi?id=11783) - EscalationsCheck alwasy triggers every Event.
