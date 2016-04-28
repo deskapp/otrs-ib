@@ -2,6 +2,8 @@
  - 2016-04-27 Added extended agent properties synchronization from LDAP backend.
  - 2016-04-27 Fixed wrong proposed default article type when replying/forwarding.
  - 2016-04-26 Unlocked options to disable nag notifications.
+ - 2016-04-26 Added possibility to push custom data directly from Perl code to JavaScript without having to embed it into templates.
+ - 2016-04-26 Added possibility to translate strings directly in JavaScript files.
  - 2016-04-25 Fixed parsing CSV data with quoted values containing newlines.
  - 2016-04-25 SolutionStartResetOnReopen option added.
  - 2016-04-22 Added possibility to set the ticket title in Postmaster filters, thanks to Renée Bäcker.
@@ -64,6 +66,9 @@
  - 2015-11-27 Improved command Maint::Ticket::InvalidUserCleanup. It can now now both unlock tickets of invalid users and also (optionally) change their state to make sure they will not be overlooked. Thanks to Moritz Lenz @ noris networks.
 
 #5.0.10 2016-??-??
+ - 2016-04-27 Fixed bug#[11783](http://bugs.otrs.org/show_bug.cgi?id=11783) - EscalationsCheck alwasy triggers every Event.
+ - 2016-04-26 Improved the way user last used zoom view type is stored for Timeline view in OTRS Business Solution™.
+ - 2016-04-25 Fixed bug#[11729](http://bugs.otrs.org/show_bug.cgi?id=11729) - FAQ zoom elements are not collapsed correctly in IE if iframes are empty.
  - 2016-04-22 Fixed bug#[12017](http://bugs.otrs.org/show_bug.cgi?id=12017) - Modernized forms do not work as exspected in conjunction with ACLs.
  - 2016-04-22 Fixed bug#[12009](http://bugs.otrs.org/show_bug.cgi?id=12009) - Request-URI Too Large  The requested URL's length exceeds the capacity limit for this server.
  - 2016-04-22 Fixed bug#[12015](http://bugs.otrs.org/show_bug.cgi?id=12015) - FollowUpArticleTypeCheck.pm never fulfilled / check if current sender is customer (do nothing).
