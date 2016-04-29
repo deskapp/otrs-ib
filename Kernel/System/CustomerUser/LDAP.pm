@@ -245,12 +245,15 @@ sub CustomerName {
         attrs     => $Self->{CustomerUserMap}->{CustomerUserNameFields},
     );
 
-    if ( $Result->code() ) {
-        $Self->{LogObject}->Log(
-            Priority => 'error',
+    # Result code 4 (LDAP_SIZELIMIT_EXCEEDED) is normal if there
+    # are more items in LDAP than search limit defined in OTRS or
+    # in LDAP server. Avoid spamming logs with such errors.
+    if ( $Result->code() && $Result->code() != 4 ) {
+	    $Self->{LogObject}->Log(
+	        Priority => 'error',
             Message  => 'Search failed! ' . $Result->error(),
         );
-        return;
+		return;
     }
 
     for my $Entry ( $Result->all_entries() ) {
@@ -376,11 +379,13 @@ sub CustomerSearch {
         attrs     => \@Attributes,
     );
 
-    # log ldap errors (ignore LDAP_SIZELIMIT_EXCEEDED errors)
-    if ( $Result->code() && ( $Result->code() != 4 ) ) {
-        $Self->{LogObject}->Log(
-            Priority => 'error',
-            Message  => $Result->error(),
+    # Result code 4 (LDAP_SIZELIMIT_EXCEEDED) is normal if there
+    # are more items in LDAP than search limit defined in OTRS or
+    # in LDAP server. Avoid spamming logs with such errors.
+    if ( $Result->code() && $Result->code() != 4 ) {
+	    $Self->{LogObject}->Log(
+    	    Priority => 'error',
+            Message  => 'Search failed! ' . $Result->error(),
         );
     }
 

@@ -1,4 +1,5 @@
 #3.3.x 2016-??-??
+ - 2016-04-29 Fixed error log flooding with less important messages.
  - 2016-02-18 Upload cache performance fix.
  - 2016-02-10 Improved email address validity check backport to OTRS 3.3.
  - 2016-02-09 Upload cache performance fix.
