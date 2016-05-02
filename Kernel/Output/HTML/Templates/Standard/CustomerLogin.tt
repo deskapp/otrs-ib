@@ -44,7 +44,7 @@
                     <input type="hidden" name="Action" value="Login" />
                     <input type="hidden" name="RequestedURL" value="[% Data.RequestedURL | html %]"/>
                     <input type="hidden" name="Lang" value="[% Env("UserLanguage") | html %]"/>
-                    <input type="hidden" name="TimeOffset" id="TimeOffset" value=""/>
+                    <input type="hidden" name="TimeZoneOffset" id="TimeZoneOffset" value=""/>
                 </form>
             </div>
 [% RenderBlockEnd("PreLogin") %]
@@ -63,7 +63,7 @@
                     <input type="hidden" name="Action" value="Login"/>
                     <input type="hidden" name="RequestedURL" value="[% Data.RequestedURL | html %]"/>
                     <input type="hidden" name="Lang" value="[% Env("UserLanguage") | html %]"/>
-                    <input type="hidden" name="TimeOffset" id="TimeOffset" value=""/>
+                    <input type="hidden" name="TimeZoneOffset" id="TimeZoneOffset" value=""/>
                     <div>
                         <label for="User">[% Translate("User name") | html %]</label>
                         <input autocorrect="off" autocapitalize="off" title="[% Translate("Your user name") | html %]" type="text" name="User" id="User" maxlength="150" />
@@ -98,7 +98,7 @@
 [% RenderBlockStart("LostPassword") %]
             <div id="Reset">
                 <a href="#Login" class="InlineNavigation">&larr; [% Translate("Back") | html %]</a>
-                <h2>[% Translate("Request new password") | html %]</h2>
+                <h2>[% Translate("Request New Password") | html %]</h2>
                 <form class="Floating" action="[% Env("CGIHandle") %]" method="post" enctype="application/x-www-form-urlencoded">
                     <input type="hidden" name="Action" value="CustomerLostPassword" />
                     <input type="hidden" name="Lang" value="[% Env("UserLanguage") | html %]" />

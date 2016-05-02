@@ -174,7 +174,7 @@ $Self->Is(
 );
 
 # values with \n quoted; other not quoted
-my $String = 'c1;c2;c3' . "\n"
+$String = 'c1;c2;c3' . "\n"
     . 'v1;"v2 line1' . "\n" . 'v2 line 2";v3' . "\n";
 $Array = $CSVObject->CSV2Array(
     String    => $String,
@@ -224,7 +224,7 @@ $Self->Is(
 );
 
 # values with \r quoted; other not quoted
-my $String = 'c1;c2;c3' . "\r"
+$String = 'c1ø;c2;c3' . "\r"
     . 'v1;"v2 line1' . "\r" . 'v2 line 2";v3' . "\r";
 $Array = $CSVObject->CSV2Array(
     String    => $String,
@@ -234,7 +234,7 @@ $Array = $CSVObject->CSV2Array(
 
 $Self->Is(
     $Array->[0]->[0] || '',
-    'c1',
+    'c1ø',
     '#6 CSV2Array() - values with \r quoted; other not quoted',
 );
 $Self->Is(
