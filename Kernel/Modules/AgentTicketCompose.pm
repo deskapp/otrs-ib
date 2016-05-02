@@ -1697,20 +1697,7 @@ sub _Mask {
 
         my %Selected;
         if ( $Param{ArticleTypeID} ) {
-
-            # use email-internal article type if replying to article with internal type; otherwise use email-internal
-            my $ArticleTypeSelected = $TicketObject->ArticleTypeLookup( ArticleTypeID => $Param{ArticleTypeID} );
-            if ( $ArticleTypeSelected ) {
-                if ( $ArticleTypeSelected =~ m{internal} ) {
-                    $Selected{SelectedID} = $TicketObject->ArticleTypeLookup( ArticleType => 'email-internal' );
-                }
-                else {
-                    $Selected{SelectedID} = $TicketObject->ArticleTypeLookup( ArticleType => 'email-external' );
-                }
-            }
-            else {
-                $Selected{SelectedValue} = $Config->{DefaultArticleType};
-            }
+            $Selected{SelectedID} = $Param{ArticleTypeID};
         }
         else {
             $Selected{SelectedValue} = $Config->{DefaultArticleType};
