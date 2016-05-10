@@ -1,6 +1,13 @@
 #5.0.10 2016-??-??
+ - 2016-05-09 Fixed bug#[12053](http://bugs.otrs.org/show_bug.cgi?id=12053) - Use of uninitialized value $ModuleDirectory in concatenation (.) or string.
  - 2016-05-05 Added otrs.Console.pl Maint::Monitoring::CheckCounter command.
- - 2016-05-20 Internal article type preseved in AgentTicketCompose and AgentTicketForward.
+ - 2016-05-04 Fixed bug#[12040](http://bugs.otrs.org/show_bug.cgi?id=12040) - Emails are incorrectly attached to tickets.
+ - 2016-05-04 Fixed bug#[12044](http://bugs.otrs.org/show_bug.cgi?id=12044) - PostMaster process crashed if a non existent ticket type is set via PostMaster filter.
+ - 2016-05-04 Fixed bug#[12031](http://bugs.otrs.org/show_bug.cgi?id=12031) - SubSelected class not applied to My Tickets in CustomerTicketOverview Navigation.
+ - 2016-05-04 Fixed bug#[12048](http://bugs.otrs.org/show_bug.cgi?id=12048) - error message with HTML <br> code.
+ - 2016-05-04 Fixed bug#[12049](http://bugs.otrs.org/show_bug.cgi?id=12049) - Encoding problems in REST transport.
+ - 2016-05-03 Added floating information widgets which can easily be added to any link element using data-trigger="floater" (also on runtime). Enable Ticket::Frontend::ZoomCollectMeta and at least one of its related filters nearby in order to have meta information (which matches the configured regex) collected from articles and displayed next to them in AgentTicketZoom (also with floater widgets, if enabled).
+ - 2016-05-02 Internal article type preseved in AgentTicketCompose and AgentTicketForward.
  - 2016-04-29 Fixed bug#[11614](http://bugs.otrs.org/show_bug.cgi?id=11614) - LDAP Auth loses Agent-Group relationships every 2nd login.
  - 2016-04-29 Fixed bug#[12036](http://bugs.otrs.org/show_bug.cgi?id=12036) - Escalation Notification % does not work for short intervals.
  - 2016-04-29 Fixed bug#[12033](http://bugs.otrs.org/show_bug.cgi?id=12033) - Wrong value selected automatically for Responsible in Bulk action..

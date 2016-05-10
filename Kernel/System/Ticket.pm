@@ -6887,7 +6887,7 @@ sub TicketFlagGet {
         $CacheObject->Set(
             Type  => $Self->{CacheType},
             TTL   => $Self->{CacheTTL},
-            Key  => 'TicketFlag::' . $Param{TicketID},
+            Key   => 'TicketFlag::' . $Param{TicketID},
             Value => $Flags,
         );
     }
