@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-05-10 Fixed inline image corruption when uploading file with the same name.
  - 2016-05-05 Added otrs.Console.pl Maint::Monitoring::CheckCounter command.
  - 2016-05-04 Added the possiblity to configure the responsible field as mandatory (enabled by default for AgentTicketResponsible, if responsible feature is enabled), thanks to S7.
  - 2016-05-02 Internal article type preseved in AgentTicketCompose and AgentTicketForward.
