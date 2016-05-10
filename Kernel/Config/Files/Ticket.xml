@@ -2867,6 +2867,17 @@
             </Option>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="Ticket::Frontend::AgentTicketFreeText###ResponsibleMandatory" Required="0" Valid="1">
+        <Description Translatable="1">Sets if ticket responsible must be selected by the agent.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewFreeText</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="Ticket::Frontend::AgentTicketFreeText###State" Required="0" Valid="1">
         <Description Translatable="1">If a note is added by an agent, sets the state of a ticket in the ticket free text screen of the agent interface.</Description>
         <Group>Ticket</Group>
@@ -3639,6 +3650,17 @@
             </Option>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="Ticket::Frontend::AgentTicketClose###ResponsibleMandatory" Required="0" Valid="1">
+        <Description Translatable="1">Sets if ticket responsible must be selected by the agent.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewClose</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="Ticket::Frontend::AgentTicketClose###State" Required="0" Valid="1">
         <Description Translatable="1">If a note is added by an agent, sets the state of a ticket in the close ticket screen of the agent interface.</Description>
         <Group>Ticket</Group>
@@ -3897,6 +3919,17 @@
     </ConfigItem>
     <ConfigItem Name="Ticket::Frontend::AgentTicketNote###Responsible" Required="0" Valid="1">
         <Description Translatable="1">Sets the responsible agent of the ticket in the ticket note screen of the agent interface.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewNote</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Ticket::Frontend::AgentTicketNote###ResponsibleMandatory" Required="0" Valid="1">
+        <Description Translatable="1">Sets if ticket responsible must be selected by the agent.</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::Ticket::ViewNote</SubGroup>
         <Setting>
@@ -4176,6 +4209,17 @@
             </Option>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="Ticket::Frontend::AgentTicketOwner###ResponsibleMandatory" Required="0" Valid="1">
+        <Description Translatable="1">Sets if ticket responsible must be selected by the agent.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewOwner</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="Ticket::Frontend::AgentTicketOwner###State" Required="0" Valid="1">
         <Description Translatable="1">If a note is added by an agent, sets the state of the ticket in the ticket owner screen of a zoomed ticket in the agent interface.</Description>
         <Group>Ticket</Group>
@@ -4435,6 +4479,17 @@
     </ConfigItem>
     <ConfigItem Name="Ticket::Frontend::AgentTicketPending###Responsible" Required="0" Valid="1">
         <Description Translatable="1">Sets the responsible agent of the ticket in the ticket pending screen of a zoomed ticket in the agent interface.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewPending</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Ticket::Frontend::AgentTicketPending###ResponsibleMandatory" Required="0" Valid="1">
+        <Description Translatable="1">Sets if ticket responsible must be selected by the agent.</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::Ticket::ViewPending</SubGroup>
         <Setting>
@@ -4712,6 +4767,17 @@
             </Option>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="Ticket::Frontend::AgentTicketPriority###ResponsibleMandatory" Required="0" Valid="1">
+        <Description Translatable="1">Sets if ticket responsible must be selected by the agent.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewPriority</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="Ticket::Frontend::AgentTicketPriority###State" Required="0" Valid="1">
         <Description Translatable="1">If a note is added by an agent, sets the state of the ticket in the ticket priority screen of a zoomed ticket in the agent interface.</Description>
         <Group>Ticket</Group>
@@ -4972,6 +5038,17 @@
     </ConfigItem>
     <ConfigItem Name="Ticket::Frontend::AgentTicketResponsible###Responsible" Required="0" Valid="1">
         <Description Translatable="1">Sets the responsible agent of the ticket in the ticket responsible screen of the agent interface.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewResponsible</SubGroup>
+        <Setting>
+            <Option SelectedID="1">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Ticket::Frontend::AgentTicketResponsible###ResponsibleMandatory" Required="0" Valid="1">
+        <Description Translatable="1">Sets if ticket responsible must be selected by the agent.</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Agent::Ticket::ViewResponsible</SubGroup>
         <Setting>
@@ -11884,6 +11961,62 @@ Thanks for your help!
                 <Item Key="Value" Translatable="1">Full value</Item>
                 <Item Key="Realname" Translatable="1">Display name</Item>
             </Option>
+        </Setting>
+    </ConfigItem>
+    <!-- collect meta configurations -->
+    <ConfigItem Name="Ticket::Frontend::ZoomCollectMeta" Required="0" Valid="1">
+        <Description Translatable="1">Whether or not to collect meta information from articles using filters configured in Ticket::Frontend::ZoomCollectMetaFilters.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewZoom</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Ticket::Frontend::ZoomCollectMetaFilters###CVE-Mitre" Required="0" Valid="0">
+        <Description Translatable="1">Defines a filter to collect CVE numbers from article texts in AgentTicketZoom. The results will be displayed in a meta box next to the article. Set EnableLinkPreview to 1 if you would like to see a preview of the URL when moving your mouse cursor above the link element. Please note that some websites deny being displayed within an iframe (e.g. Google) and thus won't work with the preview mode.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewZoom</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="RegExp">
+                    <Array>
+                        <Item>(CVE|CAN)\-(\d{3,4})\-(\d{2,})</Item>
+                    </Array>
+                </Item>
+                <Item Key="Meta">
+                    <Hash>
+                        <Item Key="Name">CVE Mitre</Item>
+                        <Item Key="URL">http://cve.mitre.org/cgi-bin/cvename.cgi?name=&lt;MATCH1&gt;-&lt;MATCH2&gt;-&lt;MATCH3&gt;</Item>
+                        <Item Key="Target">_blank</Item>
+                        <Item Key="EnableLinkPreview">1</Item>
+                    </Hash>
+                </Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Ticket::Frontend::ZoomCollectMetaFilters###CVE-Google" Required="0" Valid="0">
+        <Description Translatable="1">Defines a filter to collect CVE numbers from article texts in AgentTicketZoom. The results will be displayed in a meta box next to the article. Set EnableLinkPreview to 1 if you would like to see a preview of the URL when moving your mouse cursor above the link element. Please note that some websites deny being displayed within an iframe (e.g. Google) and thus won't work with the preview mode.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Frontend::Agent::Ticket::ViewZoom</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="RegExp">
+                    <Array>
+                        <Item>(CVE|CAN)\-(\d{3,4})\-(\d{2,})</Item>
+                    </Array>
+                </Item>
+                <Item Key="Meta">
+                    <Hash>
+                        <Item Key="Name">CVE Google Search</Item>
+                        <Item Key="URL">http://google.com/search?q=&lt;MATCH1&gt;-&lt;MATCH2&gt;-&lt;MATCH3&gt;</Item>
+                        <Item Key="Target">_blank</Item>
+                        <Item Key="EnableLinkPreview">0</Item>
+                    </Hash>
+                </Item>
+            </Hash>
         </Setting>
     </ConfigItem>
 </otrs_config>

@@ -7997,6 +7997,22 @@ You can log in via the following URL:
             </Hash>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="PreferencesGroups###TimeZone" Required="0" Valid="1">
+        <Description Translatable="1">Defines the config parameters of this item, to be shown in the preferences view.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Frontend::Agent::Preferences</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::Preferences::TimeZone</Item>
+                <Item Key="Column">User Profile</Item>
+                <Item Key="Label" Translatable="1">Time Zone</Item>
+                <Item Key="Key" Translatable="1">Time Zone</Item>
+                <Item Key="PrefKey">UserTimeZone</Item>
+                <Item Key="Prio">3500</Item>
+                <Item Key="Active">1</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="PreferencesGroups###OutOfOffice" Required="0" Valid="1">
         <Description Translatable="1">Defines the config parameters of this item, to be shown in the preferences view.</Description>
         <Group>Framework</Group>
@@ -8010,22 +8026,6 @@ You can log in via the following URL:
                 <Item Key="Key" Translatable="1"></Item>
                 <Item Key="PrefKey">UserOutOfOffice</Item>
                 <Item Key="Prio">4000</Item>
-                <Item Key="Active">1</Item>
-            </Hash>
-        </Setting>
-    </ConfigItem>
-    <ConfigItem Name="PreferencesGroups###TimeZone" Required="0" Valid="1">
-        <Description Translatable="1">Defines the config parameters of this item, to be shown in the preferences view.</Description>
-        <Group>Framework</Group>
-        <SubGroup>Frontend::Agent::Preferences</SubGroup>
-        <Setting>
-            <Hash>
-                <Item Key="Module">Kernel::Output::HTML::Preferences::TimeZone</Item>
-                <Item Key="Column">User Profile</Item>
-                <Item Key="Label" Translatable="1">Time Zone</Item>
-                <Item Key="Key" Translatable="1">Time Zone</Item>
-                <Item Key="PrefKey">UserTimeZone</Item>
-                <Item Key="Prio">5000</Item>
                 <Item Key="Active">1</Item>
             </Hash>
         </Setting>
@@ -8721,7 +8721,22 @@ via the Preferences button after logging in.
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="CustomerPreferencesGroups###Theme" Required="0" Valid="1">
+    <ConfigItem Name="CustomerPreferencesGroups###TimeZone" Required="0" Valid="1">
+        <Description Translatable="1">Defines all the parameters for this item in the customer preferences.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Frontend::Customer::Preferences</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::Preferences::TimeZone</Item>
+                <Item Key="Column">User Profile</Item>
+                <Item Key="Label" Translatable="1">Time Zone</Item>
+                <Item Key="Key" Translatable="1">Time Zone</Item>
+                <Item Key="PrefKey">UserTimeZone</Item>
+                <Item Key="Prio">2500</Item>
+                <Item Key="Active">1</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>    <ConfigItem Name="CustomerPreferencesGroups###Theme" Required="0" Valid="1">
         <Description Translatable="1">Defines all the parameters for this item in the customer preferences.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Customer::Preferences</SubGroup>
@@ -8734,22 +8749,6 @@ via the Preferences button after logging in.
                 <Item Key="PrefKey">UserTheme</Item>
                 <Item Key="Prio">1000</Item>
                 <Item Key="Active">0</Item>
-            </Hash>
-        </Setting>
-    </ConfigItem>
-    <ConfigItem Name="CustomerPreferencesGroups###TimeZone" Required="0" Valid="1">
-        <Description Translatable="1">Defines all the parameters for this item in the customer preferences.</Description>
-        <Group>Framework</Group>
-        <SubGroup>Frontend::Customer::Preferences</SubGroup>
-        <Setting>
-            <Hash>
-                <Item Key="Module">Kernel::Output::HTML::Preferences::TimeZone</Item>
-                <Item Key="Column">User Profile</Item>
-                <Item Key="Label" Translatable="1">Time Zone</Item>
-                <Item Key="Key" Translatable="1">Time Zone</Item>
-                <Item Key="PrefKey">UserTimeZone</Item>
-                <Item Key="Prio">5000</Item>
-                <Item Key="Active">1</Item>
             </Hash>
         </Setting>
     </ConfigItem>
@@ -10632,6 +10631,7 @@ via the Preferences button after logging in.
                 <Item>Core.UI.Accordion.js</Item>
                 <Item>Core.UI.Datepicker.js</Item>
                 <Item>Core.UI.DnD.js</Item>
+                <Item>Core.UI.Floater.js</Item>
                 <Item>Core.UI.Resizable.js</Item>
                 <Item>Core.UI.Table.js</Item>
                 <Item>Core.UI.Accessibility.js</Item>
