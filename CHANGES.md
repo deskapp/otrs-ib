@@ -1,4 +1,5 @@
 #5.0.10 2016-??-??
+ - 2016-05-10 Fixed inline image corruption when uploading file with the same name.
  - 2016-05-09 Fixed bug#[12053](http://bugs.otrs.org/show_bug.cgi?id=12053) - Use of uninitialized value $ModuleDirectory in concatenation (.) or string.
  - 2016-05-05 Added otrs.Console.pl Maint::Monitoring::CheckCounter command.
  - 2016-05-04 Fixed bug#[12040](http://bugs.otrs.org/show_bug.cgi?id=12040) - Emails are incorrectly attached to tickets.
