@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-05-11 Fixed IMAPS server TLS certificate verification.
  - 2016-05-10 Allow X-OTRS-Loop to reenable autoresponses.
  - 2016-05-10 Fixed inline image corruption when uploading file with the same name.
  - 2016-05-05 Added otrs.Console.pl Maint::Monitoring::CheckCounter command.
