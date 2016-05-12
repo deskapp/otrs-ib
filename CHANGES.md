@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-05-12 Added MailReprocessSpoolDir option.
  - 2016-05-11 Fixed IMAPS server TLS certificate verification.
  - 2016-05-10 Allow X-OTRS-Loop to reenable autoresponses.
  - 2016-05-10 Fixed inline image corruption when uploading file with the same name.
