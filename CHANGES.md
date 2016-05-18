@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-05-18 Fixed missing OTRS tags in AdminTemplate after Frontend::RichText change.
  - 2016-05-12 Added MailReprocessSpoolDir option.
  - 2016-05-11 Fixed IMAPS server TLS certificate verification.
  - 2016-05-10 Allow X-OTRS-Loop to reenable autoresponses.
