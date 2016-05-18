@@ -366,7 +366,9 @@ sub TransportSettingsDisplayGet {
         $Param{$Key} = $Param{Data}->{$Key}->[0];
     }
 
+    # get config object
     my $ConfigObject      = $Kernel::OM->Get('Kernel::Config');
+
     my $Home              = $ConfigObject->Get('Home');
     my $TemplateDir       = "$Home/Kernel/Output/HTML/Templates/Standard/NotificationEvent/Email";
     my $CustomTemplateDir = "$Home/Custom/Kernel/Output/HTML/Templates/Standard/NotificationEvent/Email";
@@ -418,10 +420,6 @@ sub TransportSettingsDisplayGet {
     );
 
     # security fields
-
-    # get config object
-    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
-
     my %SecuritySignEncryptOptions;
 
     if ( $ConfigObject->Get('PGP') ) {
