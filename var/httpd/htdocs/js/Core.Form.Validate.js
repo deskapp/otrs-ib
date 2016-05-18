@@ -764,7 +764,7 @@ Core.Form.Validate = (function (TargetNS) {
                 $ServerErrors.eq(0).focus();
             };
 
-            Core.UI.Dialog.ShowAlert(Core.Config.Get('ValidateServerErrorTitle'), Core.Config.Get('ValidateServerErrorMsg'), ServerErrorDialogCloseFunction);
+            Core.UI.Dialog.ShowAlert(Core.Language.Translate('Error'), Core.Language.Translate('One or more errors occurred!'), ServerErrorDialogCloseFunction);
         }
     };
 
@@ -889,6 +889,8 @@ Core.Form.Validate = (function (TargetNS) {
             .find("input:not([type='hidden']), textarea, select")
             .removeClass(Options.IgnoreClass);
     };
+
+    Core.Init.RegisterNamespace(TargetNS, 'APP_GLOBAL');
 
     return TargetNS;
 }(Core.Form.Validate || {}));

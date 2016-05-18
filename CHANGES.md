@@ -77,7 +77,18 @@
  - 2015-17-27 Improved Generic Agent performance at deleting old execution times. Thanks to Moritz Lenz @ noris networks.
  - 2015-11-27 Improved command Maint::Ticket::InvalidUserCleanup. It can now now both unlock tickets of invalid users and also (optionally) change their state to make sure they will not be overlooked. Thanks to Moritz Lenz @ noris networks.
 
-#5.0.10 2016-??-??
+#5.0.11 2016-??-??
+ - 2016-05-15 Added possibility to sign and/or encrypt ticket notifications.
+ - 2016-05-13 Fixed bug#[12045](http://bugs.otrs.org/show_bug.cgi?id=12045) - Not possible to create a Ticket using TransitionAction::TicketCreate with Owner instead of OwnerID.
+ - 2016-05-12 Fixed bug#[12062](http://bugs.otrs.org/show_bug.cgi?id=12062) - From field with dot is filled with spaces.
+ - 2016-05-12 Fixed bug#[9345](http://bugs.otrs.org/show_bug.cgi?id=9345) - OTRS exceeds 998 character limit in References Line of E-Mail Header.
+ - 2016-05-12 Fixed bug#[12061](http://bugs.otrs.org/show_bug.cgi?id=12061) - Secure::DisableBanner is ignored in Notification Mail.
+ - 2016-05-12 Fixed bug#[12058](http://bugs.otrs.org/show_bug.cgi?id=12058) - Attribute CreatedQueues and CreatedQueueIDs in dashboard widget does not work.
+
+#5.0.10 2016-05-17
+ - 2016-05-11 Updated translations, thanks to all translators.
+ - 2016-05-11 Re-added missing console command Dev::Tools::GenericInterface::DebugRead, thanks to Rolf Schmidt.
+ - 2016-05-10 Updated translations, thanks to all translators.
  - 2016-05-09 Fixed bug#[12053](http://bugs.otrs.org/show_bug.cgi?id=12053) - Use of uninitialized value $ModuleDirectory in concatenation (.) or string.
  - 2016-05-04 Fixed bug#[12040](http://bugs.otrs.org/show_bug.cgi?id=12040) - Emails are incorrectly attached to tickets.
  - 2016-05-04 Fixed bug#[12044](http://bugs.otrs.org/show_bug.cgi?id=12044) - PostMaster process crashed if a non existent ticket type is set via PostMaster filter.
