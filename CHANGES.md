@@ -1,8 +1,18 @@
-#5.0.10 2016-??-??
+#5.0.11 2016-??-??
+ - 2016-05-13 Fixed bug#[12045](http://bugs.otrs.org/show_bug.cgi?id=12045) - Not possible to create a Ticket using TransitionAction::TicketCreate with Owner instead of OwnerID.
  - 2016-05-12 Added MailReprocessSpoolDir option.
+ - 2016-05-12 Fixed bug#[12062](http://bugs.otrs.org/show_bug.cgi?id=12062) - From field with dot is filled with spaces.
+ - 2016-05-12 Fixed bug#[9345](http://bugs.otrs.org/show_bug.cgi?id=9345) - OTRS exceeds 998 character limit in References Line of E-Mail Header.
+ - 2016-05-12 Fixed bug#[12061](http://bugs.otrs.org/show_bug.cgi?id=12061) - Secure::DisableBanner is ignored in Notification Mail.
+ - 2016-05-12 Fixed bug#[12058](http://bugs.otrs.org/show_bug.cgi?id=12058) - Attribute CreatedQueues and CreatedQueueIDs in dashboard widget does not work.
+
+#5.0.10 2016-05-17
+ - 2016-05-11 Updated translations, thanks to all translators.
+ - 2016-05-11 Re-added missing console command Dev::Tools::GenericInterface::DebugRead, thanks to Rolf Schmidt.
  - 2016-05-11 Fixed IMAPS server TLS certificate verification.
  - 2016-05-10 Allow X-OTRS-Loop to reenable autoresponses.
  - 2016-05-10 Fixed inline image corruption when uploading file with the same name.
+ - 2016-05-10 Updated translations, thanks to all translators.
  - 2016-05-09 Fixed bug#[12053](http://bugs.otrs.org/show_bug.cgi?id=12053) - Use of uninitialized value $ModuleDirectory in concatenation (.) or string.
  - 2016-05-05 Added otrs.Console.pl Maint::Monitoring::CheckCounter command.
  - 2016-05-04 Fixed bug#[12040](http://bugs.otrs.org/show_bug.cgi?id=12040) - Emails are incorrectly attached to tickets.
