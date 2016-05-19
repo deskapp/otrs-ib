@@ -1,4 +1,5 @@
 #5.0.11 2016-??-??
+ - 2016-05-19 Faster new stat add operation.
  - 2016-05-18 Added follow up detection based on Message-ID e-mail header.
  - 2016-05-18 Fixed missing OTRS tags in AdminTemplate after Frontend::RichText change.
  - 2016-05-13 Fixed bug#[12045](http://bugs.otrs.org/show_bug.cgi?id=12045) - Not possible to create a Ticket using TransitionAction::TicketCreate with Owner instead of OwnerID.
