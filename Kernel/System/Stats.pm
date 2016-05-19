@@ -1010,6 +1010,7 @@ sub GetStaticFiles {
                 my $Data = $Self->StatsGet(
                     StatID => $StatID,
                     UserID => $Param{UserID},
+                    NoObjectAttributes => 1,
                 );
 
                 # check witch one are static statistics
