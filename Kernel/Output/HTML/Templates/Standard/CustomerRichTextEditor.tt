@@ -16,6 +16,7 @@
     Core.Config.Set('RichText.PreventImagePaste', '[% Config("Frontend::RichText::PreventImagePaste") %]');
     Core.Config.Set('RichText.EditingAreaCSS', "[% Config("Frontend::RichText::EditingAreaCSS") %] body { [% Config("Frontend::RichText::DefaultCSS") %] }");
     Core.Config.Set('RichText.Lang.SplitQuote', '[% Translate('Split Quote') | html %]');
+    Core.Config.Set('RichText.Lang.OpenLink', '[% Translate('Open link') | html %]');
     Core.Config.Set('RichText.Toolbar', [
         ['Bold', 'Italic', 'Underline', 'Strike', '-', 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'Link', 'Unlink', '-', 'Image', 'HorizontalRule', '-', 'Undo', 'Redo', '-', 'Find', 'SpellCheck'],
         '/',

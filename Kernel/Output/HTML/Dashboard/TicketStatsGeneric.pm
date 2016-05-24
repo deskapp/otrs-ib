@@ -114,6 +114,9 @@ sub Run {
         # get the system time
         my $TimeNow = $TimeObject->SystemTime();
 
+        # cache results for 30 min. for todays stats
+        my $CacheTTL = 60 * 30;
+
         if ($Key) {
             $TimeNow = $TimeNow - ( 60 * 60 * 24 * $Key );
 

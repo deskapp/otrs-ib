@@ -129,7 +129,7 @@ Core.UI.RichTextEditor = (function (TargetNS) {
         }
 
         // configure extra plugins
-        ExtraPlugins = 'splitquote';
+        ExtraPlugins = 'splitquote,contextmenu_linkopen';
         if (Core.Config.Get('RichText.SpellChecker')) {
             ExtraPlugins += ',aspell';
         }
