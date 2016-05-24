@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-05-24 Whitelisted characters allowed in filenames for security.
  - 2016-05-19 7 Day Stats performance optimizations.
  - 2016-05-19 Faster new stat add operation.
  - 2016-05-18 Added follow up detection based on Message-ID e-mail header.
