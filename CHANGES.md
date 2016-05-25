@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-05-25 Fixed premature end of script headers error when using long URL.
  - 2016-05-24 Whitelisted characters allowed in filenames for security.
  - 2016-05-19 7 Day Stats performance optimizations.
  - 2016-05-19 Faster new stat add operation.
