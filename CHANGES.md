@@ -1,4 +1,5 @@
 #5.0.11 2016-??-??
+ - 2016-05-25 Fixed premature end of script headers error when using long URL.
  - 2016-05-24 Whitelisted characters allowed in filenames for security.
  - 2016-05-23 Added a context menu entry in richtext editor to allow for opening links in a new tab while editing.
  - 2016-05-23 Added debugging switch for AJAX errors. Set Frontend::AjaxDebug to 1 in order to see more details in case of any "error during ajax communication" errors.
