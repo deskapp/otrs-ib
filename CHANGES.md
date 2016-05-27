@@ -1,4 +1,5 @@
 #5.0.7 2016-??-??
+ - 2016-05-27 Upload cache cleanup command name changed, unit test added.
  - 2016-02-18 Upload cache performance fix.
  - 2016-02-01 Upload cache performance fix.
  - 2016-02-01 Fixed bug#[11820](http://bugs.otrs.org/show_bug.cgi?id=11820) - Match on !~ "int" for external articles not enough.
