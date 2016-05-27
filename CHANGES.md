@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-05-27 Upload cache cleanup command name changed, unit test added.
  - 2016-05-27 Fixed Internal Server Error on attachment removal page reload.
  - 2016-05-25 Fixed premature end of script headers error when using long URL.
  - 2016-05-24 Whitelisted characters allowed in filenames for security.
