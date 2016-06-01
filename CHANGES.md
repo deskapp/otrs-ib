@@ -2,7 +2,13 @@
  - 2016-05-31 Fixed invalid UTF-8 characters stripping when article displaying or forwarding; fixed possible log flooding.
  - 2016-05-27 Upload cache cleanup command name changed, unit test added.
  - 2016-05-27 Fixed Internal Server Error on attachment removal page reload.
+ - 2016-05-27 Fixed bug#[12005](http://bugs.otrs.org/show_bug.cgi?id=12005) - Daemon / Scheduler will not run commands.
+ - 2016-05-27 Fixed bug#[12074](http://bugs.otrs.org/show_bug.cgi?id=12074) - Redundant and confusing code in Kernel/System/TemplateGenerator.pm.
+ - 2016-05-27 Fixed bug#[12018](http://bugs.otrs.org/show_bug.cgi?id=12018) - HTML body not retrieved on by GI operation TicketGet (Added HTMLBodyAsAttachment parameter to retrieve is as an attachment).
+ - 2016-05-27 Fixed dynamic field backend POD, Thanks to Thorsten Eckel.
+ - 2016-05-27 Fixed bug#[12090](http://bugs.otrs.org/show_bug.cgi?id=12090) - 2 second sleep between email fetching causes bad performance on systems with high email traffic.
  - 2016-05-25 Fixed premature end of script headers error when using long URL.
+ - 2016-05-25 Fixed bug#[12099](http://bugs.otrs.org/show_bug.cgi?id=12099) - Passing parameters to CustomerTicketMessage doesn't work correctly.
  - 2016-05-24 Whitelisted characters allowed in filenames for security.
  - 2016-05-23 Added a context menu entry in richtext editor to allow for opening links in a new tab while editing.
  - 2016-05-23 Added debugging switch for AJAX errors. Set Frontend::AjaxDebug to 1 in order to see more details in case of any "error during ajax communication" errors.
