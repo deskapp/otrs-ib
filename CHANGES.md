@@ -1,4 +1,5 @@
 #5.0.11 2016-??-??
+ - 2016-06-02 Unused code removed from TicketOverview/Medium.pm.
  - 2016-05-31 Fixed invalid UTF-8 characters stripping when article displaying or forwarding; fixed possible log flooding.
  - 2016-05-27 Upload cache cleanup command name changed, unit test added.
  - 2016-05-27 Fixed Internal Server Error on attachment removal page reload.
