@@ -63,7 +63,7 @@ sub FormIDRemove {
 sub FormIDAddFile {
     my ( $Self, %Param ) = @_;
 
-    for (qw(FormID Filename Content ContentType)) {
+    for (qw(FormID Filename ContentType)) {
         if ( !$Param{$_} ) {
             $Kernel::OM->Get('Kernel::System::Log')->Log(
                 Priority => 'error',
@@ -72,6 +72,8 @@ sub FormIDAddFile {
             return;
         }
     }
+
+    $Param{Content} = '' if !defined( $Param{Content} );
 
     # get file size
     $Param{Filesize} = bytes::length( $Param{Content} );
@@ -180,15 +182,15 @@ sub FormIDGetAllFilesData {
         $Counter++;
 
         # human readable file size
-        if ( $Row[2] ) {
+        if ( defined $Row[2] ) {
             if ( $Row[2] > ( 1024 * 1024 ) ) {
-                $Row[2] = sprintf "%.1f MBytes", ( $Row[2] / ( 1024 * 1024 ) );
+                $Row[2] = sprintf "%.1f MB", ( $Row[2] / ( 1024 * 1024 ) );
             }
             elsif ( $Row[2] > 1024 ) {
-                $Row[2] = sprintf "%.1f KBytes", ( ( $Row[2] / 1024 ) );
+                $Row[2] = sprintf "%.1f KB", ( ( $Row[2] / 1024 ) );
             }
             else {
-                $Row[2] = $Row[2] . ' Bytes';
+                $Row[2] = $Row[2] . ' B';
             }
         }
 
@@ -246,15 +248,15 @@ sub FormIDGetAllFilesMeta {
         $Counter++;
 
         # human readable file size
-        if ( $Row[2] ) {
+        if ( defined $Row[2] ) {
             if ( $Row[2] > ( 1024 * 1024 ) ) {
-                $Row[2] = sprintf "%.1f MBytes", ( $Row[2] / ( 1024 * 1024 ) );
+                $Row[2] = sprintf "%.1f MB", ( $Row[2] / ( 1024 * 1024 ) );
             }
             elsif ( $Row[2] > 1024 ) {
-                $Row[2] = sprintf "%.1f KBytes", ( ( $Row[2] / 1024 ) );
+                $Row[2] = sprintf "%.1f KB", ( ( $Row[2] / 1024 ) );
             }
             else {
-                $Row[2] = $Row[2] . ' Bytes';
+                $Row[2] = $Row[2] . ' B';
             }
         }
 
