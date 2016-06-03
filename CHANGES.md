@@ -1,4 +1,5 @@
 #5.0.11 2016-??-??
+ - 2016-06-03 Fixed empty attachment ignoring and hardcoced english file size unit names.
  - 2016-06-02 Fixed error Undefined value as a SCALAR reference at UploadCache/FS.pm.
  - 2016-06-02 Unused code removed from TicketOverview/Medium.pm.
  - 2016-05-31 Fixed invalid UTF-8 characters stripping when article displaying or forwarding; fixed possible log flooding.
