@@ -126,6 +126,23 @@ sub FormIDAddFile {
         }
     }
 
+    # create cache subdirectory if not exist
+    my $Directory = $Self->{TempDir} . '/' . $Param{FormID};
+    if ( !-d $Directory ) {
+
+        # Create directory. This could fail if another process creates the
+        #   same directory, so don't use the return value.
+        File::Path::mkpath( $Directory, 0, 0770 );    ## no critic
+
+        if ( !-d $Directory ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "Can't create directory '$Directory': $!",
+            );
+            return;
+        }
+    }
+
     # get main object
     my $MainObject = $Kernel::OM->Get('Kernel::System::Main');
 
@@ -410,8 +427,8 @@ sub FormIDCleanUp {
     # get main object
     my $MainObject = $Kernel::OM->Get('Kernel::System::Main');
 
-    my $RetentionTime = int(time() - 86400); # remove subdirs older than 24h
-    my @List        = $MainObject->DirectoryRead(
+    my $RetentionTime = int( time() - 86400 );        # remove subdirs older than 24h
+    my @List          = $MainObject->DirectoryRead(
         Directory => $Self->{TempDir},
         Filter    => '*'
     );
@@ -420,13 +437,14 @@ sub FormIDCleanUp {
     for my $Subdir (@List) {
         my $SubdirTime = $Subdir;
 
-        if ($SubdirTime =~ /^.*\/\d+\..+$/) {
+        if ( $SubdirTime =~ /^.*\/\d+\..+$/ ) {
             $SubdirTime =~ s/^.*\/(\d+?)\..+$/$1/
         }
         else {
             $Kernel::OM->Get('Kernel::System::Log')->Log(
                 Priority => 'error',
-                Message  => "Won't delete upload cache directory $Subdir: timestamp in directory name not found! Please fix it manually.",
+                Message =>
+                    "Won't delete upload cache directory $Subdir: timestamp in directory name not found! Please fix it manually.",
             );
             next SUBDIR;
         }

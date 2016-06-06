@@ -1,6 +1,5 @@
 # --
-# Copyright (C) 2016 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
-# Based on WebUploadCache.t by OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -27,7 +26,6 @@ my ( $Result, $ExitCode );
 
 my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 
-
 for my $Module (qw(DB FS)) {
 
     # make sure that the $UploadCacheObject gets recreated for each loop.
@@ -40,6 +38,11 @@ for my $Module (qw(DB FS)) {
 
     # get a new upload cache object
     my $UploadCacheObject = $Kernel::OM->Get('Kernel::System::Web::UploadCache');
+
+    $Self->True(
+        $UploadCacheObject->{Backend}->isa("Kernel::System::Web::UploadCache::$Module"),
+        "Upload cache created with correct object",
+    );
 
     my $FormID = $UploadCacheObject->FormIDCreate();
 
@@ -119,7 +122,7 @@ for my $Module (qw(DB FS)) {
     );
 
     $Self->False(
-         scalar @Data,
+        scalar @Data,
         "#$Module - FormIDGetAllFilesData() check if formid is absent",
     );
 
@@ -128,7 +131,7 @@ for my $Module (qw(DB FS)) {
     );
 
     $Self->False(
-         scalar @Data,
+        scalar @Data,
         "#$Module - FormIDGetAllFilesMeta() check if formid is absent",
     );
 

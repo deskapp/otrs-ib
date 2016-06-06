@@ -2523,7 +2523,7 @@ sub SendAutoResponse {
     }
 
     # log that no auto response was sent!
-    if ( $OrigHeader{'X-OTRS-Loop'} && $OrigHeader{'X-OTRS-Loop'} !~ /(false|no)/i ) {
+    if ( $OrigHeader{'X-OTRS-Loop'} && $OrigHeader{'X-OTRS-Loop'} !~ /^(false|no)$/i ) {
 
         # add history row
         $Self->HistoryAdd(
