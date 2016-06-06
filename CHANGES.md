@@ -1,7 +1,18 @@
 #5.0.11 2016-??-??
+ - 2016-06-06 Fixed bug#[12020](http://bugs.otrs.org/show_bug.cgi?id=12020) - Option CaseSensitive has no impact on external customer database.
+ - 2016-06-05 Add CustomerCompanyName Column to Dashboard and CIC, thanks to Ernst Oudhof.
+ - 2016-06-04 Fixed bug#[12094](http://bugs.otrs.org/show_bug.cgi?id=12094) - Stats matrix with month columns and year rows gets first row wrong.
+ - 2016-06-03 Fixed bug#[12110](http://bugs.otrs.org/show_bug.cgi?id=12110) - ACL Queue limitation not working in CustomerTicketProcess, thanks to Thorsten Eckel.
+ - 2016-06-03 Added support for fractional timeunits in GenericInterface TicketConnector, thanks to Jonas Wanninger.
+ - 2016-06-03 Fixed bug#[12085](http://bugs.otrs.org/show_bug.cgi?id=12085) - CIC search links don't work when customer login contains parentheses.
+ - 2016-06-23 Fixed Internal Server Error on attachment removal page reload, thanks to Pawel Boguslawski.
+ - 2016-06-03 Fixed bug#[9241](http://bugs.otrs.org/show_bug.cgi?id=9241) - Ticket searching in GenericAgent not working as expected.
+ - 2016-06-03 Fixed bug#[8761](http://bugs.otrs.org/show_bug.cgi?id=8761) - OTRS doesn't recognize URLs which contain nested URLs.
  - 2016-06-03 Fixed empty attachment ignoring and hardcoced english file size unit names.
+ - 2016-06-02 Fixed bug#[11775](http://bugs.otrs.org/show_bug.cgi?id=11775) - Link search term preserved when target object is changed.
  - 2016-06-02 Fixed error Undefined value as a SCALAR reference at UploadCache/FS.pm.
  - 2016-06-02 Unused code removed from TicketOverview/Medium.pm.
+ - 2016-06-01 Fixed bug#[12093](http://bugs.otrs.org/show_bug.cgi?id=12093) - OTRS Modern reply field issue.
  - 2016-05-31 Fixed invalid UTF-8 characters stripping when article displaying or forwarding; fixed possible log flooding.
  - 2016-05-27 Upload cache cleanup command name changed, unit test added.
  - 2016-05-27 Fixed Internal Server Error on attachment removal page reload.

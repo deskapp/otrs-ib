@@ -1907,6 +1907,12 @@ to get the move queue list for a ticket (depends on workflow, if configured)
     );
 
     my %Queues = $TicketObject->TicketMoveList(
+        Type           => 'create',
+        CustomerUserID => 'customer_user_id_123',
+    );
+
+
+    my %Queues = $TicketObject->TicketMoveList(
         QueueID => 123,
         UserID  => 123,
     );
@@ -2193,6 +2199,10 @@ to get all possible types for a ticket (depends on workflow, if configured)
 
     my %Types = $TicketObject->TicketTypeList(
         UserID => 123,
+    );
+
+    my %Types = $TicketObject->TicketTypeList(
+        CustomerUserID => 'customer_user_id_123',
     );
 
     my %Types = $TicketObject->TicketTypeList(
@@ -3101,6 +3111,12 @@ to get all possible SLAs for a ticket (depends on workflow, if configured)
         ServiceID => 1,
         UserID    => 123,
     );
+
+    my %SLAs = $TicketObject->TicketSLAList(
+        ServiceID      => 1,
+        CustomerUserID => 'customer_user_id_123',
+    );
+
 
     my %SLAs = $TicketObject->TicketSLAList(
         QueueID   => 123,
@@ -4362,6 +4378,11 @@ to get the state list for a ticket (depends on workflow, if configured)
     );
 
     my %States = $TicketObject->TicketStateList(
+        TicketID       => 123,
+        CustomerUserID => 'customer_user_id_123',
+    );
+
+    my %States = $TicketObject->TicketStateList(
         QueueID => 123,
         UserID  => 123,
     );
@@ -5201,6 +5222,11 @@ to get the priority list for a ticket (depends on workflow, if configured)
     my %Priorities = $TicketObject->TicketPriorityList(
         TicketID => 123,
         UserID   => 123,
+    );
+
+    my %Priorities = $TicketObject->TicketPriorityList(
+        TicketID       => 123,
+        CustomerUserID => 'customer_user_id_123',
     );
 
     my %Priorities = $TicketObject->TicketPriorityList(
