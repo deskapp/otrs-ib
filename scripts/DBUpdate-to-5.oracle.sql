@@ -233,6 +233,7 @@ END;
 CREATE INDEX FK_cloud_service_config_chane1 ON cloud_service_config (change_by);
 CREATE INDEX FK_cloud_service_config_crea30 ON cloud_service_config (create_by);
 CREATE INDEX FK_cloud_service_config_valib2 ON cloud_service_config (valid_id);
+CREATE INDEX dynamic_field_value_search_tbc ON dynamic_field_value (field_id, value_text);
 SET DEFINE OFF;
 SET SQLBLANKLINES ON;
 ALTER TABLE notification_event_message ADD CONSTRAINT FK_notification_event_messag16 FOREIGN KEY (notification_id) REFERENCES notification_event (id);

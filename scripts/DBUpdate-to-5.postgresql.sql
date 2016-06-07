@@ -99,6 +99,7 @@ CREATE TABLE cloud_service_config (
     CONSTRAINT cloud_service_config_config_md5 UNIQUE (config_md5),
     CONSTRAINT cloud_service_config_name UNIQUE (name)
 );
+CREATE INDEX dynamic_field_value_search_text ON dynamic_field_value (field_id, value_text);
 SET standard_conforming_strings TO ON;
 ALTER TABLE notification_event_message ADD CONSTRAINT FK_notification_event_message_notification_id_id FOREIGN KEY (notification_id) REFERENCES notification_event (id);
 ALTER TABLE cloud_service_config ADD CONSTRAINT FK_cloud_service_config_create_by_id FOREIGN KEY (create_by) REFERENCES users (id);
