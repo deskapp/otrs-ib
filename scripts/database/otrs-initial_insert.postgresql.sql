@@ -31,19 +31,25 @@ INSERT INTO users (first_name, last_name, login, pw, valid_id, create_by, create
 -- ----------------------------------------------------------
 INSERT INTO groups (name, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    ('users', 'Group for default access.', 1, 1, current_timestamp, 1, current_timestamp);
+    ('users', 'Grupa z domyślnymi uprawnieniami.', 1, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table groups
 -- ----------------------------------------------------------
 INSERT INTO groups (name, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    ('admin', 'Group of all administrators.', 1, 1, current_timestamp, 1, current_timestamp);
+    ('admin', 'Grupa z uprawnieniami administratora systemu.', 1, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table groups
 -- ----------------------------------------------------------
 INSERT INTO groups (name, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    ('stats', 'Group for statistics access.', 1, 1, current_timestamp, 1, current_timestamp);
+    ('stats', 'Grupa z uprawnieniami do korzystania z modułu statystyk.', 1, 1, current_timestamp, 1, current_timestamp);
+-- ----------------------------------------------------------
+--  insert into table groups
+-- ----------------------------------------------------------
+INSERT INTO groups (name, comments, valid_id, create_by, create_time, change_by, change_time)
+    VALUES
+    ('staff', 'Grupa z uprawnieniami agenta systemu.', 1, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table group_user
 -- ----------------------------------------------------------
@@ -62,6 +68,12 @@ INSERT INTO group_user (user_id, group_id, permission_key, permission_value, cre
 INSERT INTO group_user (user_id, group_id, permission_key, permission_value, create_by, create_time, change_by, change_time)
     VALUES
     (1, 3, 'rw', 1, 1, current_timestamp, 1, current_timestamp);
+-- ----------------------------------------------------------
+--  insert into table group_user
+-- ----------------------------------------------------------
+INSERT INTO group_user (user_id, group_id, permission_key, permission_value, create_by, create_time, change_by, change_time)
+    VALUES
+    (1, 4, 'rw', 1, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table link_type
 -- ----------------------------------------------------------
@@ -187,26 +199,17 @@ INSERT INTO ticket_state (name, comments, type_id, valid_id, create_by, create_t
 -- ----------------------------------------------------------
 INSERT INTO salutation (name, text, content_type, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    ('system standard salutation (en)', 'Dear <OTRS_CUSTOMER_REALNAME>,
-
-Thank you for your request.
-
-', 'text/plain; charset=utf-8', 'Standard Salutation.', 1, 1, current_timestamp, 1, current_timestamp);
+    ('standardowe powitanie', 'Witam,
+', 'text/plain; charset=utf-8', 'Standardowe powitanie.', 1, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table signature
 -- ----------------------------------------------------------
 INSERT INTO signature (name, text, content_type, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    ('system standard signature (en)', '
-Your Ticket-Team
-
- <OTRS_Agent_UserFirstname> <OTRS_Agent_UserLastname>
-
---
- Super Support - Waterford Business Park
- 5201 Blue Lagoon Drive - 8th Floor & 9th Floor - Miami, 33126 USA
- Email: hot@example.com - Web: http://www.example.com/
---', 'text/plain; charset=utf-8', 'Standard Signature.', 1, 1, current_timestamp, 1, current_timestamp);
+    ('standardowy podpis', '
+Pozdrawiam,
+<OTRS_Agent_UserFirstname> <OTRS_Agent_UserLastname>
+', 'text/plain; charset=utf-8', 'Standardowy podpis.', 1, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table system_address
 -- ----------------------------------------------------------
@@ -236,37 +239,25 @@ INSERT INTO follow_up_possible (name, comments, valid_id, create_by, create_time
 -- ----------------------------------------------------------
 INSERT INTO queue (name, group_id, system_address_id, salutation_id, signature_id, follow_up_id, follow_up_lock, unlock_timeout, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    ('Postmaster', 1, 1, 1, 1, 1, 0, 0, 'Postmaster queue.', 1, 1, current_timestamp, 1, current_timestamp);
+    ('Zgłoszenia', 1, 1, 1, 1, 1, 1, 60, 'Domyślna kolejka.', 1, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table queue
 -- ----------------------------------------------------------
 INSERT INTO queue (name, group_id, system_address_id, salutation_id, signature_id, follow_up_id, follow_up_lock, unlock_timeout, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    ('Raw', 1, 1, 1, 1, 1, 0, 0, 'All default incoming tickets.', 1, 1, current_timestamp, 1, current_timestamp);
--- ----------------------------------------------------------
---  insert into table queue
--- ----------------------------------------------------------
-INSERT INTO queue (name, group_id, system_address_id, salutation_id, signature_id, follow_up_id, follow_up_lock, unlock_timeout, comments, valid_id, create_by, create_time, change_by, change_time)
-    VALUES
-    ('Junk', 1, 1, 1, 1, 1, 0, 0, 'All junk tickets.', 1, 1, current_timestamp, 1, current_timestamp);
--- ----------------------------------------------------------
---  insert into table queue
--- ----------------------------------------------------------
-INSERT INTO queue (name, group_id, system_address_id, salutation_id, signature_id, follow_up_id, follow_up_lock, unlock_timeout, comments, valid_id, create_by, create_time, change_by, change_time)
-    VALUES
-    ('Misc', 1, 1, 1, 1, 1, 0, 0, 'All misc tickets.', 1, 1, current_timestamp, 1, current_timestamp);
+    ('Kosz', 4, 1, 1, 1, 1, 1, 60, 'Kolejka na niechciane zgłoszenia.', 1, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table standard_template
 -- ----------------------------------------------------------
 INSERT INTO standard_template (name, text, content_type, template_type, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    ('empty answer', '', 'text/plain; charset=utf-8', 'Answer', 1, 1, current_timestamp, 1, current_timestamp);
+    ('Obsługa trwa', 'Obsługa zgłoszenia o numerze <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber> trwa.', 'text/plain; charset=utf-8', 'Answer', 1, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table standard_template
 -- ----------------------------------------------------------
 INSERT INTO standard_template (name, text, content_type, template_type, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    ('test answer', 'Some test answer to show how a standard template can be used.', 'text/plain; charset=utf-8', 'Answer', 1, 1, current_timestamp, 1, current_timestamp);
+    ('Obsługa zakończona', 'Obsługa zgłoszenia o numerze <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber> została zakończona.', 'text/plain; charset=utf-8', 'Answer', 1, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table queue_standard_template
 -- ----------------------------------------------------------
@@ -278,19 +269,7 @@ INSERT INTO queue_standard_template (queue_id, standard_template_id, create_by, 
 -- ----------------------------------------------------------
 INSERT INTO queue_standard_template (queue_id, standard_template_id, create_by, create_time, change_by, change_time)
     VALUES
-    (2, 1, 1, current_timestamp, 1, current_timestamp);
--- ----------------------------------------------------------
---  insert into table queue_standard_template
--- ----------------------------------------------------------
-INSERT INTO queue_standard_template (queue_id, standard_template_id, create_by, create_time, change_by, change_time)
-    VALUES
-    (3, 1, 1, current_timestamp, 1, current_timestamp);
--- ----------------------------------------------------------
---  insert into table queue_standard_template
--- ----------------------------------------------------------
-INSERT INTO queue_standard_template (queue_id, standard_template_id, create_by, create_time, change_by, change_time)
-    VALUES
-    (4, 1, 1, current_timestamp, 1, current_timestamp);
+    (1, 2, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table auto_response_type
 -- ----------------------------------------------------------
@@ -326,67 +305,60 @@ INSERT INTO auto_response_type (name, comments, valid_id, create_by, create_time
 -- ----------------------------------------------------------
 INSERT INTO auto_response (type_id, system_address_id, name, text0, text1, content_type, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    (1, 1, 'default reply (after new ticket has been created)', 'This is a demo text which is send to every inquiry.
-It could contain something like:
+    (1, 1, 'default reply (after new ticket has been created)', 'Ta wiadomość została wygenerowana automatycznie.
 
-Thanks for your email. A new ticket has been created.
+Państwa zgłoszenie, którego fragment zacytowany jest niżej, zostało zarejestrowane pod numerem
 
-You wrote:
-<OTRS_CUSTOMER_EMAIL[6]>
+   <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>
 
-Your email will be answered by a human ASAP
+i wkrótce będzie obsłużone.
 
-Have fun with OTRS! :-)
+________________________________
 
-Your OTRS Team
-', 'RE: <OTRS_CUSTOMER_SUBJECT[24]>', 'text/plain', '', 1, 1, current_timestamp, 1, current_timestamp);
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment treści zgłoszenia:
+<OTRS_CUSTOMER_EMAIL[20]>', 'RE: <OTRS_CUSTOMER_SUBJECT[50]>', 'text/plain', '', 1, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table auto_response
 -- ----------------------------------------------------------
 INSERT INTO auto_response (type_id, system_address_id, name, text0, text1, content_type, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    (2, 1, 'default reject (after follow-up and rejected of a closed ticket)', 'Your previous ticket is closed.
+    (2, 1, 'default reject (after follow-up and rejected of a closed ticket)', 'Ta wiadomość została wygenerowana automatycznie.
 
--- Your follow-up has been rejected. --
+Państwa poprzednie zgłoszenie jest zamknięte a wiadomość do niego została odrzucona.
 
-Please create a new ticket.
-
-Your OTRS Team
-', 'Your email has been rejected! (RE: <OTRS_CUSTOMER_SUBJECT[24]>)', 'text/plain', '', 1, 1, current_timestamp, 1, current_timestamp);
+Prosimy o utworzenie nowego zgłoszenia.', 'Wiadomość e-mail została odrzucona! (RE: <OTRS_CUSTOMER_SUBJECT[50]>)', 'text/plain', '', 1, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table auto_response
 -- ----------------------------------------------------------
 INSERT INTO auto_response (type_id, system_address_id, name, text0, text1, content_type, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    (3, 1, 'default follow-up (after a ticket follow-up has been added)', 'Thanks for your follow-up email
+    (3, 1, 'default follow-up (after a ticket follow-up has been added)', 'Ta wiadomość została wygenerowana automatycznie.
 
-You wrote:
-<OTRS_CUSTOMER_EMAIL[6]>
+Dziękujemy za wiadomość do zgłoszenia.
 
-Your email will be answered by a human ASAP.
+________________________________
 
-Have fun with OTRS!
+Temat: <OTRS_CUSTOMER_SUBJECT>
 
-Your OTRS Team
-', 'RE: <OTRS_CUSTOMER_SUBJECT[24]>', 'text/plain', '', 1, 1, current_timestamp, 1, current_timestamp);
+Fragment treści zgłoszenia:
+<OTRS_CUSTOMER_EMAIL[20]>', 'RE: <OTRS_CUSTOMER_SUBJECT[50]>', 'text/plain', '', 1, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table auto_response
 -- ----------------------------------------------------------
 INSERT INTO auto_response (type_id, system_address_id, name, text0, text1, content_type, comments, valid_id, create_by, create_time, change_by, change_time)
     VALUES
-    (4, 1, 'default reject/new ticket created (after closed follow-up with new ticket creation)', 'Your previous ticket is closed.
+    (4, 1, 'default reject/new ticket created (after closed follow-up with new ticket creation)', 'Ta wiadomość została wygenerowana automatycznie.
 
--- A new ticket has been created for you. --
+Państwa poprzednie zgłoszenie jest zamknięte. Utworzone zostało nowe zgłoszenie.
 
-You wrote:
-<OTRS_CUSTOMER_EMAIL[6]>
+________________________________
 
-Your email will be answered by a human ASAP.
+Temat: <OTRS_CUSTOMER_SUBJECT>
 
-Have fun with OTRS!
-
-Your OTRS Team
-', 'New ticket has been created! (RE: <OTRS_CUSTOMER_SUBJECT[24]>)', 'text/plain', '', 1, 1, current_timestamp, 1, current_timestamp);
+Fragment treści zgłoszenia:
+<OTRS_CUSTOMER_EMAIL[20]>', 'Utworzono nowe zgłoszenie! (RE: <OTRS_CUSTOMER_SUBJECT[50]>)', 'text/plain', '', 1, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table ticket_type
 -- ----------------------------------------------------------
@@ -825,84 +797,6 @@ INSERT INTO article_sender_type (name, valid_id, create_by, create_time, change_
 INSERT INTO article_sender_type (name, valid_id, create_by, create_time, change_by, change_time)
     VALUES
     ('customer', 1, 1, current_timestamp, 1, current_timestamp);
--- ----------------------------------------------------------
---  insert into table ticket
--- ----------------------------------------------------------
-INSERT INTO ticket (tn, queue_id, ticket_lock_id, user_id, responsible_user_id, ticket_priority_id, ticket_state_id, title, create_time_unix, timeout, until_time, escalation_time, escalation_response_time, escalation_update_time, escalation_solution_time, create_by, create_time, change_by, change_time)
-    VALUES
-    ('2015071510123456', 2, 1, 1, 1, 3, 1, 'Welcome to OTRS!', 1436949030, 0, 0, 0, 0, 0, 0, 1, current_timestamp, 1, current_timestamp);
--- ----------------------------------------------------------
---  insert into table article
--- ----------------------------------------------------------
-INSERT INTO article (ticket_id, article_type_id, article_sender_type_id, a_from, a_to, a_subject, a_body, a_message_id, incoming_time, content_path, valid_id, create_by, create_time, change_by, change_time)
-    VALUES
-    (1, 1, 3, 'OTRS Feedback <marketing@otrs.com>', 'Your OTRS System <otrs@localhost>', 'Welcome to OTRS!', 'Welcome to OTRS!
-
-Thank you for installing OTRS, the world’s most popular service management software available in 34 languages and used by 150,000 users worldwide.
-
-You can find updates and patches for OTRS Free at
-https://www.otrs.com/download-open-source-help-desk-software-otrs-free/.
-
-Please be aware that we do not offer official vendor support for OTRS Free. In case of questions, please use our:
-
-- online documentation available at http://otrs.github.io/doc/
-- mailing lists available at http://lists.otrs.org/
-- webinars at https://www.otrs.com/category/webinar/
-
-To meet higher business requirements, we recommend to use the OTRS Business Solution™, that offers
-
-- exclusive business features like chat, integration of data from external databases etc.
-- included professional updates & services
-- implementation and configuration by our experts
-
-Find more information about it at https://www.otrs.com/solutions/.
-
-Best regards and ((enjoy)) OTRS,
-
-Your OTRS Group
-', '<007@localhost>', 1436949030, '2015/07/15', 1, 1, current_timestamp, 1, current_timestamp);
--- ----------------------------------------------------------
---  insert into table article_plain
--- ----------------------------------------------------------
-INSERT INTO article_plain (article_id, body, create_by, create_time, change_by, change_time)
-    VALUES
-    (1, 'From: OTRS Feedback <marketing@otrs.com>
-To: Your OTRS System <otrs@localhost>
-Subject: Welcome to OTRS!
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-
-Welcome to OTRS!
-
-Thank you for installing OTRS, the world’s most popular service management software available in 34 languages and used by 150,000 users worldwide.
-
-You can find updates and patches for OTRS Free at
-https://www.otrs.com/download-open-source-help-desk-software-otrs-free/.
-
-Please be aware that we do not offer official vendor support for OTRS Free. In case of questions, please use our:
-
-- online documentation available at http://otrs.github.io/doc/
-- mailing lists available at http://lists.otrs.org/
-- webinars at https://www.otrs.com/category/webinar/
-
-To meet higher business requirements, we recommend to use the OTRS Business Solution™, that offers
-
-- exclusive business features like chat, integration of data from external databases etc.
-- included professional updates & services
-- implementation and configuration by our experts
-
-Find more information about it at https://www.otrs.com/solutions/.
-
-Best regards and ((enjoy)) OTRS,
-
-Your OTRS Group
-', 1, current_timestamp, 1, current_timestamp);
--- ----------------------------------------------------------
---  insert into table ticket_history
--- ----------------------------------------------------------
-INSERT INTO ticket_history (name, history_type_id, ticket_id, type_id, article_id, priority_id, owner_id, state_id, queue_id, create_by, create_time, change_by, change_time)
-    VALUES
-    ('New Ticket [2015071510123456] created.', 1, 1, 1, 1, 3, 1, 1, 1, 1, current_timestamp, 1, current_timestamp);
 -- ----------------------------------------------------------
 --  insert into table notification_event
 -- ----------------------------------------------------------
@@ -2577,6 +2471,291 @@ A(z) [<OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>] jegy szolgáltatása
 <OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
 
 -- <OTRS_CONFIG_NotificationSenderName>');
+-- ----------------------------------------------------------
+--  insert into table notification_event_message
+-- ----------------------------------------------------------
+INSERT INTO notification_event_message (notification_id, content_type, language, subject, text)
+    VALUES
+    (1, 'text/plain', 'pl', 'Nowe zgłoszenie (<OTRS_CUSTOMER_SUBJECT[50]>)', 'Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+W kolejce "<OTRS_TICKET_Queue>" pojawiło się nowe zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>');
+-- ----------------------------------------------------------
+--  insert into table notification_event_message
+-- ----------------------------------------------------------
+INSERT INTO notification_event_message (notification_id, content_type, language, subject, text)
+    VALUES
+    (2, 'text/plain', 'pl', 'Nowa wiadomość do odblokowanego zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)', 'Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+Pojawiła się nowa wiadomość do odblokowanego zgłoszenia <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>');
+-- ----------------------------------------------------------
+--  insert into table notification_event_message
+-- ----------------------------------------------------------
+INSERT INTO notification_event_message (notification_id, content_type, language, subject, text)
+    VALUES
+    (3, 'text/plain', 'pl', 'Nowa wiadomość do zablokowanego zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)', 'Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+Pojawiła się nowa wiadomość do zablokowanego zgłoszenia <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>');
+-- ----------------------------------------------------------
+--  insert into table notification_event_message
+-- ----------------------------------------------------------
+INSERT INTO notification_event_message (notification_id, content_type, language, subject, text)
+    VALUES
+    (4, 'text/plain', 'pl', 'Odblokowanie zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)', 'Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+Przypisane do ciebie zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>, znajdujące się w kolejce "<OTRS_TICKET_Queue>" zostało odblokowane.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>');
+-- ----------------------------------------------------------
+--  insert into table notification_event_message
+-- ----------------------------------------------------------
+INSERT INTO notification_event_message (notification_id, content_type, language, subject, text)
+    VALUES
+    (5, 'text/plain', 'pl', 'Przypisanie zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)', 'Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+<OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> przydzielił(a) tobie zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>.
+
+Komentarz:
+<OTRS_COMMENT>
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>');
+-- ----------------------------------------------------------
+--  insert into table notification_event_message
+-- ----------------------------------------------------------
+INSERT INTO notification_event_message (notification_id, content_type, language, subject, text)
+    VALUES
+    (6, 'text/plain', 'pl', 'Przypisanie odpowiedzialności za zgłoszenie (<OTRS_CUSTOMER_SUBJECT[50]>)', 'Witaj <OTRS_RESPONSIBLE_UserFirstname>,
+
+<OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> wskazał ciebie jako osobę odpowiedzialną za zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>.
+
+Komentarz:
+<OTRS_COMMENT>
+
+Zgłoszenie znajduje się na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>');
+-- ----------------------------------------------------------
+--  insert into table notification_event_message
+-- ----------------------------------------------------------
+INSERT INTO notification_event_message (notification_id, content_type, language, subject, text)
+    VALUES
+    (7, 'text/plain', 'pl', 'Nowa notatka do zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)', 'Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+<OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> dodał(a) nową notatkę do zgłoszenia <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>.
+
+Treść notatki:
+<OTRS_CUSTOMER_BODY>
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>');
+-- ----------------------------------------------------------
+--  insert into table notification_event_message
+-- ----------------------------------------------------------
+INSERT INTO notification_event_message (notification_id, content_type, language, subject, text)
+    VALUES
+    (8, 'text/plain', 'pl', 'Przeniesienie zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)', 'Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+Zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber> zostało przeniesione przez <OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> do kolejki "<OTRS_CUSTOMER_QUEUE>".
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>');
+-- ----------------------------------------------------------
+--  insert into table notification_event_message
+-- ----------------------------------------------------------
+INSERT INTO notification_event_message (notification_id, content_type, language, subject, text)
+    VALUES
+    (9, 'text/plain', 'pl', 'Przypomnienie o zablokowanym zgłoszeniu (<OTRS_CUSTOMER_SUBJECT[50]>)', 'Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+W kolejce "<OTRS_TICKET_Queue>" znajduje się zablokowane zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>, dla którego ustawiona została wysyłka tego przypomnienia.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>');
+-- ----------------------------------------------------------
+--  insert into table notification_event_message
+-- ----------------------------------------------------------
+INSERT INTO notification_event_message (notification_id, content_type, language, subject, text)
+    VALUES
+    (10, 'text/plain', 'pl', 'Przypomnienie o odblokowanym zgłoszeniu (<OTRS_CUSTOMER_SUBJECT[50]>)', 'Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+W kolejce "<OTRS_TICKET_Queue>" znajduje się odblokowane zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>, dla którego ustawiona została wysyłka tego przypomnienia.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>');
+-- ----------------------------------------------------------
+--  insert into table notification_event_message
+-- ----------------------------------------------------------
+INSERT INTO notification_event_message (notification_id, content_type, language, subject, text)
+    VALUES
+    (11, 'text/plain', 'pl', 'Eskalacja zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)', 'Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+Zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber> jest eskalowane.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>');
+-- ----------------------------------------------------------
+--  insert into table notification_event_message
+-- ----------------------------------------------------------
+INSERT INTO notification_event_message (notification_id, content_type, language, subject, text)
+    VALUES
+    (12, 'text/plain', 'pl', 'Ostrzeżenie przed eskalacją zgłoszenia (<OTRS_CUSTOMER_SUBJECT[50]>)', 'Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+Zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber> będzie wkrótce eskalowane.
+
+Data eskalacji: <OTRS_TICKET_EscalationDestinationDate>
+Eskalacja za:   <OTRS_TICKET_EscalationDestinationIn>
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>');
+-- ----------------------------------------------------------
+--  insert into table notification_event_message
+-- ----------------------------------------------------------
+INSERT INTO notification_event_message (notification_id, content_type, language, subject, text)
+    VALUES
+    (13, 'text/plain', 'pl', 'Zmiana usługi w zgłoszeniu (<OTRS_CUSTOMER_SUBJECT[50]>)', 'Witaj <OTRS_NOTIFICATION_RECIPIENT_UserFirstname>,
+
+W zgłoszeniu <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber> <OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> zmienił(a) usługę na <OTRS_TICKET_Service>.
+
+Zgłoszenie możesz obsłużyć na stronie:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
+
+<OTRS_CONFIG_NotificationSenderName>
+
+________________________________
+
+Od: <OTRS_CUSTOMER_From>
+Temat: <OTRS_CUSTOMER_SUBJECT>
+
+Fragment otrzymanej wiadomości:
+<OTRS_CUSTOMER_BODY[30]>');
 -- ----------------------------------------------------------
 --  insert into table dynamic_field
 -- ----------------------------------------------------------
