@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-06-08 Initial payload adapted to Polish.
  - 2016-06-08 Optimal EnterMode in CKeditor.
  - 2016-06-07 Added index for searching dynamic field text values.
  - 2016-06-07 Fixed premature end of script headers error when using long URL.
