@@ -1,4 +1,5 @@
 #5.0.11 2016-??-??
+ - 2016-06-08 Optimal EnterMode in CKeditor.
  - 2016-06-07 Added index for searching dynamic field text values.
  - 2016-06-07 Fixed premature end of script headers error when using long URL.
  - 2016-06-06 Fixed bug#[12020](http://bugs.otrs.org/show_bug.cgi?id=12020) - Option CaseSensitive has no impact on external customer database.
