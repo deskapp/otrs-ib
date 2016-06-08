@@ -136,6 +136,7 @@ Core.UI.RichTextEditor = (function (TargetNS) {
         }
         if (Core.Config.Get('RichText.PreventImagePaste') === '1') {
             ExtraPlugins += ',preventimagepaste';
+        }
 
         // Get EnterMode from config
         switch ( Core.Config.Get('RichText.EnterMode') )
