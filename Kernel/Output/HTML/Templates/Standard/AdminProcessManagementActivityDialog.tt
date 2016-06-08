@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -150,7 +150,7 @@
                             </ul>
                             <ul class="AllocationList Tablelike W90pc" id="AvailableFields">
 [% RenderBlockStart("AvailableFieldRow") %]
-                                <li title="Name: [% Data.FieldnameTranslated | html %]" data-name-translated="[% Data.FieldnameTranslated | html %]" data-id="[% Data.Field | html %]" data-config="">
+                                <li title="[% Translate("Name: %s", Data.FieldnameTranslated) | html %]" data-name-translated="[% Data.FieldnameTranslated | html %]" data-id="[% Data.Field | html %]" data-config="">
                                     [% Data.FieldnameTranslated | html %]
                                     <span class="Functions ShowOnAssignedList">
                                         <a href="#" data-id="[% Data.Field | html %]" data-entity="[% Data.Field | html %]" class="FieldDetailsOverlay Icon" title="[% Translate("Edit") | html %]">
@@ -169,7 +169,7 @@
                             </ul>
                             <ul class="AllocationList Tablelike W90pc" id="AssignedFields">
 [% RenderBlockStart("AssignedFieldRow") %]
-                                <li data-id="[% Data.Field | html %]" data-entity="[% Data.Field | html %]" data-config='[% Data.FieldConfig %]' title="Name: [% Translate(Data.Field) | html %]">
+                                <li data-id="[% Data.Field | html %]" data-entity="[% Data.Field | html %]" data-config="[% Data.FieldConfig | html %]" title="Name: [% Translate(Data.Field) | html %]">
                                     [% Translate(Data.Field) | html %]
                                     <span class="Functions ShowOnAssignedList">
                                         <a href="#" data-id="[% Data.Field | html %]" data-entity="[% Data.Field | html %]" class="FieldDetailsOverlay Icon" title="[% Translate("Edit") | html %]">
@@ -219,6 +219,14 @@
                     [% Data.ArticleTypeSelection %]
                 </div>
                 <div class="Clear"></div>
+
+[% RenderBlockStart("TimeUnitsContainer") %]
+                <label for="TimeUnits">[% Translate("Time units") | html %]:</label>
+                <div class="Field" id="TimeUnitsContainer" class="Hidden">
+                    [% Data.TimeUnitsSelection %]
+                </div>
+                <div class="Clear"></div>
+[% RenderBlockEnd("TimeUnitsContainer") %]
 
                 <label for="Display">[% Translate("Display") | html %]:</label>
                 <div class="Field">

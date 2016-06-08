@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -71,7 +71,9 @@ sub Run {
     elsif ( $Self->{Subaction} eq 'Update' ) {
         my %Data = $PostMasterFilter->FilterGet( Name => $Name );
         if ( !%Data ) {
-            return $LayoutObject->ErrorScreen( Message => "No such filter: $Name" );
+            return $LayoutObject->ErrorScreen(
+                Message => $LayoutObject->{LanguageObject}->Translate( 'No such filter: %s', $Name ),
+            );
         }
         return $Self->_MaskUpdate(
             Name => $Name,

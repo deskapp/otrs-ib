@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -285,13 +285,13 @@ sub JobRun {
         PREFERENCE:
         for my $Preference ( @{$SearchFieldPreferences} ) {
 
-            if (
-                !$DynamicFieldSearchTemplate{
-                    'Search_DynamicField_'
-                        . $DynamicFieldConfig->{Name}
-                        . $Preference->{Type}
-                }
-                )
+            my $DynamicFieldTemp = $DynamicFieldSearchTemplate{
+                'Search_DynamicField_'
+                    . $DynamicFieldConfig->{Name}
+                    . $Preference->{Type}
+            };
+
+            if ( !defined($DynamicFieldTemp) )
             {
                 next PREFERENCE;
             }
@@ -315,14 +315,15 @@ sub JobRun {
         $Job{TicketID} = $Param{OnlyTicketID};
     }
 
-    # get ticket object
+    # get needed objects
     my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
     # escalation tickets
     my %Tickets;
 
     # get ticket limit on job run
-    my $RunLimit = $Kernel::OM->Get('Kernel::Config')->Get('Ticket::GenericAgentRunLimit');
+    my $RunLimit = $ConfigObject->Get('Ticket::GenericAgentRunLimit');
     if ( $Job{Escalation} ) {
 
         # Find all tickets which will escalate within the next five days.
@@ -330,7 +331,7 @@ sub JobRun {
         my @Tickets = $TicketObject->TicketSearch(
             %Job,
             Result                           => 'ARRAY',
-            Limit                            => $Job{Limit} || 100,
+            Limit                            => $Job{Limit} || $Param{Limit} || 100,
             TicketEscalationTimeOlderMinutes => $Job{TicketEscalationTimeOlderMinutes}
                 || -( 5 * 24 * 60 ),
             Permission => 'rw',
@@ -450,10 +451,11 @@ sub JobRun {
             if ( $Self->{NoticeSTDOUT} ) {
                 print " For all Queues: \n";
             }
+            my $GenericAgentTicketSearch = $ConfigObject->Get("Ticket::GenericAgentTicketSearch") || {};
             %Tickets = $TicketObject->TicketSearch(
                 %Job,
                 %DynamicFieldSearchParameters,
-                ConditionInline => 1,
+                ConditionInline => $GenericAgentTicketSearch->{ExtendedSearchCondition},
                 Limit           => $Param{Limit} || $RunLimit,
                 UserID          => $Param{UserID},
             );

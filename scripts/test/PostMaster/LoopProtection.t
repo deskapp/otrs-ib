@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -12,10 +12,12 @@ use utf8;
 
 use vars (qw($Self));
 
-use Kernel::System::PostMaster::LoopProtection;
-
 # get needed objects
-my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+my $ConfigObject         = $Kernel::OM->Get('Kernel::Config');
+my $LoopProtectionObject = $Kernel::OM->Get('Kernel::System::PostMaster::LoopProtection');
+
+# define needed variable
+my $RandomID = $Kernel::OM->Get('Kernel::System::UnitTest::Helper')->GetRandomID();
 
 for my $Module (qw(DB FS)) {
 
@@ -24,10 +26,8 @@ for my $Module (qw(DB FS)) {
         Value => "Kernel::System::PostMaster::LoopProtection::$Module",
     );
 
-    my $LoopProtectionObject = Kernel::System::PostMaster::LoopProtection->new();
-
     # get rand sender address
-    my $UserRand1 = 'example-user' . int( rand(1000000) ) . '@example.com';
+    my $UserRand1 = 'example-user' . $RandomID . '@example.com';
 
     my $Check = $LoopProtectionObject->Check( To => $UserRand1 );
 

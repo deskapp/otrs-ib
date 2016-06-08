@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -11,6 +11,7 @@ package Kernel::Modules::AgentTicketService;
 use strict;
 use warnings;
 
+use Kernel::Language qw(Translatable);
 use Kernel::System::VariableCheck qw(:all);
 
 our $ObjectManagerDisabled = 1;
@@ -40,7 +41,9 @@ sub Run {
     my $Access = $ConfigObject->Get('Ticket::Service');
 
     if ( !$Access ) {
-        $LayoutObject->FatalError( Message => 'Feature not enabled!' );
+        $LayoutObject->FatalError(
+            Message => Translatable('Feature not enabled!'),
+        );
     }
 
     # get config param
@@ -117,10 +120,12 @@ sub Run {
 
         if ( $ColumnName eq 'CustomerID' ) {
             push @{ $ColumnFilter{$ColumnName} }, $FilterValue;
+            push @{ $ColumnFilter{ $ColumnName . 'Raw' } }, $FilterValue;
             $GetColumnFilter{$ColumnName} = $FilterValue;
         }
         elsif ( $ColumnName eq 'CustomerUserID' ) {
-            push @{ $ColumnFilter{CustomerUserLogin} }, $FilterValue;
+            push @{ $ColumnFilter{CustomerUserLogin} },    $FilterValue;
+            push @{ $ColumnFilter{CustomerUserLoginRaw} }, $FilterValue;
             $GetColumnFilter{$ColumnName} = $FilterValue;
         }
         else {
@@ -251,7 +256,7 @@ sub Run {
 
     my %Filters = (
         All => {
-            Name   => 'All tickets',
+            Name   => Translatable('All tickets'),
             Prio   => 1000,
             Search => {
                 StateIDs   => \@ViewableStateIDs,
@@ -263,7 +268,7 @@ sub Run {
             },
         },
         Unlocked => {
-            Name   => 'Available tickets',
+            Name   => Translatable('Available tickets'),
             Prio   => 1001,
             Search => {
                 LockIDs    => \@ViewableLockIDs,
@@ -282,7 +287,9 @@ sub Run {
 
     # check if filter is valid
     if ( !$Filters{$Filter} ) {
-        $LayoutObject->FatalError( Message => "Invalid Filter: $Filter!" );
+        $LayoutObject->FatalError(
+            Message => $LayoutObject->{LanguageObject}->Translate( 'Invalid Filter: %s!', $Filter ),
+        );
     }
 
     # get view param
@@ -364,7 +371,8 @@ sub Run {
 
         if ( !$FilterContent ) {
             $LayoutObject->FatalError(
-                Message => "Can't get filter content data of $HeaderColumn!",
+                Message => $LayoutObject->{LanguageObject}
+                    ->Translate( 'Can\'t get filter content data of %s!', $HeaderColumn ),
             );
         }
 
@@ -546,7 +554,7 @@ sub Run {
         View   => $View,
 
         Bulk       => 1,
-        TitleName  => 'Service View',
+        TitleName  => Translatable('Service View'),
         TitleValue => $NavBar{SelectedService},
 
         Env        => $Self,

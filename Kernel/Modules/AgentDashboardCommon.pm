@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -12,6 +12,7 @@ package Kernel::Modules::AgentDashboardCommon;
 use strict;
 use warnings;
 
+use Kernel::Language qw(Translatable);
 use Kernel::System::VariableCheck qw(:all);
 
 our $ObjectManagerDisabled = 1;
@@ -47,7 +48,7 @@ sub Run {
     my $Config = $ConfigObject->Get($BackendConfigKey);
     if ( !$Config ) {
         return $LayoutObject->ErrorScreen(
-            Message => 'No such config for ' . $BackendConfigKey,
+            Message => $LayoutObject->{LanguageObject}->Translate( 'No such config for %s', $BackendConfigKey ),
         );
     }
 
@@ -78,9 +79,9 @@ sub Run {
                 # replace all line breaks with spaces (otherwise Translate() will not work correctly)
                 $StatsHash->{$StatID}->{Description} =~ s{\r?\n|\r}{ }msxg;
 
-                my $Description = $LayoutObject->{LanguageObject}->Get( $StatsHash->{$StatID}->{Description} );
+                my $Description = $LayoutObject->{LanguageObject}->Translate( $StatsHash->{$StatID}->{Description} );
 
-                my $Title = $LayoutObject->{LanguageObject}->Get( $StatsHash->{$StatID}->{Title} );
+                my $Title = $LayoutObject->{LanguageObject}->Translate( $StatsHash->{$StatID}->{Title} );
                 $Title = $LayoutObject->{LanguageObject}->Translate('Statistic') . ': '
                     . $Title . ' ('
                     . $ConfigObject->Get('Stats::StatsHook')
@@ -177,7 +178,7 @@ sub Run {
         );
         if ( !@PreferencesOnly ) {
             $LayoutObject->FatalError(
-                Message => "No preferences for $Name!",
+                Message => $LayoutObject->{LanguageObject}->Translate( 'No preferences for %s!', $Name ),
             );
         }
 
@@ -215,7 +216,7 @@ sub Run {
         );
         if ( !%ElementReload ) {
             $LayoutObject->FatalError(
-                Message => "Can't get element data of $Name!",
+                Message => $LayoutObject->{LanguageObject}->Translate( 'Can\'t get element data of %s!', $Name ),
             );
         }
         return $LayoutObject->Attachment(
@@ -331,9 +332,11 @@ sub Run {
 
             if ( $ColumnName eq 'CustomerID' ) {
                 push @{ $ColumnFilter{$ColumnName} }, $FilterValue;
+                push @{ $ColumnFilter{ $ColumnName . 'Raw' } }, $FilterValue;
             }
             elsif ( $ColumnName eq 'CustomerUserID' ) {
-                push @{ $ColumnFilter{CustomerUserLogin} }, $FilterValue;
+                push @{ $ColumnFilter{CustomerUserLogin} },    $FilterValue;
+                push @{ $ColumnFilter{CustomerUserLoginRaw} }, $FilterValue;
             }
             else {
                 push @{ $ColumnFilter{ $ColumnName . 'IDs' } }, $FilterValue;
@@ -384,7 +387,7 @@ sub Run {
 
         if ( !%Element ) {
             $LayoutObject->FatalError(
-                Message => "Can't get element data of $Name!",
+                Message => $LayoutObject->{LanguageObject}->Translate( 'Can\'t get element data of %s!', $Name ),
             );
         }
         return $LayoutObject->Attachment(
@@ -415,7 +418,7 @@ sub Run {
 
         if ( !$FilterContent ) {
             $LayoutObject->FatalError(
-                Message => "Can't get filter content data of $Name!",
+                Message => $LayoutObject->{LanguageObject}->Translate( 'Can\'t get filter content data of %s!', $Name ),
             );
         }
 
@@ -660,19 +663,19 @@ sub Run {
 
             my $TranslatedWord = $Column;
             if ( $Column eq 'EscalationTime' ) {
-                $TranslatedWord = 'Service Time';
+                $TranslatedWord = Translatable('Service Time');
             }
             elsif ( $Column eq 'EscalationResponseTime' ) {
-                $TranslatedWord = 'First Response Time';
+                $TranslatedWord = Translatable('First Response Time');
             }
             elsif ( $Column eq 'EscalationSolutionTime' ) {
-                $TranslatedWord = 'Solution Time';
+                $TranslatedWord = Translatable('Solution Time');
             }
             elsif ( $Column eq 'EscalationUpdateTime' ) {
-                $TranslatedWord = 'Update Time';
+                $TranslatedWord = Translatable('Update Time');
             }
             elsif ( $Column eq 'PendingTime' ) {
-                $TranslatedWord = 'Pending till';
+                $TranslatedWord = Translatable('Pending till');
             }
 
             $LayoutObject->Block(

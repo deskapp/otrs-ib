@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -104,6 +104,14 @@ sub AsyncCall {
         return;
     }
 
+    if ( $Param{FunctionParams} && !ref $Param{FunctionParams} ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "FunctionParams needs to be a hash or list reference.",
+        );
+        return;
+    }
+
     # define the task name with object name and concatenate the function name
     my $TaskName = substr "$ObjectName-$FunctionName()", 0, 255;
 
@@ -116,7 +124,7 @@ sub AsyncCall {
         Data                     => {
             Object   => $ObjectName,
             Function => $FunctionName,
-            Params   => $Param{FunctionParams},
+            Params   => $Param{FunctionParams} // {},
         },
     );
 

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -14,6 +14,7 @@ use warnings;
 use base qw(Kernel::System::Console::BaseCommand);
 
 use File::Basename;
+use File::Copy;
 use Lingua::Translit;
 use Pod::Strip;
 use Storable ();
@@ -25,6 +26,7 @@ our @ObjectDependencies = (
     'Kernel::System::Encode',
     'Kernel::System::Main',
     'Kernel::System::SysConfig',
+    'Kernel::System::Time',
 );
 
 sub Configure {
@@ -135,7 +137,7 @@ sub HandleLanguage {
     my ( $Self, %Param ) = @_;
 
     my $Language = $Param{Language};
-    my $Module   = $Param{Module};
+    my $Module = $Param{Module} || '';
 
     my $ModuleDirectory = $Module;
     my $LanguageFile;
@@ -203,6 +205,16 @@ sub HandleLanguage {
             Recursive => 1,
         );
 
+        my $CustomTemplatesDir = "$ModuleDirectory/Custom/Kernel/Output/HTML/Templates/$DefaultTheme";
+        if ( $IsSubTranslation && -d $CustomTemplatesDir ) {
+            my @CustomTemplateList = $Kernel::OM->Get('Kernel::System::Main')->DirectoryRead(
+                Directory => $CustomTemplatesDir,
+                Filter    => '*.tt',
+                Recursive => 1,
+            );
+            push @TemplateList, @CustomTemplateList;
+        }
+
         for my $File (@TemplateList) {
 
             my $ContentRef = $Kernel::OM->Get('Kernel::System::Main')->FileRead(
@@ -250,6 +262,16 @@ sub HandleLanguage {
             Filter    => '*.pm',
             Recursive => 1,
         );
+
+        my $CustomKernelDir = "$ModuleDirectory/Custom/Kernel";
+        if ( $IsSubTranslation && -d $CustomKernelDir ) {
+            my @CustomPerlModuleList = $Kernel::OM->Get('Kernel::System::Main')->DirectoryRead(
+                Directory => $CustomKernelDir,
+                Filter    => '*.pm',
+                Recursive => 1,
+            );
+            push @PerlModuleList, @CustomPerlModuleList;
+        }
 
         FILE:
         for my $File (@PerlModuleList) {
@@ -579,11 +601,19 @@ sub WritePOTFile {
 
     my $Package = $Param{Module} // 'OTRS';
 
+    my $TimeObject   = $Kernel::OM->Get('Kernel::System::Time');
+    my $CreationDate = $TimeObject->SystemTime2TimeStamp(
+        SystemTime => $TimeObject->SystemTime(),
+    );
+
+    # only YEAR-MO-DA HO:MI is needed without seconds
+    $CreationDate = substr( $CreationDate, 0, -3 ) . '+0000';
+
     push @POTEntries, Locale::PO->new(
         -msgid => '',
         -msgstr =>
             "Project-Id-Version: $Package\n" .
-            "POT-Creation-Date: 2014-08-08 19:10+0200\n" .
+            "POT-Creation-Date: $CreationDate\n" .
             "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n" .
             "Last-Translator: FULL NAME <EMAIL\@ADDRESS>\n" .
             "Language-Team: LANGUAGE <LL\@li.org>\n" .
@@ -675,7 +705,7 @@ sub WritePerlLanguageFile {
 
         $NewOut = <<"EOF";
 $Separator
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 $Separator
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -18,15 +18,13 @@ my $Selenium = $Kernel::OM->Get('Kernel::System::UnitTest::Selenium');
 $Selenium->RunTest(
     sub {
 
-        # get helper object
+        # get needed objects
         $Kernel::OM->ObjectParamAdd(
             'Kernel::System::UnitTest::Helper' => {
                 RestoreSystemConfiguration => 1,
             },
         );
-        my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
-
-        # get sysconfig object
+        my $Helper          = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
         my $SysConfigObject = $Kernel::OM->Get('Kernel::System::SysConfig');
 
         # disable all dashboard plugins
@@ -65,10 +63,12 @@ $Selenium->RunTest(
         );
 
         # test if News plugin shows correct link
-        my $NewsLink = "http://www.otrs.com/release-notes-otrs";
+        my $NewsLink = "https://www.otrs.com/";
         $Self->True(
-            index( $Selenium->get_page_source(), $NewsLink ) > -1,
-            "News dashboard plugin link - found",
+            $Selenium->execute_script(
+                "return \$('#Dashboard0405-News').find(\"a.AsBlock[href*='$NewsLink']\").length;"
+                ) > 0,
+            "News dashboard plugin link ($NewsLink) - found",
         );
     }
 );

@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -151,7 +151,7 @@ Core.Agent.Search = (function (TargetNS) {
                 // label id, use the remaining name as name string for accessing
                 // the form input's value
                 ElementName = $(this).attr('id').substring(5);
-                $Element = $('#SearchForm input[name=' + ElementName + ']');
+                $Element = $('#SearchForm input[name=' + Core.App.EscapeSelector(ElementName) + ']');
 
                 // If there's no input element with the selected name
                 // find the next "select" element and use that one for checking
@@ -414,7 +414,12 @@ Core.Agent.Search = (function (TargetNS) {
 
                 // register submit
                 $('#SearchFormSubmit').bind('click', function () {
+
                     var ShownAttributes = [];
+
+                    if ($('#SearchProfileAddAction, #SearchProfileAddName').is(':visible') && $('#SearchProfileAddName').val()) {
+                        $('#SearchProfileAddAction').trigger('click');
+                    }
 
                     // remember shown attributes
                     $('#SearchInsert label').each(function () {

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -80,6 +80,31 @@ my %Check = (
 );
 
 my $TestText = 'hello1234567890öäüß';
+my $Home     = $ConfigObject->Get('Home');
+
+# delete existing keys to have a cleaned test environment
+COUNT:
+for my $Count ( 1 .. 2 ) {
+
+    my @Keys = $PGPObject->KeySearch(
+        Search => $Search{$Count},
+    );
+
+    next COUNT if !$Keys[0];
+    next COUNT if ref $Keys[0] ne 'HASH';
+
+    if ( $Keys[0]->{KeyPrivate} ) {
+        $PGPObject->SecretKeyDelete(
+            Key => $Keys[0]->{KeyPrivate},
+        );
+    }
+
+    if ( $Keys[0]->{Key} ) {
+        $PGPObject->PublicKeyDelete(
+            Key => $Keys[0]->{Key},
+        );
+    }
+}
 
 for my $Count ( 1 .. 2 ) {
     my @Keys = $PGPObject->KeySearch(
@@ -94,7 +119,7 @@ for my $Count ( 1 .. 2 ) {
     for my $Privacy ( 'Private', 'Public' ) {
 
         my $KeyString = $MainObject->FileRead(
-            Directory => $ConfigObject->Get('Home') . "/scripts/test/sample/Crypt/",
+            Directory => $Home . "/scripts/test/sample/Crypt/",
             Filename  => "PGP${Privacy}Key-$Count.asc",
         );
         my $Message = $PGPObject->KeyAdd(
@@ -258,7 +283,7 @@ for my $Count ( 1 .. 2 ) {
     # file checks
     for my $File (qw(xls txt doc png pdf)) {
         my $Content = $MainObject->FileRead(
-            Directory => $ConfigObject->Get('Home') . "/scripts/test/sample/Crypt/",
+            Directory => $Home . "/scripts/test/sample/Crypt/",
             Filename  => "PGP-Test1.$File",
             Mode      => 'binmode',
         );
@@ -406,7 +431,7 @@ for my $Count ( 1 .. 2 ) {
 
     # get expired key
     my $KeyString = $MainObject->FileRead(
-        Directory => $ConfigObject->Get('Home') . '/scripts/test/sample/Crypt/',
+        Directory => $Home . '/scripts/test/sample/Crypt/',
         Filename  => 'PGPPublicKey-Expired.asc',
     );
 
@@ -430,7 +455,7 @@ for my $Count ( 1 .. 2 ) {
 
     # get key
     $KeyString = $MainObject->FileRead(
-        Directory => $ConfigObject->Get('Home') . '/scripts/test/sample/Crypt/',
+        Directory => $Home . '/scripts/test/sample/Crypt/',
         Filename  => 'PGPPublicKey-ToRevoke.asc',
     );
 
@@ -439,7 +464,7 @@ for my $Count ( 1 .. 2 ) {
 
     # get key
     $KeyString = $MainObject->FileRead(
-        Directory => $ConfigObject->Get('Home') . '/scripts/test/sample/Crypt/',
+        Directory => $Home . '/scripts/test/sample/Crypt/',
         Filename  => 'PGPPublicKey-RevokeCert.asc',
     );
 

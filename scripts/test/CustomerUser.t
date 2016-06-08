@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -20,8 +20,13 @@ my $CacheObject        = $Kernel::OM->Get('Kernel::System::Cache');
 my $CustomerUserObject = $Kernel::OM->Get('Kernel::System::CustomerUser');
 my $DBObject           = $Kernel::OM->Get('Kernel::System::DB');
 
-use Kernel::System::CustomerUser;
-use Kernel::System::CustomerAuth;
+# get helper object
+$Kernel::OM->ObjectParamAdd(
+    'Kernel::System::UnitTest::Helper' => {
+        RestoreDatabase => 1,
+    },
+);
+my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 
 # add three users
 $ConfigObject->Set(
@@ -29,13 +34,13 @@ $ConfigObject->Set(
     Value => 0,
 );
 
-my $DatabaseCaseSensitive                = $DBObject->{Backend}->{'DB::CaseSensitive'};
-my $CustomerDatabaseCaseSensitiveDefault = $ConfigObject->{CustomerUser}->{Params}->{CaseSensitive};
+my $DatabaseCaseSensitive      = $DBObject->{Backend}->{'DB::CaseSensitive'};
+my $SearchCaseSensitiveDefault = $ConfigObject->{CustomerUser}->{Params}->{SearchCaseSensitive};
 
 my $UserID = '';
 for my $Key ( 1 .. 3, 'ä', 'カス', '_', '&' ) {
 
-    my $UserRand = 'Example-Customer-User' . $Key . int( rand(1000000) );
+    my $UserRand = 'Example-Customer-User' . $Key . $Helper->GetRandomID();
 
     $UserID = $UserRand;
     my $UserID = $CustomerUserObject->CustomerUserAdd(
@@ -260,7 +265,7 @@ for my $Key ( 1 .. 3, 'ä', 'カス', '_', '&' ) {
     );
 
     # START CaseSensitive
-    $ConfigObject->{CustomerUser}->{Params}->{CaseSensitive} = 1;
+    $ConfigObject->{CustomerUser}->{Params}->{SearchCaseSensitive} = 1;
 
     $Kernel::OM->ObjectsDiscard( Objects => ['Kernel::System::CustomerUser'] );
     $CustomerUserObject = $Kernel::OM->Get('Kernel::System::CustomerUser');
@@ -277,13 +282,13 @@ for my $Key ( 1 .. 3, 'ä', 'カス', '_', '&' ) {
 
         $Self->False(
             $List{$UserID},
-            "CustomerSearch() - CustomerID - $UserID (CaseSensitive = 1)",
+            "CustomerSearch() - CustomerID - $UserID (SearchCaseSensitive = 1)",
         );
     }
     else {
         $Self->True(
             $List{$UserID},
-            "CustomerSearch() - CustomerID - $UserID (CaseSensitive = 1)",
+            "CustomerSearch() - CustomerID - $UserID (SearchCaseSensitive = 1)",
         );
     }
 
@@ -298,18 +303,18 @@ for my $Key ( 1 .. 3, 'ä', 'カス', '_', '&' ) {
         $Self->IsNotDeeply(
             \@List,
             [ $UserRand . '-Customer-Update-Id' ],
-            "CustomerIDList() - no SearchTerm - $UserID (CaseSensitive = 1)",
+            "CustomerIDList() - no SearchTerm - $UserID (SearchCaseSensitive = 1)",
         );
     }
     else {
         $Self->IsDeeply(
             \@List,
             [ $UserRand . '-Customer-Update-Id' ],
-            "CustomerIDList() - no SearchTerm - $UserID (CaseSensitive = 1)",
+            "CustomerIDList() - no SearchTerm - $UserID (SearchCaseSensitive = 1)",
         );
     }
 
-    $ConfigObject->{CustomerUser}->{Params}->{CaseSensitive} = 0;
+    $ConfigObject->{CustomerUser}->{Params}->{SearchCaseSensitive} = 0;
 
     $Kernel::OM->ObjectsDiscard( Objects => ['Kernel::System::CustomerUser'] );
     $CustomerUserObject = $Kernel::OM->Get('Kernel::System::CustomerUser');
@@ -323,7 +328,7 @@ for my $Key ( 1 .. 3, 'ä', 'カス', '_', '&' ) {
     );
     $Self->True(
         $List{$UserID},
-        "CustomerSearch() - CustomerID - $UserID (CaseSensitive = 0)",
+        "CustomerSearch() - CustomerID - $UserID (SearchCaseSensitive = 0)",
     );
 
     # CustomerIDList
@@ -335,10 +340,10 @@ for my $Key ( 1 .. 3, 'ä', 'カス', '_', '&' ) {
     $Self->IsDeeply(
         \@List,
         [ $UserRand . '-Customer-Update-Id' ],
-        "CustomerIDList() - no SearchTerm - $UserID (CaseSensitive = 0)",
+        "CustomerIDList() - no SearchTerm - $UserID (SearchCaseSensitive = 0)",
     );
 
-    $ConfigObject->{CustomerUser}->{Params}->{CaseSensitive} = $CustomerDatabaseCaseSensitiveDefault;
+    $ConfigObject->{CustomerUser}->{Params}->{SearchCaseSensitive} = $SearchCaseSensitiveDefault;
 
     # END CaseSensitive
 
@@ -824,5 +829,7 @@ $Self->Is(
     1,
     "CustomerSourceList - found 1 writable sources",
 );
+
+# cleanup is done by RestoreDatabase
 
 1;

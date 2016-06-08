@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -11,7 +11,7 @@ package Kernel::GenericInterface::Operation::Ticket::TicketUpdate;
 use strict;
 use warnings;
 
-use Kernel::System::VariableCheck qw(IsArrayRefWithData IsHashRefWithData IsStringWithData);
+use Kernel::System::VariableCheck qw( :all );
 
 use base qw(
     Kernel::GenericInterface::Operation::Common
@@ -1042,10 +1042,14 @@ sub _CheckDynamicField {
 
     # check DynamicField item internally
     for my $Needed (qw(Name Value)) {
-        if ( !defined $DynamicField->{$Needed} || !IsStringWithData( $DynamicField->{$Needed} ) ) {
+        if (
+            !defined $DynamicField->{$Needed}
+            || ( !IsString( $DynamicField->{$Needed} ) && ref $DynamicField->{$Needed} ne 'ARRAY' )
+            )
+        {
             return {
                 ErrorCode    => 'TicketUpdate.MissingParameter',
-                ErrorMessage => "TicketUpdate: DynamicField->$Needed  parameter is missing!",
+                ErrorMessage => "TicketUpdate: DynamicField->$Needed parameter is missing!",
             };
         }
     }
@@ -1127,7 +1131,7 @@ sub _CheckAttachment {
         if ( !$Attachment->{$Needed} ) {
             return {
                 ErrorCode    => 'TicketUpdate.MissingParameter',
-                ErrorMessage => "TicketUpdate: Attachment->$Needed  parameter is missing!",
+                ErrorMessage => "TicketUpdate: Attachment->$Needed parameter is missing!",
             };
         }
     }

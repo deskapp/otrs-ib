@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -1337,12 +1337,14 @@ sub QueryCondition {
             $Word =~ s/%%/%/g;
             $Word =~ s/%%/%/g;
 
-            # perform quoting depending on query type
-            if ( $Word =~ m/%/ ) {
-                $Word = $Self->Quote( $Word, 'Like' );
-            }
-            else {
-                $Word = $Self->Quote($Word);
+            # perform quoting depending on query type (only if not in bind mode)
+            if ( !$BindMode ) {
+                if ( $Word =~ m/%/ ) {
+                    $Word = $Self->Quote( $Word, 'Like' );
+                }
+                else {
+                    $Word = $Self->Quote($Word);
+                }
             }
 
             # if it's a NOT LIKE condition
@@ -1524,6 +1526,12 @@ sub QueryCondition {
             Priority => 'notice',
             Message  => "Invalid condition '$Param{Value}', $Open open and $Close close!",
         );
+        if ($BindMode) {
+            return (
+                'SQL'    => "1=0",
+                'Values' => [],
+            );
+        }
         return "1=0";
     }
 

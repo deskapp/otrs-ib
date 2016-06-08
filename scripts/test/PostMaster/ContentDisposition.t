@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -13,11 +13,19 @@ use utf8;
 use vars (qw($Self));
 
 use Kernel::System::PostMaster;
-use Kernel::System::Ticket;
 
 # get needed objects
 my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 my $MainObject   = $Kernel::OM->Get('Kernel::System::Main');
+my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
+
+# get helper object
+$Kernel::OM->ObjectParamAdd(
+    'Kernel::System::UnitTest::Helper' => {
+        RestoreDatabase => 1,
+    },
+);
+my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 
 my @Tests = (
     {
@@ -146,9 +154,6 @@ for my $Test (@Tests) {
             Result   => 'ARRAY',
         );
 
-        # new/clear ticket object
-        my $TicketObject = Kernel::System::Ticket->new();
-
         my $TicketID;
         {
             my $PostMasterObject = Kernel::System::PostMaster->new(
@@ -198,20 +203,6 @@ for my $Test (@Tests) {
     }
 }
 
-# cleanup the system
-my $TicketObject = Kernel::System::Ticket->new();
-
-for my $TicketID (@AddedTicketIDs) {
-
-    my $Success = $TicketObject->TicketDelete(
-        TicketID => $TicketID,
-        UserID   => 1,
-    );
-
-    $Self->True(
-        $Success,
-        "TicketDelete() - removed ticket $TicketID",
-    );
-}
+# cleanup is done by RestoreDatabase.
 
 1;

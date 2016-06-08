@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -211,7 +211,7 @@ Core.UI.Dialog = (function (TargetNS) {
             var $CloseButton = $('.Dialog:visible button.Close');
 
             // publish close event
-            Core.App.Publish('Event.UI.Dialog.CloseDialog.Close', $Dialog);
+            Core.App.Publish('Event.UI.Dialog.CloseDialog.Close', [$Dialog]);
 
             // Hide any possibly existing tooltips.
             if (Core.Form && Core.Form.ErrorTooltips) {
@@ -602,7 +602,7 @@ Core.UI.Dialog = (function (TargetNS) {
         DialogCopySelector = Core.Data.Get($Dialog, 'DialogCopySelector');
 
         // publish close event
-        Core.App.Publish('Event.UI.Dialog.CloseDialog.Close', $Dialog);
+        Core.App.Publish('Event.UI.Dialog.CloseDialog.Close', [$Dialog]);
 
         $Dialog.remove();
         $('#Overlay').remove();

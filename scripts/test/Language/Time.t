@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -12,16 +12,18 @@ use utf8;
 
 use vars (qw($Self %Param));
 
-use Kernel::Language;
+# get needed objects
+my $Helper     = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+my $TimeObject = $Kernel::OM->Get('Kernel::System::Time');
 
-my $TimeObject   = $Kernel::OM->Get('Kernel::System::Time');
-my $HelperObject = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
-
-my $LanguageObject = Kernel::Language->new(
-    UserLanguage => 'de',
+# get language object
+$Kernel::OM->ObjectParamAdd(
+    'Kernel::Language' => {
+        UserLanguage => 'de',
+    },
 );
+my $LanguageObject = $Kernel::OM->Get('Kernel::Language');
 
-TEST:
 my @Tests = (
     {
         Name           => 'Default format',
@@ -79,7 +81,7 @@ for my $Test (@Tests) {
 
     $LanguageObject->{DateFormatLong} = $Test->{DateFormatLong};
 
-    $HelperObject->FixedTimeSet(
+    $Helper->FixedTimeSet(
         $TimeObject->TimeStamp2SystemTime( String => $Test->{FixedTimeSet} ),
     );
 

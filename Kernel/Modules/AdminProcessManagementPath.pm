@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -13,6 +13,7 @@ use warnings;
 
 use List::Util qw(first);
 
+use Kernel::Language qw(Translatable);
 use Kernel::System::VariableCheck qw(:all);
 
 our $ObjectManagerDisabled = 1;
@@ -106,7 +107,7 @@ sub Run {
             if ( !$TransferData->{$Needed} ) {
 
                 return $LayoutObject->ErrorScreen(
-                    Message => "Need $Needed!",
+                    Message => $LayoutObject->{LanguageObject}->Translate( 'Need %s!', $Needed ),
                 );
             }
         }
@@ -232,7 +233,7 @@ sub Run {
     # ------------------------------------------------------------ #
     else {
         return $LayoutObject->ErrorScreen(
-            Message => "This subaction is not valid",
+            Message => Translatable('This subaction is not valid'),
         );
     }
 }
@@ -321,7 +322,7 @@ sub _ShowEdit {
             },
         );
     }
-    $Param{Title} = "Edit Path";
+    $Param{Title} = Translatable('Edit Path');
 
     my $Output = $LayoutObject->Header(
         Value => $Param{Title},

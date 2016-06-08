@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -11,6 +11,7 @@ package Kernel::Modules::AgentTicketPrint;
 use strict;
 use warnings;
 
+use Kernel::Language qw(Translatable);
 use Kernel::System::VariableCheck qw(:all);
 
 our $ObjectManagerDisabled = 1;
@@ -41,7 +42,9 @@ sub Run {
 
     # check needed stuff
     if ( !$Self->{TicketID} || !$QueueID ) {
-        return $LayoutObject->ErrorScreen( Message => 'Need TicketID!' );
+        return $LayoutObject->ErrorScreen(
+            Message => Translatable('Need TicketID!'),
+        );
     }
 
     # check permissions
@@ -176,11 +179,16 @@ sub Run {
         );
     }
 
-    # get PDF object
-    my $PDFObject = $Kernel::OM->Get('Kernel::System::PDF');
+    # get needed objects
+    my $PDFObject  = $Kernel::OM->Get('Kernel::System::PDF');
+    my $TimeObject = $Kernel::OM->Get('Kernel::System::Time');
 
     my $PrintedBy = $LayoutObject->{LanguageObject}->Translate('printed by');
-    my $Time      = $LayoutObject->{Time};
+    my $Time      = $LayoutObject->{LanguageObject}->FormatTimeString(
+        $TimeObject->CurrentTimestamp(),
+        'DateFormat',
+    );
+
     my %Page;
 
     # get maximum number of pages
@@ -299,7 +307,6 @@ sub Run {
 
     # get time object and use the UserTimeObject, if the system use UTC as
     # system time and the TimeZoneUser feature is active
-    my $TimeObject = $Kernel::OM->Get('Kernel::System::Time');
     if (
         !$Kernel::OM->Get('Kernel::System::Time')->ServerLocalTimeOffsetSeconds()
         && $Kernel::OM->Get('Kernel::Config')->Get('TimeZoneUser')
@@ -1134,13 +1141,15 @@ sub _PDFOutputArticles {
             my $Lines;
             if ( IsArrayRefWithData( $Article{Body} ) ) {
                 for my $Line ( @{ $Article{Body} } ) {
+                    my $CreateTime
+                        = $LayoutObject->{LanguageObject}->FormatTimeString( $Line->{CreateTime}, 'DateFormat' );
                     if ( $Line->{SystemGenerated} ) {
-                        $Lines .= '[' . $Line->{CreateTime} . '] ' . $Line->{MessageText} . "\n";
+                        $Lines .= '[' . $CreateTime . '] ' . $Line->{MessageText} . "\n";
                     }
                     else {
                         $Lines
                             .= '['
-                            . $Line->{CreateTime} . '] '
+                            . $CreateTime . '] '
                             . $Line->{ChatterName} . ' '
                             . $Line->{MessageText} . "\n";
                     }

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -12,6 +12,7 @@ use strict;
 use warnings;
 
 use Kernel::System::VariableCheck qw(:all);
+use Kernel::Language qw(Translatable);
 
 our $ObjectManagerDisabled = 1;
 
@@ -34,14 +35,18 @@ sub Run {
 
     # check needed stuff
     if ( !$Self->{TicketID} ) {
-        return $LayoutObject->ErrorScreen( Message => 'Need TicketID!' );
+        return $LayoutObject->ErrorScreen(
+            Message => Translatable('Need TicketID!'),
+        );
     }
 
     my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
 
     $QueueID = $TicketObject->TicketQueueID( TicketID => $Self->{TicketID} );
     if ( !$QueueID ) {
-        return $LayoutObject->ErrorScreen( Message => 'Need TicketID!' );
+        return $LayoutObject->ErrorScreen(
+            Message => Translatable('Need TicketID!'),
+        );
     }
 
     # check permissions
@@ -101,10 +106,15 @@ sub Run {
         $Ticket{PendingUntil} = '-';
     }
 
-    my $PDFObject = $Kernel::OM->Get('Kernel::System::PDF');
+    # get needed objects
+    my $TimeObject = $Kernel::OM->Get('Kernel::System::Time');
+    my $PDFObject  = $Kernel::OM->Get('Kernel::System::PDF');
 
     my $PrintedBy = $LayoutObject->{LanguageObject}->Translate('printed by');
-    my $Time      = $LayoutObject->{Time};
+    my $Time      = $LayoutObject->{LanguageObject}->FormatTimeString(
+        $TimeObject->CurrentTimestamp(),
+        'DateFormat',
+    );
     my %Page;
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
@@ -213,8 +223,7 @@ sub Run {
     );
 
     # return the pdf document
-    my $TimeObject = $Kernel::OM->Get('Kernel::System::Time');
-    my $Filename   = 'Ticket_' . $Ticket{TicketNumber};
+    my $Filename = 'Ticket_' . $Ticket{TicketNumber};
     my ( $s, $m, $h, $D, $M, $Y ) = $TimeObject->SystemTime2Date(
         SystemTime => $TimeObject->SystemTime(),
     );
@@ -819,13 +828,15 @@ sub _PDFOutputArticles {
             my $Lines;
             if ( IsArrayRefWithData( $Article{Body} ) ) {
                 for my $Line ( @{ $Article{Body} } ) {
+                    my $CreateTime
+                        = $LayoutObject->{LanguageObject}->FormatTimeString( $Line->{CreateTime}, 'DateFormat' );
                     if ( $Line->{SystemGenerated} ) {
-                        $Lines .= '[' . $Line->{CreateTime} . '] ' . $Line->{MessageText} . "\n";
+                        $Lines .= '[' . $CreateTime . '] ' . $Line->{MessageText} . "\n";
                     }
                     else {
                         $Lines
                             .= '['
-                            . $Line->{CreateTime} . '] '
+                            . $CreateTime . '] '
                             . $Line->{ChatterName} . ' '
                             . $Line->{MessageText} . "\n";
                     }

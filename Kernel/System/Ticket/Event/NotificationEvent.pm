@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -607,6 +607,17 @@ sub _RecipientsGet {
                         Type    => 'rw',
                         UserID  => $Param{UserID},
                     );
+
+                    my %RoleList = $GroupObject->PermissionGroupRoleGet(
+                        GroupID => $GroupID,
+                        Type    => 'rw',
+                    );
+                    for my $RoleID ( sort keys %RoleList ) {
+                        my %RoleUserList = $GroupObject->PermissionRoleUserGet(
+                            RoleID => $RoleID,
+                        );
+                        %UserList = ( %RoleUserList, %UserList );
+                    }
 
                     my @UserIDs = sort keys %UserList;
 

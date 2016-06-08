@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -12,6 +12,7 @@ use strict;
 use warnings;
 
 use Kernel::System::VariableCheck qw(:all);
+use Kernel::Language qw(Translatable);
 
 our @ObjectDependencies = (
     'Kernel::Config',
@@ -80,6 +81,9 @@ sub new {
     # timeout for the registration cloud service requests
     $Self->{TimeoutRequest} = 60;
 
+    # check if cloud services are disabled
+    $Self->{CloudServicesDisabled} = $Kernel::OM->Get('Kernel::Config')->Get('CloudServices::Disabled') || 0;
+
     return $Self;
 }
 
@@ -135,6 +139,8 @@ sub TokenGet {
         Success => 0,
     );
 
+    return %Result if $Self->{CloudServicesDisabled};
+
     my $CloudService = 'SystemRegistration';
     my $Operation    = 'TokenGet';
 
@@ -166,7 +172,7 @@ sub TokenGet {
             Priority => 'notice',
             Message  => "Registration - Can't contact server",
         );
-        $Result{Reason} = "Can't contact registration server. Please try again later.";
+        $Result{Reason} = Translatable("Can't contact registration server. Please try again later.");
 
         return %Result;
     }
@@ -175,7 +181,7 @@ sub TokenGet {
             Priority => 'notice',
             Message  => "Registration - Request Failed ($RequestResult->{ErrorMessage})",
         );
-        $Result{Reason} = "Can't contact registration server. Please try again later.";
+        $Result{Reason} = Translatable("Can't contact registration server. Please try again later.");
 
         return %Result;
     }
@@ -191,12 +197,12 @@ sub TokenGet {
             Priority => 'notice',
             Message  => "Registration - No content received from server",
         );
-        $Result{Reason} = "No content received from registration server. Please try again later.";
+        $Result{Reason} = Translatable("No content received from registration server. Please try again later.");
 
         return %Result;
     }
     elsif ( !$OperationResult->{Success} ) {
-        $Result{Reason} = $OperationResult->{ErrorMessage} || "Can't get Token from sever";
+        $Result{Reason} = $OperationResult->{ErrorMessage} || Translatable("Can't get Token from sever");
 
         return %Result;
     }
@@ -205,7 +211,7 @@ sub TokenGet {
 
     # if auth is incorrect
     if ( !defined $ResponseData->{Auth} || $ResponseData->{Auth} ne 'ok' ) {
-        $Result{Reason} = 'Username and password do not match. Please try again.';
+        $Result{Reason} = Translatable('Username and password do not match. Please try again.');
         return %Result;
     }
 
@@ -215,7 +221,7 @@ sub TokenGet {
             Priority => 'error',
             Message  => "Registration - received no Token!",
         );
-        $Result{Reason} = 'Problems processing server result. Please try again later.';
+        $Result{Reason} = Translatable('Problems processing server result. Please try again later.');
         return %Result;
     }
 
@@ -252,6 +258,8 @@ sub Register {
             return;
         }
     }
+
+    return if $Self->{CloudServicesDisabled};
 
     # get config object
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
@@ -581,6 +589,13 @@ or
 sub RegistrationUpdateSend {
     my ( $Self, %Param ) = @_;
 
+    if ( $Self->{CloudServicesDisabled} ) {
+        return (
+            Success => 0,
+            Reason  => 'Cloud services are disabled!',
+        );
+    }
+
     # get registration data
     my %RegistrationData = $Self->RegistrationDataGet();
 
@@ -870,6 +885,8 @@ sub Deregister {
             return;
         }
     }
+
+    return if $Self->{CloudServicesDisabled};
 
     my %RegistrationInfo = $Self->RegistrationDataGet();
 

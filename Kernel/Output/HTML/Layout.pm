@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -16,6 +16,7 @@ use URI::Escape qw();
 
 use Kernel::System::Time;
 use Kernel::System::VariableCheck qw(:all);
+use Kernel::Language qw(Translatable);
 
 our @ObjectDependencies = (
     'Kernel::Config',
@@ -32,6 +33,7 @@ our @ObjectDependencies = (
     'Kernel::System::Time',
     'Kernel::System::User',
     'Kernel::System::Web::Request',
+    'Kernel::System::Group',
 );
 
 =head1 NAME
@@ -389,7 +391,7 @@ EOF
     }
 
     # load theme
-    my $Theme = $Self->{UserTheme} || $ConfigObject->Get('DefaultTheme') || 'Standard';
+    my $Theme = $Self->{UserTheme} || $ConfigObject->Get('DefaultTheme') || Translatable('Standard');
 
     # force a theme based on host name
     my $DefaultThemeHostBased = $ConfigObject->Get('DefaultTheme::HostBased');
@@ -1024,7 +1026,7 @@ sub Error {
     if ( !$Param{Message} ) {
         $Param{Message} = $Param{BackendMessage};
     }
-    $Param{Message} =~ s/^(.{80}).*$/$1\[\.\.\]/gs;
+    $Param{Message} =~ s/^(.{200}).*$/${1}[...]/gs;
 
     if ( $Param{BackendTraceback} ) {
         $Self->Block(
@@ -1032,6 +1034,12 @@ sub Error {
             Data => \%Param,
         );
     }
+
+    # Don't check for business package if the database was not yet configured (in the installer)
+    if ( $Kernel::OM->Get('Kernel::Config')->Get('SecureMode') ) {
+        $Param{OTRSBusinessIsInstalled} = $Kernel::OM->Get('Kernel::System::OTRSBusiness')->OTRSBusinessIsInstalled();
+    }
+
 
     # create & return output
     return $Self->Output(
@@ -1330,6 +1338,9 @@ sub Header {
             my %Modules;
             my %Jobs = %{$ToolBarModule};
 
+            # get group object
+            my $GroupObject = $Kernel::OM->Get('Kernel::System::Group');
+
             MODULE:
             for my $Job ( sort keys %Jobs ) {
 
@@ -1339,6 +1350,56 @@ sub Header {
                     %{$Self},    # UserID etc.
                 );
                 next MODULE if !$Object;
+
+                my $ToolBarAccessOk;
+
+                # if group restriction for tool-bar is set, check user permission
+                if ( $Jobs{$Job}->{Group} ) {
+
+                    # remove white-spaces
+                    $Jobs{$Job}->{Group} =~ s{\s}{}xmsg;
+
+                    # get group configurations
+                    my @Items = split( ';', $Jobs{$Job}->{Group} );
+
+                    ITEM:
+                    for my $Item (@Items) {
+
+                        # split values into permission and group
+                        my ( $Permission, $GroupName ) = split( ':', $Item );
+
+                        # log an error if not valid setting
+                        if ( !$Permission || !$GroupName ) {
+                            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                                Priority => 'error',
+                                Message  => "Invalid config for ToolBarModule $Job - Key Group: '$Item'! "
+                                    . "Need something like 'Permission:Group;'",
+                            );
+                        }
+
+                        # get groups for current user
+                        my %Groups = $GroupObject->PermissionUserGet(
+                            UserID => $Self->{UserID},
+                            Type   => $Permission,
+                        );
+
+                        # next job if user have not groups
+                        next ITEM if !%Groups;
+
+                        # check user belongs to the correct group
+                        my %GroupsReverse = reverse %Groups;
+                        next ITEM if !$GroupsReverse{$GroupName};
+
+                        $ToolBarAccessOk = 1;
+
+                        last ITEM;
+                    }
+
+                    # go to the next module if not permissions
+                    # for the current one
+                    next MODULE if !$ToolBarAccessOk;
+                }
+
                 %Modules = ( $Object->Run( %Param, Config => $Jobs{$Job} ), %Modules );
             }
 
@@ -1911,11 +1972,11 @@ sub CustomerAgeInHours {
     my $Age = defined( $Param{Age} ) ? $Param{Age} : return;
     my $Space     = $Param{Space} || '<br/>';
     my $AgeStrg   = '';
-    my $HourDsc   = 'h';
-    my $MinuteDsc = 'm';
+    my $HourDsc   = Translatable('h');
+    my $MinuteDsc = Translatable('m');
     if ( $Kernel::OM->Get('Kernel::Config')->Get('TimeShowCompleteDescription') ) {
-        $HourDsc   = 'hour';
-        $MinuteDsc = 'minute';
+        $HourDsc   = Translatable('hour');
+        $MinuteDsc = Translatable('minute');
     }
     if ( $Age =~ /^-(.*)/ ) {
         $Age     = $1;
@@ -1945,13 +2006,13 @@ sub CustomerAge {
     my $Age = defined( $Param{Age} ) ? $Param{Age} : return;
     my $Space     = $Param{Space} || '<br/>';
     my $AgeStrg   = '';
-    my $DayDsc    = 'd';
-    my $HourDsc   = 'h';
-    my $MinuteDsc = 'm';
+    my $DayDsc    = Translatable('d');
+    my $HourDsc   = Translatable('h');
+    my $MinuteDsc = Translatable('m');
     if ( $ConfigObject->Get('TimeShowCompleteDescription') ) {
-        $DayDsc    = 'day';
-        $HourDsc   = 'hour';
-        $MinuteDsc = 'minute';
+        $DayDsc    = Translatable('day');
+        $HourDsc   = Translatable('hour');
+        $MinuteDsc = Translatable('minute');
     }
     if ( $Age =~ /^-(.*)/ ) {
         $Age     = $1;
@@ -2182,13 +2243,11 @@ sub NoPermission {
 
     my $WithHeader = $Param{WithHeader} || 'yes';
 
-    my $TranslatableMessage = $Self->{LanguageObject}->Translate(
-        "We are sorry, you do not have permissions anymore to access this ticket in its current state."
-    );
-    $TranslatableMessage .= '<br/>';
-    $TranslatableMessage
-        .= $Self->{LanguageObject}->Translate(" You can take one of the next actions:");
-    $Param{Message} = $TranslatableMessage if ( !$Param{Message} );
+    if ( !$Param{Message} ) {
+        $Param{Message} = $Self->{LanguageObject}->Translate(
+            'We are sorry, you do not have permissions anymore to access this ticket in its current state. You can take one of the following actions:'
+        );
+    }
 
     # get config option for possible next actions
     my $PossibleNextActions = $Kernel::OM->Get('Kernel::Config')->Get('PossibleNextActions');
@@ -2205,7 +2264,7 @@ sub NoPermission {
             $Self->Block(
                 Name => 'PossibleNextActionRow',
                 Data => {
-                    Link        => $PossibleNextActions->{$Key},
+                    Link        => $Self->{LanguageObject}->Translate( $PossibleNextActions->{$Key} ),
                     Description => $Key,
                 },
             );
@@ -2411,7 +2470,10 @@ sub Attachment {
     }
     $Output .= "Content-Length: $Param{Size}\n";
     $Output .= "X-UA-Compatible: IE=edge,chrome=1\n";
-    $Output .= "X-Frame-Options: SAMEORIGIN\n";
+
+    if ( !$Kernel::OM->Get('Kernel::Config')->Get('DisableIFrameOriginRestricted') ) {
+        $Output .= "X-Frame-Options: SAMEORIGIN\n";
+    }
 
     if ( $Param{Charset} ) {
         $Output .= "Content-Type: $Param{ContentType}; charset=$Param{Charset};\n\n";
@@ -3239,6 +3301,9 @@ sub BuildDateSelection {
             . "/>&nbsp;";
     }
 
+    # remove 'Second' because it is never used and bug #9441
+    delete $Param{ $Prefix . 'Second' };
+
     # date format
     $Output .= $Self->{LanguageObject}->Time(
         Action => 'Return',
@@ -3862,8 +3927,7 @@ sub CustomerNavigationBar {
             # check if we must mark the parent element as selected
             if ( $ItemSub->{Link} ) {
                 if (
-                    !$SelectedFlag
-                    && $ItemSub->{Link} =~ /Action=$Self->{Action}/
+                    $ItemSub->{Link} =~ /Action=$Self->{Action}/
                     && $ItemSub->{Link} =~ /$Self->{Subaction}/    # Subaction can be empty
                     )
                 {
@@ -4039,11 +4103,11 @@ sub CustomerNoPermission {
     my ( $Self, %Param ) = @_;
 
     my $WithHeader = $Param{WithHeader} || 'yes';
-    $Param{Message} ||= 'No Permission!';
+    $Param{Message} ||= Translatable('No Permission!');
 
     # create output
     my $Output;
-    $Output = $Self->CustomerHeader( Title => 'No Permission' ) if ( $WithHeader eq 'yes' );
+    $Output = $Self->CustomerHeader( Title => Translatable('No Permission') ) if ( $WithHeader eq 'yes' );
     $Output .= $Self->Output(
         TemplateFile => 'NoPermission',
         Data         => \%Param
@@ -4195,7 +4259,7 @@ sub _RichTextReplaceLinkOfInlineContent {
 
     # replace image link with content id for uploaded images
     ${ $Param{String} } =~ s{
-        (<img.+?src=("|'))[^>]+ContentID=(.+?)("|')([^>]+>)
+        (<img.+?src=("|'))[^"'>]+?ContentID=(.+?)("|')([^>]*>)
     }
     {
         my ($Start, $CID, $Close, $End) = ($1, $3, $4, $5);
@@ -5104,7 +5168,10 @@ sub _BuildSelectionOutput {
                 },
                 NoQuotes => 1,
             );
-            $String .= " data-filters='$JSON'";
+            my $JSONEscaped = $Kernel::OM->Get('Kernel::System::HTMLUtils')->ToHTML(
+                String => $JSON,
+            );
+            $String .= " data-filters=\"$JSONEscaped\"";
             if ( $Param{FilterActive} ) {
                 $String .= ' data-filtered="' . int( $Param{FilterActive} ) . '"';
             }

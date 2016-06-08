@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -149,9 +149,11 @@ X-OTRS-Login: [% Env("Baselink") %]
 [% RenderBlockStart("PreLogin") %]
             <div id="LoginBox" class="PreLogin">
                 <div class="WidgetSimple">
+                [% IF Config("ProductName") %]
                     <div class="Header">
-                        <h2 class="Center">[% Translate("Welcome to %s", Config("ProductName")) | html %]</h2>
+                        <h2 class="Center">[% Config("ProductName") | html %]</h2>
                     </div>
+                [% END %]
                     <div class="Content">
                         <p class="Center">
                             [% Translate("One moment please, you are being redirected...") | html %]
@@ -173,9 +175,11 @@ X-OTRS-Login: [% Env("Baselink") %]
                     [% Data.Message | html %]
                 </p>
                 <div class="WidgetSimple">
+                [% IF Config("ProductName") %]
                     <div class="Header">
-                        <h2 class="Center">[% Translate("Welcome to %s", Config("ProductName")) | html %]</h2>
+                        <h2 class="Center">[% Config("ProductName") | html %]</h2>
                     </div>
+                [% END %]
                     <div class="Content">
                         <p class="Error Center Spacing"></p>
 

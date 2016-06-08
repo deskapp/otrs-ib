@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -200,6 +200,16 @@
                             </p>
                         </div>
                         <div class="Clear"></div>
+
+                        <label for="Link">[% Translate("Link for preview") | html %]:</label>
+                        <div class="Field">
+                            <input id="LinkPreview" class="W50pc" type="text" maxlength="500" value="[% Data.LinkPreview | html %]" name="LinkPreview"/>
+                            <p class="FieldExplanation">
+                                [% Translate("If filled in, this URL will be used for a preview which is shown when this link is hovered in ticket zoom. Please note that for this to work, the regular URL field above needs to be filled in, too.") | html %]
+                            </p>
+                        </div>
+                        <div class="Clear"></div>
+
                     </fieldset>
                 </div>
             </div>

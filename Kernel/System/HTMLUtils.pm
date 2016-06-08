@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -482,6 +482,10 @@ sub ToAscii {
     }
     {
         my $Chr = chr( $2 );
+        # make sure we get valid UTF8 code points
+        Encode::_utf8_off( $Chr);
+        $Chr = Encode::decode('utf-8', $Chr, 0);
+
         if ( $Chr ) {
             $Chr;
         }
@@ -490,7 +494,7 @@ sub ToAscii {
         };
     }egx;
 
-    # encode html entities like "&#3d;"
+    # encode html entities like "&#x3d;"
     $Param{String} =~ s{
         (&\#[xX]([0-9a-fA-F]+);?)
     }
@@ -499,6 +503,9 @@ sub ToAscii {
         my $Hex = hex( $2 );
         if ( $Hex ) {
             my $Chr = chr( $Hex );
+            # make sure we get valid UTF8 code points
+            Encode::_utf8_off( $Chr);
+            $Chr = Encode::decode('utf-8', $Chr, 0);
             if ( $Chr ) {
                 $Chr;
             }
@@ -814,17 +821,21 @@ sub LinkQuote {
         (                                          # $3
             (?: [a-z0-9\-]+ \. )*                  # get subdomains, optional
             [a-z0-9\-]+                            # get top level domain
+            (?:                                    # optional port number
+                [:]
+                [0-9]+
+            )?
             (?:                                    # file path element
                 [\/\.]
-                | [a-zA-Z0-9\-]
+                | [a-zA-Z0-9\-_=%]
             )*
             (?:                                    # param string
                 [\?]                               # if param string is there, "?" must be present
-                [a-zA-Z0-9&;=%\-_]*                # param string content, this will also catch entities like &amp;
+                [a-zA-Z0-9&;=%\-_:\.\/]*           # param string content, this will also catch entities like &amp;
             )?
             (?:                                    # link hash string
                 [\#]                               #
-                [a-zA-Z0-9&;=%\-_]*                # hash string content, this will also catch entities like &amp;
+                [a-zA-Z0-9&;=%\-_:\.\/]*           # hash string content, this will also catch entities like &amp;
             )?
         )
         (?=                                        # $4
@@ -1087,12 +1098,6 @@ sub Safety {
                 }
                 {$2}sgxim;
 
-                # remove entities in tag
-                $Replaced += $Tag =~ s{
-                    (&\{.+?\})
-                }
-                {}sgxim;
-
                 # remove javascript in a href links or src links
                 $Replaced += $Tag =~ s{
                     ((?:\s|;|/)(?:background|url|src|href)=)
@@ -1183,7 +1188,7 @@ sub EmbeddedImagesExtract {
     if ( ref $Param{AttachmentsRef} ne 'ARRAY' ) {
         $Kernel::OM->Get('Kernel::System::Log')->Log(
             Priority => 'error',
-            Message  => "Need DocumentRef!"
+            Message  => "Need AttachmentsRef!"
         );
         return;
     }
@@ -1215,6 +1220,8 @@ sub EmbeddedImagesExtract {
 }
 
 =item HTMLTruncate()
+
+DEPRECATED: This function will be removed in further versions of OTRS
 
 truncate an HTML string to certain amount of characters without loosing the HTML tags, the resulting
 string will contain the specified amount of text characters plus the HTML tags, and ellipsis string.

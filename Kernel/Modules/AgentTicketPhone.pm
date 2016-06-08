@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -14,6 +14,7 @@ use warnings;
 
 use Mail::Address;
 
+use Kernel::Language qw(Translatable);
 use Kernel::System::VariableCheck qw(:all);
 
 our $ObjectManagerDisabled = 1;
@@ -194,7 +195,7 @@ sub Run {
     if ( $GetParam{FromChatID} ) {
         if ( !$ConfigObject->Get('ChatEngine::Active') ) {
             return $LayoutObject->FatalError(
-                Message => "Chat is not active.",
+                Message => Translatable('Chat is not active.'),
             );
         }
 
@@ -208,7 +209,7 @@ sub Run {
 
         if ( !%ChatParticipant ) {
             return $LayoutObject->FatalError(
-                Message => "No permission.",
+                Message => Translatable('No permission.'),
             );
         }
 
@@ -221,7 +222,8 @@ sub Run {
         # Check if observer
         if ( $PermissionLevel ne 'Owner' && $PermissionLevel ne 'Participant' ) {
             return $LayoutObject->FatalError(
-                Message => "No permission. $PermissionLevel",
+                Message => Translatable('No permission.'),
+                Comment => $PermissionLevel,
             );
         }
     }
@@ -277,7 +279,7 @@ sub Run {
 
             if ( !$Access ) {
                 return $LayoutObject->NoPermission(
-                    Message    => "You need ro permission!",
+                    Message    => Translatable('You need ro permission!'),
                     WithHeader => 'yes',
                 );
             }
@@ -290,7 +292,8 @@ sub Run {
             # check if article is from the same TicketID as we checked permissions for.
             if ( $Article{TicketID} ne $Self->{TicketID} ) {
                 return $LayoutObject->ErrorScreen(
-                    Message => "Article does not belong to ticket $Self->{TicketID}!",
+                    Message => $LayoutObject->{LanguageObject}
+                        ->Translate( 'Article does not belong to ticket %s!', $Self->{TicketID} ),
                 );
             }
 
@@ -302,7 +305,9 @@ sub Run {
             # save article from for addresses list
             $ArticleFrom = $Article{From};
 
-            # if To is present and is no a queue
+            # if To is present
+            # and is no a queue
+            # and also is no a system address
             # set To as article from
             if ( IsStringWithData( $Article{To} ) ) {
                 my %Queues = $QueueObject->QueueList();
@@ -315,9 +320,20 @@ sub Run {
                 }
 
                 my %QueueLookup = reverse %Queues;
-                if ( !defined $QueueLookup{ $Article{To} } ) {
+                my %SystemAddressLookup
+                    = reverse $Kernel::OM->Get('Kernel::System::SystemAddress')->SystemAddressList();
+                my @ArticleFromAddress;
+                my $SystemAddressEmail;
+
+                if ($ArticleFrom) {
+                    @ArticleFromAddress = Mail::Address->parse($ArticleFrom);
+                    $SystemAddressEmail = $ArticleFromAddress[0]->address();
+                }
+
+                if ( !defined $QueueLookup{ $Article{To} } && defined $SystemAddressLookup{$SystemAddressEmail} ) {
                     $ArticleFrom = $Article{To};
                 }
+
             }
 
             # body preparation for plain text processing
@@ -908,8 +924,9 @@ sub Run {
                 if ( !IsHashRefWithData($ValidationResult) ) {
                     return $LayoutObject->ErrorScreen(
                         Message =>
-                            "Could not perform validation on field $DynamicFieldConfig->{Label}!",
-                        Comment => 'Please contact the admin.',
+                            $LayoutObject->{LanguageObject}
+                            ->Translate( 'Could not perform validation on field %s!', $DynamicFieldConfig->{Label} ),
+                        Comment => Translatable('Please contact the admin.'),
                     );
                 }
 
@@ -1568,7 +1585,7 @@ sub Run {
 
             if ( !$Access ) {
                 return $LayoutObject->NoPermission(
-                    Message    => "You need ro permission!",
+                    Message    => Translatable('You need ro permission!'),
                     WithHeader => 'yes',
                 );
             }
@@ -1918,8 +1935,8 @@ sub Run {
     }
     else {
         return $LayoutObject->ErrorScreen(
-            Message => 'No Subaction!!',
-            Comment => 'Please contact your administrator',
+            Message => Translatable('No Subaction!'),
+            Comment => Translatable('Please contact your administrator'),
         );
     }
 }

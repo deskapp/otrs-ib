@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -266,7 +266,7 @@ To find tickets in your system.
 
         # OrderBy and SortBy (optional)
         OrderBy => 'Down',  # Down|Up
-        SortBy  => 'Age',   # Owner|Responsible|CustomerID|State|TicketNumber|Queue|Priority|Age|Type|Lock
+        SortBy  => 'Age',   # Created|Owner|Responsible|CustomerID|State|TicketNumber|Queue|Priority|Age|Type|Lock
                             # Changed|Title|Service|SLA|PendingTime|EscalationTime
                             # EscalationUpdateTime|EscalationResponseTime|EscalationSolutionTime
                             # DynamicField_FieldNameX
@@ -332,6 +332,7 @@ sub TicketSearch {
         Type                   => 'st.type_id',
         Priority               => 'st.ticket_priority_id',
         Age                    => 'st.create_time_unix',
+        Created                => 'st.create_time',
         Changed                => 'st.change_time',
         Service                => 'st.service_id',
         SLA                    => 'st.sla_id',
@@ -2293,13 +2294,17 @@ sub SearchStringStopWordsFind {
         WORD:
         for my $Word ( @{ $StopWordRaw->{$Language} } ) {
 
-            next WORD if !$Word;
+            next WORD if !defined $Word || !length $Word;
 
             $Word = lc $Word;
 
             $StopWord{$Word} = 1;
         }
     }
+
+    my $SearchIndexAttributes = $Kernel::OM->Get('Kernel::Config')->Get('Ticket::SearchIndex::Attribute');
+    my $WordLengthMin         = $SearchIndexAttributes->{WordLengthMin} || 3;
+    my $WordLengthMax         = $SearchIndexAttributes->{WordLengthMax} || 30;
 
     my %StopWordsFound;
     SEARCHSTRING:
@@ -2321,7 +2326,8 @@ sub SearchStringStopWordsFind {
             }
         }
 
-        @{ $StopWordsFound{$Key} } = grep { $StopWord{$_} } sort keys %Words;
+        @{ $StopWordsFound{$Key} }
+            = grep { $StopWord{$_} || length $_ < $WordLengthMin || length $_ > $WordLengthMax } sort keys %Words;
     }
 
     return \%StopWordsFound;

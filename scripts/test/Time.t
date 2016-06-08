@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -412,7 +412,7 @@ my @DestinationTime = (
         EndTimeSystem   => 1174984943,
     },
 
-    # Behaviour tests
+    # Behavior tests
     {
         Name            => 'Test weekend',
         StartTime       => '2013-03-16 10:00:00',    # Saturday
@@ -546,7 +546,6 @@ $ConfigObject->Set(
     },
 );
 
-srand(12345678);    # repeatable!
 for my $Test (@WorkingTimeDestinationTimeRoundtrip) {
     my $BaseDate   = $Test->{BaseDate};
     my $BaseTime   = $TimeObject->TimeStamp2SystemTime( String => $BaseDate );
@@ -555,9 +554,9 @@ for my $Test (@WorkingTimeDestinationTimeRoundtrip) {
     for my $Run ( 1 .. 40 ) {
 
         # Use random start/stop dates around base date
-        my $StartTime = $BaseTime - int( rand( $DaysBefore * 24 * 60 * 60 ) );
+        my $StartTime = $BaseTime - int( $DaysBefore * 24 * 60 * 60 );
         my $StartDate = $TimeObject->SystemTime2TimeStamp( SystemTime => $StartTime );
-        my $StopTime  = $BaseTime + int( rand( $DaysAfter * 24 * 60 * 60 ) );
+        my $StopTime  = $BaseTime + int( $DaysAfter * 24 * 60 * 60 );
         my $StopDate  = $TimeObject->SystemTime2TimeStamp( SystemTime => $StopTime );
 
         my $WorkingTime = $TimeObject->WorkingTime(

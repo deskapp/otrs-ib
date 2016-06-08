@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -19,6 +19,7 @@ use Kernel::System::SysConfig;
 use Kernel::System::WebUserAgent;
 
 use Kernel::System::VariableCheck qw(:all);
+use Kernel::Language qw(Translatable);
 
 use base qw(Kernel::System::EventHandler);
 
@@ -115,15 +116,10 @@ sub new {
         File => 'ARRAY',
     };
 
-    $Self->{PackageVerifyURL} = 'https://pav.otrs.com/otrs/public.pl';
-
     $Self->{Home} = $Self->{ConfigObject}->Get('Home');
 
     # permission check
-    if ( !$Self->_FileSystemCheck() ) {
-        die "ERROR: Need write permission in OTRS home\n"
-            . "Try: \$OTRS_HOME/bin/otrs.SetPermissions.pl !!!\n";
-    }
+    die if !$Self->_FileSystemCheck();
 
     # init of event handler
     $Self->EventHandlerInit(
@@ -132,6 +128,9 @@ sub new {
 
     # reserve space for merged packages
     $Self->{MergedPackages} = {};
+
+    # check if cloud services are disabled
+    $Self->{CloudServicesDisabled} = $Self->{ConfigObject}->Get('CloudServices::Disabled') || 0;
 
     return $Self;
 }
@@ -227,9 +226,10 @@ get a package from local repository
     );
 
     my $PackageScalar = $PackageObject->RepositoryGet(
-        Name    => 'Application A',
-        Version => '1.0',
-        Result  => 'SCALAR',
+        Name            => 'Application A',
+        Version         => '1.0',
+        Result          => 'SCALAR',
+        DisableWarnings => 1,         # optional
     );
 
 =cut
@@ -277,10 +277,14 @@ sub RepositoryGet {
     }
 
     if ( !$Package ) {
-        $Kernel::OM->Get('Kernel::System::Log')->Log(
-            Priority => 'notice',
-            Message  => "No such package: $Param{Name}-$Param{Version}!",
-        );
+
+        if ( !$Param{DisableWarnings} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'notice',
+                Message  => "No such package: $Param{Name}-$Param{Version}!",
+            );
+        }
+
         return;
     }
 
@@ -349,9 +353,10 @@ sub RepositoryAdd {
 
     # check if package already exists
     my $PackageExists = $Self->RepositoryGet(
-        Name    => $Structure{Name}->{Content},
-        Version => $Structure{Version}->{Content},
-        Result  => 'SCALAR',
+        Name            => $Structure{Name}->{Content},
+        Version         => $Structure{Version}->{Content},
+        Result          => 'SCALAR',
+        DisableWarnings => 1,
     );
 
     # get database object
@@ -371,7 +376,8 @@ sub RepositoryAdd {
         SQL => 'INSERT INTO package_repository (name, version, vendor, filename, '
             . ' content_type, content, install_status, '
             . ' create_time, create_by, change_time, change_by)'
-            . ' VALUES  (?, ?, ?, ?, \'text/xml\', ?, \'not installed\', '
+            . ' VALUES  (?, ?, ?, ?, \'text/xml\', ?, \''
+            . Translatable('not installed') . '\', '
             . ' current_timestamp, 1, current_timestamp, 1)',
         Bind => [
             \$Structure{Name}->{Content}, \$Structure{Version}->{Content},
@@ -570,7 +576,8 @@ sub PackageInstall {
 
     # update package status
     return if !$Kernel::OM->Get('Kernel::System::DB')->Do(
-        SQL => 'UPDATE package_repository SET install_status = \'installed\''
+        SQL => 'UPDATE package_repository SET install_status = \''
+            . Translatable('installed') . '\''
             . ' WHERE name = ? AND version = ?',
         Bind => [
             \$Structure{Name}->{Content},
@@ -833,7 +840,8 @@ sub PackageUpgrade {
 
     # update package status
     return if !$Kernel::OM->Get('Kernel::System::DB')->Do(
-        SQL => 'UPDATE package_repository SET install_status = \'installed\''
+        SQL => 'UPDATE package_repository SET install_status = \''
+            . Translatable('installed') . '\''
             . ' WHERE name = ? AND version = ?',
         Bind => [
             \$Structure{Name}->{Content}, \$Structure{Version}->{Content},
@@ -895,8 +903,8 @@ sub PackageUpgrade {
 
                 if (
                     $Part->{TagType} eq 'End'
-                    && $Part->{Tag} eq $NotUseTag
-                    && $Part->{TagLevel} eq $NotUseTagLevel
+                    && ( defined $NotUseTag      && $Part->{Tag} eq $NotUseTag )
+                    && ( defined $NotUseTagLevel && $Part->{TagLevel} eq $NotUseTagLevel )
                     )
                 {
                     $UseInstalled = 1;
@@ -1322,7 +1330,7 @@ sub PackageOnlineList {
         if ( !@XMLARRAY ) {
             $Kernel::OM->Get('Kernel::System::Log')->Log(
                 Priority => 'error',
-                Message  => 'Unable to parse repository index document.',
+                Message  => Translatable('Unable to parse repository index document.'),
             );
             return;
         }
@@ -1430,7 +1438,9 @@ sub PackageOnlineList {
         $Kernel::OM->Get('Kernel::System::Log')->Log(
             Priority => 'error',
             Message =>
-                'No packages for your framework version found in this repository, it only contains packages for other framework versions.',
+                Translatable(
+                'No packages for your framework version found in this repository, it only contains packages for other framework versions.'
+                ),
         );
     }
     @Packages = @NewPackages;
@@ -1546,7 +1556,10 @@ sub PackageOnlineGet {
     }
 
     #check if file might be retrieved from cloud
-    my $RepositoryCloudList = $Self->RepositoryCloudList();
+    my $RepositoryCloudList;
+    if ( !$Self->{CloudServicesDisabled} ) {
+        $RepositoryCloudList = $Self->RepositoryCloudList();
+    }
     if ( IsHashRefWithData($RepositoryCloudList) && $RepositoryCloudList->{ $Param{Source} } ) {
 
         my $PackageFromCloud;
@@ -1732,12 +1745,19 @@ sub PackageVerify {
         return;
     }
 
+    # return package as verified if cloud services are disabled
+    if ( $Self->{CloudServicesDisabled} ) {
+        return 'verified';
+    }
+
     # define package verification info
     my $PackageVerifyInfo = {
         Description =>
-            "<br>If you continue to install this package, the following issues may occur!<br><br>&nbsp;-Security problems<br>&nbsp;-Stability problems<br>&nbsp;-Performance problems<br><br>Please note that issues that are caused by working with this package are not covered by OTRS service contracts!<br><br>",
+            Translatable(
+            "<br>If you continue to install this package, the following issues may occur!<br><br>&nbsp;-Security problems<br>&nbsp;-Stability problems<br>&nbsp;-Performance problems<br><br>Please note that issues that are caused by working with this package are not covered by OTRS service contracts!<br><br>"
+            ),
         Title =>
-            'Package not verified by the OTRS Group! It is recommended not to use this package.',
+            Translatable('Package not verified by the OTRS Group! It is recommended not to use this package.'),
     };
 
     # investigate name
@@ -1906,6 +1926,7 @@ sub PackageVerifyAll {
     }
 
     return %Result if !@PackagesToVerify;
+    return %Result if $Self->{CloudServicesDisabled};
 
     my $CloudService = 'PackageManagement';
     my $Operation    = 'PackageVerify';
@@ -3534,7 +3555,7 @@ sub _FileSystemCheck {
         qw(/bin/ /Kernel/ /Kernel/System/ /Kernel/Output/ /Kernel/Output/HTML/ /Kernel/Modules/)
         )
     {
-        my $Location = "$Home/$Filepath/check_permissons.$$";
+        my $Location = $Home . $Filepath . "check_permissions.$$";
         my $Content  = 'test';
 
         # create test file
@@ -3543,8 +3564,14 @@ sub _FileSystemCheck {
             Content  => \$Content,
         );
 
-        # return false if not created
-        return if !$Write;
+        if ( !$Write ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "ERROR: Need write permissions for directory $Home$Filepath\n"
+                    . " Try: $Home/bin/otrs.SetPermissions.pl!",
+            );
+            return;
+        }
 
         # delete test file
         $Self->{MainObject}->FileDelete( Location => $Location );
@@ -3896,8 +3923,8 @@ sub _CheckDBMerged {
 
             if (
                 $Part->{TagType} eq 'End'
-                && $Part->{Tag} eq $NotUseTag
-                && $Part->{TagLevel} eq $NotUseTagLevel
+                && ( defined $NotUseTag      && $Part->{Tag} eq $NotUseTag )
+                && ( defined $NotUseTagLevel && $Part->{TagLevel} eq $NotUseTagLevel )
                 )
             {
                 $Use = 1;
@@ -3992,6 +4019,8 @@ returns a file from cloud
 
 sub CloudFileGet {
     my ( $Self, %Param ) = @_;
+
+    return if $Self->{CloudServicesDisabled};
 
     # check needed stuff
     if ( !defined $Param{Operation} ) {

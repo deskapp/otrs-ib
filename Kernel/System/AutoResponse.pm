@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -335,6 +335,47 @@ sub AutoResponseGetByTypeQueueID {
 
     # return both, sender attributes and auto response attributes
     return ( %Address, %Data );
+}
+
+=item AutoResponseWithoutQueue()
+
+get a list of the Queues that do not have Auto Response
+
+    my %AutoResponseWithoutQueue = $AutoResponseObject->AutoResponseWithoutQueue();
+
+Return example:
+
+    %Queues = (
+        1 => 'Some Name',
+        2 => 'Some Name',
+    );
+
+=cut
+
+sub AutoResponseWithoutQueue {
+    my ( $Self, %Param ) = @_;
+
+    # get DB object
+    my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
+
+    my %QueueData;
+
+    # SQL query
+    return if !$DBObject->Prepare(
+        SQL =>
+            'SELECT q.id, q.name
+             FROM queue q
+             LEFT OUTER JOIN queue_auto_response qar on q.id = qar.queue_id
+             WHERE qar.queue_id IS NULL '
+            . "AND q.valid_id IN (${\(join ', ', $Kernel::OM->Get('Kernel::System::Valid')->ValidIDsGet())})"
+    );
+
+    # fetch the result
+    while ( my @Row = $DBObject->FetchrowArray() ) {
+        $QueueData{ $Row[0] } = $Row[1];
+    }
+
+    return %QueueData;
 }
 
 =item AutoResponseList()

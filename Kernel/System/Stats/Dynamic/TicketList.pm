@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -18,6 +18,7 @@ use Kernel::Language qw(Translatable);
 
 our @ObjectDependencies = (
     'Kernel::Config',
+    'Kernel::Language',
     'Kernel::System::DB',
     'Kernel::System::DynamicField',
     'Kernel::System::DynamicField::Backend',
@@ -1320,10 +1321,13 @@ sub GetHeaderLine {
     my $SortedAttributesRef = $Self->_SortedAttributes();
     my @HeaderLine;
 
+    # get language object
+    my $LanguageObject = $Kernel::OM->Get('Kernel::Language');
+
     ATTRIBUTE:
     for my $Attribute ( @{$SortedAttributesRef} ) {
         next ATTRIBUTE if !$SelectedAttributes{$Attribute};
-        push @HeaderLine, $TicketAttributes->{$Attribute};
+        push @HeaderLine, $LanguageObject->Translate( $TicketAttributes->{$Attribute} );
     }
     return \@HeaderLine;
 }

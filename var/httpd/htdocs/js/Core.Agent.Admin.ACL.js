@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -839,6 +839,11 @@ Core.Agent.Admin.ACL = (function (TargetNS) {
 
                 // only do it for the 'Action' item (can be extended in the future)
                 if ($(this).closest('ul').closest('li').data('content') === 'Action') {
+
+                    // if the element doesn't have an ID, generate one.
+                    // this is needed for the autocomplete for work properly, e.g.
+                    // to hide the loader icon after the results have been fetched
+                    Core.UI.GetID($(this));
 
                     Core.UI.Autocomplete.Init(
                         $(this),

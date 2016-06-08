@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -40,7 +40,7 @@ sub Run {
     my @ReadonlyDirectories;
 
     for my $TestDirectory (@TestDirectories) {
-        my $File = "$Home/$TestDirectory/check_permissons.$$";
+        my $File = $Home . $TestDirectory . "check_permissions.$$";
         if ( open( my $FH, '>', "$File" ) ) {    ## no critic
             print $FH "test";
             close($FH);

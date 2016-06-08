@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -74,48 +74,17 @@ Returns:
 sub Run {
     my ( $Self, %Param ) = @_;
 
-    # check needed
-    for my $Needed (qw(TaskID Data)) {
-        if ( !$Param{$Needed} ) {
-            $Kernel::OM->Get('Kernel::System::Log')->Log(
-                Priority => 'error',
-                Message  => "Need $Needed! - Task: $Param{TaskName}",
-            );
+    # check task params
+    my $CheckResult = $Self->_CheckTaskParams(
+        %Param,
+        NeededDataAttributes => [ 'Object', 'Function' ],
+    );
 
-            return;
-        }
-    }
+    # stop execution if an error in params is detected
+    return if !$CheckResult;
 
-    # check data
-    if ( ref $Param{Data} ne 'HASH' ) {
-        $Kernel::OM->Get('Kernel::System::Log')->Log(
-            Priority => 'error',
-            Message  => "Got no valid Data! - Task: $Param{TaskName}",
-        );
-
-        return;
-    }
-
-    for my $Needed (qw(Object Function)) {
-        if ( !$Param{Data}->{$Needed} ) {
-            $Kernel::OM->Get('Kernel::System::Log')->Log(
-                Priority => 'error',
-                Message  => "Need Data->$Needed! - Task: $Param{TaskName}",
-            );
-
-            return;
-        }
-
-    }
-
-    if ( $Param{Data}->{Params} && ref $Param{Data}->{Params} ne 'HASH' ) {
-        $Kernel::OM->Get('Kernel::System::Log')->Log(
-            Priority => 'error',
-            Message  => "Data->Params is invalid! - Task: $Param{TaskName}",
-        );
-
-        return;
-    }
+    # Stop execution if invalid params ref is detected.
+    return if !ref $Param{Data}->{Params};
 
     # get module object
     my $LocalObject;
@@ -160,9 +129,17 @@ sub Run {
         # redirect the standard error to a variable
         open STDERR, ">>", \$ErrorMessage;
 
-        $LocalObject->$Function(
-            %{ $Param{Data}->{Params} },
-        );
+        if ( ref $Param{Data}->{Params} eq 'ARRAY' ) {
+            $LocalObject->$Function(
+                @{ $Param{Data}->{Params} },
+            );
+        }
+        else {
+            $LocalObject->$Function(
+                %{ $Param{Data}->{Params} // {} },
+            );
+        }
+
     };
 
     # check if there are errors

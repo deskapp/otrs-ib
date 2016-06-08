@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -11,6 +11,7 @@ package Kernel::Modules::AgentTicketMove;
 use strict;
 use warnings;
 
+use Kernel::Language qw(Translatable);
 use Kernel::System::VariableCheck qw(:all);
 
 our $ObjectManagerDisabled = 1;
@@ -44,7 +45,7 @@ sub Run {
     for my $Needed (qw(TicketID)) {
         if ( !$Self->{$Needed} ) {
             return $LayoutObject->ErrorScreen(
-                Message => "Need $Needed!",
+                Message => $LayoutObject->{LanguageObject}->Translate( 'Need %s!', $Needed ),
             );
         }
     }
@@ -59,7 +60,7 @@ sub Run {
     # error screen, don't show ticket
     if ( !$Access ) {
         return $LayoutObject->NoPermission(
-            Message    => "You need move permissions!",
+            Message    => Translatable("You need move permissions!"),
             WithHeader => 'yes',
         );
     }
@@ -100,10 +101,8 @@ sub Run {
                 BodyClass => 'Popup',
             );
             $Output .= $LayoutObject->Warning(
-                Message => $LayoutObject->{LanguageObject}
-                    ->Translate('Sorry, you need to be the ticket owner to perform this action.'),
-                Comment =>
-                    $LayoutObject->{LanguageObject}->Translate('Please change the owner first.'),
+                Message => Translatable('Sorry, you need to be the ticket owner to perform this action.'),
+                Comment => Translatable('Please change the owner first.'),
             );
 
             # show back link
@@ -237,6 +236,16 @@ sub Run {
     }
     if ( !$GetParam{DestQueueID} ) {
         $Error{DestQueue} = 1;
+    }
+
+    # check if destination queue is restricted by ACL
+    my %QueueList = $TicketObject->TicketMoveList(
+        TicketID => $Self->{TicketID},
+        UserID   => $Self->{UserID},
+        Type     => 'move_into',
+    );
+    if ( $GetParam{DestQueueID} && !exists $QueueList{ $GetParam{DestQueueID} } ) {
+        return $LayoutObject->NoPermission( WithHeader => 'yes' );
     }
 
     # do not submit
@@ -697,9 +706,11 @@ sub Run {
 
                 if ( !IsHashRefWithData($ValidationResult) ) {
                     return $LayoutObject->ErrorScreen(
-                        Message =>
-                            "Could not perform validation on field $DynamicFieldConfig->{Label}!",
-                        Comment => 'Please contact the admin.',
+                        Message => $LayoutObject->{LanguageObject}->Translate(
+                            'Could not perform validation on field %s!',
+                            $DynamicFieldConfig->{Label},
+                        ),
+                        Comment => Translatable('Please contact the admin.'),
                     );
                 }
 
@@ -777,11 +788,8 @@ sub Run {
                         BodyClass => 'Popup',
                     );
                     $Output .= $LayoutObject->Warning(
-                        Message => $LayoutObject->{LanguageObject}->Translate(
-                            'Sorry, you need to be the ticket owner to perform this action.'
-                        ),
-                        Comment =>
-                            $LayoutObject->{LanguageObject}->Translate('Please change the owner first.'),
+                        Message => Translatable('Sorry, you need to be the ticket owner to perform this action.'),
+                        Comment => Translatable('Please change the owner first.'),
                     );
 
                     # show back link

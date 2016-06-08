@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -21,6 +21,9 @@ our @ObjectDependencies = (
 Kernel::System::GenericInterface::ObjectLockState - lock state backend
 
 =head1 SYNOPSIS
+
+THIS PACKAGE IS DEPRECATED AND WILL BE REMOVED IN A FUTURE VERSION OF OTRS.
+PLEASE DON'T USE IT IN NEW CODE.
 
 =head1 PUBLIC INTERFACE
 

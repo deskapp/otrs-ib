@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -12,6 +12,8 @@ use strict;
 use warnings;
 
 our $ObjectManagerDisabled = 1;
+
+use Kernel::Language qw(Translatable);
 
 sub new {
     my ( $Type, %Param ) = @_;
@@ -100,8 +102,9 @@ sub Run {
                 $Self->_Overview();
                 my $Output = $LayoutObject->Header();
                 $Output .= $LayoutObject->NavigationBar();
-                $Output
-                    .= $LayoutObject->Notify( Info => 'System e-mail address updated!' );
+                $Output .= $LayoutObject->Notify(
+                    Info => Translatable('System e-mail address updated!'),
+                );
                 $Output .= $LayoutObject->Output(
                     TemplateFile => 'AdminSystemAddress',
                     Data         => \%Param,
@@ -192,7 +195,9 @@ sub Run {
                 $Self->_Overview();
                 my $Output = $LayoutObject->Header();
                 $Output .= $LayoutObject->NavigationBar();
-                $Output .= $LayoutObject->Notify( Info => 'System e-mail address added!' );
+                $Output .= $LayoutObject->Notify(
+                    Info => Translatable('System e-mail address added!'),
+                );
                 $Output .= $LayoutObject->Output(
                     TemplateFile => 'AdminSystemAddress',
                     Data         => \%Param,

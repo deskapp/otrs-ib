@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -18,13 +18,6 @@ are ignored in OTRS correctly (see bug#11616).
 =cut
 
 use vars (qw($Self));
-
-our @ObjectDependencies = (
-    'Kernel::System::Group',
-    'Kernel::System::Time',
-    'Kernel::System::UnitTest::Helper',
-    'Kernel::System::User',
-);
 
 $Kernel::OM->ObjectParamAdd(
     'Kernel::System::UnitTest::Helper' => {
@@ -148,5 +141,7 @@ $Self->Is(
     undef,
     "Role-Group connection found",
 );
+
+# cleanup is done by RestoreDatabase
 
 1;

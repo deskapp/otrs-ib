@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -20,6 +20,7 @@ use base qw(Kernel::System::Ticket::Event::NotificationEvent::Transport::Base);
 our @ObjectDependencies = (
     'Kernel::Config',
     'Kernel::Output::HTML::Layout',
+    'Kernel::System::CustomerUser',
     'Kernel::System::Email',
     'Kernel::System::Log',
     'Kernel::System::Main',
@@ -92,22 +93,23 @@ sub SendNotification {
     if (
         $Recipient{Type} eq 'Customer'
         && $ConfigObject->Get('CustomerNotifyJustToRealCustomer')
-        && !$Recipient{UserEmail}
         )
     {
-        my $Message = "Send no customer notification because of missing customer email";
+        # return if not customer user ID
+        return if !$Recipient{CustomerUserID};
 
-        if ( $Recipient{CustomerUserID} ) {
-            $Message .= " (CustomerUserID=$Recipient{CustomerUserID})";
-        }
-        $Message .= '!';
-
-        $Kernel::OM->Get('Kernel::System::Log')->Log(
-            Priority => 'info',
-            Message  => $Message,
+        my %CustomerUser = $Kernel::OM->Get('Kernel::System::CustomerUser')->CustomerUserDataGet(
+            User => $Recipient{CustomerUserID},
         );
 
-        return;
+        if ( !$CustomerUser{UserEmail} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'info',
+                Message  => "Send no customer notification because of missing "
+                    . "customer email (CustomerUserID=$CustomerUser{CustomerUserID})!",
+            );
+            return;
+        }
     }
 
     return if !$Recipient{UserEmail};

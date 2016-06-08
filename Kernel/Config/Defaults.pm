@@ -50,12 +50,12 @@ sub LoadDefaults {
 
     # SystemID
     # (The identify of the system. Each ticket number and
-    # each http session id starts with this number)
+    # each HTTP session id starts with this number)
     $Self->{SystemID} = 10;
 
     # NodeID
     # (The identify of the node. In a clustered environment
-    # each node needs a seperate NodeID. On a setup with just
+    # each node needs a separate NodeID. On a setup with just
     # one frontend server, it is not needed to change this setting)
     $Self->{NodeID} = 1;
 
@@ -64,7 +64,7 @@ sub LoadDefaults {
     $Self->{FQDN} = 'yourhost.example.com';
 
     # HttpType
-    # In case you use https instead of plain http specify it here
+    # In case you use HTTPS instead of plain HTTP specify it here
     $Self->{HttpType} = 'http';
 
     # ScriptAlias
@@ -192,6 +192,7 @@ sub LoadDefaults {
         'sk_SK' => 'Slovak',
         'sv' => 'Swedish',
         'sw' => 'Swahili',
+        'th_TH' => 'Thai',
         'tr' => 'Turkish',
         'uk' => 'Ukrainian',
         'vi_VN' => 'Vietnam',
@@ -240,6 +241,7 @@ sub LoadDefaults {
         'sk_SK' => 'Slovenčina',
         'sv' => 'Svenska',
         'sw' => 'Kiswahili',
+        'th_TH' => 'ภาษาไทย',
         'tr' => 'Türkçe',
         'uk' => 'Українська',
         'vi_VN' => 'ViɆt Nam',
@@ -248,7 +250,7 @@ sub LoadDefaults {
     };
 
     # default theme
-    # (the default html theme) [default: Standard]
+    # (the default HTML theme) [default: Standard]
     $Self->{DefaultTheme} = 'Standard';
 
     # DefaultTheme::HostBased
@@ -380,7 +382,7 @@ sub LoadDefaults {
     # --------------------------------------------------- #
     # authentication settings                             #
     # (enable what you need, auth against otrs db,        #
-    # against LDAP directory, agains HTTP basic auth      #
+    # against LDAP directory, against HTTP basic auth     #
     # or against Radius server)                           #
     # --------------------------------------------------- #
     # This is the auth. module against the otrs db
@@ -426,7 +428,7 @@ sub LoadDefaults {
 #    $Self->{'AuthModule::LDAP::UserSuffix'} = '@domain.com';
 
     # In case you want to convert all given usernames to lower letters you
-    # should activate this option. It might be helpfull if databases are
+    # should activate this option. It might be helpful if databases are
     # in use that do not distinguish selects for upper and lower case letters
     # (Oracle, postgresql). User might be synched twice, if this option
     # is not in use.
@@ -487,7 +489,7 @@ sub LoadDefaults {
 #    $Self->{'AuthTwoFactorModule::AllowEmptySecret'} = '1';
 
     # defines if the otp for the previous timespan (30-60sec ago) will also be valid
-    # helpful to account for timimg issues (server and entry based)
+    # helpful to account for timing issues (server and entry based)
 #    $Self->{'AuthTwoFactorModule::AllowPreviousToken'} = '1';
 
     # --------------------------------------------------- #
@@ -687,6 +689,10 @@ sub LoadDefaults {
     # agent interface notification module to check the admin user id
     # (don't work with user id 1 notification)
     $Self->{'Frontend::NotifyModule'} = {
+        '100-CloudServicesDisabled' => {
+          'Group' => 'admin',
+          'Module' => 'Kernel::Output::HTML::Notification::AgentCloudServicesDisabled'
+        },
         '100-OTRSBusiness' => {
             'Group' => 'admin',
             'Module' => 'Kernel::Output::HTML::Notification::AgentOTRSBusiness'
@@ -998,6 +1004,7 @@ sub LoadDefaults {
         'Core.UI.Accordion.js',
         'Core.UI.Datepicker.js',
         'Core.UI.DnD.js',
+        'Core.UI.Floater.js',
         'Core.UI.Resizable.js',
         'Core.UI.Table.js',
         'Core.UI.Accessibility.js',
@@ -1392,7 +1399,7 @@ via the Preferences button after logging in.
 #    $Self->{'Customer::AuthTwoFactorModule::AllowEmptySecret'} = '1';
 
     # defines if the otp for the previous timespan (30-60sec ago) will also be valid
-    # helpful to account for timimg issues (server and entry based)
+    # helpful to account for timing issues (server and entry based)
 #    $Self->{'Customer::AuthTwoFactorModule::AllowPreviousToken'} = '1';
 
     # --------------------------------------------------- #
@@ -1418,10 +1425,18 @@ via the Preferences button after logging in.
             Table => 'customer_user',
 #            ForeignDB => 0,    # set this to 1 if your table does not have create_time, create_by, change_time and change_by fields
 
-            # CaseSensitive will control if the SQL statements need LOWER()
-            #   function calls to work case insensitively. Setting this to
-            #   1 will improve performance dramatically on large databases.
-            CaseSensitive => 0,
+            # CaseSensitive defines if the data storage of your DBMS is case sensitive and will be
+            # preconfigured within the database driver by default.
+            # If the collation of your data storage differs from the default settings,
+            # you can set the current behavior ( either 1 = CaseSensitive or 0 = CaseINSensitive )
+            # to fit your environment.
+            #
+#            CaseSensitive => 0,
+
+            # SearchCaseSensitive will control if the searches within the data storage are performed
+            # case sensitively (if possible) or not. Change this option to 1, if you want to search case sensitive.
+            # This can improve the performance dramatically on large databases.
+            SearchCaseSensitive => 0,
         },
 
         # customer unique id
@@ -1462,32 +1477,32 @@ via the Preferences button after logging in.
 
             # note: Login, Email and CustomerID needed!
             # var, frontend, storage, shown (1=always,2=lite), required, storage-type, http-link, readonly, http-link-target, link class(es)
-            [ 'UserTitle',      'Title',      'title',      1, 0, 'var', '', 0 ],
-            [ 'UserFirstname',  'Firstname',  'first_name', 1, 1, 'var', '', 0 ],
-            [ 'UserLastname',   'Lastname',   'last_name',  1, 1, 'var', '', 0 ],
-            [ 'UserLogin',      'Username',   'login',      1, 1, 'var', '', 0 ],
-            [ 'UserPassword',   'Password',   'pw',         0, 0, 'var', '', 0 ],
-            [ 'UserEmail',      'Email',      'email',      1, 1, 'var', '', 0 ],
-#            [ 'UserEmail',      'Email', 'email',           1, 1, 'var', '[% Env("CGIHandle") %]?Action=AgentTicketCompose;ResponseID=1;TicketID=[% Data.TicketID | uri %];ArticleID=[% Data.ArticleID | uri %]', 0, '', 'AsPopup OTRSPopup_TicketAction' ],
-            [ 'UserCustomerID', 'CustomerID', 'customer_id', 0, 1, 'var', '', 0 ],
-#            [ 'UserCustomerIDs', 'CustomerIDs', 'customer_ids', 1, 0, 'var', '', 0 ],
-            [ 'UserPhone',        'Phone',       'phone',        1, 0, 'var', '', 0 ],
-            [ 'UserFax',          'Fax',         'fax',          1, 0, 'var', '', 0 ],
-            [ 'UserMobile',       'Mobile',      'mobile',       1, 0, 'var', '', 0 ],
-            [ 'UserStreet',       'Street',      'street',       1, 0, 'var', '', 0 ],
-            [ 'UserZip',          'Zip',         'zip',          1, 0, 'var', '', 0 ],
-            [ 'UserCity',         'City',        'city',         1, 0, 'var', '', 0 ],
-            [ 'UserCountry',      'Country',     'country',      1, 0, 'var', '', 0 ],
-            [ 'UserComment',      'Comment',     'comments',     1, 0, 'var', '', 0 ],
-            [ 'ValidID',          'Valid',       'valid_id',     0, 1, 'int', '', 0 ],
+            [ 'UserTitle',      Translatable('Title or salutation'), 'title',  1, 0, 'var', '', 0 ],
+            [ 'UserFirstname',  Translatable('Firstname'),  'first_name', 1, 1, 'var', '', 0 ],
+            [ 'UserLastname',   Translatable('Lastname'),   'last_name',  1, 1, 'var', '', 0 ],
+            [ 'UserLogin',      Translatable('Username'),   'login',      1, 1, 'var', '', 0 ],
+            [ 'UserPassword',   Translatable('Password'),   'pw',         0, 0, 'var', '', 0 ],
+            [ 'UserEmail',      Translatable('Email'),      'email',      1, 1, 'var', '', 0 ],
+#            [ 'UserEmail',      Translatable('Email'), 'email',           1, 1, 'var', '[% Env("CGIHandle") %]?Action=AgentTicketCompose;ResponseID=1;TicketID=[% Data.TicketID | uri %];ArticleID=[% Data.ArticleID | uri %]', 0, '', 'AsPopup OTRSPopup_TicketAction' ],
+            [ 'UserCustomerID', Translatable('CustomerID'), 'customer_id', 0, 1, 'var', '', 0 ],
+#            [ 'UserCustomerIDs', Translatable('CustomerIDs'), 'customer_ids', 1, 0, 'var', '', 0 ],
+            [ 'UserPhone',        Translatable('Phone'),       'phone',        1, 0, 'var', '', 0 ],
+            [ 'UserFax',          Translatable('Fax'),         'fax',          1, 0, 'var', '', 0 ],
+            [ 'UserMobile',       Translatable('Mobile'),      'mobile',       1, 0, 'var', '', 0 ],
+            [ 'UserStreet',       Translatable('Street'),      'street',       1, 0, 'var', '', 0 ],
+            [ 'UserZip',          Translatable('Zip'),         'zip',          1, 0, 'var', '', 0 ],
+            [ 'UserCity',         Translatable('City'),        'city',         1, 0, 'var', '', 0 ],
+            [ 'UserCountry',      Translatable('Country'),     'country',      1, 0, 'var', '', 0 ],
+            [ 'UserComment',      Translatable('Comment'),     'comments',     1, 0, 'var', '', 0 ],
+            [ 'ValidID',          Translatable('Valid'),       'valid_id',     0, 1, 'int', '', 0 ],
         ],
 
         # default selections
         Selections => {
 
 #            UserTitle => {
-#                'Mr.' => 'Mr.',
-#                'Mrs.' => 'Mrs.',
+#                'Mr.' => Translatable('Mr.'),
+#                'Mrs.' => Translatable('Mrs.'),
 #            },
         },
     };
@@ -1572,10 +1587,18 @@ via the Preferences button after logging in.
             Table => 'customer_company',
 #            ForeignDB => 0,    # set this to 1 if your table does not have create_time, create_by, change_time and change_by fields
 
-            # CaseSensitive will control if the SQL statements need LOWER()
-            #   function calls to work case insensitively. Setting this to
-            #   1 will improve performance dramatically on large databases.
-            CaseSensitive => 0,
+            # CaseSensitive defines if the data storage of your DBMS is case sensitive and will be
+            # preconfigured within the database driver by default.
+            # If the collation of your data storage differs from the default settings,
+            # you can set the current behavior ( either 1 = CaseSensitive or 0 = CaseINSensitive )
+            # to fit your environment.
+            #
+#            CaseSensitive => 0,
+
+            # SearchCaseSensitive will control if the searches within the data storage are performed
+            # case sensitively (if possible) or not. Change this option to 1, if you want to search case sensitive.
+            # This can improve the performance dramatically on large databases.
+            SearchCaseSensitive => 0,
         },
 
         # company unique id
@@ -1583,7 +1606,7 @@ via the Preferences button after logging in.
         CustomerCompanyValid           => 'valid_id',
         CustomerCompanyListFields      => [ 'customer_id', 'name' ],
         CustomerCompanySearchFields    => ['customer_id', 'name'],
-        CustomerCompanySearchPrefix    => '',
+        CustomerCompanySearchPrefix    => '*',
         CustomerCompanySearchSuffix    => '*',
         CustomerCompanySearchListLimit => 250,
         CacheTTL                       => 60 * 60 * 24, # use 0 to turn off cache
@@ -1630,9 +1653,9 @@ via the Preferences button after logging in.
 #        SomeParam => 'DefaultValue',
     };
 
-    # If the public interface is proteceted with .htaccess
+    # If the public interface is protected with .htaccess
     # we can specify the htaccess login data here,
-    # this is neccessary for the support data collector
+    # this is necessary for the support data collector
     # $Self->{'PublicFrontend::AuthUser'} = '';
     # $Self->{'PublicFrontend::AuthPassword'} = '';
 
@@ -1643,7 +1666,7 @@ via the Preferences button after logging in.
 
     # admin interface
     $Self->{'Frontend::Module'}->{Admin} = {
-        'Description' => 'Admin-Area',
+        'Description' => 'Admin Area.',
         'Group' => [
             'admin'
         ],
@@ -1689,9 +1712,9 @@ via the Preferences button after logging in.
         ],
         'NavBarModule' => {
             'Block' => 'System',
-            'Description' => 'View system log messages.',
+            'Description' => Translatable('View system log messages.'),
             'Module' => 'Kernel::Output::HTML::NavBar::ModuleAdmin',
-            'Name' => 'System Log',
+            'Name' => Translatable('System Log'),
             'Prio' => '600'
         },
         'NavBarName' => 'Admin',
@@ -1704,8 +1727,8 @@ via the Preferences button after logging in.
         NavBarName   => 'Admin',
         NavBarModule => {
             Module      => 'Kernel::Output::HTML::NavBar::ModuleAdmin',
-            Name        => 'SysConfig',
-            Description => 'Edit the system configuration settings.',
+            Name        => Translatable('SysConfig'),
+            Description => Translatable('Edit the system configuration settings.'),
             Block       => 'System',
             Prio        => 800,
         },
@@ -1719,15 +1742,15 @@ via the Preferences button after logging in.
         },
     };
     $Self->{'Frontend::Module'}->{AdminPackageManager} = {
-        'Description' => 'Software Package Manager',
+        'Description' => 'Software Package Manager.',
         'Group' => [
             'admin'
         ],
         'NavBarModule' => {
             'Block' => 'System',
-            'Description' => 'Update and extend your system with software packages.',
+            'Description' => Translatable('Update and extend your system with software packages.'),
             'Module' => 'Kernel::Output::HTML::NavBar::ModuleAdmin',
-            'Name' => 'Package Manager',
+            'Name' => Translatable('Package Manager'),
             'Prio' => '1000'
         },
         'NavBarName' => 'Admin',
@@ -1809,6 +1832,19 @@ sub Set {
         }
     }
     return 1;
+}
+
+## nofilter(TidyAll::Plugin::OTRS::Perl::Translatable)
+
+=item Translatable()
+
+this is a no-op to mark a text as translatable in the Perl code.
+We use our own version here instead of importing Language::Translatable to not add a dependency.
+
+=cut
+
+sub Translatable {
+    return shift;
 }
 
 #
@@ -1986,7 +2022,7 @@ sub new {
                 $File =~ s/^\///g;
                 $File =~ s/\/\//\//g;
                 $File =~ s/\//::/g;
-                $File =~ s/.pm//g;
+                $File =~ s/\.pm$//g;
                 $File->Load($Self);
             }
             else {

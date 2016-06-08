@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -13,9 +13,7 @@ use utf8;
 use vars (qw($Self));
 
 # get needed objects
-my $ConfigObject    = $Kernel::OM->Get('Kernel::Config');
 my $HTMLUtilsObject = $Kernel::OM->Get('Kernel::System::HTMLUtils');
-my $MainObject      = $Kernel::OM->Get('Kernel::System::Main');
 my $TimeObject      = $Kernel::OM->Get('Kernel::System::Time');
 
 # LinkQuote tests
@@ -44,6 +42,13 @@ my @Tests = (
         Result =>
             'Some Text with url <a href="http://xwww.example.com" title="http://xwww.example.com">http://xwww.example.com</a>',
         Name   => 'LinkQuote - simple',
+        Target => '',
+    },
+    {
+        Input => 'Some Text with nested url http://www.example.com/redirect?location=www.example2.com',
+        Result =>
+            'Some Text with nested url <a href="http://www.example.com/redirect?location=www.example2.com" title="http://www.example.com/redirect?location=www.example2.com">http://www.example.com/redirect?location=www.example2.com</a>',
+        Name   => 'LinkQuote - nested URL bug#8761',
         Target => '',
     },
     {
@@ -310,6 +315,30 @@ my @Tests = (
         Name   => 'LinkQuote - just TLD given;',
         Target => '',
     },
+    {
+        Input =>
+            '<br />http://www.server.nl:80/%7Eguido/Python.html<br />',
+        Result =>
+            '<br /><a href="http://www.server.nl:80/%7Eguido/Python.html" title="http://www.server.nl:80/%7Eguido/Python.html">http://www.server.nl:80/%7Eguido/Python.html</a><br />',
+        Name   => 'LinkQuote - address with port given;',
+        Target => '',
+    },
+    {
+        Input =>
+            '<br />https://aa.bb.com/wiki/Obs%C5%82uga_ABC#Sekcja<br />',
+        Result =>
+            '<br /><a href="https://aa.bb.com/wiki/Obs%C5%82uga_ABC#Sekcja" title="https://aa.bb.com/wiki/Obs%C5%82uga_ABC#Sekcja">https://aa.bb.com/wiki/Obs%C5%82uga_ABC#Sekcja</a><br />',
+        Name   => 'LinkQuote - address with URL encodings and hash; ',
+        Target => '',
+    },
+    {
+        Input =>
+            '<br />http://msdn.microsoft.com/en-us/library/windows/hardware/ff557211%28v=vs.85%29.aspx<br />',
+        Result =>
+            '<br /><a href="http://msdn.microsoft.com/en-us/library/windows/hardware/ff557211%28v=vs.85%29.aspx" title="http://msdn.microsoft.com/en-us/library/windows/hardware/ff557211%28v=vs.85%29.aspx">http://msdn.microsoft.com/en-us/library/windows/hardware/ff557211%28v=vs.85%29.aspx</a><br />',
+        Name   => 'LinkQuote - address with =; ',
+        Target => '',
+    },
 );
 
 for my $Test (@Tests) {
@@ -328,8 +357,8 @@ for my $Test (@Tests) {
 #
 # Special performance test for a large amount of data
 #
-my $XML = $MainObject->FileRead(
-    Location => $ConfigObject->Get('Home')
+my $XML = $Kernel::OM->Get('Kernel::System::Main')->FileRead(
+    Location => $Kernel::OM->Get('Kernel::Config')->Get('Home')
         . '/scripts/test/sample/HTMLUtils/obstacles_upd2.xml',
 );
 $XML = ${$XML};
@@ -337,7 +366,7 @@ $XML = ${$XML};
 my $StartSeconds = $TimeObject->SystemTime();
 
 my $HTML = $HTMLUtilsObject->LinkQuote(
-    String => \$XML,
+    String => $XML,
 );
 
 my $EndSeconds = $TimeObject->SystemTime();

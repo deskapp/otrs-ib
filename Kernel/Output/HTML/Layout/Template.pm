@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -88,8 +88,8 @@ sub Output {
 
     # add new env
     if ( $Self->{EnvNewRef} ) {
-        for ( %{ $Self->{EnvNewRef} } ) {
-            $Self->{EnvRef}->{$_} = $Self->{EnvNewRef}->{$_};
+        for my $Key ( sort keys %{ $Self->{EnvNewRef} } ) {
+            $Self->{EnvRef}->{$Key} = $Self->{EnvNewRef}->{$Key};
         }
         undef $Self->{EnvNewRef};
     }

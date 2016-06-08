@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -33,7 +33,7 @@ my $NoConnectWarningPeriod = 60 * 60 * 24 * 5;    # 5 days
 my $NoConnectErrorPeriod = 60 * 60 * 24 * 15;     # 15 days
 
 # If the contract is about to expire in less than this time, show a hint
-my $ContractExpiryWarningPeriod = 60 * 60 * 24 * 30;
+my $ContractExpiryWarningPeriod = 60 * 60 * 24 * 28;    # 28 days
 
 =head1 NAME
 
@@ -67,12 +67,18 @@ sub new {
 
     #$Self->{APIVersion} = 1;
 
+    # Get config object
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
     # Get OTRSBusiness::ReleaseChannel from SysConfig (Stable = 1, Development = 0)
-    $Self->{OnlyStable} = $Kernel::OM->Get('Kernel::Config')->Get('OTRSBusiness::ReleaseChannel') // 1;
+    $Self->{OnlyStable} = $ConfigObject->Get('OTRSBusiness::ReleaseChannel') // 1;
 
     # Set cache params
     $Self->{CacheType} = 'OTRSBusiness';
     $Self->{CacheTTL}  = 60 * 60 * 24 * 30;    # 30 days
+
+    # Check if cloud services are disabled
+    $Self->{CloudServicesDisabled} = $ConfigObject->Get('CloudServices::Disabled') || 0;
 
     return $Self;
 }
@@ -122,6 +128,8 @@ checks with cloud.otrs.com if OTRSBusiness is available for the current framewor
 
 sub OTRSBusinessIsAvailable {
     my ( $Self, %Param ) = @_;
+
+    return if $Self->{CloudServicesDisabled};
 
     my $CloudServiceObject = $Kernel::OM->Get('Kernel::System::CloudService::Backend::Run');
     my $RequestResult      = $CloudServiceObject->Request(
@@ -250,6 +258,8 @@ system_data table for offline usage.
 
 sub OTRSBusinessIsUpdateable {
     my ( $Self, %Param ) = @_;
+
+    return 0 if $Self->{CloudServicesDisabled};
 
     my $Package = $Self->_GetOTRSBusinessPackageFromRepository();
     return if !$Package;
@@ -385,6 +395,8 @@ Returns 1 if the cloud call was successful.
 sub OTRSBusinessEntitlementCheck {
     my ( $Self, %Param ) = @_;
 
+    return if $Self->{CloudServicesDisabled};
+
     my $CloudServiceObject = $Kernel::OM->Get('Kernel::System::CloudService::Backend::Run');
     my $RequestResult      = $CloudServiceObject->Request(
         RequestData => {
@@ -456,10 +468,6 @@ Returns the current entitlement status.
 sub OTRSBusinessEntitlementStatus {
     my ( $Self, %Param ) = @_;
 
-    if ( $Param{CallCloudService} ) {
-        $Self->OTRSBusinessEntitlementCheck();
-    }
-
     # If the system is not registered, it cannot have an OB permission.
     #   Also, the BusinessPermissionChecks will not work any more, so the permission
     #   would expire after our waiting period. But in this case we can immediately deny
@@ -469,6 +477,10 @@ sub OTRSBusinessEntitlementStatus {
     );
     if ( !$RegistrationState || $RegistrationState ne 'registered' ) {
         return 'forbidden';
+    }
+
+    if ( $Param{CallCloudService} ) {
+        $Self->OTRSBusinessEntitlementCheck();
     }
 
     # OK. Let's look at the system_data cache now and use it if appropriate
@@ -620,6 +632,8 @@ sub HandleBusinessVersionCheckCloudServiceResult {
 
 sub _OTRSBusinessFileGet {
     my ( $Self, %Param ) = @_;
+
+    return if $Self->{CloudServicesDisabled};
 
     my $CloudServiceObject = $Kernel::OM->Get('Kernel::System::CloudService::Backend::Run');
     my $RequestResult      = $CloudServiceObject->Request(
@@ -809,6 +823,70 @@ sub OTRSBusinessUninstall {
     );
 
     return $Uninstall;
+}
+
+=item OTRSBusinessCommandNextUpdateTimeSet()
+
+Set the next update time for the given command in the system data table storage.
+
+    my $Success = $OTRSBusinessObject->OTRSBusinessCommandNextUpdateTimeSet(
+        Command => 'AvailabilityCheck',
+    );
+
+Returns 1 if the next update time was set successfully.
+
+=cut
+
+sub OTRSBusinessCommandNextUpdateTimeSet {
+    my ( $Self, %Param ) = @_;
+
+    return if !$Param{Command};
+
+    my $Key = "OTRSBusiness::$Param{Command}::NextUpdateTime";
+
+    my $SystemDataObject = $Kernel::OM->Get('Kernel::System::SystemData');
+
+    my $NextUpdateTime = $SystemDataObject->SystemDataGet(
+        Key => $Key,
+    );
+
+    # set the default next update seconds offset
+    my $NextUpdateSecondsOffset = 60 * 60 * 24;
+
+    # generate a random seconds offset, if no next update time exists
+    if ( !$NextUpdateTime ) {
+
+        # create the random numbers
+        my $RandomHour   = int 20 + rand 23 - 20;
+        my $RandomMinute = int rand 60;
+
+        # create the random seconds offset
+        $NextUpdateSecondsOffset = 60 * 60 * $RandomHour + ( 60 * $RandomMinute );
+    }
+
+    # get time object
+    my $TimeObject = $Kernel::OM->Get('Kernel::System::Time');
+
+    my $CalculatedNextUpdateTime = $TimeObject->SystemTime2TimeStamp(
+        SystemTime => $TimeObject->SystemTime() + $NextUpdateSecondsOffset,
+    );
+
+    if ( defined $NextUpdateTime ) {
+        $SystemDataObject->SystemDataUpdate(
+            Key    => $Key,
+            Value  => $CalculatedNextUpdateTime,
+            UserID => 1,
+        );
+    }
+    else {
+        $SystemDataObject->SystemDataAdd(
+            Key    => $Key,
+            Value  => $CalculatedNextUpdateTime,
+            UserID => 1,
+        );
+    }
+
+    return 1;
 }
 
 sub _GetOTRSBusinessPackageFromRepository {

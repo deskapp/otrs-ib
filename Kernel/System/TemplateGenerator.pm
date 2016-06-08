@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -342,7 +342,7 @@ sub Sender {
     }
 
     # prepare realname quote
-    if ( $Address{RealName} =~ /(,|@|\(|\)|:)/ && $Address{RealName} !~ /^("|')/ ) {
+    if ( $Address{RealName} =~ /([.]|,|@|\(|\)|:)/ && $Address{RealName} !~ /^("|')/ ) {
         $Address{RealName} =~ s/"//g;    # remove any quotes that are already present
         $Address{RealName} = '"' . $Address{RealName} . '"';
     }
@@ -412,6 +412,25 @@ sub Template {
         );
     }
 
+    # get user language
+    my $Language;
+    if ( defined $Param{TicketID} ) {
+
+        # get ticket data
+        my %Ticket = $Kernel::OM->Get('Kernel::System::Ticket')->TicketGet(
+            TicketID => $Param{TicketID},
+        );
+
+        # get recipient
+        my %User = $Kernel::OM->Get('Kernel::System::CustomerUser')->CustomerUserDataGet(
+            User => $Ticket{CustomerUserID},
+        );
+        $Language = $User{UserLanguage};
+    }
+
+    # if customer language is not defined, set default language
+    $Language //= $Kernel::OM->Get('Kernel::Config')->Get('DefaultLanguage') || 'en';
+
     # replace place holder stuff
     my $TemplateText = $Self->_Replace(
         RichText => $Self->{RichText},
@@ -419,6 +438,7 @@ sub Template {
         TicketID => $Param{TicketID} || '',
         Data     => $Param{Data} || {},
         UserID   => $Param{UserID},
+        Language => $Language,
     );
 
     return $TemplateText;
@@ -756,88 +776,6 @@ sub NotificationEvent {
         last ARTICLE;
     }
 
-    # get ID for customer and agent articles
-    my $CustomerArticleID = $Article{ArticleID}      || '';
-    my $AgentArticleID    = $ArticleAgent{ArticleID} || '';
-
-    # flag to see if an HTMLBody for Customer is present
-    my $CustomerHTMLBodyPresent = 0;
-
-    # get articles for later use
-    my @ArticleBox = $TicketObject->ArticleContentIndex(
-        TicketID                   => $Param{TicketID},
-        DynamicFields              => 0,
-        UserID                     => $Param{UserID},
-        StripPlainBodyAsAttachment => 2,
-    );
-
-    if ( $Self->{RichText} ) {
-        ARTICLEBOX:
-        for my $ArticleItem ( reverse @ArticleBox ) {
-
-            if ( $CustomerArticleID ne $ArticleItem->{ArticleID} && $AgentArticleID ne $ArticleItem->{ArticleID} ) {
-                next ARTICLEBOX;
-            }
-
-            if ( $ArticleItem->{AttachmentIDOfHTMLBody} ) {
-
-                # get a attachment
-                my %Data = $TicketObject->ArticleAttachment(
-                    ArticleID => $ArticleItem->{ArticleID},
-                    FileID    => $ArticleItem->{AttachmentIDOfHTMLBody},
-                    UserID    => $Param{UserID},
-                );
-
-                # get charset and convert content to internal charset
-                my $Charset;
-                if ( $Data{ContentType} =~ m/.+?charset=("|'|)(.+)/ig ) {
-                    $Charset = $2;
-                    $Charset =~ s/"|'//g;
-                }
-                if ( !$Charset ) {
-                    $Charset = 'us-ascii';
-                    $Data{ContentType} .= '; charset="us-ascii"';
-                }
-
-                # convert charset
-                if ($Charset) {
-                    $Data{Content} = $Kernel::OM->Get('Kernel::System::Encode')->Convert(
-                        Text => $Data{Content},
-                        From => $Charset,
-                        To   => 'utf-8',
-                    );
-
-                    # replace charset in content
-                    $Data{ContentType} =~ s/\Q$Charset\E/utf-8/gi;
-                    $Data{Content} =~ s/(charset=("|'|))\Q$Charset\E/$1utf-8/gi;
-                }
-
-                $Data{Content} =~ s/&amp;/&/g;
-                $Data{Content} =~ s/&lt;/</g;
-                $Data{Content} =~ s/&gt;/>/g;
-                $Data{Content} =~ s/&quot;/"/g;
-
-                # strip head, body and meta elements
-                my $HTMLBody = $Kernel::OM->Get('Kernel::System::HTMLUtils')->DocumentStrip(
-                    String => $Data{Content},
-                );
-
-                # set HTML body for customer article
-                if ( $CustomerArticleID eq $ArticleItem->{ArticleID} ) {
-                    $Param{CustomerMessageParams}->{HTMLBody} = $HTMLBody;
-
-                    # set flag for customer HTML body
-                    $CustomerHTMLBodyPresent = 1;
-                }
-
-                # set HTML body for agent article
-                if ( $AgentArticleID eq $ArticleItem->{ArticleID} ) {
-                    $ArticleAgent{HTMLBody} = $HTMLBody;
-                }
-            }
-        }
-    }
-
     # get  HTMLUtils object
     my $HTMLUtilsObject = $Kernel::OM->Get('Kernel::System::HTMLUtils');
 
@@ -880,20 +818,6 @@ sub NotificationEvent {
     # copy the correct language message attributes to a flat structure
     for my $Attribute (qw(Subject Body ContentType)) {
         $Notification{$Attribute} = $Notification{Message}->{$Language}->{$Attribute};
-    }
-
-    # convert values to HTML to get correct line breaks etc.
-    if ( $Notification{ContentType} =~ m{text\/html} && $CustomerHTMLBodyPresent ) {
-        KEY:
-        for my $Key ( sort keys %{ $Param{CustomerMessageParams} || {} } ) {
-            next KEY if !$Param{CustomerMessageParams}->{$Key};
-
-            # convert HTMLBody to HTML is not needed
-            next KEY if $Key eq 'HTMLBody';
-            $Param{CustomerMessageParams}->{$Key} = $HTMLUtilsObject->ToHTML(
-                String => $Param{CustomerMessageParams}->{$Key},
-            );
-        }
     }
 
     for my $Key (qw(From To Cc Subject Body ContentType ArticleType)) {
@@ -1099,9 +1023,29 @@ sub _Replace {
     # get config object
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
+    # special replace from secret config options
+    my @SecretConfigOptions = qw(
+        DatabasePw
+        SearchUserPw
+        UserPw
+        SendmailModule::AuthPassword
+        AuthModule::Radius::Password
+        PGP::Key::Password
+        Customer::AuthModule::DB::CustomerPassword
+        Customer::AuthModule::Radius::Password
+        PublicFrontend::AuthPassword
+    );
+
+    # replace the secret config options before the normal config options
+    for my $SecretConfigOption (@SecretConfigOptions) {
+
+        my $Tag = $Start . 'OTRS_CONFIG_' . $SecretConfigOption . $End;
+        $Param{Text} =~ s{$Tag}{xxx}gx;
+    }
+
     # replace config options
     my $Tag = $Start . 'OTRS_CONFIG_';
-    $Param{Text} =~ s{$Tag(.+?)$End}{$ConfigObject->Get($1)}egx;
+    $Param{Text} =~ s{$Tag(.+?)$End}{$ConfigObject->Get($1) // ''}egx;
 
     # cleanup
     $Param{Text} =~ s/$Tag.+?$End/-/gi;
@@ -1203,7 +1147,7 @@ sub _Replace {
             NoOutOfOffice => 1,
         );
 
-        # html quoting of content
+        # HTML quoting of content
         if ( $Param{RichText} ) {
 
             ATTRIBUTE:
@@ -1229,7 +1173,7 @@ sub _Replace {
         NoOutOfOffice => 1,
     );
 
-    # html quoting of content
+    # HTML quoting of content
     if ( $Param{RichText} ) {
 
         ATTRIBUTE:
@@ -1366,10 +1310,9 @@ sub _Replace {
     for my $DataType (qw(OTRS_CUSTOMER_ OTRS_AGENT_)) {
         my %Data = %{ $ArticleData{$DataType} };
 
-        # html quoting of content
+        # HTML quoting of content
         if (
             $Param{RichText}
-            && !$Data{HTMLBody}
             && ( !$Data{ContentType} || $Data{ContentType} !~ /application\/json/ )
             )
         {
@@ -1383,6 +1326,7 @@ sub _Replace {
                 );
             }
         }
+
         if (%Data) {
 
             # Check if content type is JSON
@@ -1398,7 +1342,7 @@ sub _Replace {
                         Data => $Data{Body},
                     );
 
-                    # replace body with html text
+                    # replace body with HTML text
                     $Data{Body} = $Kernel::OM->Get('Kernel::Output::HTML::Layout')->Output(
                         TemplateFile => "ChatDisplay",
                         Data         => {
@@ -1421,47 +1365,32 @@ sub _Replace {
             #   <OTRS_CUSTOMER_BODY[n]>, <OTRS_AGENT_EMAIL[n]>..., <OTRS_COMMENT>
             if ( $Param{Text} =~ /$Start(?:(?:$DataType(EMAIL|NOTE|BODY)\[(.+?)\])|(?:OTRS_COMMENT))$End/g ) {
 
-                my $Line = $2 || 2500;
+                my $Line       = $2 || 2500;
                 my $NewOldBody = '';
-                if ( $Data{HTMLBody} ) {
+                my @Body       = split( /\n/, $Data{Body} );
 
-                    # comment
-                    my $CharactersPerLine = $ConfigObject->Get('Notification::CharactersPerLine') || 80;
-                    my $CharactersLong = $Line * $CharactersPerLine; # 80 is a fixed value for testing, it should change
+                for my $Counter ( 0 .. $Line - 1 ) {
 
-                    $NewOldBody = $Kernel::OM->Get('Kernel::System::HTMLUtils')->HTMLTruncate(
-                        String   => $Data{HTMLBody},
-                        Chars    => $CharactersLong,
-                        Ellipsis => '...',
-                        UTF8Mode => 1,
-                        OnSpace  => 1,
-                    );
-                }
-                else {
-                    my @Body = split( /\n/, $Data{Body} );
-                    for my $Counter ( 0 .. $Line - 1 ) {
+                    # 2002-06-14 patch of Pablo Ruiz Garcia
+                    # http://lists.otrs.org/pipermail/dev/2002-June/000012.html
+                    if ( $#Body >= $Counter ) {
 
-                        # 2002-06-14 patch of Pablo Ruiz Garcia
-                        # http://lists.otrs.org/pipermail/dev/2002-June/000012.html
-                        if ( $#Body >= $Counter ) {
-
-                            # add no quote char, do it later by using DocumentCleanup()
-                            if ( $Param{RichText} ) {
-                                $NewOldBody .= $Body[$Counter];
-                            }
-
-                            # add "> " as quote char
-                            else {
-                                $NewOldBody .= "> $Body[$Counter]";
-                            }
-
-                            # add new line
-                            if ( $Counter < ( $Line - 1 ) ) {
-                                $NewOldBody .= "\n";
-                            }
+                        # add no quote char, do it later by using DocumentCleanup()
+                        if ( $Param{RichText} ) {
+                            $NewOldBody .= $Body[$Counter];
                         }
-                        $Counter++;
+
+                        # add "> " as quote char
+                        else {
+                            $NewOldBody .= "> $Body[$Counter]";
+                        }
+
+                        # add new line
+                        if ( $Counter < ( $Line - 1 ) ) {
+                            $NewOldBody .= "\n";
+                        }
                     }
+                    $Counter++;
                 }
 
                 chomp $NewOldBody;
@@ -1481,6 +1410,7 @@ sub _Replace {
                     );
                 }
 
+                # replace tag
                 $Param{Text}
                     =~ s/$Start(?:(?:$DataType(EMAIL|NOTE|BODY)\[(.+?)\])|(?:OTRS_COMMENT))$End/$NewOldBody/g;
             }
@@ -1522,7 +1452,7 @@ sub _Replace {
             $Tag = $Start . 'OTRS_CUSTOMER_REALNAME';
             if ( $Param{Text} =~ /$Tag$End/i ) {
 
-                my $From = '';
+                my $From;
 
                 if ( $Ticket{CustomerUserID} ) {
 
@@ -1534,9 +1464,14 @@ sub _Replace {
                 # try to get the real name directly from the data
                 $From //= $Recipient{RealName};
 
+                # get real name based on reply-to
+                if ( $Data{ReplyTo} ) {
+                    $From = $Data{ReplyTo} || '';
+                }
+
                 # generate real name based on sender line
                 if ( !$From ) {
-                    $From = $Data{To} || '';
+                    $From = $Data{From} || '';
 
                     # remove email addresses
                     $From =~ s/&lt;.*&gt;|<.*>|\(.*\)|\"|&quot;|;|,//g;

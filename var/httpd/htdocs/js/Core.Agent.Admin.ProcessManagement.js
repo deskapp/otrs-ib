@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -1109,10 +1109,13 @@ Core.Agent.Admin.ProcessManagement = (function (TargetNS) {
                                  FieldConfigElement.Config.ArticleType = $('#ArticleType').val();
 
                                  // show error if internal article type is set for an interface different than AgentInterface
-                                 if ($('#Interface').val() !== 'AgentInterface' && $('#ArticleType').val().match(/int/i)){
+                                 if ($('#Interface').val() !== 'AgentInterface' && $('#ArticleType').val().match(/-int/i)){
                                      window.alert(Core.Agent.Admin.ProcessManagement.Localization.WrongArticleTypeMsg);
                                      return false;
                                  }
+
+                                 // add the time units value to the fieldconfig
+                                 FieldConfigElement.Config.TimeUnits = $('#TimeUnits').val();
                              }
 
                              $Element.closest('li').data('config', Core.JSON.Stringify(FieldConfigElement));
@@ -1149,9 +1152,6 @@ Core.Agent.Admin.ProcessManagement = (function (TargetNS) {
                 $('#Display').find('option[value=0]').remove();
             }
 
-            // redraw display field
-            $('#Display').trigger('redraw.InputField');
-
             // if there is a field config already the default settings from above are now overwritten
             if (typeof FieldConfig !== 'undefined') {
                 $('#DescShort').val(FieldConfig.DescriptionShort);
@@ -1169,9 +1169,14 @@ Core.Agent.Admin.ProcessManagement = (function (TargetNS) {
                     if (FieldConfig.Config.ArticleType) {
                         $('#ArticleType').val(FieldConfig.Config.ArticleType);
                     }
+                    if (FieldConfig.Config.TimeUnits) {
+                        $('#TimeUnits').val(FieldConfig.Config.TimeUnits);
+                    }
                 }
-
             }
+
+            // redraw display field
+            $('#Display').trigger('redraw.InputField');
 
             // some fields do not have a default value.
             // disable the input field
@@ -1181,13 +1186,22 @@ Core.Agent.Admin.ProcessManagement = (function (TargetNS) {
 
             // only article should show ArticleType select.
             if (Fieldname === 'Article') {
+
                 $('#ArticleTypeContainer').removeClass('Hidden');
                 $('#ArticleTypeContainer').prev('label').css('display', 'block');
                 $('#ArticleTypeContainer .Modernize').trigger('redraw.InputField');
+
+                $('#TimeUnitsContainer').removeClass('Hidden');
+                $('#TimeUnitsContainer').prev('label').css('display', 'block');
+                $('#TimeUnitsContainer .Modernize').trigger('redraw.InputField');
             }
             else {
+
                 $('#ArticleTypeContainer').addClass('Hidden');
                 $('#ArticleTypeContainer').prev('label').css('display', 'none');
+
+                $('#TimeUnitsContainer').addClass('Hidden');
+                $('#TimeUnitsContainer').prev('label').css('display', 'none');
             }
 
             return false;
@@ -1491,9 +1505,9 @@ Core.Agent.Admin.ProcessManagement = (function (TargetNS) {
     TargetNS.HideOverlay = function () {
         $('#Overlay').remove();
         $('body').css({
-            'overflow': 'auto'
+            'overflow': 'visible',
+            'min-height': 0
         });
-        $('body').css('min-height', 'auto');
     };
 
     /**
@@ -1550,6 +1564,12 @@ Core.Agent.Admin.ProcessManagement = (function (TargetNS) {
     TargetNS.UpdateConfig = function (Config) {
         if (typeof Config === 'undefined') {
             return false;
+        }
+
+        // IE (11) has some permission problems with objects from other windows
+        // Therefore we "copy" the object if we are in IE
+        if ($.browser.trident) {
+            Config = Core.JSON.Parse(Core.JSON.Stringify(Config));
         }
 
         // Update config from e.g. popup windows

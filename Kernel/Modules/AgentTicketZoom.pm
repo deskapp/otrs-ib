@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -14,6 +14,8 @@ use warnings;
 our $ObjectManagerDisabled = 1;
 
 use POSIX qw/ceil/;
+
+use Kernel::Language qw(Translatable);
 use Kernel::System::EmailParser;
 use Kernel::System::VariableCheck qw(:all);
 
@@ -60,7 +62,7 @@ sub new {
             }
         }
 
-        if ( defined $Self->{ZoomExpand} || defined $Self->{ZoomTimeline} ) {
+        elsif ( defined $Self->{ZoomExpand} || defined $Self->{ZoomTimeline} ) {
 
             my $LastUsedZoomViewType = '';
             if ( defined $Self->{ZoomExpand} && $Self->{ZoomExpand} == 1 ) {
@@ -130,43 +132,43 @@ sub new {
     # this is a mapping of history types which is being used
     # for the timeline view and its event type filter
     $Self->{HistoryTypeMapping} = {
-        NewTicket                       => 'Ticket Created',
-        AddNote                         => 'Note Added',
-        AddNoteCustomer                 => 'Note Added (Customer)',
-        EmailAgent                      => 'Outgoing Email',
-        EmailAgentInternal              => 'Outgoing Email (internal)',
-        EmailCustomer                   => 'Incoming Customer Email',
-        TicketDynamicFieldUpdate        => 'Dynamic Field Updated',
-        PhoneCallAgent                  => 'Outgoing Phone Call',
-        PhoneCallCustomer               => 'Incoming Phone Call',
-        SendAnswer                      => 'Outgoing Answer',
-        ResponsibleUpdate               => 'New Responsible',
-        OwnerUpdate                     => 'New Owner',
-        SLAUpdate                       => 'SLA Updated',
-        ServiceUpdate                   => 'Service Updated',
-        CustomerUpdate                  => 'Customer Updated',
-        StateUpdate                     => 'State Updated',
-        FollowUp                        => 'Incoming Follow-Up',
-        EscalationUpdateTimeStop        => 'Escalation Update Time Stopped',
-        EscalationSolutionTimeStop      => 'Escalation Solution Time Stopped',
-        EscalationFirstResponseTimeStop => 'Escalation First Response Time Stopped',
-        EscalationResponseTimeStop      => 'Escalation Response Time Stopped',
-        TicketLinkAdd                   => 'Link Added',
-        TicketLinkDelete                => 'Link Deleted',
-        Merged                          => 'Ticket Merged',
-        SetPendingTime                  => 'Pending Time Set',
-        Lock                            => 'Ticket Locked',
-        Unlock                          => 'Ticket Unlocked',
-        Move                            => 'Queue Updated',
-        PriorityUpdate                  => 'Priority Updated',
-        TitleUpdate                     => 'Title Updated',
-        TypeUpdate                      => 'Type Updated',
-        WebRequestCustomer              => 'Incoming Web Request',
-        SendAutoFollowUp                => 'Automatic Follow-Up Sent',
-        SendAutoReply                   => 'Automatic Reply Sent',
-        TimeAccounting                  => 'Time Accounted',
-        ChatExternal                    => 'External Chat',
-        ChatInternal                    => 'Internal Chat',
+        NewTicket                       => Translatable('Ticket Created'),
+        AddNote                         => Translatable('Note Added'),
+        AddNoteCustomer                 => Translatable('Note Added (Customer)'),
+        EmailAgent                      => Translatable('Outgoing Email'),
+        EmailAgentInternal              => Translatable('Outgoing Email (internal)'),
+        EmailCustomer                   => Translatable('Incoming Customer Email'),
+        TicketDynamicFieldUpdate        => Translatable('Dynamic Field Updated'),
+        PhoneCallAgent                  => Translatable('Outgoing Phone Call'),
+        PhoneCallCustomer               => Translatable('Incoming Phone Call'),
+        SendAnswer                      => Translatable('Outgoing Answer'),
+        ResponsibleUpdate               => Translatable('New Responsible'),
+        OwnerUpdate                     => Translatable('New Owner'),
+        SLAUpdate                       => Translatable('SLA Updated'),
+        ServiceUpdate                   => Translatable('Service Updated'),
+        CustomerUpdate                  => Translatable('Customer Updated'),
+        StateUpdate                     => Translatable('State Updated'),
+        FollowUp                        => Translatable('Incoming Follow-Up'),
+        EscalationUpdateTimeStop        => Translatable('Escalation Update Time Stopped'),
+        EscalationSolutionTimeStop      => Translatable('Escalation Solution Time Stopped'),
+        EscalationFirstResponseTimeStop => Translatable('Escalation First Response Time Stopped'),
+        EscalationResponseTimeStop      => Translatable('Escalation Response Time Stopped'),
+        TicketLinkAdd                   => Translatable('Link Added'),
+        TicketLinkDelete                => Translatable('Link Deleted'),
+        Merged                          => Translatable('Ticket Merged'),
+        SetPendingTime                  => Translatable('Pending Time Set'),
+        Lock                            => Translatable('Ticket Locked'),
+        Unlock                          => Translatable('Ticket Unlocked'),
+        Move                            => Translatable('Queue Updated'),
+        PriorityUpdate                  => Translatable('Priority Updated'),
+        TitleUpdate                     => Translatable('Title Updated'),
+        TypeUpdate                      => Translatable('Type Updated'),
+        WebRequestCustomer              => Translatable('Incoming Web Request'),
+        SendAutoFollowUp                => Translatable('Automatic Follow-Up Sent'),
+        SendAutoReply                   => Translatable('Automatic Reply Sent'),
+        TimeAccounting                  => Translatable('Time Accounted'),
+        ChatExternal                    => Translatable('External Chat'),
+        ChatInternal                    => Translatable('Internal Chat'),
     };
 
     # Add custom files to the zoom's frontend module registration on the fly
@@ -195,8 +197,8 @@ sub Run {
     # check needed stuff
     if ( !$Self->{TicketID} ) {
         return $LayoutObject->ErrorScreen(
-            Message => 'No TicketID is given!',
-            Comment => 'Please contact the admin.',
+            Message => Translatable('No TicketID is given!'),
+            Comment => Translatable('Please contact the admin.'),
         );
     }
 
@@ -389,7 +391,8 @@ sub Run {
         );
         if ( !$Content ) {
             $LayoutObject->FatalError(
-                Message => "Can't get for ArticleID $Self->{ArticleID}!",
+                Message =>
+                    $LayoutObject->{LanguageObject}->Translate( 'Can\'t get for ArticleID %s!', $Self->{ArticleID} ),
             );
         }
         return $LayoutObject->Attachment(
@@ -460,7 +463,7 @@ sub Run {
         if ($Update) {
             $JSON = $LayoutObject->JSONEncode(
                 Data => {
-                    Message => 'Article filter settings were saved.',
+                    Message => Translatable('Article filter settings were saved.'),
                 },
             );
         }
@@ -523,7 +526,7 @@ sub Run {
         if ($Update) {
             $JSON = $LayoutObject->JSONEncode(
                 Data => {
-                    Message => 'Event type filter settings were saved.',
+                    Message => Translatable('Event type filter settings were saved.'),
                 },
             );
         }
@@ -602,7 +605,7 @@ sub Run {
 
         # check needed ArticleID
         if ( !$Self->{ArticleID} ) {
-            return $LayoutObject->ErrorScreen( Message => 'Need ArticleID!' );
+            return $LayoutObject->ErrorScreen( Message => Translatable('Need ArticleID!') );
         }
 
         # get article data
@@ -613,7 +616,7 @@ sub Run {
 
         # check if article data exists
         if ( !%Article ) {
-            return $LayoutObject->ErrorScreen( Message => 'Invalid ArticleID!' );
+            return $LayoutObject->ErrorScreen( Message => Translatable('Invalid ArticleID!') );
         }
 
         # if it is a html email, return here
@@ -1039,7 +1042,10 @@ sub MaskAgentZoom {
             if ( $ZoomMenuItems{$Item}->{Type} eq 'Cluster' ) {
 
                 $LayoutObject->Block(
-                    Name => 'TicketMenuSubContainer'
+                    Name => 'TicketMenuSubContainer',
+                    Data => {
+                        Name => $ZoomMenuItems{$Item}->{Name},
+                    },
                 );
 
                 for my $SubItem ( sort keys %{ $ZoomMenuItems{$Item}->{Items} } ) {
@@ -1058,6 +1064,7 @@ sub MaskAgentZoom {
         $Param{MoveQueuesStrg} = $LayoutObject->AgentQueueListOption(
             Name           => 'DestQueueID',
             Data           => \%MoveQueues,
+            Class          => 'Modernize Small',
             CurrentQueueID => $Ticket{QueueID},
         );
     }
@@ -1108,9 +1115,18 @@ sub MaskAgentZoom {
 
     # ticket type
     if ( $ConfigObject->Get('Ticket::Type') ) {
+
+        my %Type = $Kernel::OM->Get('Kernel::System::Type')->TypeGet(
+            ID => $Ticket{TypeID},
+        );
+
         $LayoutObject->Block(
             Name => 'Type',
-            Data => { %Ticket, %AclAction },
+            Data => {
+                Valid => $Type{ValidID},
+                %Ticket,
+                %AclAction
+            },
         );
     }
 
@@ -1389,7 +1405,7 @@ sub MaskAgentZoom {
         ObjectType  => ['Ticket'],
         FieldFilter => $DynamicFieldFilter || {},
     );
-    my $DynamicFieldBeckendObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
+    my $DynamicFieldBackendObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
 
     # to store dynamic fields to be displayed in the process widget and in the sidebar
     my ( @FieldsWidget, @FieldsSidebar );
@@ -1409,7 +1425,7 @@ sub MaskAgentZoom {
             $Self->{DisplaySettings}->{ProcessWidgetDynamicField}->{ $DynamicFieldConfig->{Name} }
             )
         {
-            my $ValueStrg = $DynamicFieldBeckendObject->DisplayValueRender(
+            my $ValueStrg = $DynamicFieldBackendObject->DisplayValueRender(
                 DynamicFieldConfig => $DynamicFieldConfig,
                 Value              => $Ticket{ 'DynamicField_' . $DynamicFieldConfig->{Name} },
                 LayoutObject       => $LayoutObject,
@@ -1425,11 +1441,12 @@ sub MaskAgentZoom {
                     => $Ticket{ 'DynamicField_' . $DynamicFieldConfig->{Name} },
                 Label                       => $Label,
                 Link                        => $ValueStrg->{Link},
+                LinkPreview                 => $ValueStrg->{LinkPreview},
                 $DynamicFieldConfig->{Name} => $ValueStrg->{Title},
             };
         }
 
-        my $ValueStrg = $DynamicFieldBeckendObject->DisplayValueRender(
+        my $ValueStrg = $DynamicFieldBackendObject->DisplayValueRender(
             DynamicFieldConfig => $DynamicFieldConfig,
             Value              => $Ticket{ 'DynamicField_' . $DynamicFieldConfig->{Name} },
             LayoutObject       => $LayoutObject,
@@ -1448,6 +1465,7 @@ sub MaskAgentZoom {
                 Value                       => $ValueStrg->{Value},
                 Label                       => $Label,
                 Link                        => $ValueStrg->{Link},
+                LinkPreview                 => $ValueStrg->{LinkPreview},
                 $DynamicFieldConfig->{Name} => $ValueStrg->{Title},
             };
         }
@@ -1518,6 +1536,7 @@ sub MaskAgentZoom {
                                     Value          => $Field->{Value},
                                     Title          => $Field->{Title},
                                     Link           => $Field->{Link},
+                                    LinkPreview    => $Field->{LinkPreview},
                                     $Field->{Name} => $Field->{Title},
                                 },
                             );
@@ -1594,6 +1613,7 @@ sub MaskAgentZoom {
                         Value          => $Field->{Value},
                         Title          => $Field->{Title},
                         Link           => $Field->{Link},
+                        LinkPreview    => $Field->{LinkPreview},
                         $Field->{Name} => $Field->{Title},
                     },
                 );
@@ -1631,6 +1651,7 @@ sub MaskAgentZoom {
                     Value          => $Field->{Value},
                     Title          => $Field->{Title},
                     Link           => $Field->{Link},
+                    LinkPreview    => $Field->{LinkPreview},
                     $Field->{Name} => $Field->{Title},
                 },
             );
@@ -1687,6 +1708,8 @@ sub MaskAgentZoom {
     my $LinkTableStrg = $LayoutObject->LinkObjectTableCreate(
         LinkListWithData => $LinkListWithData,
         ViewMode         => $LinkTableViewMode,
+        Object           => 'Ticket',
+        Key              => $Self->{TicketID},
     );
 
     # output the simple link table
@@ -2283,7 +2306,7 @@ sub _ArticleTree {
                         Class               => 'NewTicket',
                         Name                => '',
                         ArticleID           => '',
-                        HistoryTypeReadable => 'Ticket Created',
+                        HistoryTypeReadable => Translatable('Ticket Created'),
                         Orientation         => 'Right',
                     };
                 }
@@ -2375,14 +2398,6 @@ sub _ArticleTree {
             if ( $Item->{ArticleID} ) {
                 $Item->{ArticleData} = $ArticlesByArticleID->{ $Item->{ArticleID} };
 
-                # security="restricted" may break SSO - disable this feature if requested
-                if ( $ConfigObject->Get('DisableMSIFrameSecurityRestricted') ) {
-                    $Item->{ArticleData}->{MSSecurityRestricted} = '';
-                }
-                else {
-                    $Item->{ArticleData}->{MSSecurityRestricted} = 'security="restricted"';
-                }
-
                 my %ArticleFlagsAll = $TicketObject->ArticleFlagGet(
                     ArticleID => $Item->{ArticleID},
                     UserID    => 1,
@@ -2407,6 +2422,12 @@ sub _ArticleTree {
                     my $ChatMessages = $Kernel::OM->Get('Kernel::System::JSON')->Decode(
                         Data => $Item->{ArticleData}->{Body},
                     );
+
+                    for my $ChatMessage ( @{ $ChatMessages // [] } ) {
+                        $ChatMessage->{CreateTime} = $LayoutObject->{LanguageObject}
+                            ->FormatTimeString( $ChatMessage->{CreateTime}, 'DateFormat' );
+                    }
+                    $Item->{ArticleData}->{ChatMessages} = $ChatMessages;
 
                     my $ItemCounter = 0;
 
@@ -2630,9 +2651,18 @@ sub _ArticleItem {
     # get layout object
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
 
+    # collect article meta
+    my @ArticleMetaData = $Self->_ArticleCollectMeta(
+        Article => \%Article
+    );
+
     $LayoutObject->Block(
         Name => 'ArticleItem',
-        Data => { %Param, %Article, %AclAction, MenuItems => \@MenuItems },
+        Data => {
+            %Param, %Article, %AclAction,
+            MenuItems       => \@MenuItems,
+            ArticleMetaData => \@ArticleMetaData
+        },
     );
 
     # show created by if different from User ID 1
@@ -2726,14 +2756,14 @@ sub _ArticleItem {
         ObjectType  => ['Article'],
         FieldFilter => $DynamicFieldFilter || {},
     );
-    my $DynamicFieldBeckendObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
+    my $DynamicFieldBackendObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
 
     # cycle trough the activated Dynamic Fields
     DYNAMICFIELD:
     for my $DynamicFieldConfig ( @{$DynamicField} ) {
         next DYNAMICFIELD if !IsHashRefWithData($DynamicFieldConfig);
 
-        my $Value = $DynamicFieldBeckendObject->ValueGet(
+        my $Value = $DynamicFieldBackendObject->ValueGet(
             DynamicFieldConfig => $DynamicFieldConfig,
             ObjectID           => $Article{ArticleID},
         );
@@ -2742,7 +2772,7 @@ sub _ArticleItem {
         next DYNAMICFIELD if $Value eq '';
 
         # get print string for this dynamic field
-        my $ValueStrg = $DynamicFieldBeckendObject->DisplayValueRender(
+        my $ValueStrg = $DynamicFieldBackendObject->DisplayValueRender(
             DynamicFieldConfig => $DynamicFieldConfig,
             Value              => $Value,
             ValueMaxChars      => $ConfigObject->
@@ -2773,6 +2803,7 @@ sub _ArticleItem {
                     Value                       => $ValueStrg->{Value},
                     Title                       => $ValueStrg->{Title},
                     Link                        => $ValueStrg->{Link},
+                    LinkPreview                 => $ValueStrg->{LinkPreview},
                     $DynamicFieldConfig->{Name} => $ValueStrg->{Title}
                 },
             );
@@ -2812,6 +2843,7 @@ sub _ArticleItem {
                     Value                       => $ValueStrg->{Value},
                     Title                       => $ValueStrg->{Title},
                     Link                        => $ValueStrg->{Link},
+                    LinkPreview                 => $ValueStrg->{LinkPreview},
                     $DynamicFieldConfig->{Name} => $ValueStrg->{Title}
                 },
             );
@@ -2986,14 +3018,6 @@ sub _ArticleItem {
         );
     }
 
-    # security="restricted" may break SSO - disable this feature if requested
-    if ( $ConfigObject->Get('DisableMSIFrameSecurityRestricted') ) {
-        $Article{MSSecurityRestricted} = '';
-    }
-    else {
-        $Article{MSSecurityRestricted} = 'security="restricted"';
-    }
-
     # show body
     # Create a reference to an anonymous copy of %Article and pass it to
     # the LayoutObject, because %Article may be modified afterwards.
@@ -3103,16 +3127,17 @@ sub _ArticleMenu {
 
                 # build html string
                 my $StandardResponsesStrg = $LayoutObject->BuildSelection(
-                    Name => 'ResponseID',
-                    ID   => 'ResponseID',
-                    Data => \@StandardResponseArray,
+                    Name  => 'ResponseID',
+                    ID    => 'ResponseID',
+                    Class => 'Modernize Small',
+                    Data  => \@StandardResponseArray,
                 );
 
                 push @MenuItems, {
                     ItemType              => 'Dropdown',
                     DropdownType          => 'Reply',
                     StandardResponsesStrg => $StandardResponsesStrg,
-                    Name                  => 'Reply',
+                    Name                  => Translatable('Reply'),
                     Class                 => 'AsPopup PopupType_TicketAction',
                     Action                => 'AgentTicketCompose',
                     FormID                => 'Reply' . $Article{ArticleID},
@@ -3160,16 +3185,17 @@ sub _ArticleMenu {
                     );
 
                     $StandardResponsesStrg = $LayoutObject->BuildSelection(
-                        Name => 'ResponseID',
-                        ID   => 'ResponseIDAll' . $Article{ArticleID},
-                        Data => \@StandardResponseArrayReplyAll,
+                        Name  => 'ResponseID',
+                        ID    => 'ResponseIDAll' . $Article{ArticleID},
+                        Class => 'Modernize Small',
+                        Data  => \@StandardResponseArrayReplyAll,
                     );
 
                     push @MenuItems, {
                         ItemType              => 'Dropdown',
                         DropdownType          => 'Reply',
                         StandardResponsesStrg => $StandardResponsesStrg,
-                        Name                  => 'Reply All',
+                        Name                  => Translatable('Reply All'),
                         Class                 => 'AsPopup PopupType_TicketAction',
                         Action                => 'AgentTicketCompose',
                         FormID                => 'ReplyAll' . $Article{ArticleID},
@@ -3245,16 +3271,17 @@ sub _ArticleMenu {
 
                     # build html string
                     my $StandardForwardsStrg = $LayoutObject->BuildSelection(
-                        Name => 'ForwardTemplateID',
-                        ID   => 'ForwardTemplateID',
-                        Data => \@StandardForwardArray,
+                        Name  => 'ForwardTemplateID',
+                        ID    => 'ForwardTemplateID',
+                        Class => 'Modernize Small',
+                        Data  => \@StandardForwardArray,
                     );
 
                     push @MenuItems, {
                         ItemType             => 'Dropdown',
                         DropdownType         => 'Forward',
                         StandardForwardsStrg => $StandardForwardsStrg,
-                        Name                 => 'Forward',
+                        Name                 => Translatable('Forward'),
                         Class                => 'AsPopup PopupType_TicketAction',
                         Action               => 'AgentTicketForward',
                         FormID               => 'Forward' . $Article{ArticleID},
@@ -3267,8 +3294,8 @@ sub _ArticleMenu {
 
                     push @MenuItems, {
                         ItemType    => 'Link',
-                        Description => 'Forward article via mail',
-                        Name        => 'Forward',
+                        Description => Translatable('Forward article via mail'),
+                        Name        => Translatable('Forward'),
                         Class       => 'AsPopup PopupType_TicketAction',
                         Link =>
                             "Action=AgentTicketForward;TicketID=$Ticket{TicketID};ArticleID=$Article{ArticleID}"
@@ -3314,8 +3341,8 @@ sub _ArticleMenu {
 
                 push @MenuItems, {
                     ItemType    => 'Link',
-                    Description => 'Bounce Article to a different mail address',
-                    Name        => 'Bounce',
+                    Description => Translatable('Bounce Article to a different mail address'),
+                    Name        => Translatable('Bounce'),
                     Class       => 'AsPopup PopupType_TicketAction',
                     Link =>
                         "Action=AgentTicketBounce;TicketID=$Ticket{TicketID};ArticleID=$Article{ArticleID}"
@@ -3334,8 +3361,8 @@ sub _ArticleMenu {
 
         push @MenuItems, {
             ItemType    => 'Link',
-            Description => 'Split this article',
-            Name        => 'Split',
+            Description => Translatable('Split this article'),
+            Name        => Translatable('Split'),
             Link =>
                 "Action=AgentTicketPhone;TicketID=$Ticket{TicketID};ArticleID=$Article{ArticleID};LinkTicketID=$Ticket{TicketID}"
         };
@@ -3357,8 +3384,8 @@ sub _ArticleMenu {
 
             push @MenuItems, {
                 ItemType    => 'Link',
-                Description => 'Print this article',
-                Name        => 'Print',
+                Description => Translatable('Print this article'),
+                Name        => Translatable('Print'),
                 Class       => 'AsPopup PopupType_TicketAction',
                 Link =>
                     "Action=AgentTicketPrint;TicketID=$Ticket{TicketID};ArticleID=$Article{ArticleID};ArticleNumber=$Article{Count}"
@@ -3384,8 +3411,8 @@ sub _ArticleMenu {
 
             push @MenuItems, {
                 ItemType    => 'Link',
-                Description => 'View the source for this Article',
-                Name        => 'Plain Format',
+                Description => Translatable('View the source for this Article'),
+                Name        => Translatable('Plain Format'),
                 Class       => 'AsPopup PopupType_TicketAction',
                 Link =>
                     "Action=AgentTicketPlain;TicketID=$Ticket{TicketID};ArticleID=$Article{ArticleID}",
@@ -3413,9 +3440,9 @@ sub _ArticleMenu {
 
         my $Link
             = "Action=AgentTicketZoom;Subaction=MarkAsImportant;TicketID=$Ticket{TicketID};ArticleID=$Article{ArticleID}";
-        my $Description = 'Mark';
+        my $Description = Translatable('Mark');
         if ($ArticleIsImportant) {
-            $Description = 'Unmark';
+            $Description = Translatable('Unmark');
         }
 
         # set important menu item
@@ -3436,7 +3463,7 @@ sub _ArticleMenu {
     {
 
         my $Link        = "Action=AgentTicketNote;TicketID=$Ticket{TicketID};ReplyToArticle=$Article{ArticleID}";
-        my $Description = 'Reply to note';
+        my $Description = Translatable('Reply to note');
 
         # set important menu item
         push @MenuItems, {
@@ -3449,6 +3476,107 @@ sub _ArticleMenu {
     }
 
     return @MenuItems;
+}
+
+sub _ArticleCollectMeta {
+
+    my ( $Self, %Param ) = @_;
+
+    my %Article = %{ $Param{Article} };
+
+    # get config object
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+    my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+
+    # check whether auto article links should be used
+    return if !$ConfigObject->Get('Ticket::Frontend::ZoomCollectMeta');
+    return if !$ConfigObject->Get('Ticket::Frontend::ZoomCollectMetaFilters');
+
+    my @Data;
+
+    # find words to replace
+    my %Config = %{ $ConfigObject->Get('Ticket::Frontend::ZoomCollectMetaFilters') };
+
+    FILTER:
+    for my $Filter ( values %Config ) {
+
+        my %FilterData;
+
+        # check for needed data
+        next FILTER if !$Filter->{RegExp};
+        next FILTER if !$Filter->{Meta};
+        next FILTER if !$Filter->{Meta}->{Name};
+        next FILTER if !$Filter->{Meta}->{URL};
+
+        # iterage through regular expressions and create a hash with found matches
+        my @Matches;
+        for my $RegExp ( @{ $Filter->{RegExp} } ) {
+
+            my @Count    = $RegExp =~ m{\(}gx;
+            my $Elements = scalar @Count;
+
+            if ( my @MatchData = $Article{Body} =~ m{([\s:]$RegExp)}gxi ) {
+                my $Counter = 0;
+
+                MATCH:
+                while ( $MatchData[$Counter] ) {
+
+                    my $WholeMatchString = $MatchData[$Counter];
+                    $WholeMatchString =~ s/^\s+|\s+$//g;
+                    if ( grep { $_->{Name} eq $WholeMatchString } @Matches ) {
+                        $Counter += $Elements + 1;
+                        next MATCH;
+                    }
+
+                    my %Parts;
+                    for ( 1 .. $Elements ) {
+                        $Parts{$_} = $MatchData[ $Counter + $_ ];
+                    }
+                    $Counter += $Elements + 1;
+
+                    push @Matches, {
+                        Name  => $WholeMatchString,
+                        Parts => \%Parts,
+                    };
+                }
+            }
+        }
+
+        if ( scalar @Matches ) {
+
+            $FilterData{Name} = $Filter->{Meta}->{Name};
+
+            # iterate trough matches and build URLs from configuration
+            for my $Match (@Matches) {
+
+                my $MatchQuote = $LayoutObject->Ascii2Html( Text => $Match->{Name} );
+                my $URL        = $Filter->{Meta}->{URL};
+                my $URLPreview = $Filter->{Meta}->{URLPreview};
+
+                # replace the whole keyword
+                my $MatchLinkEncode = $LayoutObject->LinkEncode( $Match->{Name} );
+                $URL =~ s/<MATCH>/$MatchLinkEncode/g;
+                $URLPreview =~ s/<MATCH>/$MatchLinkEncode/g;
+
+                # replace the keyword components
+                for my $Part ( sort keys %{ $Match->{Parts} || {} } ) {
+                    $MatchLinkEncode = $LayoutObject->LinkEncode( $Match->{Parts}->{$Part} );
+                    $URL =~ s/<MATCH$Part>/$MatchLinkEncode/g;
+                    $URLPreview =~ s/<MATCH$Part>/$MatchLinkEncode/g;
+                }
+
+                push @{ $FilterData{Matches} }, {
+                    Text       => $Match->{Name},
+                    URL        => $URL,
+                    URLPreview => $URLPreview,
+                    Target     => $Filter->{Meta}->{Target} || '_blank',
+                };
+            }
+            push @Data, \%FilterData;
+        }
+    }
+
+    return @Data;
 }
 
 sub _CollectArticleAttachments {
