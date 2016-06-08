@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -14,6 +14,7 @@ use warnings;
 our $ObjectManagerDisabled = 1;
 
 use Kernel::System::VariableCheck qw(:all);
+use Kernel::Language qw(Translatable);
 use Kernel::System::CheckItem;
 
 sub new {
@@ -136,7 +137,7 @@ sub _ShowOverview {
 
     if ( !IsHashRefWithData($FieldTypeConfig) ) {
         return $LayoutObject->ErrorScreen(
-            Message => "Fields configuration is not valid",
+            Message => Translatable('Fields configuration is not valid'),
         );
     }
 
@@ -159,7 +160,7 @@ sub _ShowOverview {
 
     if ( !IsHashRefWithData($ObjectTypeConfig) ) {
         return $LayoutObject->ErrorScreen(
-            Message => "Objects configuration is not valid",
+            Message => Translatable('Objects configuration is not valid'),
         );
     }
 
@@ -403,8 +404,9 @@ sub _DynamicFieldOrderReset {
     # show error message if the order reset was not successful
     if ( !$ResetSuccess ) {
         return $LayoutObject->ErrorScreen(
-            Message => "Could not reset Dynamic Field order properly, please check the error log"
-                . " for more details",
+            Message => Translatable(
+                'Could not reset Dynamic Field order properly, please check the error log for more details.'
+            ),
         );
     }
 

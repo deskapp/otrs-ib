@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -14,7 +14,6 @@ use warnings;
 use utf8;
 
 use MIME::Base64;
-use HTML::Truncate;
 
 our @ObjectDependencies = (
     'Kernel::Config',
@@ -482,6 +481,10 @@ sub ToAscii {
     }
     {
         my $Chr = chr( $2 );
+        # make sure we get valid UTF8 code points
+        Encode::_utf8_off( $Chr);
+        $Chr = Encode::decode('utf-8', $Chr, 0);
+
         if ( $Chr ) {
             $Chr;
         }
@@ -490,7 +493,7 @@ sub ToAscii {
         };
     }egx;
 
-    # encode html entities like "&#3d;"
+    # encode html entities like "&#x3d;"
     $Param{String} =~ s{
         (&\#[xX]([0-9a-fA-F]+);?)
     }
@@ -499,6 +502,9 @@ sub ToAscii {
         my $Hex = hex( $2 );
         if ( $Hex ) {
             my $Chr = chr( $Hex );
+            # make sure we get valid UTF8 code points
+            Encode::_utf8_off( $Chr);
+            $Chr = Encode::decode('utf-8', $Chr, 0);
             if ( $Chr ) {
                 $Chr;
             }
@@ -814,17 +820,21 @@ sub LinkQuote {
         (                                          # $3
             (?: [a-z0-9\-]+ \. )*                  # get subdomains, optional
             [a-z0-9\-]+                            # get top level domain
+            (?:                                    # optional port number
+                [:]
+                [0-9]+
+            )?
             (?:                                    # file path element
                 [\/\.]
-                | [a-zA-Z0-9\-]
+                | [a-zA-Z0-9\-_=%]
             )*
             (?:                                    # param string
                 [\?]                               # if param string is there, "?" must be present
-                [a-zA-Z0-9&;=%\-_]*                # param string content, this will also catch entities like &amp;
+                [a-zA-Z0-9&;=%\-_:\.\/]*           # param string content, this will also catch entities like &amp;
             )?
             (?:                                    # link hash string
                 [\#]                               #
-                [a-zA-Z0-9&;=%\-_]*                # hash string content, this will also catch entities like &amp;
+                [a-zA-Z0-9&;=%\-_:\.\/]*           # hash string content, this will also catch entities like &amp;
             )?
         )
         (?=                                        # $4
@@ -1087,12 +1097,6 @@ sub Safety {
                 }
                 {$2}sgxim;
 
-                # remove entities in tag
-                $Replaced += $Tag =~ s{
-                    (&\{.+?\})
-                }
-                {}sgxim;
-
                 # remove javascript in a href links or src links
                 $Replaced += $Tag =~ s{
                     ((?:\s|;|/)(?:background|url|src|href)=)
@@ -1183,7 +1187,7 @@ sub EmbeddedImagesExtract {
     if ( ref $Param{AttachmentsRef} ne 'ARRAY' ) {
         $Kernel::OM->Get('Kernel::System::Log')->Log(
             Priority => 'error',
-            Message  => "Need DocumentRef!"
+            Message  => "Need AttachmentsRef!"
         );
         return;
     }
@@ -1212,99 +1216,6 @@ sub EmbeddedImagesExtract {
     }egxi;
 
     return 1;
-}
-
-=item HTMLTruncate()
-
-truncate an HTML string to certain amount of characters without loosing the HTML tags, the resulting
-string will contain the specified amount of text characters plus the HTML tags, and ellipsis string.
-
-special characters like &aacute; in HTML code are considered as just one character.
-
-    my $HTML = $HTMLUtilsObject->HTMLTruncate(
-        String   => $String,
-        Chars    => 123,
-        Ellipsis => '...',              # optional (defaults to HTML &#8230;) string to indicate
-                                        #    that the HTML was truncated until that point
-        UTF8Mode => 0,                  # optional 1 or 0 (defaults to 0)
-        OnSpace  => 0,                  # optional 1 or 0 (defaults to 0) if enabled, prevents to
-                                        #    truncate in a middle of a word, but in the space before
-    );
-
-returns
-
-    $HTML => 'some HTML code'           # or false in case of a failure
-
-=cut
-
-sub HTMLTruncate {
-    my ( $Self, %Param ) = @_;
-
-    # check needed
-    for my $Needed (qw(String Chars)) {
-
-        if ( !$Param{$Needed} ) {
-            $Kernel::OM->Get('Kernel::System::Log')->Log(
-                Priority => 'error',
-                Message  => "Need $Needed!",
-            );
-            return;
-        }
-    }
-
-    # translate params for compatibility reasons with HTML::Truncate
-    my %CompatibilityParams = (
-        'utf8_mode' => $Param{UTF8Mode} ? 1 : 0,
-        'on_space'  => $Param{OnSpace}  ? 1 : 0,
-        'chars'     => $Param{Chars},
-        'repair'    => 1,
-    );
-
-    if ( defined $Param{Ellipsis} ) {
-        $CompatibilityParams{ellipsis} = $Param{Ellipsis};
-    }
-
-    # create new HTML truncate object (with the specified options)
-    my $HTMLTruncateObject;
-    eval {
-        $HTMLTruncateObject = HTML::Truncate->new(%CompatibilityParams);
-    };
-
-    if ( !$HTMLTruncateObject ) {
-        $Kernel::OM->Get('Kernel::System::Log')->Log(
-            Priority => 'error',
-            Message  => "Could not create HTMLTruncateObject: $@",
-        );
-        return;
-    }
-
-    # sanitize the string
-    my %Safe = $Self->Safety(
-        String         => $Param{String},
-        NoApplet       => 1,
-        NoObject       => 1,
-        NoEmbed        => 1,
-        NoSVG          => 1,
-        NoImg          => 1,
-        NoIntSrcLoad   => 1,
-        NoExtSrcLoad   => 1,
-        NoJavaScript   => 1,
-        ReplacementStr => '✂︎',
-    );
-
-    # truncate the HTML input string
-    my $Result;
-    if ( !eval { $Result = $HTMLTruncateObject->truncate( $Safe{String} ) } ) {
-
-        $Kernel::OM->Get('Kernel::System::Log')->Log(
-            Priority => 'error',
-            Message  => 'Truncating string failed: ' . $@,
-        );
-
-        return;
-    }
-
-    return $Result;
 }
 
 1;

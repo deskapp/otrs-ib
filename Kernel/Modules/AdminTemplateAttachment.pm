@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -10,6 +10,8 @@ package Kernel::Modules::AdminTemplateAttachment;
 
 use strict;
 use warnings;
+
+use Kernel::Language qw(Translatable);
 
 our $ObjectManagerDisabled = 1;
 
@@ -189,8 +191,8 @@ sub _Change {
     my $NeType = $Type eq 'Attachment' ? 'Template' : 'Attachment';
 
     my %VisibleType = (
-        Template   => 'Template',
-        Attachment => 'Attachment',
+        Template   => Translatable('Template'),
+        Attachment => Translatable('Attachment'),
     );
 
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');

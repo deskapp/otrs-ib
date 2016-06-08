@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -8,10 +8,13 @@
 
 package Kernel::Output::HTML::ArticleCompose::Sign;
 
+use base 'Kernel::Output::HTML::Base';
+
 use strict;
 use warnings;
 
 use Mail::Address;
+use Kernel::Language qw(Translatable);
 
 our @ObjectDependencies = (
     'Kernel::Config',
@@ -20,16 +23,6 @@ our @ObjectDependencies = (
     'Kernel::Output::HTML::Layout',
     'Kernel::System::Queue',
 );
-
-sub new {
-    my ( $Type, %Param ) = @_;
-
-    # allocate new hash for object
-    my $Self = {};
-    bless( $Self, $Type );
-
-    return $Self;
-}
 
 sub Option {
     my ( $Self, %Param ) = @_;
@@ -82,7 +75,7 @@ sub Run {
         Name => 'Option',
         Data => {
             Name  => 'SignKeyID',
-            Key   => 'Sign',
+            Key   => Translatable('Sign'),
             Value => $List,
         },
     );
@@ -102,7 +95,7 @@ sub Data {
     my %KeyList;
 
     # add non signing option
-    $KeyList{''} = '-none-';
+    $KeyList{''} = Translatable('-none-');
 
     if ( $Param{From} ) {
 

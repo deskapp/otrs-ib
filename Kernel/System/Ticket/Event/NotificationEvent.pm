@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -399,6 +399,11 @@ sub _NotificationFilter {
         next KEY if $Key eq 'LanguageID';
         next KEY if $Key eq 'SendOnOutOfOffice';
         next KEY if $Key eq 'AgentEnabledByDefault';
+        next KEY if $Key eq 'EmailSecuritySettings';
+        next KEY if $Key eq 'EmailSigningCrypting';
+        next KEY if $Key eq 'EmailMissingCryptingKeys';
+        next KEY if $Key eq 'EmailMissingSigningKeys';
+        next KEY if $Key eq 'EmailDefaultSigningKeys';
 
         # check recipient fields from transport methods
         if ( $Key =~ m{\A Recipient}xms ) {
@@ -607,6 +612,17 @@ sub _RecipientsGet {
                         Type    => 'rw',
                         UserID  => $Param{UserID},
                     );
+
+                    my %RoleList = $GroupObject->PermissionGroupRoleGet(
+                        GroupID => $GroupID,
+                        Type    => 'rw',
+                    );
+                    for my $RoleID ( sort keys %RoleList ) {
+                        my %RoleUserList = $GroupObject->PermissionRoleUserGet(
+                            RoleID => $RoleID,
+                        );
+                        %UserList = ( %RoleUserList, %UserList );
+                    }
 
                     my @UserIDs = sort keys %UserList;
 

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -13,7 +13,6 @@ use utf8;
 use vars (qw($Self));
 
 # get needed objects
-my $HelperObject    = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 my $DFBackendObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
 my $TimeObject      = $Kernel::OM->Get('Kernel::System::Time');
 
@@ -723,4 +722,5 @@ for my $Test (@Tests) {
 }
 
 # we don't need any cleanup
+
 1;

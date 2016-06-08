@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -62,6 +62,7 @@ sub new {
         'IsFiltrable'                  => 0,
         'IsStatsCondition'             => 1,
         'IsCustomerInterfaceCapable'   => 1,
+        'IsLikeOperatorCapable'        => 1,
     };
 
     # get the Dynamic Field Backend custom extensions
@@ -119,7 +120,7 @@ sub EditFieldRender {
     }
     $Value = $Param{Value} // $Value;
 
-    # extract the dynamic field value form the web request
+    # extract the dynamic field value from the web request
     my $FieldValue = $Self->EditFieldValueGet(
         %Param,
     );
@@ -286,7 +287,7 @@ sub EditFieldValueValidate {
 sub DisplayValueRender {
     my ( $Self, %Param ) = @_;
 
-    # set HTMLOuput as default if not specified
+    # set HTMLOutput as default if not specified
     if ( !defined $Param{HTMLOutput} ) {
         $Param{HTMLOutput} = 1;
     }
@@ -295,7 +296,7 @@ sub DisplayValueRender {
     my $Value = defined $Param{Value} ? $Param{Value} : '';
     my $Title = $Value;
 
-    # HTMLOuput transformations
+    # HTMLOutput transformations
     if ( $Param{HTMLOutput} ) {
 
         $Value = $Param{LayoutObject}->Ascii2Html(

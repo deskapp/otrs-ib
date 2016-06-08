@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -414,6 +414,59 @@ sub SystemAddressQueueID {
     );
 
     return $QueueID;
+}
+
+=item SystemAddressQueueList()
+
+get a list of the queues and their system addresses IDs
+
+    my %List = $SystemAddressObject->SystemAddressQueueList(
+        Valid => 0,  # optional, defaults to 1
+    );
+
+returns:
+
+    %List = (
+        '5' => 3,
+        '7' => 1,
+        '9' => 2,
+    );
+
+=cut
+
+sub SystemAddressQueueList {
+    my ( $Self, %Param ) = @_;
+
+    # set default value
+    my $Valid = $Param{Valid} // 1;
+
+    # create the valid list
+    my $ValidIDs = join ', ', $Kernel::OM->Get('Kernel::System::Valid')->ValidIDsGet();
+
+    # build SQL
+    my $SQL = 'SELECT queue_id, id FROM system_address';
+
+    # add WHERE statement in case Valid param is set to '1', for valid system address
+    if ($Valid) {
+        $SQL .= ' WHERE valid_id IN (' . $ValidIDs . ')';
+    }
+
+    # get database object
+    my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
+
+    # get data from database
+    return if !$DBObject->Prepare(
+        SQL => $SQL,
+    );
+
+    # fetch the result
+    my %SystemAddressQueueList;
+    while ( my @Row = $DBObject->FetchrowArray() ) {
+        $SystemAddressQueueList{ $Row[0] } = $Row[1];
+    }
+
+    return %SystemAddressQueueList;
+
 }
 
 1;

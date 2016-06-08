@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -28,7 +28,7 @@ $Selenium->RunTest(
         );
         my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 
-        # create and login test user
+        # create test user and login
         my $TestUserLogin = $Helper->TestUserCreate(
             Groups => ['admin'],
         ) || die "Did not get test user";
@@ -42,12 +42,15 @@ $Selenium->RunTest(
         # get sysconfig object
         my $SysConfigObject = $Kernel::OM->Get('Kernel::System::SysConfig');
 
-        # enable PGP
+        # disable PGP in config
         $SysConfigObject->ConfigItemUpdate(
             Valid => 1,
             Key   => 'PGP',
-            Value => 1
+            Value => 0,
         );
+
+        # let mod_perl / Apache2::Reload pick up the changed configuration
+        sleep 1;
 
         # get config object
         my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
@@ -56,38 +59,58 @@ $Selenium->RunTest(
         my $PGPPath = $ConfigObject->Get('Home') . "/var/tmp/pgp";
         mkpath( [$PGPPath], 0, 0770 );    ## no critic
 
+        # get script alias
+        my $ScriptAlias = $ConfigObject->Get('ScriptAlias');
+
+        # navigate to AdminPGP screen
+        $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AdminPGP");
+
+        # check widget sidebar when PGP sysconfig is disabled
+        $Self->True(
+            $Selenium->find_element( 'h3 span.Warning', 'css' ),
+            "Widget sidebar with warning message is displayed.",
+        );
+        $Self->True(
+            $Selenium->find_element("//button[\@value='Enable it here!']"),
+            "Button 'Enable it here!' to the PGP SysConfig is displayed.",
+        );
+
+        # enable PGP in config
+        $SysConfigObject->ConfigItemUpdate(
+            Valid => 1,
+            Key   => 'PGP',
+            Value => 1,
+        );
+
+        # set PGP path in config
         $SysConfigObject->ConfigItemUpdate(
             Valid => 1,
             Key   => 'PGP::Options',
             Value => "--homedir $PGPPath --batch --no-tty --yes",
         );
 
-        # navigate to AdminPGP screen
-        my $ScriptAlias = $ConfigObject->Get('ScriptAlias');
-        $Selenium->get("${ScriptAlias}index.pl?Action=AdminPGP");
+        # let mod_perl / Apache2::Reload pick up the changed configuration
+        sleep 1;
+
+        # refresh AdminSPGP screen
+        $Selenium->VerifiedRefresh();
 
         # add first test PGP key
-        $Selenium->find_element("//a[contains(\@href, \'Action=AdminPGP;Subaction=Add' )]")->click();
+        $Selenium->find_element("//a[contains(\@href, \'Action=AdminPGP;Subaction=Add' )]")->VerifiedClick();
 
         my $Location1 = $ConfigObject->Get('Home')
             . "/scripts/test/sample/Crypt/PGPPrivateKey-1.asc";
 
         $Selenium->find_element( "#FileUpload", 'css' )->send_keys($Location1);
-        $Selenium->find_element("//button[\@type='submit']")->click();
-
-        # wait for key to upload
-        $Selenium->WaitFor( JavaScript => "return typeof(\$) === 'function' && \$('td.Center').length" );
+        $Selenium->find_element("//button[\@type='submit']")->VerifiedClick();
 
         # add second test PGP key
-        $Selenium->find_element("//a[contains(\@href, \'Action=AdminPGP;Subaction=Add' )]")->click();
+        $Selenium->find_element("//a[contains(\@href, \'Action=AdminPGP;Subaction=Add' )]")->VerifiedClick();
         my $Location2 = $ConfigObject->Get('Home')
             . "/scripts/test/sample/Crypt/PGPPrivateKey-2.asc";
 
         $Selenium->find_element( "#FileUpload", 'css' )->send_keys($Location2);
-        $Selenium->find_element("//button[\@type='submit']")->click();
-
-        # wait for key to upload
-        $Selenium->WaitFor( JavaScript => "return typeof(\$) === 'function' && \$('td.Center').length" );
+        $Selenium->find_element("//button[\@type='submit']")->VerifiedClick();
 
         # check if test PGP keys show on AdminPGP screen
         my %PGPKey = (
@@ -106,7 +129,7 @@ $Selenium->RunTest(
 
         # test search filter
         $Selenium->find_element( "#Search", 'css' )->send_keys( $PGPKey{1} );
-        $Selenium->find_element( "#Search", 'css' )->submit();
+        $Selenium->find_element( "#Search", 'css' )->VerifiedSubmit();
 
         $Self->True(
             index( $Selenium->get_page_source(), $PGPKey{1} ) > -1,
@@ -119,7 +142,7 @@ $Selenium->RunTest(
 
         #clear search filter
         $Selenium->find_element( "#Search", 'css' )->clear();
-        $Selenium->find_element( "#Search", 'css' )->submit();
+        $Selenium->find_element( "#Search", 'css' )->VerifiedSubmit();
 
         # set test PGP in config so we can delete them
         $ConfigObject->Set(
@@ -143,7 +166,7 @@ $Selenium->RunTest(
                     # click on delete secure key
                     $Selenium->find_element(
                         "//a[contains(\@href, \'Subaction=Delete;Type=sec;Key=$Key->{FingerprintShort}' )]"
-                    )->click();
+                    )->VerifiedClick();
                     $Self->True(
                         $Key,
                         "PGPKey - $Key->{Identifier} deleted",
@@ -152,7 +175,7 @@ $Selenium->RunTest(
                     # click on delete public key
                     $Selenium->find_element(
                         "//a[contains(\@href, \'Subaction=Delete;Type=pub;Key=$Key->{FingerprintShort}' )]"
-                    )->click();
+                    )->VerifiedClick();
                     $Self->True(
                         $Key,
                         "PGPKey - $Key->{Identifier} deleted",

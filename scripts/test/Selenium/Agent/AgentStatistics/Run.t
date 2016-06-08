@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -19,7 +19,19 @@ $Selenium->RunTest(
     sub {
 
         # get helper object
+        $Kernel::OM->ObjectParamAdd(
+            'Kernel::System::UnitTest::Helper' => {
+                RestoreSystemConfiguration => 1,
+            },
+        );
         my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+
+        # show more stats per page as the default 50
+        my $Success = $Kernel::OM->Get('Kernel::System::SysConfig')->ConfigItemUpdate(
+            Valid => 1,
+            Key   => 'Stats::SearchPageShown',
+            Value => 99,
+        );
 
         # create test user and login
         my $TestUserLogin = $Helper->TestUserCreate(
@@ -33,7 +45,7 @@ $Selenium->RunTest(
         );
 
         my $ScriptAlias = $Kernel::OM->Get('Kernel::Config')->Get('ScriptAlias');
-        $Selenium->get("${ScriptAlias}index.pl?Action=AgentStatistics;Subaction=Import");
+        $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AgentStatistics;Subaction=Import");
 
         # get test user ID
         my $TestUserID = $Kernel::OM->Get('Kernel::System::User')->UserLookup(
@@ -44,7 +56,7 @@ $Selenium->RunTest(
         my $Location = $Kernel::OM->Get('Kernel::Config')->Get('Home')
             . "/scripts/test/sample/Stats/Stats.TicketOverview.de.xml";
         $Selenium->find_element( "#File", 'css' )->send_keys($Location);
-        $Selenium->find_element("//button[\@value='Import'][\@type='submit']")->click();
+        $Selenium->find_element("//button[\@value='Import'][\@type='submit']")->VerifiedClick();
 
         # create params for import test stats
         my %StatsValues = (
@@ -58,12 +70,12 @@ $Selenium->RunTest(
         for my $StatsValue ( sort keys %StatsValues ) {
             $Self->True(
                 index( $Selenium->get_page_source(), $StatsValues{$StatsValue} ) > -1,
-                "Expexted param $StatsValue for imported stat is founded - $StatsValues{$StatsValue}"
+                "Expected param $StatsValue for imported stat is founded - $StatsValues{$StatsValue}"
             );
         }
 
         # navigate to AgentStatistics Overview screen
-        $Selenium->get(
+        $Selenium->VerifiedGet(
             "${ScriptAlias}index.pl?Action=AgentStatistics;Subaction=Overview;"
         );
 
@@ -86,7 +98,7 @@ $Selenium->RunTest(
 
         # go to imported stat to run it
         $Selenium->find_element("//a[contains(\@href, \'Action=AgentStatistics;Subaction=View;StatID=$StatsIDLast\' )]")
-            ->click();
+            ->VerifiedClick();
 
         # run test statistic
         $Selenium->find_element( "#StartStatistic", 'css' )->click();
@@ -96,18 +108,21 @@ $Selenium->RunTest(
         my $Handles = $Selenium->get_window_handles();
         $Selenium->switch_to_window( $Handles->[1] );
 
+        # wait for loading statistic data
+        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $("#download-svg").length' );
+
         $Self->True(
             index( $Selenium->get_page_source(), $StatsValues{Title} ) > -1,
             "Title of stats is found - $StatsValues{Title} "
         );
 
-        # run test statistic
+        # close test statistic
         $Selenium->close();
         $Selenium->switch_to_window( $Handles->[0] );
         $Selenium->WaitFor( WindowCount => 1 );
 
         # navigate to AgentStatistics Overview screen
-        $Selenium->get(
+        $Selenium->VerifiedGet(
             "${ScriptAlias}index.pl?Action=AgentStatistics;Subaction=Overview;"
         );
 
@@ -125,9 +140,7 @@ JAVASCRIPT
         # click on delete icon
         $Selenium->find_element(
             "//a[contains(\@href, \'Action=AgentStatistics;Subaction=DeleteAction;StatID=$StatsIDLast\' )]"
-        )->click();
-
-        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $(".Dialog:visible").length === 0;' );
+        )->VerifiedClick();
 
         $Self->True(
             index( $Selenium->get_page_source(), "Action=AgentStatistics;Subaction=Edit;StatID=$StatsIDLast" ) == -1,

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -93,7 +93,7 @@
 [% InsertTemplate("RichTextEditor.tt") %]
 [% RenderBlockEnd("RichText") %]
 
-                        <textarea id="RichText" name="Body" title="Message body" rows="15" cols="[% Config("Ticket::Frontend::TextAreaNote") %]" class="RichText Validate_Required [% Data.BodyInvalid | html %]">[% Data.Body %]</textarea>
+                        <textarea id="RichText" name="Body" title="[% Translate("Message body") | html %]" rows="15" cols="[% Config("Ticket::Frontend::TextAreaNote") %]" class="RichText Validate_Required [% Data.BodyInvalid | html %]">[% Data.Body %]</textarea>
                         <div id="RichTextError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
                         <div id="RichTextServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
                     </div>
@@ -220,6 +220,5 @@
 [% WRAPPER JSOnDocumentComplete %]
 <script type="text/javascript">//<![CDATA[
     Core.Agent.TicketAction.Init();
-    Core.Config.Set('Localization.Delete', [% Translate("Delete") | JSON %]);
 //]]></script>
 [% END %]

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -92,6 +92,15 @@ sub CloudServiceAdd {
         $Kernel::OM->Get('Kernel::System::Log')->Log(
             Priority => 'error',
             Message  => "CloudService Config should be a non empty hash reference!",
+        );
+        return;
+    }
+
+    my %ExistingCloudServices = reverse %{ $Self->CloudServiceList( Valid => 0 ) };
+    if ( $ExistingCloudServices{ $Param{Name} } ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "A CloudService with the name $Param{Name} already exists.",
         );
         return;
     }
@@ -280,6 +289,15 @@ sub CloudServiceUpdate {
         $Kernel::OM->Get('Kernel::System::Log')->Log(
             Priority => 'error',
             Message  => "CloudService Config should be a non empty hash reference!",
+        );
+        return;
+    }
+
+    my %ExistingCloudServices = reverse %{ $Self->CloudServiceList( Valid => 0 ) };
+    if ( $ExistingCloudServices{ $Param{Name} } != $Param{ID} ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "A CloudService with the name $Param{Name} already exists.",
         );
         return;
     }

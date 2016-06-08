@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -122,6 +122,22 @@ Core.Agent = (function (TargetNS) {
             }
         }
 
+        /**
+         * @private
+         * @name SetNavContainerHeight
+         * @memberof Core.Agent.InitNavigation
+         * @function
+         * @param {jQueryObject} $ParentElement
+         * @description
+         *      This function sets the nav container height according to the required height of the currently expanded sub menu
+         *      Due to the needed overflow: hidden property of the container, they would be hidden otherwise
+         */
+        function SetNavContainerHeight($ParentElement) {
+            if ($ParentElement.find('ul').length) {
+                $('#NavigationContainer').css('height', parseInt(InitialNavigationContainerHeight, 10) + parseInt($ParentElement.find('ul').outerHeight(), 10));
+            }
+        }
+
         $('#Navigation > li')
             .addClass('CanDrag')
             .filter(function () {
@@ -129,19 +145,23 @@ Core.Agent = (function (TargetNS) {
             })
             .bind('mouseenter', function () {
                 var $Element = $(this);
+
+                // clear close timeout on mouseenter, even if OpenMainMenuOnHover is not enabled
+                // this makes sure, that leaving the subnav for a short time and coming back
+                // will leave the subnav opened
+                ClearSubnavCloseTimeout($Element);
+
                 // special treatment for the first menu level: by default this opens submenus only via click,
                 //  but the config setting "OpenMainMenuOnHover" also activates opening on hover for it.
-                if ($('body').hasClass('Visible-ScreenXL') && !Core.App.Responsive.IsTouchDevice() && ($Element.parent().attr('id') !== 'Navigation' || Core.Config.Get('OpenMainMenuOnHover'))) {
+                if ($('body').hasClass('Visible-ScreenXL') && !Core.App.Responsive.IsTouchDevice() && ($Element.parent().attr('id') !== 'Navigation' || parseInt(Core.Config.Get('OpenMainMenuOnHover'), 10))) {
 
                     // Set Timeout for opening nav
                     CreateSubnavOpenTimeout($Element, function () {
                         $Element.addClass('Active').attr('aria-expanded', true)
                             .siblings().removeClass('Active');
 
-                        // Resize the container in order to display subitems
-                        // Due to the needed overflow: hidden property of the
-                        // container, they would be hidden otherwise
-                        $('#NavigationContainer').css('height', '500px');
+                        // resize the nav container
+                        SetNavContainerHeight($Element);
 
                         // If Timeout is set for this nav element, clear it
                         ClearSubnavCloseTimeout($Element);
@@ -177,13 +197,18 @@ Core.Agent = (function (TargetNS) {
                 var $Element = $(this),
                     $Target = $(Event.target);
 
+                // if an onclick attribute is present, the attribute should win
+                if ($Target.attr('onclick')) {
+                    return false;
+                }
+
                 // if OpenMainMenuOnHover is enabled, clicking the item
                 // should lead to the link as regular
-                if ($('body').hasClass('Visible-ScreenXL') && !Core.App.Responsive.IsTouchDevice() && Core.Config.Get('OpenMainMenuOnHover')) {
+                if ($('body').hasClass('Visible-ScreenXL') && !Core.App.Responsive.IsTouchDevice() && parseInt(Core.Config.Get('OpenMainMenuOnHover'), 10)) {
                     return true;
                 }
 
-                if (!Core.Config.Get('OTRSBusinessIsInstalled') && $Target.hasClass('OTRSBusinessRequired')) {
+                if (!parseInt(Core.Config.Get('OTRSBusinessIsInstalled'), 10) && $Target.hasClass('OTRSBusinessRequired')) {
                     return true;
                 }
 
@@ -213,7 +238,8 @@ Core.Agent = (function (TargetNS) {
 
                     if ($('body').hasClass('Visible-ScreenXL')) {
 
-                        $('#NavigationContainer').css('height', '300px');
+                        // resize the nav container
+                        SetNavContainerHeight($Element);
 
                         // If Timeout is set for this nav element, clear it
                         ClearSubnavCloseTimeout($Element);
@@ -242,7 +268,7 @@ Core.Agent = (function (TargetNS) {
             });
 
         // make the navigation items sortable (if enabled)
-        if (Core.Config.Get('MenuDragDropEnabled') === 1) {
+        if (parseInt(Core.Config.Get('MenuDragDropEnabled'), 10) === 1) {
             Core.App.Subscribe('Event.App.Responsive.ScreenXL', function () {
                 $('#NavigationContainer').css('height', '35px');
                 Core.UI.DnD.Sortable(
@@ -331,7 +357,6 @@ Core.Agent = (function (TargetNS) {
         });
     }
 
-
     /**
      * @private
      * @name NavigationBarShowSlideButton
@@ -352,7 +377,7 @@ Core.Agent = (function (TargetNS) {
         if (!$('#NavigationContainer').find('.NavigationBarNavigate' + Direction).length) {
 
             $('#NavigationContainer')
-                .append('<a href="#" title="' + Core.Config.Get('SlideNavigationText') + '" class="Hidden NavigationBarNavigate' + Direction + '"><i class="fa fa-chevron-' + Direction.toLowerCase() + '"></i></a>')
+                .append('<a href="#" title="' + Core.Language.Translate('Slide the navigation bar') + '" class="Hidden NavigationBarNavigate' + Direction + '"><i class="fa fa-chevron-' + Direction.toLowerCase() + '"></i></a>')
                 .find('.NavigationBarNavigate' + Direction)
                 .delay(Delay)
                 .fadeIn()
@@ -423,7 +448,7 @@ Core.Agent = (function (TargetNS) {
 
         var CurrentItems;
 
-        if (NavbarCustomOrderItems && Core.Config.Get('MenuDragDropEnabled') === 1) {
+        if (NavbarCustomOrderItems && parseInt(Core.Config.Get('MenuDragDropEnabled'), 10) === 1) {
 
             CurrentItems = $('#Navigation').children('li').get();
             CurrentItems.sort(function(a, b) {
@@ -585,26 +610,20 @@ Core.Agent = (function (TargetNS) {
 
         if (TargetNS.IECompatibilityMode) {
             TargetNS.SupportedBrowser = false;
-            alert(Core.Config.Get('TurnOffCompatibilityModeMsg'));
+            alert(Core.Language.Translate('Please turn off Compatibility Mode in Internet Explorer!'));
         }
 
         if (!TargetNS.SupportedBrowser) {
-            alert(Core.Config.Get('BrowserTooOldMsg') + ' ' + Core.Config.Get('BrowserListMsg') + ' ' + Core.Config.Get('BrowserDocumentationMsg'));
+            alert(Core.Language.Translate('The browser you are using is too old.')
+                + ' '
+                + Core.Language.Translate('OTRS runs with a huge lists of browsers, please upgrade to one of these.')
+                + ' '
+                + Core.Language.Translate('Please see the documentation or ask your admin for further information.'));
         }
 
         Core.App.Responsive.CheckIfTouchDevice();
 
         InitNavigation();
-        Core.Exception.Init();
-        Core.UI.InitWidgetActionToggle();
-        Core.UI.InitMessageBoxClose();
-        Core.Form.Validate.Init();
-        Core.UI.Popup.Init();
-        Core.UI.InputFields.Init();
-        Core.UI.TreeSelection.InitTreeSelection();
-        Core.UI.TreeSelection.InitDynamicFieldTreeViewRestore();
-        // late execution of accessibility code
-        Core.UI.Accessibility.Init();
     };
 
     /**
@@ -642,6 +661,8 @@ Core.Agent = (function (TargetNS) {
             location.reload();
         }
     };
+
+    Core.Init.RegisterNamespace(TargetNS, 'APP_GLOBAL_EARLY');
 
     return TargetNS;
 }(Core.Agent || {}));

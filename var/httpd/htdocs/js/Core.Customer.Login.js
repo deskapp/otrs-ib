@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -82,7 +82,7 @@ Core.Customer.Login = (function (TargetNS) {
         // enable login form
         Core.Form.EnableForm($('#Login form, #Reset form, #Signup form'));
 
-        $('#TimeOffset').val(Diff);
+        $('#TimeZoneOffset').val(Diff);
 
         if ($('#PreLogin').length) {
             $('#PreLogin form').submit();
@@ -182,7 +182,7 @@ Core.Customer.Login = (function (TargetNS) {
 
         // shake login box on authentication failure
         if (Options && Options.LastLoginFailed) {
-            Core.UI.Shake($('#Login'));
+            Core.UI.Animate($('#Login'), 'Shake');
         }
     };
 

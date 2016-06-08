@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -321,8 +321,9 @@ $('#Dest').bind('change', function (Event) {
 
                     <label for="CustomerID">[% Translate("CustomerID") | html %]:</label>
                     <div class="Field">
-                        <input type="text" name="CustomerID" id="CustomerID" value="[% Data.CustomerID | html %]" class="W75pc"/>
+                        <input type="text" name="CustomerID" id="CustomerID" value="[% Data.CustomerID | html %]" [% IF Config("Ticket::Frontend::AgentTicketEmail::CustomerIDReadOnly") %] readonly [% END %] class="W75pc"/>
                     </div>
+
                     <div class="Clear"></div>
 
 [% RenderBlockStart("TicketService") %]
@@ -511,7 +512,7 @@ $('#NewResponsibleID').bind('change', function (Event) {
 [% InsertTemplate("RichTextEditor.tt") %]
 [% RenderBlockEnd("RichText") %]
 
-                        <textarea id="RichText" class="RichText Validate_Required [% Data.BodyInvalid | html %]" name="Body" title="Message body" rows="15" cols="[% Config("Ticket::Frontend::TextAreaEmail") %]">[% Data.Body | html %]</textarea>
+                        <textarea id="RichText" class="RichText Validate_Required [% Data.BodyInvalid | html %]" name="Body" title="[% Translate("Message body") | html %]" rows="15" cols="[% Config("Ticket::Frontend::TextAreaEmail") %]">[% Data.Body | html %]</textarea>
                         <div id="RichTextError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
                         <div id="RichTextServerError" class="TooltipErrorMessage"><p>[% Translate("This field is required.") | html %]</p></div>
                     </div>
@@ -651,6 +652,7 @@ $('#FileUpload').bind('change', function () {
                 </fieldset>
             </form>
         </div>
+        <div class="Clear"></div>
     </div>
     <div id="CustomerTickets"></div>
 </div>
@@ -658,7 +660,6 @@ $('#FileUpload').bind('change', function () {
 [% WRAPPER JSOnDocumentComplete %]
 <script type="text/javascript">//<![CDATA[
 Core.Agent.TicketAction.Init();
-Core.Config.Set('Localization.Delete', [% Translate("Delete") | JSON %]);
 //]]></script>
 [% END %]
 

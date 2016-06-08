@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -916,7 +916,9 @@ sub ArticleTypeList {
     my %Hash;
     while ( my @Row = $DBObject->FetchrowArray() ) {
         if ( $Param{Type} && $Param{Type} eq 'Customer' ) {
-            if ( $Row[1] !~ /int/i ) {
+
+            # Skip internal articles.
+            if ( $Row[1] !~ /-int/i ) {
                 push @Array, $Row[1];
                 $Hash{ $Row[0] } = $Row[1];
             }
@@ -984,7 +986,7 @@ sub ArticleLastCustomerArticle {
             Extended      => $Param{Extended},
             DynamicFields => $Param{DynamicFields},
         );
-        if ( $Article{StateType} eq 'merged' || $Article{ArticleType} !~ /int/ ) {
+        if ( $Article{StateType} eq 'merged' || $Article{ArticleType} !~ /-int/ ) {
             return %Article;
         }
     }
@@ -1665,10 +1667,29 @@ sub ArticleGet {
         return;
     }
 
+    # get type object
+    my $TypeObject = $Kernel::OM->Get('Kernel::System::Type');
+
+    # get default ticket type
+    my $DefaultTicketType = $Kernel::OM->Get('Kernel::Config')->Get('Ticket::Type::Default');
+
+    # check if default ticket type exists
+    my %AllTicketTypes = reverse $TypeObject->TypeList();
+
     # get type
-    $Ticket{Type} = $Kernel::OM->Get('Kernel::System::Type')->TypeLookup(
-        TypeID => $Ticket{TypeID} || 1,
-    );
+    if ( defined $Ticket{TypeID} ) {
+        $Ticket{Type} = $TypeObject->TypeLookup(
+            TypeID => $Ticket{TypeID}
+        );
+    }
+    elsif ( $AllTicketTypes{$DefaultTicketType} ) {
+        $Ticket{Type} = $DefaultTicketType;
+    }
+    else {
+        $Ticket{Type} = $TypeObject->TypeLookup(
+            TypeID => 1
+        );
+    }
 
     # get user object
     my $UserObject = $Kernel::OM->Get('Kernel::System::User');
@@ -2200,17 +2221,23 @@ sub ArticleSend {
     $Param{Body} =~ s/(\r\n|\n\r)/\n/g;
     $Param{Body} =~ s/\r/\n/g;
 
+    # initialize parameter for attachments, so that the content pushed into that ref from
+    # EmbeddedImagesExtract will stay available
+    if ( !$Param{Attachment} ) {
+        $Param{Attachment} = [];
+    }
+
     # check for base64 images in body and process them
     $Kernel::OM->Get('Kernel::System::HTMLUtils')->EmbeddedImagesExtract(
         DocumentRef    => \$Param{Body},
-        AttachmentsRef => $Param{Attachment} || [],
+        AttachmentsRef => $Param{Attachment},
     );
 
     # create article
     my $Time      = $Kernel::OM->Get('Kernel::System::Time')->SystemTime();
     my $Random    = rand 999999;
     my $FQDN      = $Kernel::OM->Get('Kernel::Config')->Get('FQDN');
-    my $MessageID = "<$Time.$Random.$Param{TicketID}.$Param{UserID}\@$FQDN>";
+    my $MessageID = "<$Time.$Random\@$FQDN>";
     my $ArticleID = $Self->ArticleCreate(
         %Param,
         MessageID => $MessageID,
@@ -2295,7 +2322,7 @@ sub ArticleBounce {
     my $Time         = $Kernel::OM->Get('Kernel::System::Time')->SystemTime();
     my $Random       = rand 999999;
     my $FQDN         = $Kernel::OM->Get('Kernel::Config')->Get('FQDN');
-    my $NewMessageID = "<$Time.$Random.$Param{TicketID}.0.$Param{UserID}\@$FQDN>";
+    my $NewMessageID = "<$Time.$Random.0\@$FQDN>";
     my $Email        = $Self->ArticlePlain( ArticleID => $Param{ArticleID} );
 
     # check if plain email exists
@@ -2309,10 +2336,10 @@ sub ArticleBounce {
 
     # pipe all into sendmail
     return if !$Kernel::OM->Get('Kernel::System::Email')->Bounce(
-        MessageID => $NewMessageID,
-        From      => $Param{From},
-        To        => $Param{To},
-        Email     => $Email,
+        'Message-ID' => $NewMessageID,
+        From         => $Param{From},
+        To           => $Param{To},
+        Email        => $Email,
     );
 
     # write history
@@ -2418,7 +2445,7 @@ sub SendAutoResponse {
     }
 
     # log that no auto response was sent!
-    if ( $OrigHeader{'X-OTRS-Loop'} ) {
+    if ( $OrigHeader{'X-OTRS-Loop'} && $OrigHeader{'X-OTRS-Loop'} !~ /^(false|no)$/i ) {
 
         # add history row
         $Self->HistoryAdd(
@@ -3002,8 +3029,6 @@ write an article attachment to storage
         ArticleID          => 123,
         UserID             => 123,
     );
-
-You also can use "Force => 1" to not check if a filename already exists, it force to use the given file name. Otherwise a new file name like "oldfile-2.html" is used.
 
 =item ArticleAttachment()
 

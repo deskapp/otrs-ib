@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -18,7 +18,6 @@ our @ObjectDependencies = (
     'Kernel::System::Cache',
     'Kernel::System::DB',
     'Kernel::System::GenericInterface::DebugLog',
-    'Kernel::System::GenericInterface::ObjectLockState',
     'Kernel::System::GenericInterface::WebserviceHistory',
     'Kernel::System::Log',
     'Kernel::System::Main',
@@ -483,14 +482,6 @@ sub WebserviceDelete {
     return if !$WebserviceHistoryObject->WebserviceHistoryDelete(
         WebserviceID => $Param{ID},
         UserID       => $Param{UserID},
-    );
-
-    # get object lock state object
-    my $ObjectLockStateObject = $Kernel::OM->Get('Kernel::System::GenericInterface::ObjectLockState');
-
-    # delete remaining entries in ObjectLockState
-    return if !$ObjectLockStateObject->ObjectLockStatePurge(
-        WebserviceID => $Param{ID},
     );
 
     # get debug log object

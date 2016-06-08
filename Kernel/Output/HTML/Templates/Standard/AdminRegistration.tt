@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -101,7 +101,7 @@
 [% RenderBlockEnd("OverviewRegistered") %]
 [% RenderBlockStart("DaemonNotRunning") %]
             <div class="Header">
-                <h2>[% Translate("System registration not possible") | html %]</h2>
+                <h2>[% Translate("System Registration not Possible") | html %]</h2>
             </div>
             <div class="Content">
                 <p>
@@ -113,7 +113,7 @@
 [% RenderBlockEnd("DaemonNotRunning") %]
 [% RenderBlockStart("OTRSIDDeregistrationNotPossible") %]
             <div class="Header">
-                <h2>[% Translate("System deregistration not possible") | html %]</h2>
+                <h2>[% Translate("System Deregistration not Possible") | html %]</h2>
             </div>
             <div class="Content">
                 <p>
@@ -149,7 +149,7 @@
     $('#RegistrationMoreInfo').bind('click', function() {
         Core.UI.Dialog.ShowDialog({
             Modal: true,
-            Title: [% Translate("System Registration") | JSON %],
+            Title: [% Translate('System Registration') | JSON %],
             HTML: $('#QADialog').html(),
             PositionTop: '70px',
             PositionLeft: 'Center',
@@ -161,7 +161,7 @@
     $('#RegistrationDataProtection').bind('click', function() {
         Core.UI.Dialog.ShowDialog({
             Modal: true,
-            Title: [% Translate("Data Protection") | JSON %],
+            Title: [% Translate('Data Protection') | JSON %],
             HTML: $('#DPDialog').html(),
             PositionTop: '10px',
             PositionLeft: 'Center',
@@ -573,7 +573,7 @@
 [% RenderBlockEnd("Edit") %]
 [% RenderBlockStart("SentDataOverview") %]
             <div class="Header">
-                <h2>[% Translate("Overview of transmitted data") | html %]</h2>
+                <h2>[% Translate("Overview of Transmitted Data") | html %]</h2>
             </div>
             <div class="Content">
 [% RenderBlockStart("SentDataOverviewNoData") %]

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -306,8 +306,9 @@ sub Run {
         $GetParam{ResultForm} = '';
     }
 
-    # get user object
-    my $UserObject = $Kernel::OM->Get('Kernel::System::User');
+    # get needed objects
+    my $UserObject  = $Kernel::OM->Get('Kernel::System::User');
+    my $StateObject = $Kernel::OM->Get('Kernel::System::State');
 
     # show result site
     if ( $Self->{Subaction} eq 'Search' && !$Self->{EraseTemplate} ) {
@@ -340,28 +341,35 @@ sub Run {
                 my @StateIDs;
 
                 if ( $GetParam{StateType} eq 'Open' ) {
-                    @StateIDs = $Kernel::OM->Get('Kernel::System::State')->StateGetStatesByType(
+                    @StateIDs = $StateObject->StateGetStatesByType(
                         Type   => 'Viewable',
                         Result => 'ID',
                     );
                 }
-                elsif ( $Param{StateType} eq 'Closed' ) {
-                    @StateIDs = $Kernel::OM->Get('Kernel::System::State')->StateGetStatesByType(
+                elsif ( $GetParam{StateType} eq 'Closed' ) {
+                    my %ViewableStateOpenLookup = $StateObject->StateGetStatesByType(
                         Type   => 'Viewable',
-                        Result => 'ID',
+                        Result => 'HASH',
                     );
+
+                    my %StateList = $StateObject->StateList( UserID => $Self->{UserID} );
+                    for my $Item ( sort keys %StateList ) {
+                        if ( !$ViewableStateOpenLookup{$Item} ) {
+                            push @StateIDs, $Item;
+                        }
+                    }
                 }
 
                 # current ticket state type
                 else {
-                    @StateIDs = $Kernel::OM->Get('Kernel::System::State')->StateGetStatesByType(
+                    @StateIDs = $StateObject->StateGetStatesByType(
                         StateType => $GetParam{StateType},
                         Result    => 'ID',
                     );
                 }
 
                 # merge with StateIDs
-                if ( @StateIDs && $GetParam{StateIDs} ) {
+                if ( @StateIDs && IsArrayRefWithData( $GetParam{StateIDs} ) ) {
                     my %StateIDs = map { $_ => 1 } @StateIDs;
                     @StateIDs = grep { exists $StateIDs{$_} } @{ $GetParam{StateIDs} };
                 }
@@ -481,7 +489,7 @@ sub Run {
 
         my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
 
-        # Special behaviour for the fulltext search toolbar module:
+        # Special behavior for the fulltext search toolbar module:
         # - Check full text string to see if contents is a ticket number.
         # - If exists and not in print or CSV mode, redirect to the ticket.
         # See http://bugs.otrs.org/show_bug.cgi?id=4238 for details.
@@ -531,7 +539,7 @@ sub Run {
 
         my %AttributeLookup;
 
-        # create attibute lookup table
+        # create attribute lookup table
         for my $Attribute ( @{ $GetParam{ShownAttributes} || [] } ) {
             $AttributeLookup{$Attribute} = 1;
         }
@@ -655,7 +663,7 @@ sub Run {
                     );
 
                     # set missing information
-                    $Data{Subject} = $Data{Title} || 'Untitled';
+                    $Data{Subject} = $Data{Title} || Translatable('Untitled');
                     $Data{Body} = $LayoutObject->{LanguageObject}->Translate(
                         'This item has no articles yet.'
                     );
@@ -679,8 +687,9 @@ sub Run {
                     );
 
                     if ( $#Article == -1 ) {
-                        $Data{ArticleTree}
-                            .= 'This item has no articles yet.';
+                        $Data{ArticleTree} .= $LayoutObject->{LanguageObject}->Translate(
+                            'This item has no articles yet.'
+                        );
                     }
                     else
                     {
@@ -764,8 +773,8 @@ sub Run {
             }
 
             my %HeaderMap = (
-                TicketNumber => 'Ticket Number',
-                CustomerName => 'Customer Realname',
+                TicketNumber => Translatable('Ticket Number'),
+                CustomerName => Translatable('Customer Realname'),
             );
 
             my @CSVHeadTranslated = map { $LayoutObject->{LanguageObject}->Translate( $HeaderMap{$_} || $_ ); }
@@ -841,7 +850,7 @@ sub Run {
                     );
 
                     # set missing information
-                    $Data{Subject} = $Data{Title} || 'Untitled';
+                    $Data{Subject} = $Data{Title} || Translatable('Untitled');
                     $Data{From} = '--';
                 }
 
@@ -897,9 +906,13 @@ sub Run {
 
             my $Title = $LayoutObject->{LanguageObject}->Translate('Ticket') . ' '
                 . $LayoutObject->{LanguageObject}->Translate('Search');
-            my $PrintedBy = $LayoutObject->{LanguageObject}->Translate('printed by');
-            my $Page      = $LayoutObject->{LanguageObject}->Translate('Page');
-            my $Time      = $LayoutObject->{Time};
+            my $PrintedBy      = $LayoutObject->{LanguageObject}->Translate('printed by');
+            my $Page           = $LayoutObject->{LanguageObject}->Translate('Page');
+            my $DateTimeString = $Kernel::OM->Create('Kernel::System::DateTime')->ToString();
+            my $Time           = $LayoutObject->{LanguageObject}->FormatTimeString(
+                $DateTimeString,
+                'DateFormat',
+            );
 
             # get maximum number of pages
             my $MaxPages = $ConfigObject->Get('PDF::MaxPages');
@@ -1069,7 +1082,7 @@ sub Run {
                 Value     => $URL,
             );
 
-            # start html page
+            # start HTML page
             my $Output = $LayoutObject->Header();
             $Output .= $LayoutObject->NavigationBar();
 
@@ -1120,7 +1133,7 @@ sub Run {
                 LinkBack   => $LinkBack,
                 Profile    => $Self->{Profile},
 
-                TitleName => 'Search Results',
+                TitleName => Translatable('Search Results'),
                 Bulk      => 1,
                 Limit     => $Self->{SearchLimit},
 
@@ -1234,15 +1247,15 @@ sub Run {
             # Main fields
             {
                 Key   => 'TicketNumber',
-                Value => 'Ticket Number',
+                Value => Translatable('Ticket Number'),
             },
             {
                 Key   => 'Fulltext',
-                Value => 'Fulltext',
+                Value => Translatable('Fulltext'),
             },
             {
                 Key   => 'Title',
-                Value => 'Title',
+                Value => Translatable('Title'),
             },
             {
                 Key      => '',
@@ -1253,23 +1266,23 @@ sub Run {
             # Article fields
             {
                 Key   => 'From',
-                Value => 'From',
+                Value => Translatable('From'),
             },
             {
                 Key   => 'To',
-                Value => 'To',
+                Value => Translatable('To'),
             },
             {
                 Key   => 'Cc',
-                Value => 'Cc',
+                Value => Translatable('Cc'),
             },
             {
                 Key   => 'Subject',
-                Value => 'Subject',
+                Value => Translatable('Subject'),
             },
             {
                 Key   => 'Body',
-                Value => 'Body',
+                Value => Translatable('Body'),
             },
         );
 
@@ -1281,7 +1294,7 @@ sub Run {
             push @Attributes, (
                 {
                     Key   => 'AttachmentName',
-                    Value => 'Attachment Name',
+                    Value => Translatable('Attachment Name'),
                 },
             );
         }
@@ -1295,31 +1308,31 @@ sub Run {
             },
             {
                 Key   => 'CustomerID',
-                Value => 'CustomerID',
+                Value => Translatable('CustomerID'),
             },
             {
                 Key   => 'CustomerUserLogin',
-                Value => 'Customer User Login',
+                Value => Translatable('Customer User Login'),
             },
             {
                 Key   => 'StateIDs',
-                Value => 'State',
+                Value => Translatable('State'),
             },
             {
                 Key   => 'PriorityIDs',
-                Value => 'Priority',
+                Value => Translatable('Priority'),
             },
             {
                 Key   => 'LockIDs',
-                Value => 'Lock',
+                Value => Translatable('Lock'),
             },
             {
                 Key   => 'QueueIDs',
-                Value => 'Queue',
+                Value => Translatable('Queue'),
             },
             {
                 Key   => 'CreatedQueueIDs',
-                Value => 'Created in Queue',
+                Value => Translatable('Created in Queue'),
             },
         );
 
@@ -1327,7 +1340,7 @@ sub Run {
             push @Attributes, (
                 {
                     Key   => 'TypeIDs',
-                    Value => 'Type',
+                    Value => Translatable('Type'),
                 },
             );
         }
@@ -1336,11 +1349,11 @@ sub Run {
             push @Attributes, (
                 {
                     Key   => 'ServiceIDs',
-                    Value => 'Service',
+                    Value => Translatable('Service'),
                 },
                 {
                     Key   => 'SLAIDs',
-                    Value => 'SLA',
+                    Value => Translatable('SLA'),
                 },
             );
         }
@@ -1348,18 +1361,18 @@ sub Run {
         push @Attributes, (
             {
                 Key   => 'OwnerIDs',
-                Value => 'Owner',
+                Value => Translatable('Owner'),
             },
             {
                 Key   => 'CreatedUserIDs',
-                Value => 'Created by',
+                Value => Translatable('Created by'),
             },
         );
         if ( $ConfigObject->Get('Ticket::Watcher') ) {
             push @Attributes, (
                 {
                     Key   => 'WatchUserIDs',
-                    Value => 'Watcher',
+                    Value => Translatable('Watcher'),
                 },
             );
         }
@@ -1367,7 +1380,7 @@ sub Run {
             push @Attributes, (
                 {
                     Key   => 'ResponsibleIDs',
-                    Value => 'Responsible',
+                    Value => Translatable('Responsible'),
                 },
             );
         }
@@ -1381,51 +1394,51 @@ sub Run {
             },
             {
                 Key   => 'TicketLastChangeTimePoint',
-                Value => 'Ticket Last Change Time (before/after)',
+                Value => Translatable('Ticket Last Change Time (before/after)'),
             },
             {
                 Key   => 'TicketLastChangeTimeSlot',
-                Value => 'Ticket Last Change Time (between)',
+                Value => Translatable('Ticket Last Change Time (between)'),
             },
             {
                 Key   => 'TicketChangeTimePoint',
-                Value => 'Ticket Change Time (before/after)',
+                Value => Translatable('Ticket Change Time (before/after)'),
             },
             {
                 Key   => 'TicketChangeTimeSlot',
-                Value => 'Ticket Change Time (between)',
+                Value => Translatable('Ticket Change Time (between)'),
             },
             {
                 Key   => 'TicketCloseTimePoint',
-                Value => 'Ticket Close Time (before/after)',
+                Value => Translatable('Ticket Close Time (before/after)'),
             },
             {
                 Key   => 'TicketCloseTimeSlot',
-                Value => 'Ticket Close Time (between)',
+                Value => Translatable('Ticket Close Time (between)'),
             },
             {
                 Key   => 'TicketCreateTimePoint',
-                Value => 'Ticket Create Time (before/after)',
+                Value => Translatable('Ticket Create Time (before/after)'),
             },
             {
                 Key   => 'TicketCreateTimeSlot',
-                Value => 'Ticket Create Time (between)',
+                Value => Translatable('Ticket Create Time (between)'),
             },
             {
                 Key   => 'TicketEscalationTimePoint',
-                Value => 'Ticket Escalation Time (before/after)',
+                Value => Translatable('Ticket Escalation Time (before/after)'),
             },
             {
                 Key   => 'TicketEscalationTimeSlot',
-                Value => 'Ticket Escalation Time (between)',
+                Value => Translatable('Ticket Escalation Time (between)'),
             },
             {
                 Key   => 'ArticleCreateTimePoint',
-                Value => 'Article Create Time (before/after)',
+                Value => Translatable('Article Create Time (before/after)'),
             },
             {
                 Key   => 'ArticleCreateTimeSlot',
-                Value => 'Article Create Time (between)',
+                Value => Translatable('Article Create Time (between)'),
             },
         );
 
@@ -1433,7 +1446,7 @@ sub Run {
             push @Attributes, (
                 {
                     Key   => 'SearchInArchive',
-                    Value => 'Archive Search',
+                    Value => Translatable('Archive Search'),
                 },
             );
         }
@@ -1571,7 +1584,7 @@ sub Run {
             PREFERENCE:
             for my $Preference ( @{$SearchFieldPreferences} ) {
 
-                # get field html
+                # get field HTML
                 $DynamicFieldHTML{ $DynamicFieldConfig->{Name} . $Preference->{Type} }
                     = $BackendObject->SearchFieldRender(
                     DynamicFieldConfig   => $DynamicFieldConfig,
@@ -1738,10 +1751,10 @@ sub Run {
 
         $Param{ResultFormStrg} = $LayoutObject->BuildSelection(
             Data => {
-                Normal => 'Normal',
-                Print  => 'Print',
-                CSV    => 'CSV',
-                Excel  => 'Excel',
+                Normal => Translatable('Normal'),
+                Print  => Translatable('Print'),
+                CSV    => Translatable('CSV'),
+                Excel  => Translatable('Excel'),
             },
             Name       => 'ResultForm',
             SelectedID => $GetParam{ResultForm} || 'Normal',
@@ -1752,9 +1765,9 @@ sub Run {
 
             $Param{SearchInArchiveStrg} = $LayoutObject->BuildSelection(
                 Data => {
-                    ArchivedTickets    => 'Archived tickets',
-                    NotArchivedTickets => 'Unarchived tickets',
-                    AllTickets         => 'All tickets',
+                    ArchivedTickets    => Translatable('Archived tickets'),
+                    NotArchivedTickets => Translatable('Unarchived tickets'),
+                    AllTickets         => Translatable('All tickets'),
                 },
                 Name       => 'SearchInArchive',
                 SelectedID => $GetParam{SearchInArchive} || 'NotArchivedTickets',
@@ -1780,12 +1793,12 @@ sub Run {
             ID         => 'SearchProfile',
             SelectedID => $Profile,
 
-            # Do not modernize this field as this causes problems with the automatic focussing of the first element.
+            # Do not modernize this field as this causes problems with the automatic focusing of the first element.
         );
 
         $Param{StatesStrg} = $LayoutObject->BuildSelection(
             Data => {
-                $Kernel::OM->Get('Kernel::System::State')->StateList(
+                $StateObject->StateList(
                     UserID => $Self->{UserID},
                     Action => $Self->{Action},
                 ),
@@ -1854,20 +1867,20 @@ sub Run {
         );
         $Param{ArticleCreateTimePointStart} = $LayoutObject->BuildSelection(
             Data => {
-                'Last'   => 'within the last ...',
-                'Before' => 'more than ... ago',
+                'Last'   => Translatable('within the last ...'),
+                'Before' => Translatable('more than ... ago'),
             },
             Name       => 'ArticleCreateTimePointStart',
             SelectedID => $GetParam{ArticleCreateTimePointStart} || 'Last',
         );
         $Param{ArticleCreateTimePointFormat} = $LayoutObject->BuildSelection(
             Data => {
-                minute => 'minute(s)',
-                hour   => 'hour(s)',
-                day    => 'day(s)',
-                week   => 'week(s)',
-                month  => 'month(s)',
-                year   => 'year(s)',
+                minute => Translatable('minute(s)'),
+                hour   => Translatable('hour(s)'),
+                day    => Translatable('day(s)'),
+                week   => Translatable('week(s)'),
+                month  => Translatable('month(s)'),
+                year   => Translatable('year(s)'),
             },
             Name       => 'ArticleCreateTimePointFormat',
             SelectedID => $GetParam{ArticleCreateTimePointFormat},
@@ -1890,20 +1903,20 @@ sub Run {
         );
         $Param{TicketCreateTimePointStart} = $LayoutObject->BuildSelection(
             Data => {
-                'Last'   => 'within the last ...',
-                'Before' => 'more than ... ago',
+                'Last'   => Translatable('within the last ...'),
+                'Before' => Translatable('more than ... ago'),
             },
             Name       => 'TicketCreateTimePointStart',
             SelectedID => $GetParam{TicketCreateTimePointStart} || 'Last',
         );
         $Param{TicketCreateTimePointFormat} = $LayoutObject->BuildSelection(
             Data => {
-                minute => 'minute(s)',
-                hour   => 'hour(s)',
-                day    => 'day(s)',
-                week   => 'week(s)',
-                month  => 'month(s)',
-                year   => 'year(s)',
+                minute => Translatable('minute(s)'),
+                hour   => Translatable('hour(s)'),
+                day    => Translatable('day(s)'),
+                week   => Translatable('week(s)'),
+                month  => Translatable('month(s)'),
+                year   => Translatable('year(s)'),
             },
             Name       => 'TicketCreateTimePointFormat',
             SelectedID => $GetParam{TicketCreateTimePointFormat},
@@ -1935,12 +1948,12 @@ sub Run {
         );
         $Param{TicketChangeTimePointFormat} = $LayoutObject->BuildSelection(
             Data => {
-                minute => 'minute(s)',
-                hour   => 'hour(s)',
-                day    => 'day(s)',
-                week   => 'week(s)',
-                month  => 'month(s)',
-                year   => 'year(s)',
+                minute => Translatable('minute(s)'),
+                hour   => Translatable('hour(s)'),
+                day    => Translatable('day(s)'),
+                week   => Translatable('week(s)'),
+                month  => Translatable('month(s)'),
+                year   => Translatable('year(s)'),
             },
             Name       => 'TicketChangeTimePointFormat',
             SelectedID => $GetParam{TicketChangeTimePointFormat},
@@ -1964,20 +1977,20 @@ sub Run {
         );
         $Param{TicketCloseTimePointStart} = $LayoutObject->BuildSelection(
             Data => {
-                'Last'   => 'within the last ...',
-                'Before' => 'more than ... ago',
+                'Last'   => Translatable('within the last ...'),
+                'Before' => Translatable('more than ... ago'),
             },
             Name       => 'TicketCloseTimePointStart',
             SelectedID => $GetParam{TicketCloseTimePointStart} || 'Last',
         );
         $Param{TicketCloseTimePointFormat} = $LayoutObject->BuildSelection(
             Data => {
-                minute => 'minute(s)',
-                hour   => 'hour(s)',
-                day    => 'day(s)',
-                week   => 'week(s)',
-                month  => 'month(s)',
-                year   => 'year(s)',
+                minute => Translatable('minute(s)'),
+                hour   => Translatable('hour(s)'),
+                day    => Translatable('day(s)'),
+                week   => Translatable('week(s)'),
+                month  => Translatable('month(s)'),
+                year   => Translatable('year(s)'),
             },
             Name       => 'TicketCloseTimePointFormat',
             SelectedID => $GetParam{TicketCloseTimePointFormat},
@@ -2001,20 +2014,20 @@ sub Run {
         );
         $Param{TicketLastChangeTimePointStart} = $LayoutObject->BuildSelection(
             Data => {
-                'Last'   => 'within the last ...',
-                'Before' => 'more than ... ago',
+                'Last'   => Translatable('within the last ...'),
+                'Before' => Translatable('more than ... ago'),
             },
             Name       => 'TicketLastChangeTimePointStart',
             SelectedID => $GetParam{TicketLastChangeTimePointStart} || 'Last',
         );
         $Param{TicketLastChangeTimePointFormat} = $LayoutObject->BuildSelection(
             Data => {
-                minute => 'minute(s)',
-                hour   => 'hour(s)',
-                day    => 'day(s)',
-                week   => 'week(s)',
-                month  => 'month(s)',
-                year   => 'year(s)',
+                minute => Translatable('minute(s)'),
+                hour   => Translatable('hour(s)'),
+                day    => Translatable('day(s)'),
+                week   => Translatable('week(s)'),
+                month  => Translatable('month(s)'),
+                year   => Translatable('year(s)'),
             },
             Name       => 'TicketLastChangeTimePointFormat',
             SelectedID => $GetParam{TicketLastChangeTimePointFormat},
@@ -2038,21 +2051,21 @@ sub Run {
         );
         $Param{TicketEscalationTimePointStart} = $LayoutObject->BuildSelection(
             Data => {
-                'Last'   => 'within the last ...',
-                'Next'   => 'within the next ...',
-                'Before' => 'more than ... ago',
+                'Last'   => Translatable('within the last ...'),
+                'Next'   => Translatable('within the next ...'),
+                'Before' => Translatable('more than ... ago'),
             },
             Name       => 'TicketEscalationTimePointStart',
             SelectedID => $GetParam{TicketEscalationTimePointStart} || 'Last',
         );
         $Param{TicketEscalationTimePointFormat} = $LayoutObject->BuildSelection(
             Data => {
-                minute => 'minute(s)',
-                hour   => 'hour(s)',
-                day    => 'day(s)',
-                week   => 'week(s)',
-                month  => 'month(s)',
-                year   => 'year(s)',
+                minute => Translatable('minute(s)'),
+                hour   => Translatable('hour(s)'),
+                day    => Translatable('day(s)'),
+                week   => Translatable('week(s)'),
+                month  => Translatable('month(s)'),
+                year   => Translatable('year(s)'),
             },
             Name       => 'TicketEscalationTimePointFormat',
             SelectedID => $GetParam{TicketEscalationTimePointFormat},
@@ -2226,7 +2239,7 @@ sub Run {
             my @OrderedDefaults;
             if (%Defaults) {
 
-                # ordering atributes on the same order like in Atributes
+                # ordering attributes on the same order like in Attributes
                 for my $Item (@Attributes) {
                     my $KeyAtr = $Item->{Key};
                     for my $Key ( sort keys %Defaults ) {

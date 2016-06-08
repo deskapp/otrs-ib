@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -165,7 +165,7 @@ Core.AJAX = (function (Namespace) {
 
         test('Core.AJAX.SerializeForm()', SerializeFormTests.length, function(){
 
-            // Create a form containter for the tests
+            // Create a form container for the tests
             $('body').append('<form id="CORE_AJAX_SerializeFormTest"></form>');
 
             // Run the tests
@@ -178,7 +178,7 @@ Core.AJAX = (function (Namespace) {
             });
 
             // Cleanup form container and contents
-            $('#CORE_AJAX_TestForm1').remove();
+            $('#CORE_AJAX_SerializeFormTest').remove();
         });
 
         /*

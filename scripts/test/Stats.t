@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -12,19 +12,24 @@ use utf8;
 
 use vars (qw($Self));
 
-use Kernel::System::ObjectManager;
-
 # get needed objects
 my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+my $StatsObject  = $Kernel::OM->Get('Kernel::System::Stats');
 
-my $StatsObject = $Kernel::OM->Get('Kernel::System::Stats');
+# get helper object
+$Kernel::OM->ObjectParamAdd(
+    'Kernel::System::UnitTest::Helper' => {
+        RestoreDatabase => 1,
+    },
+);
+my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 
 # try to get an invalid stat
 my $StatInvalid = $StatsObject->StatsGet( StatID => 1111 );
 
 $Self->False(
     $StatInvalid,
-    'StatsGet() try to get a not exitsting stat',
+    'StatsGet() try to get a not existing stat',
 );
 
 my $Update = $StatsObject->StatsUpdate(
@@ -289,7 +294,7 @@ $Self->True(
     'Export() check if Exportfile has a content',
 );
 
-# import the exportet stat
+# import the exported stat
 my $StatID3 = $StatsObject->Import(
     Content => $ExportFile->{Content},
     UserID  => 1,
@@ -494,5 +499,7 @@ $Self->True(
     $Result,
     'StatsCleanUp() - clean up stats',
 );
+
+# cleanup is done by RestoreDatabase
 
 1;

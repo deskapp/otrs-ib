@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -12,19 +12,23 @@ use utf8;
 
 use vars (qw($Self));
 
-use Kernel::Output::HTML::Layout;
-
-# get needed objects
-my $ParamObject = $Kernel::OM->Get('Kernel::System::Web::Request');
-
 local $ENV{SCRIPT_NAME} = 'index.pl';
 
-my $LayoutObject = Kernel::Output::HTML::Layout->new(
-    UserChallengeToken => 'TestToken',
-    UserID             => 1,
-    Lang               => 'de',
-    SessionID          => 123,
+# get needed objects
+$Kernel::OM->ObjectParamAdd(
+    'Kernel::System::UnitTest::Helper' => {
+        RestoreDatabase => 1,
+    },
 );
+my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+
+$Kernel::OM->ObjectParamAdd(
+    'Kernel::Output::HTML::Layout' => {
+        Lang      => 'de',
+        SessionID => 123,
+    },
+);
+my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
 
 my @Tests = (
     {
@@ -341,5 +345,7 @@ for my $Test (@Tests) {
         "$Test->{Name} - ContentType",
     );
 }
+
+# cleanup cache is done by RestoreDatabase
 
 1;

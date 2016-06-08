@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -275,6 +275,8 @@ sub _Change {
     # get config object
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
+    my @Permissions;
+
     TYPE:
     for my $Type ( @{ $ConfigObject->Get('System::Permission') } ) {
         next TYPE if !$Type;
@@ -287,7 +289,15 @@ sub _Change {
                 Type => $Type,
             },
         );
+
+        push @Permissions, $Type;
     }
+
+    # set permissions
+    $LayoutObject->AddJSData(
+        Key   => 'RelationItems',
+        Value => \@Permissions,
+    );
 
     for my $ID ( sort { uc( $Data{$a} ) cmp uc( $Data{$b} ) } keys %Data ) {
 

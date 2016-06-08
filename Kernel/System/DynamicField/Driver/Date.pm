@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -12,6 +12,8 @@ use strict;
 use warnings;
 
 use Kernel::System::VariableCheck qw(:all);
+
+use Kernel::Language qw(Translatable);
 
 use base qw(Kernel::System::DynamicField::Driver::BaseDateTime);
 
@@ -200,25 +202,24 @@ sub SearchSQLGet {
         SmallerThanEquals => '<=',
     );
 
-    if ( $Operators{ $Param{Operator} } ) {
-        my $SQL = " $Param{TableAlias}.value_date $Operators{$Param{Operator}} '"
-            . $Kernel::OM->Get('Kernel::System::DB')->Quote( $Param{SearchTerm} );
-
-        # Append hh:mm:ss if only the ISO date was supplied to get a full date-time string.
-        if ( $Param{SearchTerm} =~ m{\A \d{4}-\d{2}-\d{2}\z}xms ) {
-            $SQL .= " 00:00:00";
-        }
-
-        $SQL .= "' ";
-        return $SQL;
+    if ( !$Operators{ $Param{Operator} } ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            'Priority' => 'error',
+            'Message'  => "Unsupported Operator $Param{Operator}",
+        );
+        return;
     }
 
-    $Kernel::OM->Get('Kernel::System::Log')->Log(
-        'Priority' => 'error',
-        'Message'  => "Unsupported Operator $Param{Operator}",
-    );
+    my $SQL = " $Param{TableAlias}.value_date $Operators{ $Param{Operator} } '"
+        . $Kernel::OM->Get('Kernel::System::DB')->Quote( $Param{SearchTerm} );
 
-    return;
+    # Append hh:mm:ss if only the ISO date was supplied to get a full date-time string.
+    if ( $Param{SearchTerm} =~ m{\A \d{4}-\d{2}-\d{2}\z}xms ) {
+        $SQL .= " 00:00:00";
+    }
+
+    $SQL .= "' ";
+    return $SQL;
 }
 
 sub EditFieldRender {
@@ -258,7 +259,7 @@ sub EditFieldRender {
         );
     }
 
-    # extract the dynamic field value form the web request
+    # extract the dynamic field value from the web request
     my $FieldValues = $Self->EditFieldValueGet(
         ReturnValueStructure => 1,
         %Param,
@@ -384,7 +385,7 @@ sub EditFieldValueGet {
     my %DynamicFieldValues;
 
     # check if there is a Template and retrieve the dynamic field value from there
-    if ( IsHashRefWithData( $Param{Template} ) ) {
+    if ( IsHashRefWithData( $Param{Template} ) && defined $Param{Template}->{ $Prefix . 'Used' } ) {
         for my $Type (qw(Used Year Month Day)) {
             $DynamicFieldValues{ $Prefix . $Type } = $Param{Template}->{ $Prefix . $Type } || 0;
         }
@@ -690,10 +691,10 @@ EOF
 
         $HTMLString .= $Param{LayoutObject}->BuildSelection(
             Data => {
-                'Before' => 'more than ... ago',
-                'Last'   => 'within the last ...',
-                'Next'   => 'within the next ...',
-                'After'  => 'in more than ...',
+                'Before' => Translatable('more than ... ago'),
+                'Last'   => Translatable('within the last ...'),
+                'Next'   => Translatable('within the next ...'),
+                'After'  => Translatable('in more than ...'),
             },
             Sort           => 'IndividualKey',
             SortIndividual => [ 'Before', 'Last', 'Next', 'After' ],
@@ -707,20 +708,20 @@ EOF
         );
         $HTMLString .= ' ' . $Param{LayoutObject}->BuildSelection(
             Data => {
-                minute => 'minute(s)',
-                hour   => 'hour(s)',
-                day    => 'day(s)',
-                week   => 'week(s)',
-                month  => 'month(s)',
-                year   => 'year(s)',
+                minute => Translatable('minute(s)'),
+                hour   => Translatable('hour(s)'),
+                day    => Translatable('day(s)'),
+                week   => Translatable('week(s)'),
+                month  => Translatable('month(s)'),
+                year   => Translatable('year(s)'),
             },
             Name       => $FieldName . 'Format',
-            SelectedID => $Value->{Format}->{ $FieldName . 'Format' } || 'day',
+            SelectedID => $Value->{Format}->{ $FieldName . 'Format' } || Translatable('day'),
         );
 
         my $AdditionalText;
         if ( $Param{UseLabelHints} ) {
-            $AdditionalText = 'before/after';
+            $AdditionalText = Translatable('before/after');
         }
 
         # call EditLabelRender on the common driver
@@ -765,7 +766,7 @@ EOF
 
     my $AdditionalText;
     if ( $Param{UseLabelHints} ) {
-        $AdditionalText = 'between';
+        $AdditionalText = Translatable('between');
     }
 
     # call EditLabelRender on the common Driver

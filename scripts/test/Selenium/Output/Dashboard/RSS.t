@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -65,10 +65,11 @@ $Selenium->RunTest(
         );
 
         # test if RSS plugin shows correct link
-        my $RSSLink = "http://www.otrs.com/release-notes-otrs";
+        my $RSSLink = "https://www.otrs.com/";
         $Self->True(
-            index( $Selenium->get_page_source(), $RSSLink ) > -1,
-            "RSS dashboard plugin link - found",
+            $Selenium->execute_script("return \$('#Dashboard0410-RSS').find(\"a.AsBlock[href*='$RSSLink']\").length;")
+                > 0,
+            "RSS dashboard plugin link ($RSSLink) - found",
         );
 
         # make sure cache is correct

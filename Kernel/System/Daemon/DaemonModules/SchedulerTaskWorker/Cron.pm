@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -66,8 +66,8 @@ performs the selected Cron task.
         TaskID   => 123,
         TaskName => 'some name',                                        # optional
         Data     => {
-            Module   => 'Kernel::System:::Console:Command::Help',       # Module or Command is mandatory
-            Function => 'Execute',                                      # required if module is used
+            Module   => 'Kernel::System:::Console:Command::Help',
+            Function => 'Execute',
             Params   => [                                               # parameters array reference
              '--force',
              '--option',
@@ -85,43 +85,15 @@ Returns:
 sub Run {
     my ( $Self, %Param ) = @_;
 
-    # check needed
-    for my $Needed (qw(TaskID Data)) {
-        if ( !$Param{$Needed} ) {
-            $Kernel::OM->Get('Kernel::System::Log')->Log(
-                Priority => 'error',
-                Message  => "Need $Needed! - Task: $Param{TaskName}",
-            );
+    # check task params
+    my $CheckResult = $Self->_CheckTaskParams(
+        %Param,
+        NeededDataAttributes => [ 'Module', 'Function' ],
+        DataParamsRef        => 'ARRAY',
+    );
 
-            return;
-        }
-    }
-
-    # check data
-    if ( ref $Param{Data} ne 'HASH' ) {
-        $Kernel::OM->Get('Kernel::System::Log')->Log(
-            Priority => 'error',
-            Message  => "Got no valid Data! - Task: $Param{TaskName}",
-        );
-
-        return;
-    }
-    for my $Needed (qw(Module Function)) {
-        if ( !$Param{Data}->{$Needed} ) {
-            $Kernel::OM->Get('Kernel::System::Log')->Log(
-                Priority => 'error',
-                Message  => "Need Data->{$Needed}! - Task: $Param{TaskName}",
-            );
-            return;
-        }
-    }
-    if ( defined $Param{Data}->{Params} && ref $Param{Data}->{Params} ne 'ARRAY' ) {
-        $Kernel::OM->Get('Kernel::System::Log')->Log(
-            Priority => 'error',
-            Message  => "Data->{Params} format is invalid! - Task: $Param{TaskName}",
-        );
-        return;
-    }
+    # stop execution if an error in params is detected
+    return if !$CheckResult;
 
     my $StartSystemTime = $Kernel::OM->Get('Kernel::System::Time')->SystemTime();
 

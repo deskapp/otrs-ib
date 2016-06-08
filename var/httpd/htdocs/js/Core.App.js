@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -19,6 +19,16 @@ var Core = Core || {};
  *      This namespace contains main app functionalities.
  */
 Core.App = (function (TargetNS) {
+    /**
+     * @private
+     * @name Namespaces
+     * @memberof Core.App
+     * @member {Object}
+     * @description
+     *      Contains all registered JS namespaces,
+     *      organized in initialization blocks.
+     */
+    var Namespaces = {};
 
     if (!Core.Debug.CheckDependency('Core.App', 'Core.Exception', 'Core.Exception')) {
         return false;
@@ -221,10 +231,12 @@ Core.App = (function (TargetNS) {
      * @description
      *      Escapes the special characters (. :) in the given jQuery Selector
      *      jQ does not allow the usage of dot or colon in ID or class names
+     *      An overview of special characters that should be quoted can be found here:
+     *      https://api.jquery.com/category/selectors/
      */
     TargetNS.EscapeSelector = function (Selector) {
         if (Selector && Selector.length) {
-            return Selector.replace(/(#|:|\.|\[|\])/g, '\\$1');
+            return Selector.replace(/( |#|:|\.|\[|\]|@|!|"|\$|%|&|<|=|>|'|\(|\)|\*|\+|,|\?|\/|\;|\\|\^|{|}|`|\||~)/g, '\\$1');
         }
         return '';
     };
@@ -287,6 +299,65 @@ Core.App = (function (TargetNS) {
      */
     TargetNS.Unsubscribe = function (Handle) {
         $.unsubscribe(Handle);
+    };
+
+    /**
+     * @name RegisterNamespace
+     * @memberof Core.App
+     * @function
+     * @param {Object} NewNamespace - The new namespace to register
+     * @param {String} InitializationBlock - The name of the initialization block in which the namespace should be registered
+     * @description
+     *      Register a new JavaScript namespace for the OTRS app.
+     *      Parameters define, when the init function of the registered namespace
+     *      should be executed.
+     */
+    TargetNS.RegisterNamespace = function (NewNamespace, InitializationBlock) {
+        // all three parameters must be defined
+        if (typeof NewNamespace === 'undefined' || typeof InitializationBlock === 'undefined') {
+            return;
+        }
+
+        // if initialization block does not exist (yet), create it
+        if (typeof Namespaces[InitializationBlock] === 'undefined') {
+            Namespaces[InitializationBlock] = [];
+        }
+
+        // register namespace
+        Namespaces[InitializationBlock].push({Namespace: NewNamespace});
+    };
+
+    /**
+     * @name Init
+     * @memberof Core.App
+     * @function
+     * @param {String} InitializationBlock - The block of registered namespaces that should be initialized
+     * @description
+     *      Initialize the OTRS app. Call all init function of all
+     *      previously registered JS namespaces.
+     *      Parameter defines, which initialization block should be executed.
+     */
+    TargetNS.Init = function (InitializationBlock) {
+        // initialization block must be defined
+        if (typeof InitializationBlock === 'undefined') {
+            return;
+        }
+
+        // initialization block must exist
+        if (typeof Namespaces[InitializationBlock] === 'undefined') {
+            return;
+        }
+
+        // initialization block must contain namespaces
+        if (Namespaces[InitializationBlock].length < 1) {
+            return;
+        }
+
+        $.each(Namespaces[InitializationBlock], function () {
+            if ($.isFunction(this.Namespace.Init)) {
+                this.Namespace.Init();
+            }
+        });
     };
 
     return TargetNS;

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -614,11 +614,18 @@ sub RequesterPerformRequest {
             $SOAPHandle->on_action( sub {'""'} );
         }
 
-        elsif ( $Config->{SOAPActionSeparator} eq '/' ) {
-
-            # change separator (like for .net web services)
+        # SOAPAction defaults to '"<NameSpace (uri)>#<Operation>"'
+        # if a different separator was selected (e.g. '/' for .NET)
+        #     we need to set it manually in order to insert separator
+        # if original operation name was modified
+        #     we need to set it manually to retain original operation name
+        elsif (
+            $Config->{SOAPActionSeparator} ne '#'
+            || $OperationRequest ne $Param{Operation}
+            )
+        {
             $SOAPHandle->on_action(
-                sub { '"' . $Config->{NameSpace} . '/' . $OperationRequest . '"' }
+                sub { '"' . $Config->{NameSpace} . $Config->{SOAPActionSeparator} . $Param{Operation} . '"' }
             );
         }
     }

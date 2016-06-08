@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -10,6 +10,8 @@ package Kernel::Modules::AdminTemplate;
 
 use strict;
 use warnings;
+
+use Kernel::Language qw(Translatable);
 
 our $ObjectManagerDisabled = 1;
 
@@ -138,7 +140,9 @@ sub Run {
                 $Self->_Overview();
                 my $Output = $LayoutObject->Header();
                 $Output .= $LayoutObject->NavigationBar();
-                $Output .= $LayoutObject->Notify( Info => 'Template updated!' );
+                $Output .= $LayoutObject->Notify(
+                    Info => Translatable('Template updated!'),
+                );
                 $Output .= $LayoutObject->Output(
                     TemplateFile => 'AdminTemplate',
                     Data         => \%Param,
@@ -257,7 +261,9 @@ sub Run {
                 $Self->_Overview();
                 my $Output = $LayoutObject->Header();
                 $Output .= $LayoutObject->NavigationBar();
-                $Output .= $LayoutObject->Notify( Info => 'Template added!' );
+                $Output .= $LayoutObject->Notify(
+                    Info => Translatable('Template added!'),
+                );
                 $Output .= $LayoutObject->Output(
                     TemplateFile => 'AdminTemplate',
                     Data         => \%Param,
@@ -366,6 +372,27 @@ sub _Edit {
         Class        => 'Modernize',
     );
 
+    my $HTMLUtilsObject = $Kernel::OM->Get('Kernel::System::HTMLUtils');
+
+    if ( $LayoutObject->{BrowserRichText} ) {
+
+        # reformat from plain to html
+        if ( $Param{ContentType} && $Param{ContentType} =~ /text\/plain/i ) {
+            $Param{Template} = $HTMLUtilsObject->ToHTML(
+                String => $Param{Template},
+            );
+        }
+    }
+    else {
+
+        # reformat from html to plain
+        if ( $Param{ContentType} && $Param{ContentType} =~ /text\/html/i ) {
+            $Param{Template} = $HTMLUtilsObject->ToAscii(
+                String => $Param{Template},
+            );
+        }
+    }
+
     $LayoutObject->Block(
         Name => 'OverviewUpdate',
         Data => {
@@ -390,30 +417,12 @@ sub _Edit {
         $LayoutObject->Block( Name => 'NameServerError' );
     }
 
-    my $HTMLUtilsObject = $Kernel::OM->Get('Kernel::System::HTMLUtils');
-
     # add rich text editor
     if ( $LayoutObject->{BrowserRichText} ) {
         $LayoutObject->Block(
             Name => 'RichText',
             Data => \%Param,
         );
-
-        # reformat from plain to html
-        if ( $Param{ContentType} && $Param{ContentType} =~ /text\/plain/i ) {
-            $Param{Template} = $HTMLUtilsObject->ToHTML(
-                String => $Param{Template},
-            );
-        }
-    }
-    else {
-
-        # reformat from html to plain
-        if ( $Param{ContentType} && $Param{ContentType} =~ /text\/html/i ) {
-            $Param{Template} = $HTMLUtilsObject->ToAscii(
-                String => $Param{Template},
-            );
-        }
     }
     return 1;
 }

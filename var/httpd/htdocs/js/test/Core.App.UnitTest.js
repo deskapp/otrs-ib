@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -40,9 +40,19 @@ Core.App = (function (Namespace) {
                 Id,
                 Value;
 
-            expect(3);
+            expect(13);
             equal(Core.App.EscapeSelector(Selector), 'ConfigItemClass\\:\\:Config\\:\\:Hardware\\:\\:MapTypeAdd\\:\\:Attribute\\#\\#\\#SubItem');
-            equal(Core.App.EscapeSelector('ID-mit_anderen+Sonderzeichen'), 'ID-mit_anderen+Sonderzeichen');
+            equal(Core.App.EscapeSelector('ID-mit_anderen_Sonderzeichen'), 'ID-mit_anderen_Sonderzeichen');
+            equal(Core.App.EscapeSelector('#:.\[\]@!"$'), '\\#\\:\\.\\[\\]\\@\\!\\"\\$');
+            equal(Core.App.EscapeSelector('%&<=>'), '\\%\\&\\<\\=\\>');
+            equal(Core.App.EscapeSelector("'"), "\\'");
+            equal(Core.App.EscapeSelector('()*+,?/;'), '\\(\\)\\*\\+\\,\\?\\/\\;');
+            equal(Core.App.EscapeSelector('\\'), '\\\\');
+            equal(Core.App.EscapeSelector('^'), '\\^');
+            equal(Core.App.EscapeSelector('{}'), '\\{\\}');
+            equal(Core.App.EscapeSelector('`'), '\\`');
+            equal(Core.App.EscapeSelector('|'), '\\|');
+            equal(Core.App.EscapeSelector('~'), '\\~');
 
             $('<div id="testcase"><label for="Testcase::Element###SubItem">Elementlabeltext</label><input type="text" id="Testcase::Element###SubItem" value="5"/></div>').appendTo('body');
             Id = $('#testcase').find('input').attr('id');
@@ -88,6 +98,65 @@ Core.App = (function (Namespace) {
             Core.App.Publish('UNITTEST2', [10]);
 
             equal(Counter, 5);
+        });
+
+        test('Register and init namespaces', function () {
+            Core.App.Teststring = "";
+
+            expect(3);
+
+            Core.UnitTest1 = (function (TargetNS) {
+                TargetNS.Init = function () {
+                    Core.App.Teststring += "1";
+                };
+                Core.App.RegisterNamespace(TargetNS, 'APP_INIT');
+                return TargetNS;
+            }(Core.UnitTest1 || {}));
+
+            // testing sorting
+            Core.UnitTest2 = (function (TargetNS) {
+                TargetNS.Init = function () {
+                    Core.App.Teststring += "2";
+                };
+                Core.App.RegisterNamespace(TargetNS, 'APP_INIT');
+                return TargetNS;
+            }(Core.UnitTest2 || {}));
+
+            Core.UnitTest3 = (function (TargetNS) {
+                TargetNS.Init = function () {
+                    Core.App.Teststring += "3";
+                };
+                Core.App.RegisterNamespace(TargetNS, 'APP_INIT');
+                return TargetNS;
+            }(Core.UnitTest3 || {}));
+
+            Core.UnitTest4 = (function (TargetNS) {
+                TargetNS.Init = function () {
+                    Core.App.Teststring += "4";
+                };
+                Core.App.RegisterNamespace(TargetNS, 'APP_LATE_INIT');
+                return TargetNS;
+            }(Core.UnitTest4 || {}));
+
+            Core.UnitTest5 = (function (TargetNS) {
+                TargetNS.Init = function () {
+                    Core.App.Teststring += "5";
+                };
+                Core.App.RegisterNamespace(TargetNS, 'APP_LATE_INIT');
+                return TargetNS;
+            }(Core.UnitTest5 || {}));
+
+            // empty call does nothing
+            Core.App.Init();
+            equal(Core.App.Teststring, "");
+
+            // calling first block
+            Core.App.Init('APP_INIT');
+            equal(Core.App.Teststring, "123");
+
+            // calling second block
+            Core.App.Init('APP_LATE_INIT');
+            equal(Core.App.Teststring, "12345");
         });
     };
 

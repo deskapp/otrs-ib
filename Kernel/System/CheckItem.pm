@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -176,7 +176,7 @@ sub CheckEmail {
                 if ( !@MXRecords ) {
 
                     $Kernel::OM->Get('Kernel::System::Log')->Log(
-                        Priority => 'notice',
+                        Priority => 'debug',
                         Message =>
                             "$Host has no mail exchanger (MX) defined, trying A resource record instead.",
                     );
@@ -188,7 +188,7 @@ sub CheckEmail {
                         $Error = "$Host has no mail exchanger (MX) or A resource record defined.";
 
                         $Kernel::OM->Get('Kernel::System::Log')->Log(
-                            Priority => 'error',
+                            Priority => 'debug',
                             Message  => $Error,
                         );
                     }

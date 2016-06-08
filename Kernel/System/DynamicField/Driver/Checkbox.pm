@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -182,19 +182,22 @@ sub SearchSQLGet {
         return;
     }
 
-    if ( $Param{Operator} eq 'Equals' ) {
-        my $SQL = " $Param{TableAlias}.value_int = ";
-        $SQL
-            .= $Kernel::OM->Get('Kernel::System::DB')->Quote( $Param{SearchTerm}, 'Integer' ) . ' ';
-        return $SQL;
-    }
-
-    $Kernel::OM->Get('Kernel::System::Log')->Log(
-        'Priority' => 'error',
-        'Message'  => "Unsupported Operator $Param{Operator}",
+    my %Operators = (
+        Equals => '=',
     );
 
-    return;
+    if ( !$Operators{ $Param{Operator} } ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            'Priority' => 'error',
+            'Message'  => "Unsupported Operator $Param{Operator}",
+        );
+        return;
+    }
+
+    my $SQL = " $Param{TableAlias}.value_int $Operators{ $Param{Operator} } ";
+    $SQL
+        .= $Kernel::OM->Get('Kernel::System::DB')->Quote( $Param{SearchTerm}, 'Integer' ) . ' ';
+    return $SQL;
 }
 
 sub SearchSQLOrderFieldGet {
@@ -219,7 +222,7 @@ sub EditFieldRender {
     }
     $Value = $Param{Value} // $Value;
 
-    # extract the dynamic field value form the web request
+    # extract the dynamic field value from the web request
     my $FieldValue = $Self->EditFieldValueGet(
         ReturnValueStructure => 1,
         %Param,
@@ -228,15 +231,18 @@ sub EditFieldRender {
     # set values from ParamObject if present
     if ( defined $FieldValue && IsHashRefWithData($FieldValue) ) {
         if (
-            !defined $FieldValue->{FieldValue} &&
-            defined $FieldValue->{UsedValue}   && $FieldValue->{UsedValue} eq '1'
+            !defined $FieldValue->{FieldValue}
+            && defined $FieldValue->{UsedValue}
+            && $FieldValue->{UsedValue} eq '1'
             )
         {
             $Value = '0';
         }
         elsif (
-            defined $FieldValue->{FieldValue} && $FieldValue->{FieldValue} eq '1' &&
-            defined $FieldValue->{UsedValue} && $FieldValue->{UsedValue} eq '1'
+            defined $FieldValue->{FieldValue}
+            && $FieldValue->{FieldValue} eq '1'
+            && defined $FieldValue->{UsedValue}
+            && $FieldValue->{UsedValue} eq '1'
             )
         {
             $Value = '1';
@@ -352,7 +358,7 @@ sub EditFieldValueGet {
     my %Data;
 
     # check if there is a Template and retrieve the dynamic field value from there
-    if ( IsHashRefWithData( $Param{Template} ) ) {
+    if ( IsHashRefWithData( $Param{Template} ) && defined $Param{Template}->{$FieldName} ) {
 
         # get dynamic field value form Template
         $Data{FieldValue} = $Param{Template}->{$FieldName};

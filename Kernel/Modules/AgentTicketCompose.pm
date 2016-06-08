@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -12,6 +12,7 @@ use strict;
 use warnings;
 
 use Kernel::System::VariableCheck qw(:all);
+use Kernel::Language qw(Translatable);
 use Mail::Address;
 
 our $ObjectManagerDisabled = 1;
@@ -45,8 +46,8 @@ sub Run {
     # check needed stuff
     if ( !$Self->{TicketID} ) {
         return $LayoutObject->ErrorScreen(
-            Message => 'No TicketID is given!',
-            Comment => 'Please contact the admin.',
+            Message => Translatable('No TicketID is given!'),
+            Comment => Translatable('Please contact the admin.'),
         );
     }
 
@@ -68,7 +69,7 @@ sub Run {
     # error screen, don't show ticket
     if ( !$Access ) {
         return $LayoutObject->NoPermission(
-            Message    => "You need $Config->{Permission} permissions!",
+            Message => $LayoutObject->{LanguageObject}->Translate( 'You need %s permissions!', $Config->{Permission} ),
             WithHeader => 'yes',
         );
     }
@@ -135,9 +136,8 @@ sub Run {
                     BodyClass => 'Popup',
                 );
                 $Output .= $LayoutObject->Warning(
-                    Message => $LayoutObject->{LanguageObject}
-                        ->Translate('Sorry, you need to be the ticket owner to perform this action.'),
-                    Comment => $LayoutObject->{LanguageObject}->Translate('Please change the owner first.'),
+                    Message => Translatable('Sorry, you need to be the ticket owner to perform this action.'),
+                    Comment => Translatable('Please change the owner first.'),
                 );
                 $Output .= $LayoutObject->Footer(
                     Type => 'Small',
@@ -378,7 +378,7 @@ sub Run {
     for my $DynamicFieldConfig ( @{$DynamicField} ) {
         next DYNAMICFIELD if !IsHashRefWithData($DynamicFieldConfig);
 
-        # extract the dynamic field value form the web request
+        # extract the dynamic field value from the web request
         $DynamicFieldValues{ $DynamicFieldConfig->{Name} } =
             $DynamicFieldBackendObject->EditFieldValueGet(
             DynamicFieldConfig => $DynamicFieldConfig,
@@ -692,9 +692,11 @@ sub Run {
 
                 if ( !IsHashRefWithData($ValidationResult) ) {
                     return $LayoutObject->ErrorScreen(
-                        Message =>
-                            "Could not perform validation on field $DynamicFieldConfig->{Label}!",
-                        Comment => 'Please contact the admin.',
+                        Message => $LayoutObject->{LanguageObject}->Translate(
+                            'Could not perform validation on field %s!',
+                            $DynamicFieldConfig->{Label},
+                        ),
+                        Comment => Translatable('Please contact the admin.'),
                     );
                 }
 
@@ -831,7 +833,8 @@ sub Run {
         # error page
         if ( !$ArticleTypeID ) {
             return $LayoutObject->ErrorScreen(
-                Comment => 'Can not determine the ArticleType, Please contact the admin.',
+                Message => Translatable('Can not determine the ArticleType!'),
+                Comment => Translatable('Please contact the admin.'),
             );
         }
 
@@ -1263,11 +1266,6 @@ sub Run {
             }
         }
 
-        # check if Cc recipients should be used
-        if ( $ConfigObject->Get('Ticket::Frontend::ComposeExcludeCcRecipients') ) {
-            $Data{Cc} = '';
-        }
-
         # get system address object
         my $SystemAddress = $Kernel::OM->Get('Kernel::System::SystemAddress');
 
@@ -1344,7 +1342,7 @@ sub Run {
                 # add customers database address to Cc
                 else {
                     $Output .= $LayoutObject->Notify(
-                        Info => "Customer user automatically added in Cc.",
+                        Info => Translatable("Customer user automatically added in Cc."),
                     );
                     if ( $Data{Cc} ) {
                         $Data{Cc} .= ', ' . $Customer{UserEmail};
@@ -1610,6 +1608,7 @@ sub Run {
             References       => "$References",
             TicketBackType   => $TicketBackType,
             DynamicFieldHTML => \%DynamicFieldHTML,
+            ArticleTypeID    => $GetParam{ArticleTypeID},    # don't use the ArticleID from the previous article
         );
         $Output .= $LayoutObject->Footer(
             Type => 'Small',
@@ -1686,8 +1685,8 @@ sub _Mask {
         }
 
         my %Selected;
-        if ( $Self->{GetParam}->{ArticleTypeID} ) {
-            $Selected{SelectedID} = $Self->{GetParam}->{ArticleTypeID};
+        if ( $Param{ArticleTypeID} ) {
+            $Selected{SelectedID} = $Param{ArticleTypeID};
         }
         else {
             $Selected{SelectedValue} = $Config->{DefaultArticleType};

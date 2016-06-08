@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -229,6 +229,23 @@ $('#TypeID').bind('change', function (Event) {
 //]]></script>
 [% END %]
 [% RenderBlockEnd("Responsible") %]
+
+[% RenderBlockStart("ResponsibleMandatory") %]
+                        <label class="Mandatory" for="NewResponsibleID"><span class="Marker">*</span>[% Translate("New Responsible") | html %]:</label>
+                        <div class="Field">
+                            [% Data.ResponsibleStrg %]
+                            <div id="NewResponsibleIDError" class="TooltipErrorMessage"><p>[% Translate("Please set a new responsible!") | html %]</p></div>
+                            <div id="NewResponsibleIDServerError" class="TooltipErrorMessage"><p>[% Translate("Please set a new responsible!") | html %]</p></div>
+                        </div>
+                        <div class="Clear"></div>
+[% WRAPPER JSOnDocumentComplete %]
+<script type="text/javascript">//<![CDATA[
+    $('#NewResponsibleID').bind('change', function (Event) {
+        Core.AJAX.FormUpdate($('#Compose'), 'AJAXUpdate', 'NewResponsibleID', [ 'TypeID', 'ServiceID', 'SLAID', 'NewOwnerID', 'NewStateID', 'NewPriorityID' [% Data.DynamicFieldNamesStrg %] ]);
+    });
+//]]></script>
+[% END %]
+[% RenderBlockEnd("ResponsibleMandatory") %]
 
 [% RenderBlockStart("State") %]
                         <label for="NewStateID">[% Translate("Next state") | html %]:</label>
@@ -519,7 +536,6 @@ $('#TypeID').bind('change', function (Event) {
 #Layers
 [% WRAPPER JSOnDocumentComplete %]
 <script type="text/javascript">//<![CDATA[
-    Core.Config.Set('Localization.Delete', '[% Translate("Delete") | html %]');
     Core.Agent.TicketAction.Init();
 //]]></script>
 [% END %]

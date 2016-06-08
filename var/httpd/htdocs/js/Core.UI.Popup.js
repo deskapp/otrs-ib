@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -133,7 +133,15 @@ Core.UI.Popup = (function (TargetNS) {
         // In IE (Win Phone) window.opener is undefined
         // typeof null === object
         if (window.opener !== null && typeof window.opener !== 'undefined') {
-            return window.opener;
+            // Special handling for IE11
+            // Because of permission problems, IE11 returns a valid window object
+            // but without the needed JS object "Core". window.parent contains that element
+            if (typeof window.opener.Core !== 'undefined') {
+                return window.opener;
+            }
+            else {
+                return window.parent;
+            }
         }
         else {
             return window.parent;
@@ -260,7 +268,7 @@ Core.UI.Popup = (function (TargetNS) {
             }
         });
         if (Size) {
-            return Core.Config.Get('PopupLeaveParentWindowMsg');
+            return Core.Language.Translate('If you now leave this page, all open popup windows will be closed, too!');
         }
     };
 
@@ -444,7 +452,7 @@ Core.UI.Popup = (function (TargetNS) {
             // perform only if popups are not unlinked
             if (!Unlinked) {
                 if (typeof PopupObject !== 'undefined') {
-                    ConfirmClosePopup = window.confirm(Core.Config.Get('PopupAlreadyOpenMsg'));
+                    ConfirmClosePopup = window.confirm(Core.Language.Translate('A popup of this screen is already open. Do you want to close it and load this one instead?'));
                     if (ConfirmClosePopup) {
                         TargetNS.ClosePopup(PopupObject);
                     }
@@ -501,7 +509,7 @@ Core.UI.Popup = (function (TargetNS) {
                     // currently, popup windows cannot easily be detected in chrome, because it will
                     //      load the entire content in an invisible window.
                     if (!NewWindow || NewWindow.closed || typeof NewWindow.closed === 'undefined') {
-                        window.alert(Core.Config.Get('PopupBlockerMsg'));
+                        window.alert(Core.Language.Translate('Could not open popup window. Please disable any popup blockers for this application.'));
                     }
                     else {
                         OpenPopups[Type] = NewWindow;
@@ -695,6 +703,8 @@ Core.UI.Popup = (function (TargetNS) {
             }
         }
     };
+
+    Core.Init.RegisterNamespace(TargetNS, 'APP_GLOBAL');
 
     return TargetNS;
 }(Core.UI.Popup || {}));

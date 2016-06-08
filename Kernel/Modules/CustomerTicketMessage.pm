@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -14,6 +14,7 @@ use warnings;
 our $ObjectManagerDisabled = 1;
 
 use Kernel::System::VariableCheck qw(:all);
+use Kernel::Language qw(Translatable);
 
 sub new {
     my ( $Type, %Param ) = @_;
@@ -83,7 +84,7 @@ sub Run {
     for my $DynamicFieldConfig ( @{$DynamicField} ) {
         next DYNAMICFIELD if !IsHashRefWithData($DynamicFieldConfig);
 
-        # extract the dynamic field value form the web request
+        # extract the dynamic field value from the web request
         $DynamicFieldValues{ $DynamicFieldConfig->{Name} } =
             $BackendObject->EditFieldValueGet(
             DynamicFieldConfig => $DynamicFieldConfig,
@@ -110,7 +111,7 @@ sub Run {
     if ( $GetParam{FromChatID} ) {
         if ( !$ConfigObject->Get('ChatEngine::Active') ) {
             return $LayoutObject->FatalError(
-                Message => "Chat is not active.",
+                Message => Translatable('Chat is not active.'),
             );
         }
 
@@ -123,7 +124,7 @@ sub Run {
 
         if ( !%ChatParticipant ) {
             return $LayoutObject->FatalError(
-                Message => "No permission.",
+                Message => Translatable('No permission.'),
             );
         }
     }
@@ -145,8 +146,9 @@ sub Run {
             # warn if there is no (valid) default queue and the customer can't select one
             elsif ( !$Config->{'Queue'} ) {
                 $LayoutObject->CustomerFatalError(
-                    Message => 'Check SysConfig setting for ' . $Self->{Action} . '::QueueDefault.',
-                    Comment => 'Please contact your administrator',
+                    Message => $LayoutObject->{LanguageObject}
+                        ->Translate( 'Check SysConfig setting for %s::QueueDefault.', $Self->{Action} ),
+                    Comment => Translatable('Please contact your administrator'),
                 );
                 return;
             }
@@ -155,7 +157,13 @@ sub Run {
             my ( $QueueIDParam, $QueueParam ) = split( /\|\|/, $GetParam{Dest} );
             my $QueueIDLookup = $QueueObject->QueueLookup( Queue => $QueueParam );
             if ( $QueueIDLookup && $QueueIDLookup eq $QueueIDParam ) {
-                $Param{ToSelected}          = $GetParam{Dest};
+                my $CustomerPanelOwnSelection = $Kernel::OM->Get('Kernel::Config')->Get('CustomerPanelOwnSelection');
+                if ( %{ $CustomerPanelOwnSelection // {} } ) {
+                    $Param{ToSelected} = $QueueIDParam . '||' . $CustomerPanelOwnSelection->{$QueueParam};
+                }
+                else {
+                    $Param{ToSelected} = $GetParam{Dest};
+                }
                 $ACLCompatGetParam{QueueID} = $QueueIDLookup;
             }
         }
@@ -239,9 +247,6 @@ sub Run {
     }
     elsif ( $Self->{Subaction} eq 'StoreNew' ) {
 
-        # challenge token check for write action
-        $LayoutObject->ChallengeTokenCheck( Type => 'Customer' );
-
         my $NextScreen = $Config->{NextScreenAfterNewTicket};
         my %Error;
 
@@ -275,10 +280,10 @@ sub Run {
             $GetParam{TypeID} = $TypeList{ $Config->{'TicketTypeDefault'} };
             if ( !$GetParam{TypeID} ) {
                 $LayoutObject->CustomerFatalError(
-                    Message => 'Check SysConfig setting for '
-                        . $Self->{Action}
-                        . '::TicketTypeDefault.',
-                    Comment => 'Please contact your administrator',
+                    Message =>
+                        $LayoutObject->{LanguageObject}
+                        ->Translate( 'Check SysConfig setting for %s::TicketTypeDefault.', $Self->{Action} ),
+                    Comment => Translatable('Please contact your administrator'),
                 );
                 return;
             }
@@ -392,8 +397,9 @@ sub Run {
                     my $Output = $LayoutObject->CustomerHeader( Title => 'Error' );
                     $Output .= $LayoutObject->CustomerError(
                         Message =>
-                            "Could not perform validation on field $DynamicFieldConfig->{Label}!",
-                        Comment => 'Please contact your administrator',
+                            $LayoutObject->{LanguageObject}
+                            ->Translate( 'Could not perform validation on field %s!', $DynamicFieldConfig->{Label} ),
+                        Comment => Translatable('Please contact your administrator'),
                     );
                     $Output .= $LayoutObject->CustomerFooter();
                     return $Output;
@@ -528,6 +534,9 @@ sub Run {
             $Output .= $LayoutObject->CustomerFooter();
             return $Output;
         }
+
+        # challenge token check for write action
+        $LayoutObject->ChallengeTokenCheck( Type => 'Customer' );
 
         # if customer is not allowed to set priority, set it to default
         if ( !$Config->{Priority} ) {
@@ -906,8 +915,8 @@ sub Run {
     }
     else {
         return $LayoutObject->ErrorScreen(
-            Message => 'No Subaction!!',
-            Comment => 'Please contact your administrator',
+            Message => Translatable('No Subaction!'),
+            Comment => Translatable('Please contact your administrator'),
         );
     }
 

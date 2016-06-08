@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -118,7 +118,7 @@ sub HandleResponse {
         };
     }
 
-    if ( $Param{Data}->{ResponseContent} =~ m{ReSchedule=1} ) {
+    if ( $Param{Data}->{ResponseContent} && $Param{Data}->{ResponseContent} =~ m{ReSchedule=1} ) {
 
         # ResponseContent has URI like params, convert them into a hash
         my %QueryParams = split /[&=]/, $Param{Data}->{ResponseContent};

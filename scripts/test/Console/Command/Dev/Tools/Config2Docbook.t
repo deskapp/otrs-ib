@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -12,6 +12,15 @@ use utf8;
 
 use vars (qw($Self));
 
+# get helper object
+$Kernel::OM->ObjectParamAdd(
+    'Kernel::System::UnitTest::Helper' => {
+        RestoreDatabase => 1,
+    },
+);
+my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+
+# get command object
 my $CommandObject = $Kernel::OM->Get('Kernel::System::Console::Command::Dev::Tools::Config2Docbook');
 
 my $ExitCode = $CommandObject->Execute();
@@ -36,8 +45,8 @@ $Self->Is(
     "Dev::Tools::Config2Docbook exit code",
 );
 
-my $Test
-    = '<section id="ConfigReference_Ticket:Frontend::SLA::Preferences" role="NotInToc"><title>Ticket → Frontend::SLA::Preferences</title>';
+my $Test = '<variablelist id="ConfigReference_Ticket:Frontend::SLA::Preferences">
+    <title>Ticket → Frontend::SLA::Preferences</title>';
 
 $Self->True(
     index( $Result, $Test ) > -1,
@@ -45,5 +54,7 @@ $Self->True(
 );
 
 print $Result;
+
+# cleanup cache is done by RestoreDatabase
 
 1;

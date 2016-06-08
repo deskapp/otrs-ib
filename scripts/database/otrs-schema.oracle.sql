@@ -2629,21 +2629,6 @@ CREATE INDEX FK_gi_debugger_entry_contentc3 ON gi_debugger_entry_content (gi_deb
 CREATE INDEX gi_debugger_entry_content_cr4e ON gi_debugger_entry_content (create_time);
 CREATE INDEX gi_debugger_entry_content_dea1 ON gi_debugger_entry_content (debug_level);
 -- ----------------------------------------------------------
---  create table gi_object_lock_state
--- ----------------------------------------------------------
-CREATE TABLE gi_object_lock_state (
-    webservice_id NUMBER (12, 0) NOT NULL,
-    object_type VARCHAR2 (30) NOT NULL,
-    object_id NUMBER (20, 0) NOT NULL,
-    lock_state VARCHAR2 (30) NOT NULL,
-    lock_state_counter NUMBER (12, 0) NOT NULL,
-    create_time DATE NOT NULL,
-    change_time DATE NOT NULL,
-    CONSTRAINT gi_object_lock_state_list UNIQUE (webservice_id, object_type, object_id)
-);
-CREATE INDEX FK_gi_object_lock_state_webs55 ON gi_object_lock_state (webservice_id);
-CREATE INDEX object_lock_state_list_state ON gi_object_lock_state (webservice_id, object_type, object_id, lock_state);
--- ----------------------------------------------------------
 --  create table smime_signer_cert_relations
 -- ----------------------------------------------------------
 CREATE TABLE smime_signer_cert_relations (
@@ -2777,6 +2762,42 @@ END;
 CREATE INDEX FK_dynamic_field_change_by ON dynamic_field (change_by);
 CREATE INDEX FK_dynamic_field_create_by ON dynamic_field (create_by);
 CREATE INDEX FK_dynamic_field_valid_id ON dynamic_field (valid_id);
+-- ----------------------------------------------------------
+--  create table dynamic_field_obj_id_name
+-- ----------------------------------------------------------
+CREATE TABLE dynamic_field_obj_id_name (
+    object_id NUMBER (12, 0) NOT NULL,
+    object_name VARCHAR2 (200) NOT NULL,
+    object_type VARCHAR2 (200) NOT NULL,
+    CONSTRAINT dynamic_field_object_name UNIQUE (object_name, object_type)
+);
+ALTER TABLE dynamic_field_obj_id_name ADD CONSTRAINT PK_dynamic_field_obj_id_name PRIMARY KEY (object_id);
+BEGIN
+  EXECUTE IMMEDIATE 'DROP SEQUENCE SE_dynamic_field_obj_id_name';
+EXCEPTION
+  WHEN OTHERS THEN NULL;
+END;
+/
+--;
+CREATE SEQUENCE SE_dynamic_field_obj_id_name
+INCREMENT BY 1
+START WITH 1
+NOMAXVALUE
+NOCYCLE
+CACHE 20
+ORDER;
+CREATE OR REPLACE TRIGGER SE_dynamic_field_obj_id_name_t
+BEFORE INSERT ON dynamic_field_obj_id_name
+FOR EACH ROW
+BEGIN
+  IF :new.object_id IS NULL THEN
+    SELECT SE_dynamic_field_obj_id_name.nextval
+    INTO :new.object_id
+    FROM DUAL;
+  END IF;
+END;
+/
+--;
 -- ----------------------------------------------------------
 --  create table pm_process
 -- ----------------------------------------------------------

@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -30,6 +30,11 @@ Core.Agent.Admin.SysConfig = (function (TargetNS) {
     TargetNS.Init = function () {
         $('#AdminSysConfig h3 input[type="checkbox"]').click(function () {
             $(this).parent('h3').parent('fieldset').toggleClass('Invalid');
+        });
+
+        // don't allow editing disabled fields
+        $('#AdminSysConfig').on('focus', '.Invalid input', function() {
+            $(this).blur();
         });
     };
 

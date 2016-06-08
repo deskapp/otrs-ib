@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -14,6 +14,7 @@ use warnings;
 use base qw(Kernel::System::Console::BaseCommand);
 
 our @ObjectDependencies = (
+    'Kernel::Config',
     'Kernel::System::Registration',
     'Kernel::System::SystemData',
     'Kernel::System::Time',
@@ -39,6 +40,14 @@ sub Run {
     my ( $Self, %Param ) = @_;
 
     $Self->Print("<yellow>Sending system registration update...</yellow>\n");
+
+    # check if cloud services are disabled
+    my $CloudServicesDisabled = $Kernel::OM->Get('Kernel::Config')->Get('CloudServices::Disabled') || 0;
+
+    if ($CloudServicesDisabled) {
+        $Self->Print("<green>Done.</green>\n");
+        return $Self->ExitCodeOk();
+    }
 
     my $RegistrationObject = $Kernel::OM->Get('Kernel::System::Registration');
 

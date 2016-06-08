@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -491,6 +491,19 @@ sub Run {
                     print "TicketKey$Count: " . $GetParam{$Key} . "\n";
                 }
             }
+        }
+    }
+
+    # set ticket title
+    if ( $GetParam{'X-OTRS-FollowUp-Title'} ) {
+        $TicketObject->TicketTitleUpdate(
+            Title    => $GetParam{'X-OTRS-FollowUp-Title'},
+            TicketID => $Param{TicketID},
+            UserID   => $Param{InmailUserID},
+        );
+
+        if ( $Self->{Debug} > 0 ) {
+            print "Title: $GetParam{'X-OTRS-FollowUp-Title'}\n";
         }
     }
 

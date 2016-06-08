@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -190,22 +190,6 @@ sub _Fetch {
                 );
             }
             else {
-
-                # safety protection
-                if ( $FetchCounter > 10 && $FetchCounter < 25 ) {
-                    if ($CMD) {
-                        print
-                            "$AuthType: Safety protection: waiting 2 second till processing next mail...\n";
-                    }
-                    sleep 2;
-                }
-                elsif ( $FetchCounter > 25 ) {
-                    if ($CMD) {
-                        print
-                            "$AuthType: Safety protection: waiting 3 seconds till processing next mail...\n";
-                    }
-                    sleep 3;
-                }
 
                 # get message (header and body)
                 my $Message = $IMAPObject->message_string($Messageno);

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -17,6 +17,7 @@ use File::Temp();
 
 use Kernel::Config;
 use Kernel::System::User;
+use Kernel::System::UnitTest::Helper;
 
 our @ObjectDependencies = (
     'Kernel::Config',
@@ -88,36 +89,40 @@ sub new {
     $Kernel::OM->Get('Kernel::System::Main')->RequireBaseClass('Selenium::Remote::Driver')
         || die "Could not load Selenium::Remote::Driver";
 
-    my $Self = $Class->SUPER::new(%SeleniumTestsConfig);
+    $Kernel::OM->Get('Kernel::System::Main')->Require('Kernel::System::UnitTest::Selenium::WebElement')
+        || die "Could not load Kernel::System::UnitTest::Selenium::WebElement";
+
+ # Try to connect several times to work around a strange bug that occurs sometimes:
+ #   org.openqa.selenium.firefox.NotConnectedException: Unable to connect to host 127.0.0.1 on port 7058 after 45000 ms.
+    my $Self;
+    TRY:
+    for ( 1 .. 3 ) {
+        eval {
+            $Self = $Class->SUPER::new(
+                webelement_class => 'Kernel::System::UnitTest::Selenium::WebElement',
+                %SeleniumTestsConfig
+            );
+            last TRY;
+        };
+        my $ErrorMessage = $@ // '';
+
+        # Only try again for our special error.
+        last TRY if $ErrorMessage !~ "Could not create new session";
+    }
+    die $@ if !$Self;
     $Self->{UnitTestObject}      = $Param{UnitTestObject};
     $Self->{SeleniumTestsActive} = 1;
 
     #$Self->debug_on();
 
     # set screen size from config or use defauls
-    my $Height = $SeleniumTestsConfig{window_height} || 1000;
-    my $Width  = $SeleniumTestsConfig{window_width}  || 1200;
+    my $Height = $SeleniumTestsConfig{window_height} || 1200;
+    my $Width  = $SeleniumTestsConfig{window_width}  || 1400;
+
     $Self->set_window_size( $Height, $Width );
 
-    # get remote host with some precautions for certain unit test systems
-    my $FQDN = $Kernel::OM->Get('Kernel::Config')->Get('FQDN');
-
-    # try to resolve fqdn host
-    if ( $FQDN ne 'yourhost.example.com' && gethostbyname($FQDN) ) {
-        $Self->{BaseURL} = $FQDN;
-    }
-
-    # try to resolve localhost instead
-    if ( !$Self->{BaseURL} && gethostbyname('localhost') ) {
-        $Self->{BaseURL} = 'localhost';
-    }
-
-    # use hardcoded localhost ip address
-    if ( !$Self->{BaseURL} ) {
-        $Self->{BaseURL} = '127.0.0.1';
-    }
-
-    $Self->{BaseURL} = $Kernel::OM->Get('Kernel::Config')->Get('HttpType') . '://' . $Self->{BaseURL};
+    $Self->{BaseURL} = $Kernel::OM->Get('Kernel::Config')->Get('HttpType') . '://';
+    $Self->{BaseURL} .= Kernel::System::UnitTest::Helper->GetTestHTTPHostname();
 
     return $Self;
 }
@@ -169,10 +174,7 @@ sub _execute_command {    ## no critic
         }
     );
 
-    $Self->{UnitTestObject}->True(
-        1,
-        $TestName
-    );
+    $Self->{UnitTestObject}->True( 1, $TestName );
 
     return $Result;
 }
@@ -180,6 +182,10 @@ sub _execute_command {    ## no critic
 =item get()
 
 Override get method of base class to prepend the correct base URL.
+
+    $SeleniumObject->get(
+        $URL,
+    );
 
 =cut
 
@@ -191,6 +197,52 @@ sub get {    ## no critic
     }
 
     $Self->SUPER::get($URL);
+
+    return;
+}
+
+=item VerifiedGet()
+
+perform a get() call, but wait for the page to be fully loaded (works only within OTRS).
+Will die() if the verification fails.
+
+    $SeleniumObject->VerifiedGet(
+        $URL,
+    );
+
+=cut
+
+sub VerifiedGet {
+    my ( $Self, $URL ) = @_;
+
+    $Self->get($URL);
+
+    $Self->WaitFor(
+        JavaScript =>
+            'return typeof(Core) == "object" && typeof(Core.Config) == "object" && Core.Config.Get("Baselink")'
+    ) || die "OTRS API verification failed after page load.";
+
+    return;
+}
+
+=item VerifiedRefresh()
+
+perform a refresh() call, but wait for the page to be fully loaded (works only within OTRS).
+Will die() if the verification fails.
+
+    $SeleniumObject->VerifiedRefresh();
+
+=cut
+
+sub VerifiedRefresh {
+    my ( $Self, $URL ) = @_;
+
+    $Self->refresh();
+
+    $Self->WaitFor(
+        JavaScript =>
+            'return typeof(Core) == "object" && typeof(Core.Config) == "object" && Core.Config.Get("Baselink")'
+    ) || die "OTRS API verification failed after page load.";
 
     return;
 }
@@ -224,8 +276,6 @@ sub Login {
     $Self->{UnitTestObject}->True( 1, 'Initiating login...' );
 
     eval {
-        $Self->delete_all_cookies();
-
         my $ScriptAlias = $Kernel::OM->Get('Kernel::Config')->Get('ScriptAlias');
 
         if ( $Param{Type} eq 'Agent' ) {
@@ -235,31 +285,12 @@ sub Login {
             $ScriptAlias .= 'customer.pl';
         }
 
-        # First load the page so we can delete any pre-existing cookies
         $Self->get("${ScriptAlias}");
         $Self->delete_all_cookies();
+        $Self->VerifiedGet("${ScriptAlias}?Action=Login;User=$Param{User};Password=$Param{Password}");
 
-        # Now load it again to login
-        $Self->get("${ScriptAlias}");
-
-        my $Element = $Self->find_element( 'input#User', 'css' );
-        $Element->is_displayed();
-        $Element->is_enabled();
-        $Element->send_keys( $Param{User} );
-
-        $Element = $Self->find_element( 'input#Password', 'css' );
-        $Element->is_displayed();
-        $Element->is_enabled();
-        $Element->send_keys( $Param{Password} );
-
-        # login
-        $Element->submit();
-
-        # Wait until form has loaded, if neccessary
-        $Self->WaitFor( JavaScript => 'return typeof($) === "function" && $("a#LogoutButton").length' );
-
-        # login succressful?
-        $Element = $Self->find_element( 'a#LogoutButton', 'css' );
+        # login successful?
+        $Self->find_element( 'a#LogoutButton', 'css' );    # dies if not found
 
         $Self->{UnitTestObject}->True( 1, 'Login sequence ended...' );
     };
@@ -276,7 +307,7 @@ sub Login {
 wait with increasing sleep intervals until the given condition is true or the wait time is over.
 Exactly one condition (JavaScript or WindowCount) must be specified.
 
-    $SeleniumObject->WaitFor(
+    my $Success = $SeleniumObject->WaitFor(
         JavaScript  => 'return $(".someclass").length',   # Javascript code that checks condition
         WindowCount => 2,                                 # Wait until this many windows are open
         Time        => 20,                                # optional, wait time in seconds (default 20)
@@ -295,12 +326,12 @@ sub WaitFor {
     my $WaitedSeconds = 0;
     my $Interval      = 0.1;
 
-    while ( $WaitedSeconds < $Param{Time} ) {
+    while ( $WaitedSeconds <= $Param{Time} ) {
         if ( $Param{JavaScript} ) {
-            return if $Self->execute_script( $Param{JavaScript} )
+            return 1 if $Self->execute_script( $Param{JavaScript} )
         }
         elsif ( $Param{WindowCount} ) {
-            return if scalar( @{ $Self->get_window_handles() } ) == $Param{WindowCount};
+            return 1 if scalar( @{ $Self->get_window_handles() } ) == $Param{WindowCount};
         }
         sleep $Interval;
         $WaitedSeconds += $Interval;

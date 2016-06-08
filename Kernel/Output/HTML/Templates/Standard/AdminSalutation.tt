@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -38,6 +38,18 @@
             </div>
         </div>
 [% RenderBlockEnd("ActionList") %]
+
+[% RenderBlockStart("Filter") %]
+        <div class="WidgetSimple">
+            <div class="Header">
+                <h2><label for="FilterSalutations">[% Translate("Filter for Salutations") | html %]</label></h2>
+            </div>
+            <div class="Content">
+                <input type="text" id="FilterSalutations" class="FilterBox" placeholder="[% Translate("Just start typing to filter...") | html %]" name="FilterSalutations" value="" title="[% Translate("Filter for salutations") | html %]">
+            </div>
+        </div>
+[% RenderBlockEnd("Filter") %]
+
     </div>
     <div class="ContentColumn">
 
@@ -47,7 +59,7 @@
                 <h2>[% Translate("List") | html %]</h2>
             </div>
             <div class="Content">
-                <table class="DataTable">
+                <table class="DataTable" id="Salutations">
                     <thead>
                         <tr>
                             <th>[% Translate("Name") | html %]</th>
@@ -76,6 +88,9 @@
                             <td>[% Data.CreateTime | Localize("TimeShort") %]</td>
                         </tr>
 [% RenderBlockEnd("OverviewResultRow") %]
+                        <tr class="FilterMessage Hidden">
+                            <td colspan="5">[% Translate("No matches found.") | html %]</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -136,7 +151,7 @@
                         <div class="Clear"></div>
 
                         <div class="Field">
-                            <button class="Primary CallForAction" type="submit" value="[% Translate("Submit") | html %]"><span>[% Translate("Submit") | html %]</span></button>
+                            <button class="Primary CallForAction" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
                             [% Translate("or") | html %]
                             <a href="[% Env("Baselink") %]Action=[% Env("Action") %]">[% Translate("Cancel") | html %]</a>
                         </div>

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -109,13 +109,14 @@
                         <script type="text/javascript">//<![CDATA[
                         $('#StartStatistic').bind('click', function (Event) {
                             var Format = $('#Format').val(),
-                                URL;
+                                $Form = $(this).parents('form');
 
                             // Open both HTML and PDF output in a popup because PDF is shown inline
                             if (Format === 'Print' || Format.match(/D3/)) {
-                                URL = '[% Env("Baselink") %]' + Core.AJAX.SerializeForm($('#Format').parents('form'));
-                                Core.UI.Popup.OpenPopup(URL, 'Statistic', 'Default');
-                                return false;
+                                $Form.attr('target', '_blank');
+                            }
+                            else {
+                                $Form.removeAttr('target');
                             }
                         });
                         //]]></script>

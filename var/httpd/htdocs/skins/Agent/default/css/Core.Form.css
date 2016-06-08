@@ -118,6 +118,7 @@ a.Reset {
     vertical-align: middle;
     cursor: pointer;
     position: relative;
+    z-index: 999;
 }
 
 button.Add,
@@ -158,6 +159,7 @@ a.TrashCan i.fa-trash-o {
     position: absolute;
     left: 0px;
     top: 4px;
+    z-index: 998;
 }
 
 button.Reset,
@@ -507,7 +509,7 @@ fieldset.TableLike > .Row > label {
     text-align: right;
     color: #929292;
     min-height: 17px;
-    padding-top: 5px;
+    padding-top: 0.3em;
     padding-bottom: 1px;
     text-shadow: 0 1px 0 #FAFAFA;
 }

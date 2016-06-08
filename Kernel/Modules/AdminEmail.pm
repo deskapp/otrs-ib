@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -12,6 +12,8 @@ use strict;
 use warnings;
 
 our $ObjectManagerDisabled = 1;
+
+use Kernel::Language qw(Translatable);
 
 sub new {
     my ( $Type, %Param ) = @_;
@@ -144,7 +146,7 @@ sub Run {
             if ( !$Param{Bcc} ) {
                 $Note = $LayoutObject->Notify(
                     Priority => 'Error',
-                    Info     => 'Select at least one recipient.'
+                    Info     => Translatable('Select at least one recipient.'),
                 );
                 $Errors{BccInvalid} = 'ServerError';
             }

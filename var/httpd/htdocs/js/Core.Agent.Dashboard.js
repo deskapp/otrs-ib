@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -30,8 +30,8 @@ Core.Agent.Dashboard = (function (TargetNS) {
      */
     TargetNS.InitCustomerIDAutocomplete = function ($Input) {
         $Input.autocomplete({
-            minLength: Core.Config.Get('CustomerAutocomplete.MinQueryLength'),
-            delay: Core.Config.Get('CustomerAutocomplete.QueryDelay'),
+            minLength: Core.Config.Get('CustomerIDAutocomplete.MinQueryLength'),
+            delay: Core.Config.Get('CustomerIDAutocomplete.QueryDelay'),
             open: function() {
                 // force a higher z-index than the overlay/dialog
                 $(this).autocomplete('widget').addClass('ui-overlay-autocomplete');
@@ -41,8 +41,9 @@ Core.Agent.Dashboard = (function (TargetNS) {
                 var URL = Core.Config.Get('Baselink'), Data = {
                     Action: 'AgentCustomerInformationCenterSearch',
                     Subaction: 'SearchCustomerID',
+                    IncludeUnknownTicketCustomers: parseInt(Core.Config.Get('IncludeUnknownTicketCustomers'), 10),
                     Term: Request.term,
-                    MaxResults: Core.Config.Get('CustomerAutocomplete.MaxResultsDisplayed')
+                    MaxResults: Core.Config.Get('CustomerIDAutocomplete.MaxResultsDisplayed')
                 };
 
                 // if an old ajax request is already running, stop the old request and start the new one
@@ -96,6 +97,7 @@ Core.Agent.Dashboard = (function (TargetNS) {
             source: function (Request, Response) {
                 var URL = Core.Config.Get('Baselink'), Data = {
                     Action: 'AgentCustomerSearch',
+                    IncludeUnknownTicketCustomers: parseInt(Core.Config.Get('IncludeUnknownTicketCustomers'), 10),
                     Term: Request.term,
                     MaxResults: Core.Config.Get('CustomerUserAutocomplete.MaxResultsDisplayed')
                 };
@@ -306,7 +308,7 @@ Core.Agent.Dashboard = (function (TargetNS) {
                 });
 
                 if (ValidationErrors) {
-                    window.alert(Core.Config.Get('ValidationErrorMsg'));
+                    window.alert(Core.Language.Translate('Please check the fields marked as red for valid inputs.'));
                     return false;
                 }
 
@@ -323,15 +325,6 @@ Core.Agent.Dashboard = (function (TargetNS) {
      * @memberof Core.Agent.Dashboard
      * @function
      * @param {Object} Params - Hash with different config options.
-     * @param {Array} Params.MonthNames - Array containing the localized strings for each month.
-     * @param {Array} Params.MonthNamesShort - Array containing the localized strings for each month on shorth format.
-     * @param {Array} Params.DayNames - Array containing the localized strings for each week day.
-     * @param {Array} Params.DayNamesShort - Array containing the localized strings for each week day on short format.
-     * @param {Array} Params.ButtonText - Array containing the localized strings for each week day on short format.
-     * @param {String} Params.ButtonText.today - Localized string for the word "Today".
-     * @param {String} Params.ButtonText.month - Localized string for the word "month".
-     * @param {String} Params.ButtonText.week - Localized string for the word "week".
-     * @param {String} Params.ButtonText.day - Localized string for the word "day".
      * @param {Array} Params.Events - Array of hashes including the data for each event.
      * @description
      *      Initializes the event ticket calendar.
@@ -343,15 +336,62 @@ Core.Agent.Dashboard = (function (TargetNS) {
                 center: 'title',
                 right: 'prev,next today'
             },
-            allDayText: Params.AllDayText,
+            allDayText: Core.Language.Translate('All-day'),
             axisFormat: 'H(:mm)', // uppercase H for 24-hour clock
             editable: false,
             firstDay: Params.FirstDay,
-            monthNames: Params.MonthNames,
-            monthNamesShort: Params.MonthNamesShort,
-            dayNames: Params.DayNames,
-            dayNamesShort: Params.DayNamesShort,
-            buttonText: Params.ButtonText,
+            monthNames: [
+                Core.Language.Translate('Jan'),
+                Core.Language.Translate('Feb'),
+                Core.Language.Translate('Mar'),
+                Core.Language.Translate('Apr'),
+                Core.Language.Translate('May'),
+                Core.Language.Translate('Jun'),
+                Core.Language.Translate('Jul'),
+                Core.Language.Translate('Aug'),
+                Core.Language.Translate('Sep'),
+                Core.Language.Translate('Oct'),
+                Core.Language.Translate('Nov'),
+                Core.Language.Translate('Dec')
+            ],
+            monthNamesShort: [
+                Core.Language.Translate('January'),
+                Core.Language.Translate('February'),
+                Core.Language.Translate('March'),
+                Core.Language.Translate('April'),
+                Core.Language.Translate('May_long'),
+                Core.Language.Translate('June'),
+                Core.Language.Translate('July'),
+                Core.Language.Translate('August'),
+                Core.Language.Translate('September'),
+                Core.Language.Translate('October'),
+                Core.Language.Translate('November'),
+                Core.Language.Translate('December')
+            ],
+            dayNames: [
+                Core.Language.Translate('Sunday'),
+                Core.Language.Translate('Monday'),
+                Core.Language.Translate('Tuesday'),
+                Core.Language.Translate('Wednesday'),
+                Core.Language.Translate('Thursday'),
+                Core.Language.Translate('Friday'),
+                Core.Language.Translate('Saturday')
+            ],
+            dayNamesShort: [
+                Core.Language.Translate('Su'),
+                Core.Language.Translate('Mo'),
+                Core.Language.Translate('Tu'),
+                Core.Language.Translate('We'),
+                Core.Language.Translate('Th'),
+                Core.Language.Translate('Fr'),
+                Core.Language.Translate('Sa')
+            ],
+            buttonText: {
+                today: Core.Language.Translate('Today'),
+                month: Core.Language.Translate('month'),
+                week: Core.Language.Translate('week'),
+                day: Core.Language.Translate('day')
+            },
             eventMouseover: function(calEvent, jsEvent) {
                 var Layer, PosX, PosY, DocumentVisible, ContainerHeight,
                     LastYPosition, VisibleScrollPosition, WindowHeight;

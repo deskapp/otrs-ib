@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -122,7 +122,7 @@ Core.Installer = (function (TargetNS) {
      */
     function CheckMailConfigCallback(json) {
         if (parseInt(json.Successful, 10) === 1) {
-            alert(Core.Config.Get('Installer.CheckMailLabelOne'));
+            alert(Core.Language.Translate('Mail check successful.'));
             $('fieldset.errormsg').hide();
             $('input[name=Subaction]').val('Finish');
             $('form').submit();
@@ -130,7 +130,7 @@ Core.Installer = (function (TargetNS) {
         else {
             $('#FormMailResultMessage').html(json.Message);
             $('fieldset.ErrorMsg').show();
-            alert(Core.Config.Get('Installer.CheckMailLabelTwo'));
+            alert(Core.Language.Translate('Error in the mail settings. Please correct and try again.'));
         }
     }
 

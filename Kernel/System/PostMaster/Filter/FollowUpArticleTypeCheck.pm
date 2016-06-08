@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -12,6 +12,7 @@ use strict;
 use warnings;
 
 our @ObjectDependencies = (
+    'Kernel::System::CustomerUser',
     'Kernel::System::Log',
     'Kernel::System::Ticket',
 );
@@ -65,9 +66,15 @@ sub Run {
     );
     return if !@ArticleIndex;
 
+    # Check if it is a known customer, otherwise use email address from CustomerUserID field of the ticket.
+    my %CustomerData = $Kernel::OM->Get('Kernel::System::CustomerUser')->CustomerUserDataGet(
+        User => $ArticleIndex[0]->{CustomerUserID},
+    );
+    my $CustomerEmailAddress = $CustomerData{UserEmail} || $ArticleIndex[0]->{CustomerUserID};
+
     # check if current sender is customer (do nothing)
-    if ( $ArticleIndex[0]->{CustomerUserID} && $Param{GetParam}->{'X-Sender'} ) {
-        return 1 if lc $ArticleIndex[0]->{CustomerUserID} eq lc $Param{GetParam}->{'X-Sender'};
+    if ( $CustomerEmailAddress && $Param{GetParam}->{'X-Sender'} ) {
+        return 1 if lc $CustomerEmailAddress eq lc $Param{GetParam}->{'X-Sender'};
     }
 
     # check if current sender got an internal forward

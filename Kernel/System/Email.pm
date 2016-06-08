@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -15,6 +15,7 @@ use warnings;
 use Mail::Address;
 use MIME::Entity;
 use MIME::Parser;
+use MIME::Words;
 
 use Kernel::System::VariableCheck qw(:all);
 
@@ -220,9 +221,18 @@ sub Send {
 
     # build header
     my %Header;
-    if ( IsHashRefWithData( $Param{CustomHeaders} ) ) {
-        %Header = %{ $Param{CustomHeaders} };
+
+    my $DefaultHeaders = $ConfigObject->Get('Sendmail::DefaultHeaders') || {};
+    if ( IsHashRefWithData($DefaultHeaders) ) {
+        %Header = %{$DefaultHeaders};
     }
+
+    if ( IsHashRefWithData( $Param{CustomHeaders} ) ) {
+        for my $HeaderName ( sort keys %{ $Param{CustomHeaders} } ) {
+            $Header{$HeaderName} = $Param{CustomHeaders}->{$HeaderName};
+        }
+    }
+
     ATTRIBUTE:
     for my $Attribute (qw(From To Cc Subject Charset Reply-To)) {
         next ATTRIBUTE if !$Param{$Attribute};
@@ -279,9 +289,15 @@ sub Send {
     my $Product = $ConfigObject->Get('Product');
     my $Version = $ConfigObject->Get('Version');
 
-    if ( !$ConfigObject->Get('Secure::DisableBanner') ) {
+    if ( $ConfigObject->Get('Secure::DisableBanner') ) {
+
+        # Set this to undef to avoid having a value like "MIME-tools 5.507 (Entity 5.507)"
+        #   which could lead to the mail being treated as SPAM.
+        $Header{'X-Mailer'} = undef;
+    }
+    else {
         $Header{'X-Mailer'}     = "$Product Mail Service ($Version)";
-        $Header{'X-Powered-By'} = 'OTRS - Open Ticket Request System (http://otrs.org/)';
+        $Header{'X-Powered-By'} = 'OTRS (https://otrs.com/)';
     }
     $Header{Type} = $Param{MimeType} || 'text/plain';
 
@@ -335,11 +351,7 @@ sub Send {
     KEY:
     for my $Key ( 'In-Reply-To', 'References' ) {
         next KEY if !$Param{$Key};
-        my $Value = $Param{$Key};
-
-        # Split up '<msgid><msgid>' to allow line folding (see bug#9345).
-        $Value =~ s{><}{> <}xmsg;
-        $Header->replace( $Key, $Value );
+        $Header->replace( $Key, $Param{$Key} );
     }
 
     # add attachments to email
@@ -453,13 +465,32 @@ sub Send {
                 Charset => $Param{Charset},
             );
 
+            my $Encoding = $Upload->{Encoding};
+            if ( !$Encoding ) {
+
+                # attachments of unknown text/* content types might be displayed directly in mail clients
+                # because MIME::Entity detects them as 'quoted printable'
+                # this causes problems e.g. for pdf files with broken text/pdf content type
+                # therefore we fall back to 'base64' in these cases
+                if (
+                    $Upload->{ContentType} =~ m{ \A text/  }xmsi
+                    && $Upload->{ContentType} !~ m{ \A text/ (?: plain | html ) ; }xmsi
+                    )
+                {
+                    $Encoding = 'base64';
+                }
+                else {
+                    $Encoding = '-SUGGEST';
+                }
+            }
+
             # attach file to email (no content id needed)
             $Entity->attach(
                 Filename    => $Filename,
                 Data        => $Upload->{Content},
                 Type        => $Upload->{ContentType},
                 Disposition => $Upload->{Disposition} || 'inline',
-                Encoding    => $Upload->{Encoding} || '-SUGGEST',
+                Encoding    => $Encoding,
             );
         }
     }
@@ -479,9 +510,21 @@ sub Send {
 
         if ( $Param{Sign}->{Type} eq 'PGP' ) {
 
+            # determine used digest for proper micalg declaration
+            my $ClearSign = $CryptObject->Sign(
+                Message => 'dummy',
+                Key     => $Param{Sign}->{Key},
+                Type    => 'Clearsign',
+                Charset => $Param{Charset},
+            );
+            my $DigestAlgorithm = 'sha1';
+            if ($ClearSign) {
+                $DigestAlgorithm = lc $1 if $ClearSign =~ m{ \n Hash: [ ] ([^\n]+) \n }xms;
+            }
+
             # make_multipart -=> one attachment for sign
             $Entity->make_multipart(
-                "signed; micalg=pgp-sha1; protocol=\"application/pgp-signature\";",
+                "signed; micalg=pgp-$DigestAlgorithm; protocol=\"application/pgp-signature\";",
                 Force => 1,
             );
 
@@ -498,13 +541,13 @@ sub Send {
                 Charset => $Param{Charset},
             );
 
-            # it sign failed, remove singned multi part
+            # it sign failed, remove multi part
             if ( !$Sign ) {
                 $Entity->make_singlepart();
             }
             else {
 
-                # addach sign to email
+                # attach signature to email
                 $Entity->attach(
                     Filename => 'pgp_sign.asc',
                     Data     => $Sign,
@@ -666,6 +709,13 @@ sub Send {
     $Param{Header} = '';
     for my $Line (@Headers) {
         $Line =~ s/^    (.*)$/ $1/;
+
+        # Perform own wrapping of long lines due to MIME::Tools problems (see bug#9345).
+        #  MIME::Tools fails to wrap long lines where the Message-IDs are too long or
+        #  directly concatenated without spaces in between.
+        if ( $Line =~ m{^(References|In-Reply-To):}smx ) {
+            $Line =~ s{(.{64,}?)>\s*<}{$1>\n <}sxmg;
+        }
         $Param{Header} .= $Line . "\n";
     }
 
@@ -846,39 +896,17 @@ sub _EncodeMIMEWords {
     # return if no content is given
     return '' if !defined $Param{Line};
 
-    # check if MIME::EncWords is installed
-    if ( eval { require MIME::EncWords } ) {    ## no critic
-        return MIME::EncWords::encode_mimewords(
-            Encode::encode(
-                $Param{Charset},
-                $Param{Line},
-            ),
-            Charset => $Param{Charset},
+    return MIME::Words::encode_mimewords(
+        Encode::encode(
+            $Param{Charset},
+            $Param{Line},
+        ),
+        Charset => $Param{Charset},
 
-            # use 'a' for quoted printable or base64 choice automatically
-            Encoding => 'a',
-
-            # for line length calculation to fold lines
-            Field => $Param{Field},
-        );
-    }
-
-    # as fallback use MIME::Words of MIME::Tools (but it lakes on some utf8
-    # issues, see pod of MIME::Words)
-    else {
-        require MIME::Words;    ## no critic
-        return MIME::Words::encode_mimewords(
-            Encode::encode(
-                $Param{Charset},
-                $Param{Line},
-            ),
-            Charset => $Param{Charset},
-
-            # for line length calculation to fold lines (gets ignored by
-            # MIME::Words, see pod of MIME::Words)
-            Field => $Param{Field},
-        );
-    }
+        # for line length calculation to fold lines (gets ignored by
+        # MIME::Words, see pod of MIME::Words)
+        Field => $Param{Field},
+    );
 }
 
 sub _MessageIDCreate {

@@ -1226,20 +1226,6 @@ CREATE TABLE gi_debugger_entry_content (
     INDEX gi_debugger_entry_content_debug_level (debug_level)
 );
 # ----------------------------------------------------------
-#  create table gi_object_lock_state
-# ----------------------------------------------------------
-CREATE TABLE gi_object_lock_state (
-    webservice_id INTEGER NOT NULL,
-    object_type VARCHAR (30) NOT NULL,
-    object_id BIGINT NOT NULL,
-    lock_state VARCHAR (30) NOT NULL,
-    lock_state_counter INTEGER NOT NULL,
-    create_time DATETIME NOT NULL,
-    change_time DATETIME NOT NULL,
-    UNIQUE INDEX gi_object_lock_state_list (webservice_id, object_type, object_id),
-    INDEX object_lock_state_list_state (webservice_id, object_type, object_id, lock_state)
-);
-# ----------------------------------------------------------
 #  create table smime_signer_cert_relations
 # ----------------------------------------------------------
 CREATE TABLE smime_signer_cert_relations (
@@ -1288,6 +1274,16 @@ CREATE TABLE dynamic_field (
     change_by INTEGER NOT NULL,
     PRIMARY KEY(id),
     UNIQUE INDEX dynamic_field_name (name)
+);
+# ----------------------------------------------------------
+#  create table dynamic_field_obj_id_name
+# ----------------------------------------------------------
+CREATE TABLE dynamic_field_obj_id_name (
+    object_id INTEGER NOT NULL AUTO_INCREMENT,
+    object_name VARCHAR (200) NOT NULL,
+    object_type VARCHAR (200) NOT NULL,
+    PRIMARY KEY(object_id),
+    UNIQUE INDEX dynamic_field_object_name (object_name, object_type)
 );
 # ----------------------------------------------------------
 #  create table pm_process

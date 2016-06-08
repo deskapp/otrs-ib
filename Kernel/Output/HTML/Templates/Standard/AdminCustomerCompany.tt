@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -62,7 +62,13 @@
             <div class="WidgetSimple">
 [% RenderBlockStart("OverviewHeader") %]
                 <div class="Header">
-                    <h2>[% Translate("List") | html %]</h2>
+                    <h2>[% Translate("List") | html %]
+                        [% IF Data.ListAll && Data.Limit && Data.ListAll > Data.Limit %]
+                            ([% Data.SearchListSize | html %] [% Translate("shown") | html %] / [% Data.ListAll | html %] [% Translate("total") | html %])
+                        [% ELSE %]
+                            ([% Data.ListAll | html %] [% Translate("total") | html %])
+                        [% END %]
+                    </h2>
                 </div>
 [% RenderBlockEnd("OverviewHeader") %]
 [% RenderBlockStart("NoSearchTerms") %]
@@ -109,18 +115,6 @@
                         </tbody>
                     </table>
                 </div>
-[% WRAPPER JSOnDocumentComplete %]
-<script type="text/javascript">//<![CDATA[
-$('.MasterAction').bind('click', function (Event) {
-    var $MasterActionLink = $(this).find('.MasterActionLink');
-    // only act if the link was not clicked directly
-    if (Event.target !== $MasterActionLink.get(0)) {
-        window.location = $MasterActionLink.attr('href');
-        return false;
-    }
-});
-//]]></script>
-[% END %]
 [% RenderBlockEnd("OverviewResult") %]
 
 [% RenderBlockStart("OverviewUpdate") %]
@@ -137,11 +131,6 @@ $('.MasterAction').bind('click', function (Event) {
                     <div class="WidgetMessage Top Warning">
                         <p><strong>[% Translate("Please note") %]</strong>: [% Translate("This customer backend is read only!") | html %]</p>
                     </div>
-[% WRAPPER JSOnDocumentComplete %]
-<script type="text/javascript">//<![CDATA[
-Core.Form.DisableForm($('form#edit'));
-//]]></script>
-[% END %]
                 [% END %]
                     <form action="[% Env("CGIHandle") %]" id="edit" class="Validate" method="post">
                         <input type="hidden" name="Action" value="[% Env("Action") %]"/>
@@ -191,10 +180,21 @@ Core.Form.DisableForm($('form#edit'));
                             <div class="Clear"></div>
 
 [% RenderBlockEnd("PreferencesGenericOption") %]
+
+[% RenderBlockStart("DynamicField") %]
+                    <div class="Row Row_DynamicField_[% Data.Name | html %]">
+                        [% Data.Label %]
+                        <div class="Field">
+                            [% Data.Field %]
+                        </div>
+                        <div class="Clear"></div>
+                    </div>
+[% RenderBlockEnd("DynamicField") %]
+
 [% RenderBlockEnd("PreferencesGeneric") %]
                             [% IF  Config(Data.Source).ReadOnly != 1 %]
                             <div class="Field SpacingTop">
-                                <button class="Primary CallForAction" type="submit" value="[% Translate("Submit") | html %]"><span>[% Translate("Submit") | html %]</span></button>
+                                <button class="Primary CallForAction" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
                                     [% Translate("or") | html %]
                                 <a href="[% Env("Baselink") %]Action=[% Env("Action") %];Nav=[% Data.Nav | uri %]">[% Translate("Cancel") | html %]</a>
                             </div>

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -504,7 +504,7 @@ sub _Show {
             push @ActionItems, {
                 HTML        => $Output,
                 ID          => $Item->{ID},
-                Name        => $LayoutObject->{LanguageObject}->Translate( $Item->{Name} ),
+                Name        => $Item->{Name},
                 Link        => $LayoutObject->{Baselink} . $Item->{Link},
                 Target      => $Item->{Target},
                 PopupType   => $Item->{PopupType},
@@ -1153,7 +1153,7 @@ sub _Show {
                         Data => {
                             %{$ArticleItem},
                             StandardResponsesStrg => $StandardResponsesStrg,
-                            Name                  => 'Reply',
+                            Name                  => Translatable('Reply'),
                             Class                 => 'AsPopup',
                             Action                => 'AgentTicketCompose',
                             FormID                => 'Reply' . $ArticleItem->{ArticleID},
@@ -1214,7 +1214,7 @@ sub _Show {
                             Data => {
                                 %{$ArticleItem},
                                 StandardResponsesStrg => $StandardResponsesStrg,
-                                Name                  => 'Reply All',
+                                Name                  => Translatable('Reply All'),
                                 Class                 => 'AsPopup',
                                 Action                => 'AgentTicketCompose',
                                 FormID                => 'ReplyAll' . $ArticleItem->{ArticleID},

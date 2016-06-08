@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -10,6 +10,8 @@ package Kernel::Output::HTML::Dashboard::TicketStatsGeneric;
 
 use strict;
 use warnings;
+
+use Kernel::System::DateTime qw(:all);
 
 our $ObjectManagerDisabled = 1;
 
@@ -80,76 +82,52 @@ sub Run {
         },
     );
 
-    my $ClosedText      = $LayoutObject->{LanguageObject}->Translate('Closed');
-    my $CreatedText     = $LayoutObject->{LanguageObject}->Translate('Created');
-    my $StateText       = $LayoutObject->{LanguageObject}->Translate('State');
-    my @TicketsCreated  = ();
-    my @TicketsClosed   = ();
-    my @TicketWeekdays  = ();
-    my $Max             = 0;
-    my $UseUserTimeZone = 0;
+    my $ClosedText     = $LayoutObject->{LanguageObject}->Translate('Closed');
+    my $CreatedText    = $LayoutObject->{LanguageObject}->Translate('Created');
+    my $StateText      = $LayoutObject->{LanguageObject}->Translate('State');
+    my @TicketsCreated = ();
+    my @TicketsClosed  = ();
+    my @TicketWeekdays = ();
+    my $Max            = 0;
 
-    # get ticket object
     my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
 
-    # get the time object
-    my $TimeObject = $Kernel::OM->Get('Kernel::System::Time');
+    my $TimeZone = $Self->{UserTimeZone} || OTRSTimeZoneGet();
 
-    # use the UserTimeObject, if the system use UTC as system time and the TimeZoneUser feature is active
-    if (
-        !$Kernel::OM->Get('Kernel::System::Time')->ServerLocalTimeOffsetSeconds()
-        && $Kernel::OM->Get('Kernel::Config')->Get('TimeZoneUser')
-        && $Self->{UserTimeZone}
-        )
-    {
-        $UseUserTimeZone = 1;
-        $TimeObject      = $LayoutObject->{UserTimeObject};
-    }
+    for my $DaysBack ( 0 .. 6 ) {
 
-    for my $Key ( 0 .. 6 ) {
+        # cache results for 30 min. for todays stats
+        my $CacheTTL = 60 * 30;
 
-        # get the system time
-        my $TimeNow = $TimeObject->SystemTime();
-
-        if ($Key) {
-            $TimeNow = $TimeNow - ( 60 * 60 * 24 * $Key );
-        }
-        my ( $Sec, $Min, $Hour, $Day, $Month, $Year, $WeekDay ) = $TimeObject->SystemTime2Date(
-            SystemTime => $TimeNow,
+        my $DateTimeObject = $Kernel::OM->Create(
+            'Kernel::System::DateTime',
+            ObjectParams => {
+                TimeZone => $TimeZone,
+                }
         );
+        if ($DaysBack) {
+            $DateTimeObject->Subtract( Days => $DaysBack );
+
+            # for past 6 days cache results for 8 days (should not change)
+            $CacheTTL = 60 * 60 * 24 * 8;
+        }
+        $DateTimeObject->ToOTRSTimeZone();
+
+        my $DateTimeValues = $DateTimeObject->Get();
+        my $WeekDay = $DateTimeValues->{DayOfWeek} == 7 ? 0 : $DateTimeValues->{DayOfWeek};
 
         unshift(
             @TicketWeekdays,
             $LayoutObject->{LanguageObject}->Translate( $Axis{'7Day'}->{$WeekDay} )
         );
 
-        my $TimeStart = "$Year-$Month-$Day 00:00:00";
-        my $TimeStop  = "$Year-$Month-$Day 23:59:59";
-
-        if ($UseUserTimeZone) {
-
-            my $SystemTimeStart = $TimeObject->TimeStamp2SystemTime(
-                String => $TimeStart,
-            );
-            my $SystemTimeStop = $TimeObject->TimeStamp2SystemTime(
-                String => $TimeStop,
-            );
-
-            $SystemTimeStart = $SystemTimeStart - ( $Self->{UserTimeZone} * 3600 );
-            $SystemTimeStop  = $SystemTimeStop -  ( $Self->{UserTimeZone} * 3600 );
-
-            $TimeStart = $TimeObject->SystemTime2TimeStamp(
-                SystemTime => $SystemTimeStart,
-            );
-            $TimeStop = $TimeObject->SystemTime2TimeStamp(
-                SystemTime => $SystemTimeStop,
-            );
-        }
+        my $TimeStart = $DateTimeObject->Format( Format => '%Y-%m-%d 00:00:00' );
+        my $TimeStop  = $DateTimeObject->Format( Format => '%Y-%m-%d 23:59:59' );
 
         my $CountCreated = $TicketObject->TicketSearch(
 
-            # cache search result 30 min
-            CacheTTL => 60 * 30,
+            # cache search result
+            CacheTTL => $CacheTTL,
 
             # tickets with create time after ... (ticket newer than this date) (optional)
             TicketCreateTimeNewerDate => $TimeStart,
@@ -171,8 +149,8 @@ sub Run {
 
         my $CountClosed = $TicketObject->TicketSearch(
 
-            # cache search result 30 min
-            CacheTTL => 60 * 30,
+            # cache search result
+            CacheTTL => $CacheTTL,
 
             # tickets with create time after ... (ticket newer than this date) (optional)
             TicketCloseTimeNewerDate => $TimeStart,

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -195,13 +195,7 @@ $('#SaveAndFinishButton').bind('click', function(){
 Core.Agent.Admin.GenericInterfaceOperation.Init({
     WebserviceID: [% Data.WebserviceID | html %],
     Operation: "[% Data.Operation | html %]",
-    Action: 'AdminGenericInterfaceOperationDefault',
-    Localization: {
-        CommunicationErrorMsg: [% Translate("An error occurred during communication.") | JSON %],
-        DeleteOperationMsg: [% Translate("Delete this Operation") | JSON %],
-        DeleteMsg: [% Translate("Delete") | JSON %],
-        CancelMsg: [% Translate("Cancel") | JSON %]
-    }
+    Action: 'AdminGenericInterfaceOperationDefault'
 });
 
 $('.RegisterChange').bind('change.RegisterChange keyup.RegisterChange', function (Event) {

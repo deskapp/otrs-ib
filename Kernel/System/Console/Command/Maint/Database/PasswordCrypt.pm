@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -23,7 +23,7 @@ sub Configure {
     $Self->Description('Makes a database password unreadable for inclusion in Kernel/Config.pm.');
     $Self->AddArgument(
         Name        => 'password',
-        Description => "The database password to be crypted.",
+        Description => "The database password to be encrypted.",
         Required    => 1,
         ValueRegex  => qr/.*/smx,
     );

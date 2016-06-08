@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -27,6 +27,8 @@ our @ObjectDependencies = (
     'Kernel::System::State',
     'Kernel::System::Ticket',
     'Kernel::System::Time',
+    'Kernel::System::TemplateGenerator',
+    'Kernel::System::CustomerUser',
 );
 
 =head1 NAME
@@ -285,13 +287,13 @@ sub JobRun {
         PREFERENCE:
         for my $Preference ( @{$SearchFieldPreferences} ) {
 
-            if (
-                !$DynamicFieldSearchTemplate{
-                    'Search_DynamicField_'
-                        . $DynamicFieldConfig->{Name}
-                        . $Preference->{Type}
-                }
-                )
+            my $DynamicFieldTemp = $DynamicFieldSearchTemplate{
+                'Search_DynamicField_'
+                    . $DynamicFieldConfig->{Name}
+                    . $Preference->{Type}
+            };
+
+            if ( !defined($DynamicFieldTemp) )
             {
                 next PREFERENCE;
             }
@@ -315,14 +317,15 @@ sub JobRun {
         $Job{TicketID} = $Param{OnlyTicketID};
     }
 
-    # get ticket object
+    # get needed objects
     my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
     # escalation tickets
     my %Tickets;
 
     # get ticket limit on job run
-    my $RunLimit = $Kernel::OM->Get('Kernel::Config')->Get('Ticket::GenericAgentRunLimit');
+    my $RunLimit = $ConfigObject->Get('Ticket::GenericAgentRunLimit');
     if ( $Job{Escalation} ) {
 
         # Find all tickets which will escalate within the next five days.
@@ -330,7 +333,7 @@ sub JobRun {
         my @Tickets = $TicketObject->TicketSearch(
             %Job,
             Result                           => 'ARRAY',
-            Limit                            => $Job{Limit} || 100,
+            Limit                            => $Job{Limit} || $Param{Limit} || 100,
             TicketEscalationTimeOlderMinutes => $Job{TicketEscalationTimeOlderMinutes}
                 || -( 5 * 24 * 60 ),
             Permission => 'rw',
@@ -450,10 +453,11 @@ sub JobRun {
             if ( $Self->{NoticeSTDOUT} ) {
                 print " For all Queues: \n";
             }
+            my $GenericAgentTicketSearch = $ConfigObject->Get("Ticket::GenericAgentTicketSearch") || {};
             %Tickets = $TicketObject->TicketSearch(
                 %Job,
                 %DynamicFieldSearchParameters,
-                ConditionInline => 1,
+                ConditionInline => $GenericAgentTicketSearch->{ExtendedSearchCondition},
                 Limit           => $Param{Limit} || $RunLimit,
                 UserID          => $Param{UserID},
             );
@@ -975,23 +979,65 @@ sub _JobRunTicket {
         );
     }
 
+    my $ContentType = 'text/plain';
+
     # add note if wanted
     if ( $Param{Config}->{New}->{Note}->{Body} || $Param{Config}->{New}->{NoteBody} ) {
         if ( $Self->{NoticeSTDOUT} ) {
             print "  - Add note to Ticket $Ticket\n";
         }
+
+        my %Ticket = $TicketObject->TicketGet(
+            TicketID      => $Param{TicketID},
+            DynamicFields => 0,
+        );
+
+        my %CustomerUserData;
+
+        # We can only do OTRS Tag replacement if we have a CustomerUserID (langauge settings...)
+        if ( IsHashRefWithData( \%Ticket ) && IsStringWithData( $Ticket{CustomerUserID} ) ) {
+            my %CustomerUserData = $Kernel::OM->Get('Kernel::System::CustomerUser')->CustomerUserDataGet(
+                User => $Ticket{CustomerUserID},
+            );
+
+            my %Notification = (
+                Subject     => $Param{Config}->{New}->{NoteSubject},
+                Body        => $Param{Config}->{New}->{NoteBody},
+                ContentType => 'text/plain',
+            );
+
+            my %GenericAgentArticle = $Kernel::OM->Get('Kernel::System::TemplateGenerator')->GenericAgentArticle(
+                TicketID     => $Param{TicketID},
+                Recipient    => \%CustomerUserData,    # Agent or Customer data get result
+                Notification => \%Notification,
+                UserID       => $Param{UserID},
+            );
+
+            if (
+                IsStringWithData( $GenericAgentArticle{Body} )
+                || IsHashRefWithData( $GenericAgentArticle{Subject} )
+                )
+            {
+                $Param{Config}->{New}->{Note}->{Subject} = $GenericAgentArticle{Subject} || '';
+                $Param{Config}->{New}->{Note}->{Body}    = $GenericAgentArticle{Body}    || '';
+                $ContentType                             = $GenericAgentArticle{ContentType};
+            }
+        }
+
         my $ArticleID = $TicketObject->ArticleCreate(
             TicketID    => $Param{TicketID},
-            ArticleType => $Param{Config}->{New}->{Note}->{ArticleType} || 'note-internal',
-            SenderType  => 'agent',
-            From        => $Param{Config}->{New}->{Note}->{From}
+            ArticleType => $Param{Config}->{New}->{Note}->{ArticleType}
+                || $Param{Config}->{New}->{ArticleType}
+                || 'note-internal',
+            SenderType => 'agent',
+            From       => $Param{Config}->{New}->{Note}->{From}
                 || $Param{Config}->{New}->{NoteFrom}
                 || 'GenericAgent',
             Subject => $Param{Config}->{New}->{Note}->{Subject}
                 || $Param{Config}->{New}->{NoteSubject}
                 || 'Note',
             Body => $Param{Config}->{New}->{Note}->{Body} || $Param{Config}->{New}->{NoteBody},
-            MimeType       => 'text/plain',
+            MimeType       => $ContentType,
             Charset        => 'utf-8',
             UserID         => $Param{UserID},
             HistoryType    => 'AddNote',
@@ -1277,7 +1323,7 @@ sub _JobRunTicket {
 
         next DYNAMICFIELD if !IsHashRefWithData($DynamicFieldConfig);
 
-        # extract the dynamic field value form the web request
+        # extract the dynamic field value from the web request
         my $Value = $DynamicFieldBackendObject->EditFieldValueGet(
             DynamicFieldConfig => $DynamicFieldConfig,
             Template           => $Param{Config}->{New},

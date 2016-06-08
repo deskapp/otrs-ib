@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -52,12 +52,12 @@ Core.Agent.Login = (function (TargetNS) {
             return false;
         });
 
-        // save TimeOffset data for OTRS
-        $('#TimeOffset').val((new Date()).getTimezoneOffset());
+        // save TimeZoneOffset data for OTRS
+        $('#TimeZoneOffset').val((new Date()).getTimezoneOffset());
 
         // shake login box on authentication failure
         if (LoginFailed) {
-            Core.UI.Shake($('#LoginBox'));
+            Core.UI.Animate($('#LoginBox'), 'Shake');
         }
 
         // if in PreLogin mode, automatically submit form

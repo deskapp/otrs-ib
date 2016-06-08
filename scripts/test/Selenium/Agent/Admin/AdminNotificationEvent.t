@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2015 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -12,10 +12,8 @@ use utf8;
 
 use vars (qw($Self));
 
-# get needed objects
-my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
-my $DBObject     = $Kernel::OM->Get('Kernel::System::DB');
-my $Selenium     = $Kernel::OM->Get('Kernel::System::UnitTest::Selenium');
+# get selenium object
+my $Selenium = $Kernel::OM->Get('Kernel::System::UnitTest::Selenium');
 
 $Selenium->RunTest(
     sub {
@@ -32,9 +30,17 @@ $Selenium->RunTest(
         $Kernel::OM->Get('Kernel::System::SysConfig')->ConfigItemUpdate(
             Valid => 1,
             Key   => 'Frontend::RichText',
-            Value => 0
+            Value => 0,
         );
 
+        # enable SMIME due to 'Enable email security' checkbox must be enabled
+        $Kernel::OM->Get('Kernel::System::SysConfig')->ConfigItemUpdate(
+            Valid => 1,
+            Key   => 'SMIME',
+            Value => 1,
+        );
+
+        # create test user and login
         my $TestUserLogin = $Helper->TestUserCreate(
             Groups => ['admin'],
         ) || die "Did not get test user";
@@ -45,9 +51,11 @@ $Selenium->RunTest(
             Password => $TestUserLogin,
         );
 
-        my $ScriptAlias = $ConfigObject->Get('ScriptAlias');
+        # get script alias
+        my $ScriptAlias = $Kernel::OM->Get('Kernel::Config')->Get('ScriptAlias');
 
-        $Selenium->get("${ScriptAlias}index.pl?Action=AdminNotificationEvent");
+        # navigate to AdminNotificationEvent screen
+        $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AdminNotificationEvent");
 
         # check overview screen
         $Selenium->find_element( "table",             'css' );
@@ -55,7 +63,8 @@ $Selenium->RunTest(
         $Selenium->find_element( "table tbody tr td", 'css' );
 
         # click "Add notification"
-        $Selenium->find_element("//a[contains(\@href, \'Action=AdminNotificationEvent;Subaction=Add' )]")->click();
+        $Selenium->find_element("//a[contains(\@href, \'Action=AdminNotificationEvent;Subaction=Add' )]")
+            ->VerifiedClick();
 
         # check add NotificationEvent screen
         for my $ID (
@@ -82,7 +91,7 @@ $Selenium->RunTest(
         $Selenium->find_element( "#ArticleSubjectMatch", 'css' )->send_keys($NotifEventText);
         $Selenium->find_element( "#en_Subject",          'css' )->send_keys($NotifEventText);
         $Selenium->find_element( "#en_Body",             'css' )->send_keys($NotifEventText);
-        $Selenium->find_element( "#Name",                'css' )->submit();
+        $Selenium->find_element( "#Name",                'css' )->VerifiedSubmit();
 
         # check if test NotificationEvent show on AdminNotificationEvent screen
         $Self->True(
@@ -91,7 +100,7 @@ $Selenium->RunTest(
         );
 
         # check test NotificationEvent values
-        $Selenium->find_element( $NotifEventRandomID, 'link_text' )->click();
+        $Selenium->find_element( $NotifEventRandomID, 'link_text' )->VerifiedClick();
 
         $Self->Is(
             $Selenium->find_element( '#Name', 'css' )->get_value(),
@@ -138,10 +147,10 @@ $Selenium->RunTest(
         $Selenium->find_element( "#ArticleSubjectMatch", 'css' )->clear();
         $Selenium->find_element( "#ArticleBodyMatch",    'css' )->send_keys($EditNotifEventText);
         $Selenium->execute_script("\$('#ValidID').val('2').trigger('redraw.InputField').trigger('change');");
-        $Selenium->find_element( "#Name", 'css' )->submit();
+        $Selenium->find_element( "#Name", 'css' )->VerifiedSubmit();
 
         # check edited NotifcationEvent values
-        $Selenium->find_element( $NotifEventRandomID, 'link_text' )->click();
+        $Selenium->find_element( $NotifEventRandomID, 'link_text' )->VerifiedClick();
 
         $Self->Is(
             $Selenium->find_element( '#Comment', 'css' )->get_value(),
@@ -169,8 +178,44 @@ $Selenium->RunTest(
             "#ValidID updated value",
         );
 
+        # test javascript enable/disable actions on checkbox checking
+        my @InputFields = (
+            "EmailSigningCrypting_Search",
+            "EmailMissingSigningKeys_Search",
+            "EmailMissingCryptingKeys_Search"
+        );
+
+        # set initial checkbox state
+        $Selenium->execute_script("\$('#EmailSecuritySettings').prop('checked', false)");
+
+        my @Tests = (
+            {
+                Name     => 'Input fields are enabled',
+                HasClass => 0,
+            },
+            {
+                Name     => 'Input fields are disabled',
+                HasClass => 1,
+            }
+        );
+
+        for my $Test (@Tests) {
+            $Selenium->find_element( "#EmailSecuritySettings", 'css' )->click();
+            sleep 1;
+
+            for my $InputField (@InputFields) {
+                $Self->Is(
+                    $Selenium->execute_script(
+                        "return \$('#$InputField').parent().hasClass('AlreadyDisabled')"
+                    ),
+                    $Test->{HasClass},
+                    $Test->{Name},
+                );
+            }
+        }
+
         # go back to AdminNotificationEvent overview screen
-        $Selenium->get("${ScriptAlias}index.pl?Action=AdminNotificationEvent");
+        $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AdminNotificationEvent");
 
         # check class of invalid NotificationEvent in the overview table
         $Self->True(
@@ -196,7 +241,7 @@ JAVASCRIPT
         $Selenium->execute_script($CheckConfirmJS);
 
         # delete test SLA with delete button
-        $Selenium->find_element("//a[contains(\@href, \'Subaction=Delete;ID=$NotifEventID{ID}' )]")->click();
+        $Selenium->find_element("//a[contains(\@href, \'Subaction=Delete;ID=$NotifEventID{ID}' )]")->VerifiedClick();
 
         # check if test NotificationEvent is deleted
         $Self->False(
