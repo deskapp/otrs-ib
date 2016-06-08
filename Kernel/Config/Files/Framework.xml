@@ -9212,6 +9212,9 @@ via the Preferences button after logging in.
                     <Description Translatable="1">Link agents to groups.</Description>
                     <Prio>200</Prio>
                 </NavBarModule>
+                <Loader>
+                    <JavaScript>Core.Agent.Admin.UserGroup.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
@@ -9247,6 +9250,7 @@ via the Preferences button after logging in.
                 </NavBarModule>
                 <Loader>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.Admin.CustomerUser.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -9281,6 +9285,9 @@ via the Preferences button after logging in.
                     <Block>Customer</Block>
                     <Prio>310</Prio>
                 </NavBarModule>
+                <Loader>
+                    <JavaScript>Core.Agent.Admin.CustomerCompany.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
@@ -9311,6 +9318,9 @@ via the Preferences button after logging in.
                     <Block>Customer</Block>
                     <Prio>400</Prio>
                 </NavBarModule>
+                <Loader>
+                    <JavaScript>Core.Agent.Admin.CustomerUserGroup.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
@@ -9331,6 +9341,9 @@ via the Preferences button after logging in.
                     <Block>Customer</Block>
                     <Prio>500</Prio>
                 </NavBarModule>
+                <Loader>
+                    <JavaScript>Core.Agent.Admin.CustomerUserService.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
@@ -9371,6 +9384,9 @@ via the Preferences button after logging in.
                     <Block>Agent</Block>
                     <Prio>700</Prio>
                 </NavBarModule>
+                <Loader>
+                    <JavaScript>Core.Agent.Admin.RoleUser.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
@@ -9391,6 +9407,9 @@ via the Preferences button after logging in.
                     <Block>Agent</Block>
                     <Prio>800</Prio>
                 </NavBarModule>
+                <Loader>
+                    <JavaScript>Core.Agent.Admin.RoleGroup.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>

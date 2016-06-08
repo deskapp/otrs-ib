@@ -685,6 +685,9 @@ sub TicketDelete {
         UserID => $Param{UserID},
     );
 
+    # clear ticket cache again
+    $Self->_TicketCacheClear( TicketID => $Param{TicketID} );
+
     return 1;
 }
 
