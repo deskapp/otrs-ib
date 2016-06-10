@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-06-10 Fixed hiding attachments with Content-ID found anywhere in the message body.
  - 2016-06-08 Initial payload adapted to Polish.
  - 2016-06-08 Optimal EnterMode in CKeditor.
  - 2016-06-07 Added index for searching dynamic field text values.
