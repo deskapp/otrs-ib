@@ -1008,8 +1008,8 @@ sub GetStaticFiles {
         if ( defined $Result ) {
             for my $StatID ( @{$Result} ) {
                 my $Data = $Self->StatsGet(
-                    StatID => $StatID,
-                    UserID => $Param{UserID},
+                    StatID             => $StatID,
+                    UserID             => $Param{UserID},
                     NoObjectAttributes => 1,
                 );
 

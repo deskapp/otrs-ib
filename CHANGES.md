@@ -1,5 +1,11 @@
 #5.0.11 2016-??-??
+ - 2016-06-13 Fixed bug#[12078](http://bugs.otrs.org/show_bug.cgi?id=12078) - AdminCustomerUser timeout because of too many customer users.
+ - 2016-06-13 Faster new stat add operation, thanks to Pawel Boguslawski.
  - 2016-06-10 Fixed hiding attachments with Content-ID found anywhere in the message body.
+ - 2016-06-09 Fixed bug#[12129](http://bugs.otrs.org/show_bug.cgi?id=12129) - Process Management: Ticket locks even when is not needed, thanks to Thorsten Eckel.
+ - 2016-06-09 Fixed bug#[12128](http://bugs.otrs.org/show_bug.cgi?id=12128) - Can not store 0 in Admin Customer screen, thanks to Renée Bäcker.
+ - 2016-06-09 Fixed bug#[12116](http://bugs.otrs.org/show_bug.cgi?id=12116) - Tooltip error messages in combination with modern input fields.
+ - 2016-06-09 Fixed performance issue in PermissionUserGet(), thanks to Thorsten Eckel.
  - 2016-06-08 Initial payload adapted to Polish.
  - 2016-06-08 Optimal EnterMode in CKeditor.
  - 2016-06-07 Added index for searching dynamic field text values.
