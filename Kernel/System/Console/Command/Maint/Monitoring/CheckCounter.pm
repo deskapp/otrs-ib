@@ -106,11 +106,12 @@ sub Run {
             next SESSIONID if !$Data{UserLastRequest};
             next SESSIONID if $Data{UserLastRequest} + ( $Options{SessionIdleMinutes} * 60 ) < $Time;
 
-            $SessionCounters{"$Data{UserType}Session"}++;
-
-            if ( !$SessionCounters{"$Data{UserLogin}"} ) {
-                $SessionCounters{"$Data{UserType}SessionUniq"}++;
-                $SessionCounters{"$Data{UserLogin}"} = 1;
+            if ( $Data{UserType} && $Data{UserLogin} ) {
+                $SessionCounters{"$Data{UserType}Session"}++;
+                if ( !$SessionCounters{"$Data{UserLogin}"} ) {
+                    $SessionCounters{"$Data{UserType}SessionUniq"}++;
+                    $SessionCounters{"$Data{UserLogin}"} = 1;
+                }
             }
         }
     }
