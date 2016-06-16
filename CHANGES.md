@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-06-16 Fixed plain e-mails saving with unfolded headers.
  - 2016-06-16 Fixed empty attachment links and ugly filesize formatting.
  - 2016-06-10 Fixed hiding attachments with Content-ID found anywhere in the message body.
  - 2016-06-08 Initial payload adapted to Polish.
