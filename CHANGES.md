@@ -1,4 +1,5 @@
 #5.0.11 2016-??-??
+ - 2016-06-16 Fixed errors when processing incomplete session data.
  - 2016-06-16 Fixed plain e-mails saving with unfolded headers.
  - 2016-06-16 Fixed empty attachment links and ugly filesize formatting.
  - 2016-06-15 Fixed bug#[12131](http://bugs.otrs.org/show_bug.cgi?id=12131) - Parameter --with-header does not work.
