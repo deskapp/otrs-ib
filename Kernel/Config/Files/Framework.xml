@@ -9060,6 +9060,7 @@ via the Preferences button after logging in.
                 <Loader>
                     <JavaScript>Core.Agent.CustomerSearch.js</JavaScript>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.Book.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -9203,11 +9204,11 @@ via the Preferences button after logging in.
             <FrontendModuleReg>
                 <Group>admin</Group>
                 <Description>Admin</Description>
-                <Title Translatable="1">Agents &lt;-&gt; Groups</Title>
+                <Title Translatable="1">Agents ↔ Groups</Title>
                 <NavBarName>Admin</NavBarName>
                 <NavBarModule>
                     <Module>Kernel::Output::HTML::NavBar::ModuleAdmin</Module>
-                    <Name Translatable="1">Agents &lt;-&gt; Groups</Name>
+                    <Name Translatable="1">Agents ↔ Groups</Name>
                     <Block>Agent</Block>
                     <Description Translatable="1">Link agents to groups.</Description>
                     <Prio>200</Prio>
@@ -9309,11 +9310,11 @@ via the Preferences button after logging in.
             <FrontendModuleReg>
                 <Group>admin</Group>
                 <Description>Admin</Description>
-                <Title Translatable="1">Customers &lt;-&gt; Groups</Title>
+                <Title Translatable="1">Customers ↔ Groups</Title>
                 <NavBarName>Admin</NavBarName>
                 <NavBarModule>
                     <Module>Kernel::Output::HTML::NavBar::ModuleAdmin</Module>
-                    <Name Translatable="1">Customer User &lt;-&gt; Groups</Name>
+                    <Name Translatable="1">Customer User ↔ Groups</Name>
                     <Description Translatable="1">Link customer user to groups.</Description>
                     <Block>Customer</Block>
                     <Prio>400</Prio>
@@ -9332,11 +9333,11 @@ via the Preferences button after logging in.
             <FrontendModuleReg>
                 <Group>admin</Group>
                 <Description>Admin</Description>
-                <Title Translatable="1">Customer User &lt;-&gt; Services</Title>
+                <Title Translatable="1">Customer User ↔ Services</Title>
                 <NavBarName>Admin</NavBarName>
                 <NavBarModule>
                     <Module>Kernel::Output::HTML::NavBar::ModuleAdmin</Module>
-                    <Name Translatable="1">Customer User &lt;-&gt; Services</Name>
+                    <Name Translatable="1">Customer User ↔ Services</Name>
                     <Description Translatable="1">Link customer user to services.</Description>
                     <Block>Customer</Block>
                     <Prio>500</Prio>
@@ -9364,6 +9365,9 @@ via the Preferences button after logging in.
                     <Block>Agent</Block>
                     <Prio>600</Prio>
                 </NavBarModule>
+                <Loader>
+                    <JavaScript>Core.Agent.Admin.Role.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
@@ -9375,11 +9379,11 @@ via the Preferences button after logging in.
             <FrontendModuleReg>
                 <Group>admin</Group>
                 <Description>Admin</Description>
-                <Title Translatable="1">Agents &lt;-&gt; Roles</Title>
+                <Title Translatable="1">Agents ↔ Roles</Title>
                 <NavBarName>Admin</NavBarName>
                 <NavBarModule>
                     <Module>Kernel::Output::HTML::NavBar::ModuleAdmin</Module>
-                    <Name Translatable="1">Agents &lt;-&gt; Roles</Name>
+                    <Name Translatable="1">Agents ↔ Roles</Name>
                     <Description Translatable="1">Link agents to roles.</Description>
                     <Block>Agent</Block>
                     <Prio>700</Prio>
@@ -9398,11 +9402,11 @@ via the Preferences button after logging in.
             <FrontendModuleReg>
                 <Group>admin</Group>
                 <Description>Admin</Description>
-                <Title Translatable="1">Roles &lt;-&gt; Groups</Title>
+                <Title Translatable="1">Roles ↔ Groups</Title>
                 <NavBarName>Admin</NavBarName>
                 <NavBarModule>
                     <Module>Kernel::Output::HTML::NavBar::ModuleAdmin</Module>
-                    <Name Translatable="1">Roles &lt;-&gt; Groups</Name>
+                    <Name Translatable="1">Roles ↔ Groups</Name>
                     <Description Translatable="1">Link roles to groups.</Description>
                     <Block>Agent</Block>
                     <Prio>800</Prio>
@@ -9430,6 +9434,9 @@ via the Preferences button after logging in.
                     <Block>Email</Block>
                     <Prio>1100</Prio>
                 </NavBarModule>
+                <Loader>
+                    <JavaScript>Core.Agent.Admin.SMIME.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
@@ -9493,6 +9500,10 @@ via the Preferences button after logging in.
                     <Block>Email</Block>
                     <Prio>200</Prio>
                 </NavBarModule>
+                <Loader>
+                    <JavaScript>Core.Agent.Admin.PostMasterFilter.js</JavaScript>
+                    <CSS>Core.Agent.Admin.PostMasterFilter.css</CSS>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
@@ -9533,6 +9544,9 @@ via the Preferences button after logging in.
                     <Block>System</Block>
                     <Prio>500</Prio>
                 </NavBarModule>
+                <Loader>
+                    <JavaScript>Core.Agent.Admin.Session.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
@@ -9578,6 +9592,7 @@ via the Preferences button after logging in.
                 </NavBarModule>
                 <Loader>
                     <CSS>Core.Agent.Admin.Registration.css</CSS>
+                    <JavaScript>Core.Agent.Admin.Registration.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
