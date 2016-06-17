@@ -1,4 +1,5 @@
 #5.0.11 2016-??-??
+ - 2016-06-17 Fixed uninitialized counters after TicketSearch calls without permissions.
  - 2016-06-16 Fixed errors when processing incomplete session data.
  - 2016-06-16 Fixed plain e-mails saving with unfolded headers.
  - 2016-06-16 Fixed empty attachment links and ugly filesize formatting.
