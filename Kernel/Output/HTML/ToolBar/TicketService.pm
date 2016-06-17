@@ -84,7 +84,7 @@ sub Run {
         LockIDs    => \@ViewableLockIDs,
         UserID     => $Self->{UserID},
         Permission => 'ro',
-    );
+    ) || 0;
 
     my $Class = $Param{Config}->{CssClass};
     my $Icon  = $Param{Config}->{Icon};

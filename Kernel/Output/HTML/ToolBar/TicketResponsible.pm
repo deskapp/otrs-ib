@@ -59,7 +59,7 @@ sub Run {
         ResponsibleIDs => [ $Self->{UserID} ],
         UserID         => 1,
         Permission     => 'ro',
-    );
+    ) || 0;
     my $CountNew = $TicketObject->TicketSearch(
         Result         => 'COUNT',
         StateType      => 'Open',
@@ -70,7 +70,7 @@ sub Run {
         TicketFlagUserID => $Self->{UserID},
         UserID           => 1,
         Permission       => 'ro',
-    );
+    ) || 0;
     $CountNew = $Count - $CountNew;
 
     my $CountReached = $TicketObject->TicketSearch(
@@ -80,7 +80,7 @@ sub Run {
         TicketPendingTimeOlderMinutes => 1,
         UserID                        => 1,
         Permission                    => 'ro',
-    );
+    ) || 0;
 
     my $Class        = $Param{Config}->{CssClass};
     my $ClassNew     = $Param{Config}->{CssClassNew};
