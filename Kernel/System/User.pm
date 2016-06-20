@@ -926,7 +926,8 @@ user login or id lookup
     );
 
     my $UserID = $UserObject->UserLookup(
-        UserLogin => 'some_user_login',
+        UserLogin       => 'some_user_login',
+        DisableWarnings => 1,         # optional
     );
 
 =cut
@@ -973,10 +974,12 @@ sub UserLookup {
         }
 
         if ( !$ID ) {
-            $Kernel::OM->Get('Kernel::System::Log')->Log(
-                Priority => 'error',
-                Message  => "No UserID found for '$Param{UserLogin}'!",
-            );
+            if ( !$Param{DisableWarnings} ) {
+                $Kernel::OM->Get('Kernel::System::Log')->Log(
+                    Priority => 'error',
+                    Message  => "No UserID found for '$Param{UserLogin}'!",
+                );
+            }
             return;
         }
 
@@ -1016,10 +1019,12 @@ sub UserLookup {
         }
 
         if ( !$Login ) {
-            $Kernel::OM->Get('Kernel::System::Log')->Log(
-                Priority => 'error',
-                Message  => "No UserLogin found for '$Param{UserID}'!",
-            );
+            if ( !$Param{DisableWarnings} ) {
+                $Kernel::OM->Get('Kernel::System::Log')->Log(
+                    Priority => 'error',
+                    Message  => "No UserLogin found for '$Param{UserID}'!",
+                );
+            }
             return;
         }
 
