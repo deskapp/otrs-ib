@@ -1,4 +1,5 @@
 #5.0.11 2016-??-??
+ - 2016-06-21 Fixed unnecessary merge errors when link already exists.
  - 2016-06-20 Error on initial agent login from LDAP.
  - 2016-06-20 Fixed risky status passing and redundant TicketGet calls.
  - 2016-06-20 Improved performance of CustomerGroup::GroupMemberList(), thanks to Thorsten Eckel.
