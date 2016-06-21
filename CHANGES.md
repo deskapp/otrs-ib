@@ -1,6 +1,9 @@
 #5.0.11 2016-??-??
  - 2016-06-20 Error on initial agent login from LDAP.
  - 2016-06-20 Fixed risky status passing and redundant TicketGet calls.
+ - 2016-06-20 Improved performance of CustomerGroup::GroupMemberList(), thanks to Thorsten Eckel.
+ - 2016-06-17 Allow users to configure columns in Linked Ticket widget on the TicketZoom screen.
+ - 2016-06-17 Fixed bug#[11920](http://bugs.otrs.org/show_bug.cgi?id=11920) - Activity Dialogs will not translated.
  - 2016-06-17 Fixed uninitialized counters after TicketSearch calls without permissions.
  - 2016-06-16 Fixed errors when processing incomplete session data.
  - 2016-06-16 Fixed plain e-mails saving with unfolded headers.
