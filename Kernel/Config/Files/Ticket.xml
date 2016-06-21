@@ -9149,6 +9149,9 @@
                     <Block>Queue</Block>
                     <Prio>200</Prio>
                 </NavBarModule>
+                <Loader>
+                    <JavaScript>Core.Agent.Admin.Template.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
@@ -9330,6 +9333,9 @@
                     <Block>Email</Block>
                     <Prio>300</Prio>
                 </NavBarModule>
+                <Loader>
+                    <JavaScript>Core.Agent.Admin.SystemAddress.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
@@ -9420,6 +9426,9 @@
                     <Block>Ticket</Block>
                     <Prio>700</Prio>
                 </NavBarModule>
+                <Loader>
+                    <JavaScript>Core.Agent.Admin.Type.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
