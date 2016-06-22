@@ -70,7 +70,7 @@ sub Log {
     }
 
     # write log file
-    $Kernel::OM->Get('Kernel::System::Encode')->SetO($FH);
+    $Kernel::OM->Get('Kernel::System::Encode')->SetIO($FH);
 
     print $FH '[' . localtime() . ']';    ## no critic
 
