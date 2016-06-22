@@ -62,7 +62,8 @@ sub new {
     if ( !is_interactive() ) {
 
         # encode STDOUT and STDERR
-        $Self->SetO( \*STDOUT, \*STDERR );
+        $Self->ConfigureOutputFileHandle( FileHandle => \*STDOUT );
+        $Self->ConfigureOutputFileHandle( FileHandle => \*STDERR );
     }
     else {
 
@@ -334,54 +335,25 @@ sub EncodeOutput {
     return $What;
 }
 
-=item SetI()
+=item ConfigureOutputFileHandle()
 
-Set array of file handles to utf-8 input.
+switch output file handle to utf-8 output.
 
-    $EncodeObject->SetI( $FH );
-
-=cut
-
-sub SetI {
-    my ( $Self, @Array ) = @_;
-
-    ROW:
-    for my $Row (@Array) {
-        next ROW if !defined $Row;
-        next ROW if ref $Row ne 'GLOB';
-
-        # set binmode
-        # http://www.perlmonks.org/?node_id=644786
-        # http://bugs.otrs.org/show_bug.cgi?id=5158
-        binmode( $Row, ':encoding(utf8)' );
-    }
-
-    return;
-}
-
-=item SetO()
-
-Set array of file handles to utf-8 output.
-
-    $EncodeObject->SetO( \*STDOUT, \*STDERR );
+    $EncodeObject->ConfigureOutputFileHandle( FileHandle => \*STDOUT );
 
 =cut
 
-sub SetO {
-    my ( $Self, @Array ) = @_;
+sub ConfigureOutputFileHandle {
+    my ( $Self, %Param ) = @_;
 
-    ROW:
-    for my $Row (@Array) {
-        next ROW if !defined $Row;
-        next ROW if ref $Row ne 'GLOB';
+    return if !defined $Param{FileHandle};
+    return if ref $Param{FileHandle} ne 'GLOB';
 
-        # use :utf8 for outputs to avoid header buffering problems
-        # when using mod_perl
-        # http://bugs.otrs.org/show_bug.cgi?id=12100
-        binmode( $Row, ':utf8' );
-    }
+    # http://www.perlmonks.org/?node_id=644786
+    # http://bugs.otrs.org/show_bug.cgi?id=12100
+    binmode( $Param{FileHandle}, ':utf8' );    ## no critic
 
-    return;
+    return 1;
 }
 
 =item EncodingIsAsciiSuperset()
