@@ -792,6 +792,9 @@ sub SetPassword {
         return;
     }
 
+    # get config object
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
     # get old user data
     my %User = $Self->GetUserData( User => $Param{UserLogin} );
     if ( !$User{UserLogin} ) {
@@ -806,7 +809,7 @@ sub SetPassword {
     my $CryptedPw = '';
 
     # get crypt type
-    my $CryptType = $Kernel::OM->Get('Kernel::Config')->Get('AuthModule::DB::CryptType') || 'sha2';
+    my $CryptType = $ConfigObject->Get('AuthModule::DB::CryptType') || 'sha2';
 
     # crypt plain (no crypt at all)
     if ( $CryptType eq 'plain' ) {
@@ -867,7 +870,12 @@ sub SetPassword {
             return;
         }
 
-        my $Cost = 9;
+        # get cost from config; use 12 if not configured; don't allow values smaller than 9 for security;
+        # current Crypt::Eksblowfish::Bcrypt limit is 31
+        my $Cost = $ConfigObject->Get('Customer::AuthModule::DB::bcryptCost') // 12;
+        $Cost = 9 if $Cost < 9;
+        $Cost = 31 if $Cost > 31;
+
         my $Salt = $Kernel::OM->Get('Kernel::System::Main')->GenerateRandomString( Length => 16 );
 
         # remove UTF8 flag, required by Crypt::Eksblowfish::Bcrypt
@@ -877,7 +885,7 @@ sub SetPassword {
         my $Octets = Crypt::Eksblowfish::Bcrypt::bcrypt_hash(
             {
                 key_nul => 1,
-                cost    => 9,
+                cost    => $Cost,
                 salt    => $Salt,
             },
             $Pw
