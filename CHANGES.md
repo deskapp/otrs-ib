@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-06-23 Configurable bcrypt cost.
  - 2016-06-21 Services and SLAs enabled by default and label tuning on AgentTicketSearch.
  - 2016-06-21 Fixed error removing shm for log on OTRS startup.
  - 2016-06-21 Fixed unnecessary merge errors when link already exists.
