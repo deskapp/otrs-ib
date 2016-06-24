@@ -55,6 +55,7 @@ The <green>$Name</green> prints value of counter specified in --counter argument
     11 or UserSessions            number of user active sessions
     12 or UserSessionsUnique      number of unique user active sessions
     13 or UsersValid              number of valid users in OTRS DB
+    14 or UsersValidWoAdmin       number of valid users in OTRS DB without user with id 1
 
 For *Sessions counters you can specify number of idle minutes after session is ignored with <yellow>--session-idle-minutes</yellow> (15 minutes if not specified).
 
@@ -172,6 +173,10 @@ sub Run {
 
     elsif ( $Options{Counter} eq '13' || $Options{Counter} eq 'UsersValid' ) {
         $Query = 'select count(*) from users where valid_id=1';
+    }
+
+    elsif ( $Options{Counter} eq '14' || $Options{Counter} eq 'UsersValidWoAdmin' ) {
+        $Query = 'select count(*) from users where valid_id=1 and id>1';
     }
 
     else {
