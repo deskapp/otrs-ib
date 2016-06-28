@@ -9714,6 +9714,9 @@ via the Preferences button after logging in.
                     <Block>System</Block>
                     <Prio>700</Prio>
                 </NavBarModule>
+                <Loader>
+                    <JavaScript>Core.Agent.Admin.SelectBox.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
@@ -9754,6 +9757,9 @@ via the Preferences button after logging in.
                     <Block>System</Block>
                     <Prio>501</Prio>
                 </NavBarModule>
+                <Loader>
+                    <JavaScript>Core.Agent.Admin.SystemMaintenance.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
