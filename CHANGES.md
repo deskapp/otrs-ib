@@ -1,4 +1,5 @@
 #5.0.12 2016-??-??
+ - 2016-06-28 Added button with external URL in AgentTicketZoom ticket menu.
  - 2016-06-28 Fixed error log flooding with less important messages.
  - 2016-06-28 Added static stat TicketAccountedTimeList.
  - 2016-06-27 Fixed bug#[11986](http://bugs.otrs.org/show_bug.cgi?id=11986) - Wrong class paramenter for Admin Menu in Navbar.
