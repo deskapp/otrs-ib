@@ -1,5 +1,17 @@
-#5.0.11 2016-??-??
+#5.0.12 2016-??-??
+ - 2016-06-27 Fixed bug#[11986](http://bugs.otrs.org/show_bug.cgi?id=11986) - Wrong class paramenter for Admin Menu in Navbar.
+ - 2016-06-27 Fixed bug#[12097](http://bugs.otrs.org/show_bug.cgi?id=12097) - Ticket responses with non-breaking whitespace cause PostgreSQL database error.
+ - 2016-06-27 Fixed bug#[11596](http://bugs.otrs.org/show_bug.cgi?id=11596) - Invalid byte sequence for encoding "UTF8": 0xa0 PostgreSQL.
+ - 2016-06-27 Fixed bug#[10970](http://bugs.otrs.org/show_bug.cgi?id=10970) - byte sequence errors on notifications.
+ - 2016-06-27 Followup for bug#[12078](http://bugs.otrs.org/show_bug.cgi?id=12078) - Change wording for better translation, thanks to Balázs Úr.
+ - 2016-06-24 Don't write error log entry on first LDAP user login, thanks to Pawel Boguslawski.
+ - 2016-06-24 Fixed bug#[9000](http://bugs.otrs.org/show_bug.cgi?id=9000) - shm errors on OTRS server startup.
+ - 2016-06-23 Fixed bug#[11981](http://bugs.otrs.org/show_bug.cgi?id=11981) - GenericTicketConnector ignoring "<ContentSearch>OR</ContentSearch>" in full text search.
  - 2016-06-23 Configurable bcrypt cost.
+
+#5.0.11 2016-06-28
+ - 2016-06-22 Updated translations, thanks to all translators.
+ - 2016-06-22 Fixed bug#[12143](http://bugs.otrs.org/show_bug.cgi?id=12143) - TicketSearch: if you filter a search attribute and then select 'all', the search screen disappear.
  - 2016-06-21 Fixed bug#[12114](http://bugs.otrs.org/show_bug.cgi?id=12114) - Reply to an outbound email-internal may fail to be classified as email-internal.
  - 2016-06-21 Fixed bug#[12100](http://bugs.otrs.org/show_bug.cgi?id=12100) - Error Premature end of script headers: index.pl when using long URL.
  - 2016-06-21 Services and SLAs enabled by default and label tuning on AgentTicketSearch.
