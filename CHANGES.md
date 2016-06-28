@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-06-28 Added static stat TicketAccountedTimeList.
  - 2016-06-24 Improved TicketSearch() to return error on a search for inexistent dynamic fields instead of ignoring them, thanks to Moritz Lenz.
  - 2016-06-23 Configurable bcrypt cost.
  - 2016-06-21 Services and SLAs enabled by default and label tuning on AgentTicketSearch.
