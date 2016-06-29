@@ -1,4 +1,6 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-06-29 Simple ticket printout attaching.
+ - 2016-06-29 Ticket PDF printout logic in agent panel moved to central location.
  - 2016-06-29 Both types of move possible using MoveType parameter.
  - 2016-06-28 Added parameter AdsAndExternalReportsEnabled to enable ads and reporting bugs over public net.
  - 2016-06-28 Added button with external URL in AgentTicketZoom ticket menu.
