@@ -924,14 +924,26 @@ sub SendEmail {
             %Error = ();
             $Error{AttachmentAddTicketPrintout} = 1;
 
-            # assemble file name
-            my $DateTimeObject = $Kernel::OM->Create('Kernel::System::DateTime');
-            if ( $Self->{UserTimeZone} ) {
-                $DateTimeObject->ToTimeZone( TimeZone => $Self->{UserTimeZone} );
+            # get time object and use the UserTimeObject, if the system use UTC as
+            # system time and the TimeZoneUser feature is active
+            if (
+                !$Kernel::OM->Get('Kernel::System::Time')->ServerLocalTimeOffsetSeconds()
+                && $Kernel::OM->Get('Kernel::Config')->Get('TimeZoneUser')
+                && $Self->{UserTimeZone}
+                )
+            {
+                $TimeObject = $LayoutObject->{UserTimeObject};
             }
-            my $Filename = 'Ticket_' . $Tn . '_';
-            $Filename .= $DateTimeObject->Format( Format => '%Y-%m-%d_%H:%M' );
-            $Filename .= '.pdf';
+
+            # return the pdf document
+            my $Filename = 'Ticket_' . $Ticket{TicketNumber};
+            my ( $s, $m, $h, $D, $M, $Y ) = $TimeObject->SystemTime2Date(
+                SystemTime => $TimeObject->SystemTime(),
+            );
+            $M = sprintf( "%02d", $M );
+            $D = sprintf( "%02d", $D );
+            $h = sprintf( "%02d", $h );
+            $m = sprintf( "%02d", $m );
 
             # generate pdf printout
             my $PDFString = $Kernel::OM->Get('Kernel::Output::PDF::Ticket')->GenerateAgentPDF(
@@ -943,7 +955,7 @@ sub SendEmail {
                 $UploadCacheObject->FormIDAddFile(
                     FormID => $GetParam{FormID},
                     Disposition => 'attachment',
-                    Filename    => $Filename,
+                    Filename    => $Filename . "_" . "$Y-$M-$D" . "_" . "$h-$m.pdf",
                     Content     => $PDFString,
                     ContentType => 'application/pdf',
                 );
