@@ -1,4 +1,5 @@
 #5.0.12 2016-??-??
+ - 2016-06-29 Simple ticket printout attaching.
  - 2016-06-29 Ticket PDF printout logic in agent panel moved to central location.
  - 2016-06-27 Fixed bug#[11986](http://bugs.otrs.org/show_bug.cgi?id=11986) - Wrong class paramenter for Admin Menu in Navbar.
  - 2016-06-27 Fixed bug#[12097](http://bugs.otrs.org/show_bug.cgi?id=12097) - Ticket responses with non-breaking whitespace cause PostgreSQL database error.
