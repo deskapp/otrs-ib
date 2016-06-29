@@ -1075,7 +1075,7 @@ sub MaskAgentZoom {
     }
 
     # get MoveQueuesStrg
-    if ( $ConfigObject->Get('Ticket::Frontend::MoveType') =~ /^form$/i ) {
+    if ( $ConfigObject->Get('Ticket::Frontend::MoveType') =~ /form/i ) {
         $MoveQueues{0} = '- ' . $LayoutObject->{LanguageObject}->Translate('Move') . ' -';
         $Param{MoveQueuesStrg} = $LayoutObject->AgentQueueListOption(
             Name           => 'DestQueueID',
@@ -1098,13 +1098,14 @@ sub MaskAgentZoom {
         );
         $Param{TicketID} = $Ticket{TicketID};
         if ($Access) {
-            if ( $ConfigObject->Get('Ticket::Frontend::MoveType') =~ /^form$/i ) {
+            if ( $ConfigObject->Get('Ticket::Frontend::MoveType') =~ /form/i ) {
                 $LayoutObject->Block(
                     Name => 'MoveLink',
                     Data => { %Param, %AclAction },
                 );
             }
-            else {
+
+            if ( $ConfigObject->Get('Ticket::Frontend::MoveType') =~ /link/i ) {
                 $LayoutObject->Block(
                     Name => 'MoveForm',
                     Data => { %Param, %AclAction },
