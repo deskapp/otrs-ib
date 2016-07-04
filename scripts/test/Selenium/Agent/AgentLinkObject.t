@@ -29,8 +29,19 @@ my $DragAndDrop = sub {
         }
     }
 
+    my %ToOffset;
+    if ( $Param{ToOffset} ) {
+        %ToOffset = (
+            xoffset => $Param{ToOffset}->{X} || 0,
+            yoffset => $Param{ToOffset}->{Y} || 0,
+        );
+    }
+
+    # Make sure DragFrom is visible
+    $Selenium->WaitFor(
+        JavaScript => 'return typeof($) === "function" && $(\'' . $Param{DragFrom} . ':visible\').length;',
+    );
     my $DragFrom = $Selenium->find_element( $Param{From}, 'css' );
-    my $DragTo   = $Selenium->find_element( $Param{To},   'css' );
 
     # Move mouse to from element, drag and drop
     $Selenium->mouse_move_to_location( element => $DragFrom );
@@ -38,11 +49,16 @@ my $DragAndDrop = sub {
     # Holds the mouse button on the element
     $Selenium->button_down();
 
+    # Make sure DragTo is visible
+    $Selenium->WaitFor(
+        JavaScript => 'return typeof($) === "function" && $(\'' . $Param{DragTo} . ':visible\').length;',
+    );
+    my $DragTo = $Selenium->find_element( $Param{To}, 'css' );
+
     # Move mouse to the destination
     $Selenium->mouse_move_to_location(
         element => $DragTo,
-        xoffset => 1,
-        yoffset => 1,
+        %ToOffset,
     );
 
     # Release
@@ -76,6 +92,9 @@ $Selenium->RunTest(
             Key   => 'Ticket::SubjectSize',
             Value => '60',
         );
+
+        # change resolution (desktop mode)
+        $Selenium->set_window_size( 900, 1200 );
 
         # create test user and login
         my $TestUserLogin = $Helper->TestUserCreate(
@@ -276,14 +295,22 @@ $Selenium->RunTest(
 
         # Remove Age from left side, and put it to the right side
         $DragAndDrop->(
-            From => '#WidgetTicket li[data-fieldname="Age"]',
-            To   => '#AssignedFields-linkobject-Ticket',
+            From     => '#WidgetTicket li[data-fieldname="Age"]',
+            To       => '#AssignedFields-linkobject-Ticket',
+            ToOffset => {
+                X => 185,
+                Y => 10,
+            },
         );
 
         # Remove State from right side, and put it to the left side
         $DragAndDrop->(
-            From => '#WidgetTicket li[data-fieldname="State"]',
-            To   => '#AvailableField-linkobject-Ticket',
+            From     => '#WidgetTicket li[data-fieldname="State"]',
+            To       => '#AvailableField-linkobject-Ticket',
+            ToOffset => {
+                X => 185,
+                Y => 10,
+            },
         );
 
         # save
@@ -371,6 +398,73 @@ $Selenium->RunTest(
             "$ShortTitle - found in LinkDelete screen",
         );
 
+        # select all links
+        $Selenium->find_element( "#SelectAllLinks0", "css" )->click();
+
+        # make sure it's selected
+        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $("#SelectAllLinks0:checked").length' );
+
+        # click on delete links
+        $Selenium->find_element( ".Primary", "css" )->click();
+
+        # wait until page has loaded, if necessary
+        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && !$("#SelectAllLinks0").length' );
+
+        # archive 2nd ticket
+        my $SuccessArchived = $TicketObject->TicketArchiveFlagSet(
+            ArchiveFlag => 'y',
+            TicketID    => $TicketIDs[1],
+            UserID      => $TestUserID,
+        );
+
+        $Self->True(
+            $SuccessArchived,
+            "Check if 2nd ticket is archived successfully."
+        );
+
+        # check if there is "Search archived" checkbox
+        $Self->True(
+            $Selenium->execute_script(
+                "return \$('#SEARCH\\\\:\\\\:Archived').length"
+            ),
+            'Search archive checkbox present.',
+        );
+
+        # search for 2nd ticket
+        $Selenium->find_element(".//*[\@id='SEARCH::TicketNumber']")->send_keys( $TicketNumbers[1] );
+        $Selenium->find_element(".//*[\@id='SEARCH::TicketNumber']")->VerifiedSubmit();
+
+        # make sure there are no results
+        $Self->False(
+            $Selenium->execute_script(
+                "return \$('#WidgetTicket').length"
+            ),
+            'No result.',
+        );
+
+        # select Search archived checkbox
+        $Selenium->find_element(".//*[\@id='SEARCH::Archived']")->VerifiedClick();
+        $Selenium->find_element(".//*[\@id='SEARCH::TicketNumber']")->VerifiedSubmit();
+
+        # wait till search is loaded
+        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $("#SelectAllLinks0").length' );
+
+        # link again
+        $Selenium->find_element( "#SelectAllLinks0",  "css" )->click();
+        $Selenium->find_element( "#AddLinks",         "css" )->VerifiedClick();
+        $Selenium->find_element( "#LinkAddCloseLink", "css" )->click();
+
+        # wait till popup is closed
+        $Selenium->WaitFor( WindowCount => 1 );
+
+        # switch to 1st window
+        $Handles = $Selenium->get_window_handles();
+        $Selenium->switch_to_window( $Handles->[0] );
+
+        # make sure they are really linked.
+        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $("#WidgetTicket").length' );
+        $Selenium->find_element( "#WidgetTicket", "css" );
+
         # delete created test tickets
         for my $TicketID (@TicketIDs) {
             $Success = $TicketObject->TicketDelete(
@@ -382,7 +476,7 @@ $Selenium->RunTest(
                 "Delete ticket - $TicketID"
             );
         }
-    }
+        }
 );
 
 1;
