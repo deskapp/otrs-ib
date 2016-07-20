@@ -43,9 +43,6 @@ $Selenium->RunTest(
             Value => '60',
         );
 
-        # change resolution (desktop mode)
-        $Selenium->set_window_size( 900, 1200 );
-
         # create test user and login
         my $TestUserLogin = $Helper->TestUserCreate(
             Groups => [ 'admin', 'users' ],
@@ -112,7 +109,9 @@ $Selenium->RunTest(
         $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $("body").length' );
 
         $Selenium->find_element( "#SubmitSearch", 'css' )->click();
-        sleep 1;
+        $Selenium->WaitFor(
+            AlertPresent => 1,
+        );
         $Selenium->accept_alert();
 
         # search for second created test ticket
@@ -242,14 +241,17 @@ $Selenium->RunTest(
         # check if column settings button is available in the Linked Ticket widget
         $Selenium->find_element( 'a#linkobject-Ticket-toggle', 'css' )->VerifiedClick();
 
+        # Wait for the complete widget to be fully slided in all the way down to the submit button.
         $Selenium->WaitFor(
             JavaScript =>
-                'return typeof($) === "function" && $("#linkobject-Ticket-setting:visible").length;'
+                'return typeof($) === "function" && $("#linkobject-Ticket_submit:visible").length;'
         );
+
+        sleep(1);
 
         # Remove Age from left side, and put it to the right side
         $Selenium->DragAndDrop(
-            Element      => '#WidgetTicket li[data-fieldname="Age"]',
+            Element      => '#WidgetTicket #AvailableField-linkobject-Ticket li[data-fieldname="Age"]',
             Target       => '#AssignedFields-linkobject-Ticket',
             TargetOffset => {
                 X => 185,
@@ -259,7 +261,7 @@ $Selenium->RunTest(
 
         # Remove State from right side, and put it to the left side
         $Selenium->DragAndDrop(
-            Element      => '#WidgetTicket li[data-fieldname="State"]',
+            Element      => '#WidgetTicket #AssignedFields-linkobject-Ticket li[data-fieldname="State"]',
             Target       => '#AvailableField-linkobject-Ticket',
             TargetOffset => {
                 X => 185,
@@ -363,7 +365,7 @@ $Selenium->RunTest(
                 "Delete ticket - $TicketID"
             );
         }
-        }
+    }
 );
 
 1;

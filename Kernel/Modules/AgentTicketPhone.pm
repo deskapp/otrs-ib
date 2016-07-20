@@ -931,7 +931,7 @@ sub Run {
                         Message =>
                             $LayoutObject->{LanguageObject}
                             ->Translate( 'Could not perform validation on field %s!', $DynamicFieldConfig->{Label} ),
-                        Comment => Translatable('Please contact the admin.'),
+                        Comment => Translatable('Please contact the administrator.'),
                     );
                 }
 
@@ -1941,7 +1941,7 @@ sub Run {
     else {
         return $LayoutObject->ErrorScreen(
             Message => Translatable('No Subaction!'),
-            Comment => Translatable('Please contact your administrator'),
+            Comment => Translatable('Please contact the administrator.'),
         );
     }
 }
@@ -2370,9 +2370,13 @@ sub _MaskPhoneNew {
         )
     {
         $ShowErrors = 0;
-        $LayoutObject->Block(
-            Name => 'FromExternalCustomer',
-            Data => $Param{FromExternalCustomer},
+        $LayoutObject->AddJSData(
+            Key   => 'FromExternalCustomerName',
+            Value => $Param{FromExternalCustomer}->{Customer},
+        );
+        $LayoutObject->AddJSData(
+            Key   => 'FromExternalCustomerEmail',
+            Value => $Param{FromExternalCustomer}->{Email},
         );
     }
     my $CustomerCounter = 0;
@@ -2425,12 +2429,11 @@ sub _MaskPhoneNew {
         OnlyDynamicFields => 1
     );
 
-    # create a string with the quoted dynamic field names separated by commas
-    if ( IsArrayRefWithData($DynamicFieldNames) ) {
-        for my $Field ( @{$DynamicFieldNames} ) {
-            $Param{DynamicFieldNamesStrg} .= ",'" . $Field . "'";
-        }
-    }
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'DynamicFieldNames',
+        Value => $DynamicFieldNames,
+    );
 
     # build type string
     if ( $ConfigObject->Get('Ticket::Type') ) {

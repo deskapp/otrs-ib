@@ -29,7 +29,13 @@ Core.Agent.TicketProcess = (function (TargetNS) {
      */
     TargetNS.Init = function () {
 
-        $('#ProcessEntityID').bind('change', function () {
+        var ProcessID = Core.Config.Get('ProcessID');
+
+        if (typeof ProcessID !== 'undefined') {
+            $('#ProcessEntityID').val(ProcessID).trigger('change');
+        }
+
+        $('#ProcessEntityID').on('change', function () {
             var Data = {
                 Action: 'AgentTicketProcess',
                 Subaction: 'DisplayActivityDialogAJAX',
@@ -147,6 +153,8 @@ Core.Agent.TicketProcess = (function (TargetNS) {
                         $('#AJAXLoader').addClass('Hidden');
                         $('#AJAXDialog').val('1');
 
+                        Core.TicketProcess.Init();
+
                     }
                     else {
 
@@ -164,6 +172,8 @@ Core.Agent.TicketProcess = (function (TargetNS) {
             return false;
         });
     };
+
+    Core.Init.RegisterNamespace(TargetNS, 'APP_MODULE');
 
     return TargetNS;
 }(Core.Agent.TicketProcess || {}));

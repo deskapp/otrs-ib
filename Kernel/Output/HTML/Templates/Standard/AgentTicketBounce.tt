@@ -18,7 +18,7 @@
     <div class="LayoutPopup ARIARoleMain">
 
         <div class="Header">
-            <h1>[% Translate("Bounce %s%s", Config('Ticket::Hook'), Data.TicketNumber) | html %] &mdash; [% Data.Title | html %]</h1>
+            <h1>[% Translate("Bounce %s%s%s", Config('Ticket::Hook'), Config('Ticket::HookDivider'), Data.TicketNumber) | html %] &mdash; [% Data.Title | html %]</h1>
             <p class="AsteriskExplanation">[% Translate("All fields marked with an asterisk (*) are mandatory.") | html %]</p>
 
 [% RenderBlockStart("TicketBack") %]
@@ -82,40 +82,6 @@
                     [% Data.From | html %]
                 </div>
                 <div class="Clear"></div>
-
-[% WRAPPER JSOnDocumentComplete %]
-<script type="text/javascript">//<![CDATA[
-
-# initial setting for to/subject/body
-SwitchMandatoryFields();
-
-# watch for changes of inform sender field
-$('#InformSender').bind('click', function(){
-    SwitchMandatoryFields();
-});
-
-# function to switch between mandatory and optional
-function SwitchMandatoryFields() {
-    var InformSenderChecked = $('#InformSender').prop('checked'),
-        $ElementsLabelObj = $('#To,#Subject,#RichText').parent().prev('label');
-
-    if ( InformSenderChecked ) {
-        $ElementsLabelObj
-            .addClass('Mandatory')
-            .find('.Marker')
-            .removeClass('Hidden');
-    }
-    else if ( !InformSenderChecked ) {
-        $ElementsLabelObj
-            .removeClass('Mandatory')
-            .find('.Marker')
-            .addClass('Hidden');
-    }
-
-    return;
-}
-//]]></script>
-[% END %]
 
                 <label for="To"><span class="Marker Hidden">*</span>[% Translate("To") | html %]:</label>
                 <div class="Field">

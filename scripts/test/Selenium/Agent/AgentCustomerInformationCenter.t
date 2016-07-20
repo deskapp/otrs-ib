@@ -59,12 +59,12 @@ $Selenium->RunTest(
                 TicketIDs     => [],
                 TicketLink    => 'Open',
             },
-            'Closed' => {
+            'closed' => {
                 TicketState   => 'closed successful',
                 TicketCount   => '',
                 TicketNumbers => [],
                 TicketIDs     => [],
-                TicketLink    => 'Closed',
+                TicketLink    => 'closed',
             },
         );
 
@@ -140,6 +140,12 @@ $Selenium->RunTest(
         $Self->True(
             index( $Selenium->get_page_source(), "Settings" ) > -1,
             "Setting for toggle widgets found on page",
+        );
+
+        # check if there is link to CIC search modal dialog from heading (name of the company)
+        $Self->True(
+            $Selenium->find_element( "#CustomerInformationCenterHeading", 'css' ),
+            'There is link to customer information center search modal dialog.',
         );
 
         # test links in Company Status widget

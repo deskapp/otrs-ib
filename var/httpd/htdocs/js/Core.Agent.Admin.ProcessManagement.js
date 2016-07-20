@@ -24,6 +24,38 @@ Core.Agent.Admin = Core.Agent.Admin || {};
 Core.Agent.Admin.ProcessManagement = (function (TargetNS) {
 
     /**
+     * @name Init
+     * @memberof Core.Agent.Admin.ProcessManagement
+     * @function
+     * @description
+     *      This function initializes the module functionality.
+     */
+    TargetNS.Init = function () {
+
+        // Initialize table filter
+        Core.UI.Table.InitTableFilter($('#Filter'), $('#Processes'), 0);
+
+        // Depending on Subaction initialize specific functions
+        if (Core.Config.Get('Subaction') === 'ActivityNew' ||
+          Core.Config.Get('Subaction') === 'ActivityEdit') {
+            TargetNS.InitActivityEdit();
+        }
+        else if (Core.Config.Get('Subaction') === 'ActivityDialogNew' ||
+          Core.Config.Get('Subaction') === 'ActivityDialogEdit') {
+            TargetNS.InitActivityDialogEdit();
+        }
+        else if (Core.Config.Get('Subaction') === 'TransitionNew' ||
+          Core.Config.Get('Subaction') === 'TransitionEdit') {
+            TargetNS.InitTransitionEdit();
+        }
+        else if (Core.Config.Get('Subaction') === 'TransitionActionNew' ||
+          Core.Config.Get('Subaction') === 'TransitionActionEdit') {
+            TargetNS.InitTransitionActionEdit();
+        }
+
+    };
+
+    /**
      * @private
      * @name InitProcessPopups
      * @memberof Core.Agent.Admin.ProcessManagement
@@ -459,7 +491,7 @@ Core.Agent.Admin.ProcessManagement = (function (TargetNS) {
                                 alert(Response.Message);
                             }
                             else {
-                                alert('Error during AJAX communication');
+                                alert(Core.Language.Translate('Error during AJAX communication'));
                             }
 
                             TargetNS.Canvas.ShowActivityAddActivityDialogError(Activity);
@@ -790,7 +822,7 @@ Core.Agent.Admin.ProcessManagement = (function (TargetNS) {
                     alert(Response.Message);
                 }
                 else {
-                    alert('Error during AJAX communication');
+                    alert(Core.Language.Translate('Error during AJAX communication'));
                 }
                 return false;
             }
@@ -816,18 +848,6 @@ Core.Agent.Admin.ProcessManagement = (function (TargetNS) {
         Core.Agent.Admin.ProcessManagement.Canvas.Redraw();
         // remove overlay
         Core.Agent.Admin.ProcessManagement.HideOverlay();
-    };
-
-    /**
-     * @name InitProcessOverview
-     * @memberof Core.Agent.Admin.ProcessManagement
-     * @function
-     * @description
-     *      Initialize process overview screen.
-     */
-    TargetNS.InitProcessOverview = function() {
-        InitProcessPopups();
-        Core.UI.Table.InitTableFilter($('#Filter'), $('#Processes'), 0);
     };
 
     /**
@@ -1249,7 +1269,7 @@ Core.Agent.Admin.ProcessManagement = (function (TargetNS) {
                 $(this).closest('.WidgetSimple').remove();
             }
             else {
-                alert("Sorry, the only existing condition can't be removed.");
+                alert(Core.Language.Translate("Sorry, the only existing condition can't be removed."));
             }
 
             return false;
@@ -1277,7 +1297,7 @@ Core.Agent.Admin.ProcessManagement = (function (TargetNS) {
                 $(this).parent().closest('fieldset').remove();
             }
             else {
-                alert("Sorry, the only existing field can't be removed.");
+                alert(Core.Language.Translate("Sorry, the only existing field can't be removed."));
             }
 
             return false;
@@ -1348,7 +1368,7 @@ Core.Agent.Admin.ProcessManagement = (function (TargetNS) {
                 $(this).closest('fieldset').remove();
             }
             else {
-                alert("Sorry, the only existing parameter can't be removed.");
+                alert(Core.Language.Translate("Sorry, the only existing parameter can't be removed."));
             }
             return false;
         });
@@ -1607,6 +1627,8 @@ Core.Agent.Admin.ProcessManagement = (function (TargetNS) {
             });
         }
     };
+
+    Core.Init.RegisterNamespace(TargetNS, 'APP_MODULE');
 
     return TargetNS;
 }(Core.Agent.Admin.ProcessManagement || {}));

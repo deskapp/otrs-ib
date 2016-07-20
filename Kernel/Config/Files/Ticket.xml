@@ -8539,6 +8539,7 @@
                     <JavaScript>Core.Agent.CustomerSearch.js</JavaScript>
                     <JavaScript>Core.Agent.CustomerSearchAutoComplete.js</JavaScript>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.TicketPhone.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -8554,6 +8555,7 @@
                 <NavBarName>Ticket</NavBarName>
                 <Loader>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.TicketPhoneCommon.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -8569,6 +8571,7 @@
                 <NavBarName>Ticket</NavBarName>
                 <Loader>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.TicketPhoneCommon.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -8597,6 +8600,7 @@
                     <JavaScript>Core.Agent.CustomerSearch.js</JavaScript>
                     <JavaScript>Core.Agent.CustomerSearchAutoComplete.js</JavaScript>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.TicketEmail.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -8832,6 +8836,7 @@
                 <NavBarName>Ticket</NavBarName>
                 <Loader>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.TicketActionCommon.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -8862,6 +8867,7 @@
                 <NavBarName>Ticket</NavBarName>
                 <Loader>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.TicketActionCommon.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -8889,6 +8895,7 @@
                 <NavBarName>Ticket</NavBarName>
                 <Loader>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.TicketActionCommon.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -8916,6 +8923,7 @@
                 <NavBarName>Ticket</NavBarName>
                 <Loader>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.TicketMove.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -8989,6 +8997,7 @@
                 <NavBarName>Ticket</NavBarName>
                 <Loader>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.TicketActionCommon.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -9004,6 +9013,7 @@
                 <NavBarName>Ticket</NavBarName>
                 <Loader>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.TicketActionCommon.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -9021,6 +9031,7 @@
                     <JavaScript>Core.Agent.CustomerSearch.js</JavaScript>
                     <JavaScript>Core.Agent.CustomerSearchAutoComplete.js</JavaScript>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.TicketCompose.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -9034,6 +9045,9 @@
                 <Description Translatable="1">Ticket Compose Bounce Email.</Description>
                 <Title Translatable="1">Bounce</Title>
                 <NavBarName>Ticket</NavBarName>
+                <Loader>
+                    <JavaScript>Core.Agent.TicketBounce.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
@@ -9068,6 +9082,7 @@
                     <JavaScript>Core.Agent.CustomerSearch.js</JavaScript>
                     <JavaScript>Core.Agent.CustomerSearchAutoComplete.js</JavaScript>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.TicketEmailOutbound.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -9100,6 +9115,7 @@
                 <NavBarName>Ticket</NavBarName>
                 <Loader>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.TicketActionCommon.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -9115,6 +9131,7 @@
                 <NavBarName>Ticket</NavBarName>
                 <Loader>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.TicketActionCommon.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -9142,6 +9159,7 @@
                 <NavBarName>Ticket</NavBarName>
                 <Loader>
                     <JavaScript>Core.Agent.TicketAction.js</JavaScript>
+                    <JavaScript>Core.Agent.TicketBulk.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -9881,6 +9899,9 @@
                     <AccessKey>n</AccessKey>
                     <Prio>100</Prio>
                 </NavBar>
+                <Loader>
+                    <JavaScript>Core.Customer.TicketMessage.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
@@ -9944,6 +9965,9 @@
                     <AccessKey>s</AccessKey>
                     <Prio>300</Prio>
                 </NavBar>
+                <Loader>
+                    <JavaScript>Core.Customer.TicketSearch.js</JavaScript>
+                </Loader>
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>

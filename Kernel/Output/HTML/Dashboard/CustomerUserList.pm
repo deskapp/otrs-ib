@@ -104,14 +104,14 @@ sub Run {
         . $LayoutObject->LinkEncode( $Param{CustomerID} ) . ';';
 
     my %PageNav = $LayoutObject->PageNavBar(
-        StartHit       => $Self->{StartHit},
-        PageShown      => $Self->{PageShown},
-        AllHits        => $Total || 1,
-        Action         => 'Action=' . $LayoutObject->{Action},
-        Link           => $LinkPage,
-        AJAXReplace    => 'Dashboard' . $Self->{Name},
-        IDPrefix       => 'Dashboard' . $Self->{Name},
-        KeepScriptTags => $Param{AJAX},
+        StartHit    => $Self->{StartHit},
+        PageShown   => $Self->{PageShown},
+        AllHits     => $Total || 1,
+        Action      => 'Action=' . $LayoutObject->{Action},
+        Link        => $LinkPage,
+        AJAXReplace => 'Dashboard' . $Self->{Name},
+        IDPrefix    => 'Dashboard' . $Self->{Name},
+        AJAX        => $Param{AJAX},
     );
 
     $LayoutObject->Block(
@@ -315,7 +315,7 @@ sub Run {
         );
 
         my $TicketCountClosed = $TicketObject->TicketSearch(
-            StateType            => 'Closed',
+            StateType            => 'closed',
             CustomerUserLoginRaw => $CustomerKey,
             Result               => 'COUNT',
             Permission           => $Self->{Config}->{Permission},
@@ -402,7 +402,7 @@ sub Run {
             %{ $Self->{Config} },
             Name => $Self->{Name},
         },
-        KeepScriptTags => $Param{AJAX},
+        AJAX => $Param{AJAX},
     );
 
     return $Content;

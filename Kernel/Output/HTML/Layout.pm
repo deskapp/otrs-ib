@@ -726,6 +726,7 @@ sub Login {
     $Self->LoaderCreateAgentCSSCalls();
     $Self->LoaderCreateAgentJSCalls();
     $Self->LoaderCreateJavaScriptTranslationData();
+    $Self->LoaderCreateJavaScriptTemplateData();
 
     # we need the baselink for VerfifiedGet() of selenium tests
     $Self->AddJSData(
@@ -1033,7 +1034,6 @@ sub Error {
     if ( !$Param{Message} ) {
         $Param{Message} = $Param{BackendMessage};
     }
-    $Param{Message} =~ s/^(.{200}).*$/${1}[...]/gs;
 
     if ( $Param{BackendTraceback} ) {
         $Self->Block(
@@ -1425,6 +1425,13 @@ sub Header {
             }
         }
 
+        if ( $ConfigObject->Get('ChatEngine::Active') ) {
+            $Self->AddJSData(
+                Key   => 'ChatActive',
+                Value => $ConfigObject->Get('ChatEngine::Active')
+            );
+        }
+
         # show logged in notice
         if ( $Param{ShowPrefLink} ) {
             $Self->Block(
@@ -1473,6 +1480,7 @@ sub Footer {
     # generate the minified CSS and JavaScript files and the tags referencing them (see LayoutLoader)
     $Self->LoaderCreateAgentJSCalls();
     $Self->LoaderCreateJavaScriptTranslationData();
+    $Self->LoaderCreateJavaScriptTemplateData();
 
     # get datepicker data, if needed in module
     if ($HasDatepicker) {
@@ -2705,8 +2713,8 @@ sub PageNavBar {
     }
 
     $Param{SearchNavBar} = $Self->Output(
-        TemplateFile   => 'Pagination',
-        KeepScriptTags => $Param{KeepScriptTags},
+        TemplateFile => 'Pagination',
+        AJAX         => $Param{KeepScriptTags},
     );
 
     # only show total amount of pages if there is more than one
@@ -3598,6 +3606,12 @@ sub CustomerLogin {
         }
     }
 
+    # send data to JS
+    $Self->AddJSData(
+        Key   => 'LoginFailed',
+        Value => $Param{LoginFailed},
+    );
+
     # create & return output
     $Output .= $Self->Output(
         TemplateFile => 'CustomerLogin',
@@ -3841,7 +3855,7 @@ sub CustomerFatalError {
         Area  => 'Frontend',
         Title => 'Fatal Error'
     );
-    $Output .= $Self->Error(%Param);
+    $Output .= $Self->CustomerError(%Param);
     $Output .= $Self->CustomerFooter();
     $Self->Print( Output => \$Output );
     exit;
@@ -4121,6 +4135,12 @@ sub CustomerNavigationBar {
             );
         }
     }
+
+    # send data to JS
+    $Self->AddJSData(
+        Key   => 'ChatEngine::Active',
+        Value => $ConfigObject->Get('ChatEngine::Active'),
+    );
 
     # create & return output
     return $Self->Output(

@@ -88,7 +88,7 @@ sub Run {
                         'Couldn\'t get ActivityDialogEntityID "%s"!',
                         $ActivityDialogEntityID,
                     ),
-                    Comment => Translatable('Please contact the admin.'),
+                    Comment => Translatable('Please contact the administrator.'),
                 );
             }
 
@@ -262,7 +262,7 @@ sub Run {
     if ( !IsHashRefWithData($ProcessList) && !IsHashRefWithData($FollowupProcessList) ) {
         return $LayoutObject->ErrorScreen(
             Message => Translatable('No Process configured!'),
-            Comment => Translatable('Please contact the admin.'),
+            Comment => Translatable('Please contact the administrator.'),
         );
     }
 
@@ -305,7 +305,7 @@ sub Run {
         if ( !IsHashRefWithData($ProcessList) ) {
             return $LayoutObject->ErrorScreen(
                 Message => Translatable('No Process configured!'),
-                Comment => Translatable('Please contact the admin.'),
+                Comment => Translatable('Please contact the administrator.'),
             );
         }
 
@@ -354,7 +354,7 @@ sub Run {
     {
         $LayoutObject->FatalError(
             Message => $LayoutObject->{LanguageObject}->Translate( 'Process %s is invalid!', $ProcessEntityID ),
-            Comment => Translatable('Please contact the admin.'),
+            Comment => Translatable('Please contact the administrator.'),
         );
     }
 
@@ -412,7 +412,7 @@ sub Run {
     }
     return $LayoutObject->ErrorScreen(
         Message => Translatable('Subaction is invalid!'),
-        Comment => Translatable('Please contact the admin.'),
+        Comment => Translatable('Please contact the administrator.'),
     );
 }
 
@@ -880,7 +880,7 @@ sub _GetParam {
                 'Couldn\'t get ActivityDialogEntityID "%s"!',
                 $ActivityDialogEntityID,
             ),
-            Comment => Translatable('Please contact the admin.'),
+            Comment => Translatable('Please contact the administrator.'),
         );
     }
 
@@ -946,10 +946,8 @@ sub _GetParam {
             my $DynamicFieldConfig = ( grep { $_->{Name} eq $DynamicFieldName } @{$DynamicField} )[0];
 
             if ( !IsHashRefWithData($DynamicFieldConfig) ) {
-                my $Message = $LayoutObject->{LanguageObject}->Translate(
-                    'DynamicFieldConfig missing for field: %s, or is not a Ticket Dynamic Field!',
-                    $DynamicFieldName,
-                );
+                my $Message =
+                    "DynamicFieldConfig missing for field: $DynamicFieldName, or is not a Ticket Dynamic Field!";
 
                 # log error but does not stop the execution as it could be an old Article
                 # DynamicField, see bug#11666
@@ -2802,12 +2800,11 @@ sub _RenderCustomer {
         $Data{SelectedCustomerUser} = $CustomerUserData{UserID}         || '';
     }
 
-    # set fields that will get an AJAX loader icon when this field changes
-    my $JSON = $LayoutObject->JSONEncode(
-        Data     => $Param{AJAXUpdatableFields},
-        NoQuotes => 0,
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'CustomerFieldsToUpdate',
+        Value => $Param{AJAXUpdatableFields},
     );
-    $Data{FieldsToUpdate} = $JSON;
 
     $LayoutObject->Block(
         Name => $Param{ActivityDialogField}->{LayoutBlock} || 'rw:Customer',
@@ -3318,10 +3315,10 @@ sub _RenderSLA {
         Max           => 200,
     );
 
-    # set fields that will get an AJAX loader icon when this field changes
-    $Data{FieldsToUpdate} = $Self->_GetFieldsToUpdateStrg(
-        TriggerField        => 'SLAID',
-        AJAXUpdatableFields => $Param{AJAXUpdatableFields},
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'SLAFieldsToUpdate',
+        Value => $Param{AJAXUpdatableFields}
     );
 
     $LayoutObject->Block(
@@ -3487,10 +3484,10 @@ sub _RenderService {
         Max           => 200,
     );
 
-    # set fields that will get an AJAX loader icon when this field changes
-    $Data{FieldsToUpdate} = $Self->_GetFieldsToUpdateStrg(
-        TriggerField        => 'ServiceID',
-        AJAXUpdatableFields => $Param{AJAXUpdatableFields},
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'ServiceFieldsToUpdate',
+        Value => $Param{AJAXUpdatableFields}
     );
 
     $LayoutObject->Block(
@@ -3625,10 +3622,10 @@ sub _RenderLock {
         Class         => "Modernize $ServerError",
     );
 
-    # set fields that will get an AJAX loader icon when this field changes
-    $Data{FieldsToUpdate} = $Self->_GetFieldsToUpdateStrg(
-        TriggerField        => 'LockID',
-        AJAXUpdatableFields => $Param{AJAXUpdatableFields},
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'LockFieldsToUpdate',
+        Value => $Param{AJAXUpdatableFields}
     );
 
     $LayoutObject->Block(
@@ -4042,10 +4039,10 @@ sub _RenderState {
         Class         => "Modernize $ServerError",
     );
 
-    # set fields that will get an AJAX loader icon when this field changes
-    $Data{FieldsToUpdate} = $Self->_GetFieldsToUpdateStrg(
-        TriggerField        => 'StateID',
-        AJAXUpdatableFields => $Param{AJAXUpdatableFields},
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'StateFieldsToUpdate',
+        Value => $Param{AJAXUpdatableFields}
     );
 
     $LayoutObject->Block(
@@ -4195,10 +4192,10 @@ sub _RenderType {
         Max           => 200,
     );
 
-    # set fields that will get an AJAX loader icon when this field changes
-    $Data{FieldsToUpdate} = $Self->_GetFieldsToUpdateStrg(
-        TriggerField        => 'TypeID',
-        AJAXUpdatableFields => $Param{AJAXUpdatableFields},
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'TypeFieldsToUpdate',
+        Value => $Param{AJAXUpdatableFields}
     );
 
     $LayoutObject->Block(
@@ -4409,12 +4406,9 @@ sub _StoreActivityDialog {
                 # is not possible to a have an invisible field for this particular value
                 # on agent interface
                 if ( $ActivityDialog->{Fields}{$CurrentField}{Display} == 0 ) {
-
-                    my $InvisibleFieldMessage = Translatable(
-                        'Couldn\'t use CustomerID as an invisible field. Please contact your system administrator!'
-                    );
                     $LayoutObject->FatalError(
-                        Message => $InvisibleFieldMessage,
+                        Message => Translatable('Couldn\'t use CustomerID as an invisible field.'),
+                        Comment => Translatable('Please contact the administrator.'),
                     );
                 }
 
@@ -4658,7 +4652,7 @@ sub _StoreActivityDialog {
                         $Param{ProcessEntityID},
                         $TicketID,
                     ),
-                    Comment => Translatable('Please contact the admin.'),
+                    Comment => Translatable('Please contact the administrator.'),
                 );
             }
 
@@ -4674,7 +4668,7 @@ sub _StoreActivityDialog {
                         'Could not store ActivityDialog, invalid TicketID: %s!',
                         $TicketID,
                     ),
-                    Comment => Translatable('Please contact the admin.'),
+                    Comment => Translatable('Please contact the administrator.'),
                 );
             }
             for my $DynamicFieldConfig (
@@ -4773,7 +4767,7 @@ sub _StoreActivityDialog {
                     $Param{ProcessEntityID},
                     $TicketID,
                 ),
-                Comment => Translatable('Please contact the admin.'),
+                Comment => Translatable('Please contact the administrator.'),
             );
         }
 
@@ -4817,7 +4811,7 @@ sub _StoreActivityDialog {
                     'Missing ActivityEntityID in Ticket %s!',
                     $Ticket{TicketID},
                 ),
-                Comment => Translatable('Please contact the admin.'),
+                Comment => Translatable('Please contact the administrator.'),
             );
         }
 
@@ -5272,11 +5266,11 @@ sub _DisplayProcessList {
     }
 
     if ( $Param{PreSelectProcess} && $Param{ProcessID} ) {
-        $LayoutObject->Block(
-            Name => 'PreSelectProcess',
-            Data => {
-                ProcessID => $Param{ProcessID},
-            },
+
+        # send data to JS
+        $LayoutObject->AddJSData(
+            Key   => 'ProcessID',
+            Value => $Param{ProcessID},
         );
     }
 

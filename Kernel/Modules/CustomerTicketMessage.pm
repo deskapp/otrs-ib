@@ -148,7 +148,7 @@ sub Run {
                 $LayoutObject->CustomerFatalError(
                     Message => $LayoutObject->{LanguageObject}
                         ->Translate( 'Check SysConfig setting for %s::QueueDefault.', $Self->{Action} ),
-                    Comment => Translatable('Please contact your administrator'),
+                    Comment => Translatable('Please contact the administrator.'),
                 );
                 return;
             }
@@ -283,7 +283,7 @@ sub Run {
                     Message =>
                         $LayoutObject->{LanguageObject}
                         ->Translate( 'Check SysConfig setting for %s::TicketTypeDefault.', $Self->{Action} ),
-                    Comment => Translatable('Please contact your administrator'),
+                    Comment => Translatable('Please contact the administrator.'),
                 );
                 return;
             }
@@ -399,7 +399,7 @@ sub Run {
                         Message =>
                             $LayoutObject->{LanguageObject}
                             ->Translate( 'Could not perform validation on field %s!', $DynamicFieldConfig->{Label} ),
-                        Comment => Translatable('Please contact your administrator'),
+                        Comment => Translatable('Please contact the administrator.'),
                     );
                     $Output .= $LayoutObject->CustomerFooter();
                     return $Output;
@@ -916,7 +916,7 @@ sub Run {
     else {
         return $LayoutObject->ErrorScreen(
             Message => Translatable('No Subaction!'),
-            Comment => Translatable('Please contact your administrator'),
+            Comment => Translatable('Please contact the administrator.'),
         );
     }
 
@@ -1040,13 +1040,6 @@ sub _MaskNew {
     my $DynamicFieldNames = $Self->_GetFieldsToUpdate(
         OnlyDynamicFields => 1,
     );
-
-    # create a string with the quoted dynamic field names separated by commas
-    if ( IsArrayRefWithData($DynamicFieldNames) ) {
-        for my $Field ( @{$DynamicFieldNames} ) {
-            $Param{DynamicFieldNamesStrg} .= ", '" . $Field . "'";
-        }
-    }
 
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
@@ -1353,6 +1346,12 @@ sub _MaskNew {
             },
         );
     }
+
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'DynamicFieldNames',
+        Value => $DynamicFieldNames,
+    );
 
     # get output back
     return $LayoutObject->Output(

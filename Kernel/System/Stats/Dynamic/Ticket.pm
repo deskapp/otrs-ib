@@ -296,6 +296,20 @@ sub GetObjectAttributes {
             },
         },
         {
+            Name             => Translatable('Until Time'),
+            UseAsXvalue      => 1,
+            UseAsValueSeries => 1,
+            UseAsRestriction => 1,
+            Element          => 'UntilTime',
+            TimePeriodFormat => 'DateInputFormat',            # 'DateInputFormatLong',
+            Block            => 'Time',
+            TimeStop         => $Today,
+            Values           => {
+                TimeStart => 'TicketPendingTimeNewerDate',
+                TimeStop  => 'TicketPendingTimeOlderDate',
+            },
+        },
+        {
             Name             => Translatable('Close Time'),
             UseAsXvalue      => 1,
             UseAsValueSeries => 1,
@@ -519,9 +533,9 @@ sub GetObjectAttributes {
             Block            => 'SelectField',
             Translation      => 1,
             Values           => {
-                ArchivedTickets    => 'Archived tickets',
-                NotArchivedTickets => 'Unarchived tickets',
-                AllTickets         => 'All tickets',
+                ArchivedTickets    => Translatable('Archived tickets'),
+                NotArchivedTickets => Translatable('Unarchived tickets'),
+                AllTickets         => Translatable('All tickets'),
             },
         );
 

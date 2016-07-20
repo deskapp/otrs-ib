@@ -154,14 +154,4 @@
 </div>
 <!-- stop login -->
 
-[% WRAPPER JSOnDocumentComplete %]
-<script type="text/javascript">//<![CDATA[
-Core.Customer.Login.Init({LastLoginFailed: '[% Data.LoginFailed %]'});
-
-[% RenderBlockStart("SignupError") %]
-window.location.hash = 'Signup';
-[% RenderBlockEnd("SignupError") %]
-//]]></script>
-[% END %]
-
 [% InsertTemplate("CustomerFooter.tt") %]

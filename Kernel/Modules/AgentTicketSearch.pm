@@ -2194,6 +2194,9 @@ sub Run {
             }
         }
 
+        # attributes for search
+        my @SearchAttributes;
+
         # show attributes
         my @ShownAttributes;
         if ( $GetParamBackup{ShownAttributes} ) {
@@ -2235,12 +2238,8 @@ sub Run {
                 # show attribute
                 next ITEM if $AlreadyShown{$Key};
                 $AlreadyShown{$Key} = 1;
-                $LayoutObject->Block(
-                    Name => 'SearchAJAXShow',
-                    Data => {
-                        Attribute => $Key,
-                    },
-                );
+
+                push @SearchAttributes, $Key;
             }
         }
 
@@ -2274,29 +2273,25 @@ sub Run {
                     next KEY if $AlreadyShown{$Key};
                     $AlreadyShown{$Key} = 1;
 
-                    $LayoutObject->Block(
-                        Name => 'SearchAJAXShow',
-                        Data => {
-                            Attribute => $Key,
-                        },
-                    );
+                    push @SearchAttributes, $Key;
                 }
             }
 
             # If no attribute is shown, show fulltext search.
             if ( !keys %AlreadyShown ) {
-                $LayoutObject->Block(
-                    Name => 'SearchAJAXShow',
-                    Data => {
-                        Attribute => 'Fulltext',
-                    },
-                );
+                push @SearchAttributes, 'Fulltext';
             }
         }
+
+        $LayoutObject->AddJSData(
+            Key   => 'SearchAttributes',
+            Value => \@SearchAttributes,
+        );
 
         my $Output .= $LayoutObject->Output(
             TemplateFile => 'AgentTicketSearch',
             Data         => \%Param,
+            AJAX         => 1,
         );
         return $LayoutObject->Attachment(
             NoCache     => 1,
@@ -2310,9 +2305,9 @@ sub Run {
     # show default search screen
     $Output = $LayoutObject->Header();
     $Output .= $LayoutObject->NavigationBar();
-    $LayoutObject->Block(
-        Name => 'Search',
-        Data => \%Param,
+    $LayoutObject->AddJSData(
+        Key   => 'NonAJAXSearch',
+        Value => 1,
     );
     $Output .= $LayoutObject->Output(
         TemplateFile => 'AgentTicketSearch',

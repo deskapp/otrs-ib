@@ -912,7 +912,7 @@ sub SendEmail {
                 Message =>
                     $LayoutObject->{LanguageObject}
                     ->Translate( 'Could not perform validation on field %s!', $DynamicFieldConfig->{Label} ),
-                Comment => Translatable('Please contact the admin.'),
+                Comment => Translatable('Please contact the administrator.'),
             );
         }
 
@@ -1175,7 +1175,7 @@ sub SendEmail {
     if ( !$ArticleID ) {
 
         return $LayoutObject->ErrorScreen(
-            Comment => Translatable('Please contact the admin.'),
+            Comment => Translatable('Please contact the administrator.'),
         );
     }
 
@@ -1466,13 +1466,6 @@ sub _Mask {
     my $DynamicFieldNames = $Self->_GetFieldsToUpdate(
         OnlyDynamicFields => 1
     );
-
-    # create a string with the quoted dynamic field names separated by commas
-    if ( IsArrayRefWithData($DynamicFieldNames) ) {
-        for my $Field ( @{$DynamicFieldNames} ) {
-            $Param{DynamicFieldNamesStrg} .= ", '" . $Field . "'";
-        }
-    }
 
     # get config object
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
@@ -1864,6 +1857,11 @@ sub _Mask {
             Data => \%Param,
         );
     }
+
+    $LayoutObject->AddJSData(
+        Key   => 'DynamicFieldNames',
+        Value => $DynamicFieldNames,
+    );
 
     # create & return output
     return $LayoutObject->Output(

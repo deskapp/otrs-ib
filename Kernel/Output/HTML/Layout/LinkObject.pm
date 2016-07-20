@@ -456,8 +456,8 @@ sub LinkObjectTableCreateComplex {
     }
 
     return $LayoutObject->Output(
-        TemplateFile   => 'LinkObject',
-        KeepScriptTags => $Param{AJAX},
+        TemplateFile => 'LinkObject',
+        AJAX         => $Param{AJAX},
     );
 }
 
