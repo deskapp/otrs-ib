@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-07-26 Added a new postmaster filter to decrypt and handle encrypted mails.
  - 2016-07-18 Fixed bug#[7860](http://bugs.otrs.org/show_bug.cgi?id=7860) - AgentTicketSearch and Statistics are missing TicketPending option.
  - 2016-07-13 Added a javascript templating mechanism. Use Core.Template.Render() to fill given templates from either files or strings with data.
  - 2016-06-29 Simple ticket printout attaching.
@@ -124,6 +125,7 @@
  - 2015-11-27 Improved command Maint::Ticket::InvalidUserCleanup. It can now now both unlock tickets of invalid users and also (optionally) change their state to make sure they will not be overlooked. Thanks to Moritz Lenz @ noris networks.
 
 #5.0.12 2016-??-??
+ - 2016-07-24 Followup for bug#[12090](http://bugs.otrs.org/show_bug.cgi?id=12090) - 2 second sleep between email fetching causes bad performance on systems with high email traffic.
  - 2016-07-13 Fixed bug#[12118](http://bugs.otrs.org/show_bug.cgi?id=12118) - Text Area filter doesn't work for Statistic.
  - 2016-07-13 Fixed bug#[12189](http://bugs.otrs.org/show_bug.cgi?id=12189) - ACL beginning with @ results in 500 internal server error.
  - 2016-07-12 Fixed bug#[12185](http://bugs.otrs.org/show_bug.cgi?id=12185) - Sometimes page leave confirmation is shown when completing a popup action.

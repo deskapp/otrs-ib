@@ -2972,10 +2972,10 @@ sub _RenderResponsible {
         PossibleNone => $PossibleNone,
     );
 
-    # set fields that will get an AJAX loader icon when this field changes
-    $Data{FieldsToUpdate} = $Self->_GetFieldsToUpdateStrg(
-        TriggerField        => 'ResponsibleID',
-        AJAXUpdatableFields => $Param{AJAXUpdatableFields},
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'ResponsibleFieldsToUpdate',
+        Value => $Param{AJAXUpdatableFields}
     );
 
     $LayoutObject->Block(
@@ -3149,10 +3149,10 @@ sub _RenderOwner {
         PossibleNone => $PossibleNone,
     );
 
-    # set fields that will get an AJAX loader icon when this field changes
-    $Data{FieldsToUpdate} = $Self->_GetFieldsToUpdateStrg(
-        TriggerField        => 'OwnerID',
-        AJAXUpdatableFields => $Param{AJAXUpdatableFields},
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'OwnerFieldsToUpdate',
+        Value => $Param{AJAXUpdatableFields}
     );
 
     $LayoutObject->Block(
@@ -3760,10 +3760,10 @@ sub _RenderPriority {
         Class         => "Modernize $ServerError",
     );
 
-    # set fields that will get an AJAX loader icon when this field changes
-    $Data{FieldsToUpdate} = $Self->_GetFieldsToUpdateStrg(
-        TriggerField        => 'PriorityID',
-        AJAXUpdatableFields => $Param{AJAXUpdatableFields},
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'PriorityFieldsToUpdate',
+        Value => $Param{AJAXUpdatableFields}
     );
 
     $LayoutObject->Block(
@@ -3907,9 +3907,10 @@ sub _RenderQueue {
         PossibleNone  => 1,
     );
 
-    $Data{FieldsToUpdate} = $Self->_GetFieldsToUpdateStrg(
-        TriggerField        => 'QueueID',
-        AJAXUpdatableFields => $Param{AJAXUpdatableFields},
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'QueueFieldsToUpdate',
+        Value => $Param{AJAXUpdatableFields}
     );
 
     $LayoutObject->Block(
