@@ -181,6 +181,8 @@ $Selenium->RunTest(
             # sort by Priority
             $Selenium->execute_script("\$('th.Priority #PriorityOverviewControl$DashboardName').trigger('click');");
 
+            sleep 2;
+
             # wait for AJAX to finish
             $Self->True(
                 $Selenium->WaitFor(
@@ -212,7 +214,7 @@ $Selenium->RunTest(
                 last TICKET_WAIT if $TicketFound;
 
                 # Wait 1 second
-                sleep(1);
+                sleep 1;
             }
 
             # check for test ticket on current dashboard plugin

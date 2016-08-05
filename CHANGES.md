@@ -1,5 +1,11 @@
-#5.0.12 2016-??-??
+#5.0.13 2016-??-??
+
+#5.0.12 2016-08-09
+ - 2016-08-05 Fixed bug#[12086](http://bugs.otrs.org/show_bug.cgi?id=12086) - Labels overflows for some languages.
+ - 2016-08-05 Fixed bug#[12221](http://bugs.otrs.org/show_bug.cgi?id=12221) - Key/value fields are very small in AdminProcessManagementTransitionAction.
+ - 2016-08-03 Updated translations, thanks to all translators.
  - 2016-08-01 Fixed typo in charset name.
+ - 2016-07-29 Fixed bug#[12196](http://bugs.otrs.org/show_bug.cgi?id=12196) - SOAP Response missing trailing slash.
  - 2016-07-29 Fixed error Base class package "Kernel::System::EventHandler" is empty.
  - 2016-07-24 Followup for bug#[12090](http://bugs.otrs.org/show_bug.cgi?id=12090) - 2 second sleep between email fetching causes bad performance on systems with high email traffic.
  - 2016-07-13 Fixed bug#[12118](http://bugs.otrs.org/show_bug.cgi?id=12118) - Text Area filter doesn't work for Statistic.
@@ -16,6 +22,7 @@
  - 2016-07-08 Fixed bug#[12150](http://bugs.otrs.org/show_bug.cgi?id=12150) - Ticket::HookDivider missing in TicketZoom and History View.
  - 2016-07-08 Fixed bug#[7108](http://bugs.otrs.org/show_bug.cgi?id=7108) - Email not sent if FQDN has port number in it.
  - 2016-07-07 Fixed bug#[12178](http://bugs.otrs.org/show_bug.cgi?id=12178) - CustomerUser in Config.pm breaks the system.
+ - 2016-07-06 Fixed bug#[8671](http://bugs.otrs.org/show_bug.cgi?id=8671) - Can not link to archived ticket.
  - 2016-07-04 Fixed bug#[12147](http://bugs.otrs.org/show_bug.cgi?id=12147) - Transition Action - to set Service and SLA.
  - 2016-07-04 Fixed bug#[8671](http://bugs.otrs.org/show_bug.cgi?id=8671) - Can not link to archived ticket.
  - 2016-07-01 Fixed bug#[12141](http://bugs.otrs.org/show_bug.cgi?id=12141) - Wrong check for needed objects.
@@ -112,6 +119,7 @@
  - 2016-05-19 7 Day Stats performance optimizations.
  - 2016-05-19 Faster new stat add operation.
  - 2016-05-19 Fixed bug#[9950](http://bugs.otrs.org/show_bug.cgi?id=9950) - Ticket Split takes uses system address as the customer.
+ - 2016-05-19 Followup for bug#[9950](http://bugs.otrs.org/show_bug.cgi?id=9950) - Ticket Split takes uses system address as the customer.
  - 2016-05-18 Added follow up detection based on Message-ID e-mail header.
  - 2016-05-18 Fixed missing OTRS tags in AdminTemplate after Frontend::RichText change.
  - 2016-05-13 Fixed bug#[12045](http://bugs.otrs.org/show_bug.cgi?id=12045) - Not possible to create a Ticket using TransitionAction::TicketCreate with Owner instead of OwnerID.
