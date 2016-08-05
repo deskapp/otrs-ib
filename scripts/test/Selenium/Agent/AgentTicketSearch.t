@@ -182,7 +182,7 @@ $Selenium->RunTest(
         );
 
         # allow mod_perl to pick up the configuration changes
-        sleep 1;
+        sleep 3;
 
         # Recreate TicketObject and update article index for staticdb
         $Kernel::OM->ObjectsDiscard( Objects => ['Kernel::System::Ticket'] );
@@ -208,7 +208,7 @@ $Selenium->RunTest(
         my $ExpectedAlertText = "Fulltext: $MinCharString";
         $Self->True(
             $Selenium->get_alert_text() =~ /$ExpectedAlertText/,
-            'Minimum character string search warning is found'
+            'Minimum character string search warning is found',
         );
 
         # accept alert
@@ -242,7 +242,7 @@ $Selenium->RunTest(
         $ExpectedAlertText = "Fulltext: because";
         $Self->True(
             $Selenium->get_alert_text() =~ /$ExpectedAlertText/,
-            'Stop word search string warning is found'
+            'Stop word search string warning is found',
         );
 
         # accept alert
@@ -268,7 +268,7 @@ $Selenium->RunTest(
         );
         $Self->True(
             $Success,
-            "Ticket with ticket ID $TicketID is deleted"
+            "Ticket with ticket ID $TicketID is deleted",
         );
 
         # make sure the cache is correct

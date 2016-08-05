@@ -217,6 +217,9 @@ JAVASCRIPT
         $Selenium->execute_script("\$('#ValidID').val('2').trigger('redraw.InputField').trigger('change')");
         $Selenium->find_element( '#Name', 'css' )->send_keys("\N{U+E007}");
 
+        # wait until the new for has been loaded and the "normal" Save button shows up
+        $Selenium->WaitFor( JavaScript => "return typeof(\$) === 'function' && \$('#SubmitAndContinue').length" );
+
         # click 'Save and Finish'
         $Selenium->find_element( "#Submit", 'css' )->VerifiedClick();
 
@@ -239,6 +242,7 @@ JAVASCRIPT
         # insert name of second ACL into filter field
         $Selenium->find_element( "#FilterACLs", 'css' )->clear();
         $Selenium->find_element( "#FilterACLs", 'css' )->send_keys( $TestACLNames[1] );
+
         sleep 1;
 
         # check if the first ACL does not exist and second does in the table
