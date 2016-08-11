@@ -43,6 +43,10 @@ sub new {
     if ( !defined( $Self->{SearchSuffix} ) ) {
         $Self->{SearchSuffix} = '*';
     }
+    $Self->{SearchExtended} = $Self->{CustomerCompanyMap}->{'CustomerCompanySearchExtended'};
+    if ( !defined( $Self->{SearchExtended} ) ) {
+        $Self->{SearchExtended} = 0;
+    }
 
     # create cache object, but only if CacheTTL is set in customer config
     if ( $Self->{CustomerCompanyMap}->{CacheTTL} ) {
@@ -127,7 +131,14 @@ sub CustomerCompanyList {
     # where
     if ( $Param{Search} ) {
 
-        my @Parts = split /\+/, $Param{Search}, 6;
+        my @Parts;
+        if ( $Self->{SearchExtended} ) {
+            @Parts = split( /\+|\s/, $Param{Search}, 6 );
+        }
+        else {
+            @Parts = split( /\+/, $Param{Search}, 6 );
+        }
+
         for my $Part (@Parts) {
             $Part = $Self->{SearchPrefix} . $Part . $Self->{SearchSuffix};
             $Part =~ s/\*/%/g;
@@ -153,7 +164,7 @@ sub CustomerCompanyList {
                     }
                 }
                 if (@SQLParts) {
-                    $SQL .= join( ' OR ', @SQLParts );
+                    $SQL .= ' ( ' . join( ' OR ', @SQLParts ) . ' ) ';
                 }
             }
         }
