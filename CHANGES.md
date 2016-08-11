@@ -1,4 +1,5 @@
 #5.0.13 2016-??-??
+ - 2016-08-11 Extended searching for customers and customer users.
 
 #5.0.12 2016-08-09
  - 2016-08-05 Fixed bug#[12086](http://bugs.otrs.org/show_bug.cgi?id=12086) - Labels overflows for some languages.
