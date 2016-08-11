@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-08-11 Extended searching for customers and customer users.
  - 2015-08-01 Updated CPAN module CGI to version 4.32.
  - 2016-08-01 Fixed typo in charset name.
  - 2016-07-29 Fixed error Base class package "Kernel::System::EventHandler" is empty.
