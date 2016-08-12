@@ -12,6 +12,16 @@
 
 @media screen,projection,tv,handheld {
 
+/* 52 */
+.Overview thead a {
+    text-transform: none;
+}
+
+/* 64 */
+.Overview thead span {
+    text-transform: none;
+}
+
 /* 182 */
 .Overview tbody tr:hover td {
     background: #CBDCEA;
