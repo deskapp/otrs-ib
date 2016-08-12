@@ -1,0 +1,27 @@
+/**
+ * Core.Footer.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 27 */
+#Footer a,
+#Footer ul li a {
+    color: #276A9D;
+}
+
+/* 32 */
+#Footer a:hover,
+#Footer ul li a:hover {
+    text-decoration: none;
+}
+
+} /* end @media */
