@@ -20,6 +20,22 @@
     background: #CBDCEA;
 }
 
+/* 85 */
+.DataTable thead th {
+    text-transform: none;
+}
+
+/* 222 */
+.DataTable .Row td.QueueOverviewTotals {
+    text-transform: none;
+}
+
+/* 325 */
+.TableSmall thead a,
+.TableSmall thead span {
+    text-transform: none;
+}
+
 /* 441 */
 .TableSmall td a.DynamicFieldLink {
     color: #093557;
