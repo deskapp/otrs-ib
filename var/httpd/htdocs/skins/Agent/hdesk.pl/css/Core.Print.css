@@ -18,6 +18,11 @@ body {
     font-size: 12px;
 }
 
+/* 182 */
+TableSmall thead a, .TableSmall thead span {
+    text-transform: none;
+}
+
 /* 207 */
 .OverviewMedium .Flag {
     color: #276A9D;

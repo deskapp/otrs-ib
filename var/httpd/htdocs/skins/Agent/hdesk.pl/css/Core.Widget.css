@@ -17,6 +17,11 @@ ul.Tablelike li:hover {
     background: #CBDCEA;
 }
 
+/* 60 */
+ul.Tablelike li.Header {
+    text-transform: none;
+}
+
 /* 193 */
 .WidgetNotice {
     background-color: #CBDCEA;

@@ -34,6 +34,12 @@ textarea:focus {
     color: #276A9D;
 }
 
+/* 314 */
+#JSTree .jstree-clicked {
+    background: #619CC9;
+    border-color: #619CC9;
+}
+
 /* 450 */
 .CustomerContainer .CustomerTicketText.MainCustomer {
     background-color: #CBDCEA;
