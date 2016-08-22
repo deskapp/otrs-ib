@@ -256,9 +256,36 @@ Core.Agent.Dashboard = (function (TargetNS) {
      *      Initializes the dashboard module.
      */
     TargetNS.Init = function () {
+        var StatsData,
+            DashboardStats = Core.Config.Get('DashboardStatsIDs'),
+            WidgetContainers = Core.Config.Get('ContainerNames');
+
+        // initializes dashboards stats widget functionality
+        if (typeof DashboardStats !== 'undefined') {
+            $.each(DashboardStats, function (Index, Value) {
+                StatsData = Core.Config.Get('StatsData' + Value);
+                if (typeof StatsData !== 'undefined') {
+                    TargetNS.InitStatsWidget(StatsData);
+                }
+            });
+        }
 
         // initializes events ticket calendar
         EventsTicketCalendarInitialization();
+
+        // Initializes events customer user list
+        InitCustomerUserList();
+
+        // Initializes preferences for widget containers
+        // (if widgets are available)
+        if (typeof WidgetContainers !== 'undefined') {
+            $.each(WidgetContainers, function (Index, Value) {
+                InitWidgetContainerPref(Value);
+            });
+        }
+
+        // Initializes refresh event for user online widget
+        InitUserOnlineRefresh();
 
         // Disable drag and drop of dashboard widgets on mobile / touch devices
         // to prevent accidentally moved widgets while tabbing/swiping
@@ -625,6 +652,154 @@ Core.Agent.Dashboard = (function (TargetNS) {
 
         ValidateTimeSettings();
     };
+
+    /**
+     * @private
+     * @name InitCustomerUserList
+     * @memberof Core.Agent.Dashboard
+     * @function
+     * @description
+     *      This function initialize customer user list functionality in AgentCustomerInformationCenter screen.
+     */
+    function InitCustomerUserList () {
+        var CustomerUserRefresh;
+
+        // Bind event on create chat request button
+        $('a.CreateChatRequest').bind('click', function() {
+            var $Dialog = $('#DashboardUserOnlineChatStartDialog').clone();
+
+            $Dialog.find('input[name=ChatStartUserID]').val($(this).data('user-id'));
+            $Dialog.find('input[name=ChatStartUserType]').val($(this).data('user-type'));
+            $Dialog.find('input[name=ChatStartUserFullname]').val($(this).data('user-fullname'));
+
+            Core.UI.Dialog.ShowContentDialog($Dialog.html(), Core.Language.Translate('Start chat'), '100px', 'Center', true);
+
+            // Only enable button if there is a message
+            $('.Dialog textarea[name="ChatStartFirstMessage"]').on('keyup', function(){
+                $('.Dialog button').prop('disabled', $(this).val().length ? false : true);
+            });
+
+            $('.Dialog form').on('submit', function(){
+                if (!$('.Dialog textarea[name=ChatStartFirstMessage]').val().length) {
+                    return false;
+                }
+                // Close after submit
+                window.setTimeout(function(){
+                    Core.UI.Dialog.CloseDialog($('.Dialog'));
+                }, 1);
+            });
+
+            return false;
+        });
+
+        if (typeof Core.Config.Get('CustomerUserListRefresh') !== 'undefined') {
+            CustomerUserRefresh = Core.Config.Get('CustomerUserListRefresh');
+
+            Core.Config.Set('RefreshSeconds_' + CustomerUserRefresh.NameHTML, parseInt(CustomerUserRefresh.RefreshTime, 10) || 0);
+            if (Core.Config.Get('RefreshSeconds_' + CustomerUserRefresh.NameHTML)) {
+                Core.Config.Set('Timer_' + CustomerUserRefresh.NameHTML, window.setTimeout(function() {
+
+                    // get active filter
+                    var Filter = $('#Dashboard' + Core.App.EscapeSelector(CustomerUserRefresh.Name) + '-box').find('.Tab.Actions li.Selected a').attr('data-filter');
+                    $('#Dashboard' + Core.App.EscapeSelector(CustomerUserRefresh.Name) + '-box').addClass('Loading');
+                    Core.AJAX.ContentUpdate($('#Dashboard' + Core.App.EscapeSelector(CustomerUserRefresh.Name)), Core.Config.Get('Baselink') + 'Action=' + Core.Config.Get('Action') + ';Subaction=Element;Name=' + CustomerUserRefresh.Name + ';Filter=' + Filter + ';CustomerID=' + CustomerUserRefresh.CustomerID, function () {
+                        $('#Dashboard' + Core.App.EscapeSelector(CustomerUserRefresh.Name) + '-box').removeClass('Loading');
+                    });
+                    clearTimeout(Core.Config.Get('Timer_' + CustomerUserRefresh.NameHTML));
+                }, Core.Config.Get('RefreshSeconds_' + CustomerUserRefresh.NameHTML) * 1000));
+            }
+        }
+    }
+
+    /**
+     * @name InitUserOnlineRefresh
+     * @memberof Core.Agent.Dashboard
+     * @function
+     * @description
+     *      Initializes the event to refresh user online widget
+     */
+    function InitUserOnlineRefresh () {
+        var UserOnlineRefresh = Core.Config.Get('CanRefresh');
+
+        if (typeof UserOnlineRefresh !== 'undefined') {
+            $('#Dashboard' + Core.App.EscapeSelector(UserOnlineRefresh.Name) + '_toggle').on('click', function() {
+                $('#Dashboard' + Core.App.EscapeSelector(UserOnlineRefresh.Name) + '-box').addClass('Loading');
+                Core.AJAX.ContentUpdate($('#Dashboard' + Core.App.EscapeSelector(UserOnlineRefresh.Name)), Core.Config.Get('Baselink') + 'Action=' + Core.Config.Get('Action') +';Subaction=Element;Name=' + UserOnlineRefresh.Name, function () {
+                    $('#Dashboard' + Core.App.EscapeSelector(UserOnlineRefresh.Name) + '-box').removeClass('Loading');
+                });
+                clearTimeout(Core.Config.Get('Timer_' + UserOnlineRefresh.NameHTML));
+                return false;
+            });
+        }
+    }
+
+    /**
+     * @name InitStatsWidget
+     * @memberof Core.Agent.Dashboard
+     * @param {Object} StatsData - Hash with different config options.
+     * @function
+     * @description
+     *      Initializes the stats dashboard widget functionality.
+     */
+     TargetNS.InitStatsWidget = function (StatsData) {
+        (function(){
+            var Timeout = 500;
+            // check if the container is already expanded, otherwise the graph
+            // would have the wrong size after the widget settings have been saved
+            // and the content is being reloaded using ajax.
+            if ($('#GraphWidget' + Core.App.EscapeSelector(StatsData.Name)).parent().is(':visible')) {
+                Timeout = 0;
+            }
+
+            window.setTimeout(function () {
+                Core.UI.AdvancedChart.Init(
+                    StatsData.Format,
+                    Core.JSON.Parse(StatsData.StatResultData),
+                    'svg.GraphWidget' + StatsData.Name,
+                    {
+                        PreferencesKey: 'GraphWidget' + StatsData.Name,
+                        PreferencesData: StatsData.Preferences,
+                        Duration: 250
+                    }
+                );
+            }, Timeout);
+
+        }());
+
+        $('#DownloadSVG' + Core.App.EscapeSelector(StatsData.Name)).on('click', function() {
+            this.href = Core.UI.AdvancedChart.ConvertSVGtoBase64($('#GraphWidgetContainer' + Core.App.EscapeSelector(StatsData.Name)));
+        });
+        $('#DownloadPNG' + Core.App.EscapeSelector(StatsData.Name)).on('click', function() {
+            this.href = Core.UI.AdvancedChart.ConvertSVGtoPNG($('#GraphWidgetContainer' + Core.App.EscapeSelector(StatsData.Name)));
+        });
+
+        $('#GraphWidgetLink' + Core.App.EscapeSelector(StatsData.Name)).prependTo($('#GraphWidget' + Core.App.EscapeSelector(StatsData.Name)).closest('.WidgetSimple').find('.ActionMenu'));
+        $('#GraphWidgetLink' + Core.App.EscapeSelector(StatsData.Name)).find('a.TriggerTooltip').bind('click', function(){
+            $(this).next('.WidgetTooltip').toggleClass('Hidden');
+            return false;
+        });
+        $('#GraphWidgetLink' + Core.App.EscapeSelector(StatsData.Name)).find('.WidgetTooltip').find('a').bind('click', function(){
+            $(this).closest('.WidgetTooltip').addClass('Hidden');
+        });
+        $('#GraphWidgetLink' + Core.App.EscapeSelector(StatsData.Name)).closest('.Header').bind('mouseleave.WidgetTooltip', function(){
+            $('#GraphWidgetLink' + Core.App.EscapeSelector(StatsData.Name)).find('.WidgetTooltip').addClass('Hidden');
+        });
+    };
+
+    /**
+     * @private
+     * @name InitWidgetContainerPref
+     * @memberof Core.Agent.Dashboard
+     * @function
+     * @param {Object} Params - Hash with container name, with and without ('-') to support IE
+     * @description
+     *      Initializes preferences for widget containers
+     */
+    function InitWidgetContainerPref (Params) {
+        TargetNS.RegisterUpdatePreferences($('#Dashboard' + Core.App.EscapeSelector(Params.Name) + '_submit'), 'Dashboard' + Core.App.EscapeSelector(Params.Name),$('#Dashboard' + Core.App.EscapeSelector(Params.NameForm) + '_setting_form'));
+        Core.UI.RegisterToggleTwoContainer($('#Dashboard' + Core.App.EscapeSelector(Params.Name) + '-toggle'), $('#Dashboard' + Core.App.EscapeSelector(Params.Name) + '-setting'), $('#Dashboard' + Core.App.EscapeSelector(Params.Name)));
+        Core.UI.RegisterToggleTwoContainer($('#Dashboard' + Core.App.EscapeSelector(Params.Name) + '_cancel'), $('#Dashboard' + Core.App.EscapeSelector(Params.Name) + '-setting'), $('#Dashboard' + Core.App.EscapeSelector(Params.Name)));
+    }
 
     Core.Init.RegisterNamespace(TargetNS, 'APP_MODULE');
 

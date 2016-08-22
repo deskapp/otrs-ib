@@ -20,18 +20,12 @@ $Selenium->RunTest(
     sub {
 
         # get needed objects
-        $Kernel::OM->ObjectParamAdd(
-            'Kernel::System::UnitTest::Helper' => {
-                RestoreSystemConfiguration => 1,
-            },
-        );
-        my $Helper          = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
-        my $SysConfigObject = $Kernel::OM->Get('Kernel::System::SysConfig');
-        my $ConfigObject    = $Kernel::OM->Get('Kernel::Config');
+        my $Helper       = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+        my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
         # disable 'Ticket Information', 'Customer Information' and 'Linked Objects' widgets in AgentTicketZoom screen
         for my $WidgetDisable (qw(0100-TicketInformation 0200-CustomerInformation 0300-LinkTable)) {
-            $SysConfigObject->ConfigItemUpdate(
+            $Helper->ConfigSettingChange(
                 Valid => 0,
                 Key   => "Ticket::Frontend::AgentTicketZoom###Widgets###$WidgetDisable",
                 Value => '',
@@ -39,29 +33,29 @@ $Selenium->RunTest(
         }
 
         # enable ticket service, type, responsible
-        $Kernel::OM->Get('Kernel::Config')->Set(
+        $Helper->ConfigSettingChange(
             Key   => 'Ticket::Service',
             Value => 1,
         );
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'Ticket::Service',
             Value => 1
         );
-        $Kernel::OM->Get('Kernel::Config')->Set(
+        $Helper->ConfigSettingChange(
             Key   => 'Ticket::Type',
             Value => 1,
         );
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'Ticket::Type',
             Value => 1
         );
-        $Kernel::OM->Get('Kernel::Config')->Set(
+        $Helper->ConfigSettingChange(
             Key   => 'Ticket::Responsible',
             Value => 1,
         );
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'Ticket::Responsible',
             Value => 1
@@ -74,22 +68,22 @@ $Selenium->RunTest(
         for my $Day (@Days) {
             $Week{$Day} = [ 0 .. 23 ];
         }
-        $ConfigObject->Set(
+        $Helper->ConfigSettingChange(
             Key   => 'TimeWorkingHours',
             Value => \%Week,
         );
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'TimeWorkingHours',
             Value => \%Week,
         );
 
         # disable default Vacation days
-        $ConfigObject->Set(
+        $Helper->ConfigSettingChange(
             Key   => 'TimeVacationDays',
             Value => {},
         );
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'TimeVacationDays',
             Value => {},
@@ -222,7 +216,7 @@ $Selenium->RunTest(
         );
 
         # enable test dynamic field to show in AgentTicketZoom screen in 'Ticket Information' widget
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'Ticket::Frontend::AgentTicketZoom###DynamicField',
             Value => {
@@ -299,12 +293,14 @@ $Selenium->RunTest(
         );
 
         # reset 'Ticket Information' widget sysconfig, enable it and refresh screen
-        $SysConfigObject->ConfigItemReset(
-            Name => 'Ticket::Frontend::AgentTicketZoom###Widgets###0100-TicketInformation',
+        $Helper->ConfigSettingChange(
+            Valid => 1,
+            Key   => 'Ticket::Frontend::AgentTicketZoom###Widgets###0100-TicketInformation',
+            Value => {
+                'Location' => 'Sidebar',
+                'Module'   => 'Kernel::Output::HTML::TicketZoom::TicketInformation'
+            },
         );
-
-        # wait for mod_perl to pick up the changes
-        sleep 3;
 
         $Selenium->VerifiedRefresh();
 
@@ -349,7 +345,7 @@ $Selenium->RunTest(
         );
 
         # add accounted time to the ticket
-        my $AccountedTime = $Helper->GetRandomNumber() / 1000;
+        my $AccountedTime = 123;
         $Success = $TicketObject->TicketAccountTime(
             TicketID  => $TicketID,
             ArticleID => $ArticleID,
@@ -380,7 +376,7 @@ $Selenium->RunTest(
 
         # verify accounted time value
         $Self->True(
-            index( $Selenium->get_page_source(), "$AccountedTime" ) > -1,
+            index( $Selenium->get_page_source(), qq|<p class="Value">$AccountedTime</p>| ) > -1,
             "Accounted Time found in Ticket Information Widget",
         );
 

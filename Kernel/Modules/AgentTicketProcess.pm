@@ -1430,8 +1430,8 @@ sub _OutputActivityDialog {
             $Param{RichTextHeight} = $Self->{Config}->{RichTextHeight} || 0;
             $Param{RichTextWidth}  = $Self->{Config}->{RichTextWidth}  || 0;
 
-            $LayoutObject->Block(
-                Name => 'RichText',
+            # set up rich text editor
+            $LayoutObject->SetRichTextParameters(
                 Data => \%Param,
             );
         }
@@ -2599,8 +2599,8 @@ sub _RenderArticle {
         $Param{RichTextHeight} = $Self->{Config}->{RichTextHeight} || 0;
         $Param{RichTextWidth}  = $Self->{Config}->{RichTextWidth}  || 0;
 
-        $LayoutObject->Block(
-            Name => 'RichText',
+        # set up rich text editor
+        $LayoutObject->SetRichTextParameters(
             Data => \%Param,
         );
     }
@@ -2775,11 +2775,6 @@ sub _RenderCustomer {
     if ( IsHashRefWithData( $Param{Error} ) && $Param{Error}->{CustomerID} ) {
         $Data{CustomerIDServerError} = 'ServerError';
     }
-
-    # set some customer search autocomplete properties
-    $LayoutObject->Block(
-        Name => 'CustomerSearchAutoComplete',
-    );
 
     if (
         ( IsHashRefWithData( $Param{Ticket} ) && $Param{Ticket}->{CustomerUserID} )
@@ -5260,8 +5255,8 @@ sub _DisplayProcessList {
         $Param{RichTextHeight} = $Self->{Config}->{RichTextHeight} || 0;
         $Param{RichTextWidth}  = $Self->{Config}->{RichTextWidth}  || 0;
 
-        $LayoutObject->Block(
-            Name => 'RichText',
+        # set up rich text editor
+        $LayoutObject->SetRichTextParameters(
             Data => \%Param,
         );
     }

@@ -1,4 +1,6 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-08-18 Added per-address email loop protection setting (PostmasterMaxEmailsPerAddress), thanks to Moritz Lenz.
+ - 2016-08-12 Fixed bug#[12229](http://bugs.otrs.org/show_bug.cgi?id=12229) - Queue is not selectable if the name contains "<" or ">" characters.
  - 2016-08-11 Extended searching for customers and customer users.
  - 2015-08-01 Updated CPAN module CGI to version 4.32.
  - 2016-08-01 Fixed typo in charset name.
@@ -128,8 +130,31 @@
  - 2015-11-27 Improved command Maint::Ticket::InvalidUserCleanup. It can now now both unlock tickets of invalid users and also (optionally) change their state to make sure they will not be overlooked. Thanks to Moritz Lenz @ noris networks.
 
 #5.0.13 2016-??-??
+ - 2016-08-22 Fixed bug#[12264](http://bugs.otrs.org/show_bug.cgi?id=12264) - Incorrect link to ACL documentation.
+ - 2016-08-19 Fixed bug#[12236](http://bugs.otrs.org/show_bug.cgi?id=12236) - ACL - negate a role.
+ - 2016-08-19 Fixed bug#[12242](http://bugs.otrs.org/show_bug.cgi?id=12242) - GenericInterface Dynamic Fields with multiple values not possible (TicketCreate).
+ - 2016-08-19 Fixed bug#[12261](http://bugs.otrs.org/show_bug.cgi?id=12261) - SupportBundle generator dialog has double separator lines.
+ - 2016-08-19 Fixed bug#[12225](http://bugs.otrs.org/show_bug.cgi?id=12225) - actual day can not be added if a dynamic field (Date) requires future date.
+ - 2016-08-19 Fixed bug#[12258](http://bugs.otrs.org/show_bug.cgi?id=12258) - restore.pl doesn't work with crypted passwords.
+ - 2016-08-19 Fixed bug#[12222](http://bugs.otrs.org/show_bug.cgi?id=12222) - closing curly bracket in hyperlink.
+ - 2016-08-19 Fixed bug#[12210](http://bugs.otrs.org/show_bug.cgi?id=12210) - GenericAgent can not be submitted if a dynamic field (Date) requires future date.
+ - 2016-08-19 Fixed bug#[12243](http://bugs.otrs.org/show_bug.cgi?id=12243) - Modern input fields leaves broken selection on search field remove.
+ - 2016-08-19 Fixed bug#[12256](http://bugs.otrs.org/show_bug.cgi?id=12256) - Parameter "Active" in method QueueStandardTemplateMemberAdd is optional but method returns if not set.
+ - 2016-08-19 Fixed bug#[9460](http://bugs.otrs.org/show_bug.cgi?id=9460) - Under some circumstances OTRS does not join Tickets to the Customernumber.
+ - 2016-08-18 Fixed bug#[12246](http://bugs.otrs.org/show_bug.cgi?id=12246) - HTML mail not displayed correctly.
+ - 2016-08-18 Fixed bug#[12252](http://bugs.otrs.org/show_bug.cgi?id=12252) - Support Bundle cannot be created via GUI if cloud services are disabled.
+ - 2016-08-15 Fixed bug#[12245](http://bugs.otrs.org/show_bug.cgi?id=12245) - Missing information for Article Dynamic Fields update event thanks to Rene (rwese).
+ - 2016-08-15 Fixed a problem with the axis exchange not working correctly in the OTRS Business Solution™ reports.
+ - 2016-08-12 Fixed bug#[4389](http://bugs.otrs.org/show_bug.cgi?id=4389) - Singular/plural issue with age.
+ - 2016-08-12 Fixed bug#[12218](http://bugs.otrs.org/show_bug.cgi?id=12218) - PostmasterFilter, not possible to set X-OTRS-DynamicField.
+ - 2016-08-12 Fixed bug#[8705](http://bugs.otrs.org/show_bug.cgi?id=8705) - StandardResponse2QueueByCreating in wrong Sysconfig area.
+ - 2016-08-12 Fixed bug#[4439](http://bugs.otrs.org/show_bug.cgi?id=4439) - Ticket sort order is based on database ids.
+ - 2016-08-12 Fixed bug#[12224](http://bugs.otrs.org/show_bug.cgi?id=12224) - Plain password stored in database temporarily when adding new users.
+ - 2016-08-12 Follow-up fix for bug#[12150](http://bugs.otrs.org/show_bug.cgi?id=12150) - Ticket::HookDivider missing in TicketZoom and History View.
+ - 2016-08-08 Fixed bug#[12205](http://bugs.otrs.org/show_bug.cgi?id=12205) - Default setting for Ticket::Frontend::CustomerTicketMessage###TicketTypeDefault incorrect.
 
 #5.0.12 2016-08-09
+ - 2016-08-09 Fixed bug#[12232](http://bugs.otrs.org/show_bug.cgi?id=12232) - Modern input fields leaves a broken value on refresh.
  - 2016-08-05 Fixed bug#[12086](http://bugs.otrs.org/show_bug.cgi?id=12086) - Labels overflows for some languages.
  - 2016-08-05 Fixed bug#[12221](http://bugs.otrs.org/show_bug.cgi?id=12221) - Key/value fields are very small in AdminProcessManagementTransitionAction.
  - 2016-08-03 Updated translations, thanks to all translators.

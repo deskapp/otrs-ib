@@ -54,6 +54,7 @@ sub Run {
 
     # Get all configured statistics from the system that should be shown as a dashboard widget
     #   and register them dynamically in the configuration.
+    my @StatsIDs;
     if ( $Self->{Action} eq 'AgentDashboard' ) {
 
         my $StatsHash = $Kernel::OM->Get('Kernel::System::Stats')->StatsListGet(
@@ -96,9 +97,16 @@ sub Run {
                     'Description' => $Description,
                     'Group'       => $StatsPermissionGroups,
                 };
+                push @StatsIDs, $StatID;
             }
         }
     }
+
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'DashboardStatsIDs',
+        Value => \@StatsIDs
+    );
 
     # get needed objects
     my $ParamObject = $Kernel::OM->Get('Kernel::System::Web::Request');
@@ -526,6 +534,7 @@ sub Run {
     my $Columns = $Self->{Config}->{DefaultColumns} || $ConfigObject->Get('DefaultOverviewColumns') || {};
 
     # try every backend to load and execute it
+    my @ContainerNames;
     NAME:
     for my $Name (@Order) {
 
@@ -540,6 +549,13 @@ sub Run {
         # NameForm (to support IE, is not working with "-" in form names)
         my $NameForm = $Name;
         $NameForm =~ s{-}{}g;
+
+        my %JSData = (
+            Name     => $Name,
+            NameForm => $NameForm,
+        );
+
+        push @ContainerNames, \%JSData;
 
         # rendering
         $LayoutObject->Block(
@@ -558,6 +574,15 @@ sub Run {
 
             my $NameHTML = $Name;
             $NameHTML =~ s{-}{_}xmsg;
+
+            # send data to JS
+            $LayoutObject->AddJSData(
+                Key   => 'CanRefresh',
+                Value => {
+                    Name     => $Name,
+                    NameHTML => $NameHTML,
+                    }
+            );
 
             $LayoutObject->Block(
                 Name => $Element{Config}->{Block} . 'Refresh',
@@ -636,6 +661,12 @@ sub Run {
         }
     }
 
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'ContainerNames',
+        Value => \@ContainerNames,
+    );
+
     # build main menu
     my $MainMenuConfig = $ConfigObject->Get($MainMenuConfigKey);
     if ( IsHashRefWithData($MainMenuConfig) ) {
@@ -679,16 +710,12 @@ sub Run {
                 $TranslatedWord = Translatable('Pending till');
             }
 
-            $LayoutObject->Block(
-                Name => 'ColumnTranslation',
-                Data => {
-                    ColumnName      => $Column,
-                    TranslateString => $TranslatedWord,
-                },
+            # send data to JS
+            $LayoutObject->AddJSData(
+                Key   => 'Column' . $Column,
+                Value => $LayoutObject->{LanguageObject}->Translate($TranslatedWord),
             );
-            $LayoutObject->Block(
-                Name => 'ColumnTranslationSeparator',
-            );
+
         }
     }
 
@@ -709,19 +736,11 @@ sub Run {
 
             $Counter++;
 
-            $LayoutObject->Block(
-                Name => 'ColumnTranslation',
-                Data => {
-                    ColumnName      => 'DynamicField_' . $DynamicField->{Name},
-                    TranslateString => $DynamicField->{Label},
-                },
+            # send data to JS
+            $LayoutObject->AddJSData(
+                Key   => 'ColumnDynamicField_' . $DynamicField->{Name},
+                Value => $LayoutObject->{LanguageObject}->Translate( $DynamicField->{Label} ),
             );
-
-            if ( $Counter < scalar @{$ColumnsDynamicField} ) {
-                $LayoutObject->Block(
-                    Name => 'ColumnTranslationSeparator',
-                );
-            }
         }
     }
 

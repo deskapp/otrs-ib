@@ -1224,8 +1224,8 @@ sub _OutputActivityDialog {
             $Param{RichTextHeight} = $Self->{Config}->{RichTextHeight} || 0;
             $Param{RichTextWidth}  = $Self->{Config}->{RichTextWidth}  || 0;
 
-            $LayoutObject->Block(
-                Name => 'RichText',
+            # set up customer rich text editor
+            $LayoutObject->CustomerSetRichTextParameters(
                 Data => \%Param,
             );
         }
@@ -2100,8 +2100,8 @@ sub _RenderArticle {
         $Param{RichTextHeight} = $Self->{Config}->{RichTextHeight} || 0;
         $Param{RichTextWidth}  = $Self->{Config}->{RichTextWidth}  || 0;
 
-        $LayoutObject->Block(
-            Name => 'RichText',
+        # set up customer rich text editor
+        $LayoutObject->CustomerSetRichTextParameters(
             Data => \%Param,
         );
     }
@@ -4016,8 +4016,8 @@ sub _DisplayProcessList {
         $Param{RichTextHeight} = $Self->{Config}->{RichTextHeight} || 0;
         $Param{RichTextWidth}  = $Self->{Config}->{RichTextWidth}  || 0;
 
-        $LayoutObject->Block(
-            Name => 'RichText',
+        # set up customer rich text editor
+        $LayoutObject->CustomerSetRichTextParameters(
             Data => \%Param,
         );
     }

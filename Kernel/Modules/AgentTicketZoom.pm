@@ -265,6 +265,12 @@ sub Run {
         return $LayoutObject->NoPermission( WithHeader => 'yes' );
     }
 
+    # send parameter TicketID to JS
+    $LayoutObject->AddJSData(
+        Key   => 'TicketID',
+        Value => $Self->{TicketID},
+    );
+
     # mark shown ticket as seen
     if ( $Self->{Subaction} eq 'TicketMarkAsSeen' ) {
         my $Success = 1;
@@ -382,6 +388,10 @@ sub Run {
         );
 
         # send data to JS
+        $LayoutObject->AddJSData(
+            Key   => 'ArticleIDs',
+            Value => [ $Self->{ArticleID} ],
+        );
         $LayoutObject->AddJSData(
             Key   => 'MenuItems',
             Value => $Self->{MenuItems},
@@ -949,6 +959,7 @@ sub MaskAgentZoom {
     # show articles items
     if ( !$Self->{ZoomTimeline} ) {
 
+        my @ArticleIDs;
         $Param{ArticleItems} = '';
         ARTICLE:
         for my $ArticleTmp (@ArticleBoxShown) {
@@ -963,9 +974,14 @@ sub MaskAgentZoom {
                 ActualArticleID   => $ArticleID,
                 Type              => 'Static',
             );
+            push @ArticleIDs, $ArticleTmp->{ArticleID};
         }
 
         # send data to JS
+        $LayoutObject->AddJSData(
+            Key   => 'ArticleIDs',
+            Value => \@ArticleIDs,
+        );
         $LayoutObject->AddJSData(
             Key   => 'MenuItems',
             Value => $Self->{MenuItems},
@@ -979,9 +995,11 @@ sub MaskAgentZoom {
 
     # always show archived tickets as seen
     if ( $Self->{ZoomExpand} && $Ticket{ArchiveFlag} ne 'y' ) {
-        $LayoutObject->Block(
-            Name => 'TicketItemMarkAsSeen',
-            Data => { TicketID => $Ticket{TicketID} },
+
+        # send data to JS
+        $LayoutObject->AddJSData(
+            Key   => 'TicketItemMarkAsSeen',
+            Value => 1,
         );
     }
 
@@ -1174,7 +1192,13 @@ sub MaskAgentZoom {
             ActivityEntityID => $Ticket{$ActivityEntityIDField},
         );
 
-        # output the process widget the the main screen
+        # send data to JS
+        $LayoutObject->AddJSData(
+            Key   => 'ProcessWidget',
+            Value => 1,
+        );
+
+        # output the process widget in the main screen
         $LayoutObject->Block(
             Name => 'ProcessWidget',
             Data => {
@@ -1519,6 +1543,12 @@ sub MaskAgentZoom {
                 Class       => 'Modernize',
             );
 
+            # send data to JS
+            $LayoutObject->AddJSData(
+                Key   => 'ArticleFilterDialog',
+                Value => 0,
+            );
+
             $LayoutObject->Block(
                 Name => 'EventTypeFilterDialog',
                 Data => {%Param},
@@ -1561,6 +1591,12 @@ sub MaskAgentZoom {
             # Ticket ID
             $Param{TicketID} = $Self->{TicketID};
 
+            # send data to JS
+            $LayoutObject->AddJSData(
+                Key   => 'ArticleFilterDialog',
+                Value => 1,
+            );
+
             $LayoutObject->Block(
                 Name => 'ArticleFilterDialog',
                 Data => {%Param},
@@ -1596,10 +1632,31 @@ sub MaskAgentZoom {
         );
     }
 
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'ArticleTableHeight',
+        Value => $LayoutObject->{UserTicketZoomArticleTableHeight},
+    );
+    $LayoutObject->AddJSData(
+        Key   => 'Ticket::Frontend::HTMLArticleHeightDefault',
+        Value => $ConfigObject->Get('Ticket::Frontend::HTMLArticleHeightDefault'),
+    );
+    $LayoutObject->AddJSData(
+        Key   => 'Ticket::Frontend::HTMLArticleHeightMax',
+        Value => $ConfigObject->Get('Ticket::Frontend::HTMLArticleHeightMax'),
+    );
+    $LayoutObject->AddJSData(
+        Key   => 'Language',
+        Value => {
+            AttachmentViewMessage => Translatable(
+                'Article could not be opened! Perhaps it is on another article page?'
+            ),
+        },
+    );
+
     # init js
     $LayoutObject->Block(
         Name => 'TicketZoomInit',
-        Data => {%Param},
     );
 
     # return output
@@ -2306,6 +2363,21 @@ sub _ArticleTree {
         # set TicketID for usage in JS
         $Param{TicketID} = $Self->{TicketID};
 
+        # set key 'TimeLong' for JS
+        for my $Item ( @{ $Param{Items} } ) {
+            $Item->{TimeLong}
+                = $LayoutObject->{LanguageObject}->FormatTimeString( $Item->{CreateTime}, 'DateFormatLong' );
+        }
+
+        # send data to JS
+        $LayoutObject->AddJSData(
+            Key   => 'TimelineView',
+            Value => {
+                Enabled => $ConfigObject->Get('TimelineViewEnabled'),
+                Data    => \%Param,
+            },
+        );
+
         $LayoutObject->Block(
             Name => 'TimelineView',
             Data => \%Param,
@@ -2479,7 +2551,7 @@ sub _ArticleItem {
     for my $Key (qw(From To Cc)) {
         next KEY if !$Article{$Key};
 
-        my $DisplayType = $Key eq 'From'             ? $SenderDisplayType : $RecipientDisplayType;
+        my $DisplayType = $Key         eq 'From'     ? $SenderDisplayType : $RecipientDisplayType;
         my $HiddenType  = $DisplayType eq 'Realname' ? 'Value'            : 'Realname';
         $LayoutObject->Block(
             Name => 'RowRecipient',
@@ -3259,7 +3331,7 @@ sub _ArticleCollectMeta {
         my @Matches;
         for my $RegExp ( @{ $Filter->{RegExp} } ) {
 
-            my @Count    = $RegExp =~ m{\(}gx;
+            my @Count = $RegExp =~ m{\(}gx;
             my $Elements = scalar @Count;
 
             if ( my @MatchData = $Article{Body} =~ m{([\s:]$RegExp)}gxi ) {
@@ -3302,13 +3374,13 @@ sub _ArticleCollectMeta {
 
                 # replace the whole keyword
                 my $MatchLinkEncode = $LayoutObject->LinkEncode( $Match->{Name} );
-                $URL =~ s/<MATCH>/$MatchLinkEncode/g;
+                $URL        =~ s/<MATCH>/$MatchLinkEncode/g;
                 $URLPreview =~ s/<MATCH>/$MatchLinkEncode/g;
 
                 # replace the keyword components
                 for my $Part ( sort keys %{ $Match->{Parts} || {} } ) {
                     $MatchLinkEncode = $LayoutObject->LinkEncode( $Match->{Parts}->{$Part} );
-                    $URL =~ s/<MATCH$Part>/$MatchLinkEncode/g;
+                    $URL        =~ s/<MATCH$Part>/$MatchLinkEncode/g;
                     $URLPreview =~ s/<MATCH$Part>/$MatchLinkEncode/g;
                 }
 

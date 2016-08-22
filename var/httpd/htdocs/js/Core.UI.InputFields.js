@@ -304,6 +304,11 @@ Core.UI.InputFields = (function (TargetNS) {
             $SearchObj
                 .attr('readonly', 'readonly')
                 .attr('title', Core.Language.Translate('Not available'));
+
+            // when the original field does no longer provide any valid options,
+            // we also want to remove existing selections
+            $InputContainerObj.find('.InputField_Selection').remove();
+            $InputContainerObj.find('.InputField_More').remove();
         }
         else {
 
@@ -2167,6 +2172,11 @@ Core.UI.InputFields = (function (TargetNS) {
                             break;
                     }
 
+                })
+
+                // Close dropdown if search field has been removed from DOM (bug#12243)
+                .off('remove.InputField').on('remove.InputField', function () {
+                    CloseOpenSelections();
                 });
 
                 // Handle custom redraw event on original select field

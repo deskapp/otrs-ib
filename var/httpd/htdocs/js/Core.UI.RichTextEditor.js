@@ -56,7 +56,7 @@ Core.UI.RichTextEditor = (function (TargetNS) {
     }
 
     /**
-     * @name Init
+     * @name InitEditor
      * @memberof Core.UI.RichTextEditor
      * @function
      * @returns {Boolean} Returns false on error.
@@ -64,13 +64,17 @@ Core.UI.RichTextEditor = (function (TargetNS) {
      * @description
      *      This function initializes the application and executes the needed functions.
      */
-    TargetNS.Init = function ($EditorArea) {
+    TargetNS.InitEditor = function ($EditorArea) {
         var EditorID = '',
             Editor,
             UserLanguage,
             UploadURL = '',
             ExtraPlugins,
             EnterMode;
+
+        if (typeof CKEDITOR === 'undefined') {
+            return false;
+        }
 
         if (isJQueryObject($EditorArea) && $EditorArea.hasClass('HasCKEInstance')) {
             return false;
@@ -234,16 +238,35 @@ Core.UI.RichTextEditor = (function (TargetNS) {
     };
 
     /**
-     * @name InitAll
+     * @name InitAllEditors
      * @memberof Core.UI.RichTextEditor
      * @function
      * @description
      *      This function initializes as a rich text editor every textarea element that containing the RichText class.
      */
-    TargetNS.InitAll = function () {
+    TargetNS.InitAllEditors = function () {
+        if (typeof CKEDITOR === 'undefined') {
+            return;
+        }
+
         $('textarea.RichText').each(function () {
-            TargetNS.Init($(this));
+            TargetNS.InitEditor($(this));
         });
+    };
+
+    /**
+     * @name Init
+     * @memberof Core.UI.RichTextEditor
+     * @function
+     * @description
+     *      This function initializes JS functionality.
+     */
+    TargetNS.Init = function () {
+        if (typeof CKEDITOR === 'undefined') {
+            return;
+        }
+
+        TargetNS.InitAllEditors();
     };
 
     /**
@@ -342,6 +365,8 @@ Core.UI.RichTextEditor = (function (TargetNS) {
             $EditorArea.focus();
         }
     };
+
+    Core.Init.RegisterNamespace(TargetNS, 'APP_MODULE');
 
     return TargetNS;
 }(Core.UI.RichTextEditor || {}));

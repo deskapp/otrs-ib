@@ -296,12 +296,12 @@ sub GetObjectAttributes {
             },
         },
         {
-            Name             => Translatable('Until Time'),
+            Name             => Translatable('Pending until time'),
             UseAsXvalue      => 1,
             UseAsValueSeries => 1,
             UseAsRestriction => 1,
-            Element          => 'UntilTime',
-            TimePeriodFormat => 'DateInputFormat',            # 'DateInputFormatLong',
+            Element          => 'PendingUntilTime',
+            TimePeriodFormat => 'DateInputFormat',                    # 'DateInputFormatLong',
             Block            => 'Time',
             TimeStop         => $Today,
             Values           => {

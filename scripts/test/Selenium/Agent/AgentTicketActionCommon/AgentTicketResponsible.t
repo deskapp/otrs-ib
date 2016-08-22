@@ -19,39 +19,31 @@ $Selenium->RunTest(
     sub {
 
         # get helper object
-        $Kernel::OM->ObjectParamAdd(
-            'Kernel::System::UnitTest::Helper' => {
-                RestoreSystemConfiguration => 1,
-            },
-        );
         my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 
-        # get sysconfig object
-        my $SysConfigObject = $Kernel::OM->Get('Kernel::System::SysConfig');
-
         # enable change owner to everyone feature
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'Ticket::ChangeOwnerToEveryone',
             Value => 1,
         );
 
         # enable ticket responsible feature
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'Ticket::Responsible',
             Value => 1,
         );
 
         # do not check RichText
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'Frontend::RichText',
             Value => 0,
         );
 
         my $Config = $Kernel::OM->Get('Kernel::Config')->Get('Ticket::Frontend::AgentTicketResponsible');
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'Ticket::Frontend::AgentTicketResponsible',
             Value => {
@@ -121,7 +113,8 @@ $Selenium->RunTest(
         );
 
         # click on 'Responsible' and switch window
-        $Selenium->find_element("//a[contains(\@href, \'Action=AgentTicketResponsible;TicketID=$TicketID' )]")->click();
+        $Selenium->find_element("//a[contains(\@href, \'Action=AgentTicketResponsible;TicketID=$TicketID' )]")
+            ->VerifiedClick();
 
         $Selenium->WaitFor( WindowCount => 2 );
         my $Handles = $Selenium->get_window_handles();
@@ -169,10 +162,18 @@ $Selenium->RunTest(
         $Selenium->WaitFor( WindowCount => 1 );
         $Selenium->switch_to_window( $Handles->[0] );
 
+        # wait for reload to kick in
+        sleep 1;
+
         # wait until page has loaded, if necessary
         $Selenium->WaitFor(
             JavaScript =>
                 'return typeof($) === "function" && $(".WidgetSimple").length && $("div.TicketZoom").length;'
+        );
+
+        # make sure the cache is correct
+        $Kernel::OM->Get('Kernel::System::Cache')->CleanUp(
+            Type => 'Ticket',
         );
 
         # get ticket attributes
@@ -201,7 +202,6 @@ $Selenium->RunTest(
         $Kernel::OM->Get('Kernel::System::Cache')->CleanUp(
             Type => 'Ticket',
         );
-
     }
 );
 
