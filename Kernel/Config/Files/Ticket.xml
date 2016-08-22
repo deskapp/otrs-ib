@@ -7611,7 +7611,7 @@
                 <Item Key="Module">Kernel::Output::HTML::Preferences::CustomQueue</Item>
                 <Item Key="Column" Translatable="1">Notification Settings</Item>
                 <Item Key="Label" Translatable="1">My Queues</Item>
-                <Item Key="Desc" Translatable="1">Your queue selection of your favorite queues. You also get notified about those queues via email if enabled.</Item>
+                <Item Key="Desc" Translatable="1">Your queue selection of your preferred queues. You also get notified about those queues via email if enabled.</Item>
                 <Item Key="Key" Translatable="1"></Item>
                 <Item Key="Prio">1000</Item>
                 <Item Key="Permission">ro</Item>
@@ -7628,7 +7628,7 @@
                 <Item Key="Module">Kernel::Output::HTML::Preferences::CustomService</Item>
                 <Item Key="Column" Translatable="1">Notification Settings</Item>
                 <Item Key="Label" Translatable="1">My Services</Item>
-                <Item Key="Desc" Translatable="1">Your service selection of your favorite services. You also get notified about those services via email if enabled.</Item>
+                <Item Key="Desc" Translatable="1">Your service selection of your preferred services. You also get notified about those services via email if enabled.</Item>
                 <Item Key="Key" Translatable="1"></Item>
                 <Item Key="Prio">1000</Item>
                 <Item Key="Active">1</Item>
@@ -7932,7 +7932,7 @@
         <Group>Ticket</Group>
         <SubGroup>Frontend::Customer::Ticket::ViewNew</SubGroup>
         <Setting>
-            <String Regex="">default</String>
+            <String Regex="">Unclassified</String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Ticket::Frontend::CustomerTicketMessage###Service" Required="1" Valid="1">
@@ -11646,6 +11646,16 @@ Thanks for your help!
                 <Item Key="PhoneCall" Translatable="1">Phone call</Item>
                 <Item Key="Note" Translatable="1">Note</Item>
             </Hash>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="StandardTemplate2QueueByCreating" Required="0" Valid="0">
+        <Description Translatable="1">List of default Standard Templates which are assigned automatically to new Queues upon creation.</Description>
+        <Group>Ticket</Group>
+        <SubGroup>Core::Ticket</SubGroup>
+        <Setting>
+            <Array>
+                <Item></Item>
+            </Array>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="DefaultOverviewColumns" Required="1" Valid="1">
