@@ -312,14 +312,14 @@
         <SubGroup>Frontend::Customer</SubGroup>
         <Setting>
             <TextArea><![CDATA[Powered by <a href="http://otrs.org/" title="OTRS" target="_blank">OTRS</a>]]></TextArea>
-=======
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="CustomerShortcutIcon" Required="0" Valid="0">
         <Description Translatable="1">The shortcut icon for the customer interface.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Customer</SubGroup>
         <Setting>
             <String Regex="">/otrs-web/skins/Agent/default/img/icons/product.ico</String>
->>>>>>> rel-5_0-IB#1046319
         </Setting>
     </ConfigItem>
     <ConfigItem Name="CustomerLogo" Required="0" Valid="0">
