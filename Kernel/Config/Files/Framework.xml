@@ -297,7 +297,6 @@
             <String Regex="">Example Company</String>
         </Setting>
     </ConfigItem>
-<<<<<<< HEAD
     <ConfigItem Name="CustomerLoginMessage" Required="0" Valid="0">
         <Description Translatable="1">HTML code to be put under login form in customer web interface (i.e. login instructions).</Description>
         <Group>Framework</Group>
