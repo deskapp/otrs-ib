@@ -81,6 +81,26 @@ $Selenium->RunTest(
             "Dynamic field $DynamicFieldName - ID $DynamicFieldID - created",
         );
 
+        # create also a dynamic field of type checkbox
+        my $CheckboxDynamicFieldName = 'TestCheckbox' . $RandomID;
+        my $CheckboxDynamicFieldID   = $DynamicFieldObject->DynamicFieldAdd(
+            Name       => $CheckboxDynamicFieldName,
+            Label      => $CheckboxDynamicFieldName,
+            FieldOrder => 9992,
+            FieldType  => 'Checkbox',
+            ObjectType => 'Ticket',
+            Config     => {
+                DefaultValue => 0,
+            },
+            ValidID => 1,
+            UserID  => $UserID,
+        );
+
+        $Self->True(
+            $DynamicFieldID,
+            "Dynamic field $CheckboxDynamicFieldName - ID $CheckboxDynamicFieldID - created",
+        );
+
         # get ticket object
         my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
 
@@ -142,8 +162,12 @@ $Selenium->RunTest(
         $Selenium->find_element( "#Profile", 'css' )->send_keys($GenericAgentJob);
         $Selenium->find_element( "#Title",   'css' )->send_keys($GenericTicketSearch);
 
-        # set test dynamic field to past date (bug#12210)
+        # set test dynamic field to date in the past, but do not activate it
+        # validation used to kick in even if checkbox in front wasn't activated
+        # see bug#12210 for more information
         $Selenium->find_element( "#DynamicField_${DynamicFieldName}Year", 'css' )->send_keys('2015');
+
+        $Selenium->find_element( "#DynamicField_${CheckboxDynamicFieldName}Used1", 'css' )->VerifiedClick();
 
         # save job
         $Selenium->find_element( "#Profile", 'css' )->VerifiedSubmit();
@@ -225,6 +249,14 @@ $Selenium->RunTest(
         $Selenium->find_element( $GenericAgentJob, 'link_text' )->VerifiedClick();
 
         $Selenium->execute_script("\$('#Valid').val('0').trigger('redraw.InputField').trigger('change');");
+
+        # check if the checkbox from dynamicfield is selected
+        $Self->Is(
+            $Selenium->find_element( "#DynamicField_${CheckboxDynamicFieldName}Used1", 'css' )->is_selected(),
+            1,
+            "$CheckboxDynamicFieldName Used1 is selected",
+        );
+
         $Selenium->find_element( "#Profile", 'css' )->VerifiedSubmit();
 
         # check class of invalid generic job in the overview table

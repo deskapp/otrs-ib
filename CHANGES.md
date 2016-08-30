@@ -1,5 +1,10 @@
 #5.0.13 2016-??-??
  - 2016-08-29 Configurable shortcut icon.
+ - 2016-08-26 Fixed bug#[12233](http://bugs.otrs.org/show_bug.cgi?id=12233) - ACL for restricting services depending on queue does not work as exspected.
+ - 2016-08-26 Fixed bug#[10608](http://bugs.otrs.org/show_bug.cgi?id=10608) - Can't search tickets by CustomerID that contain quotes.
+ - 2016-08-26 Fixed bug#[12270](http://bugs.otrs.org/show_bug.cgi?id=12270) - AdminMailAccount - Mail account password returned back to form.
+ - 2016-08-26 Fixed bug#[12259](http://bugs.otrs.org/show_bug.cgi?id=12259) - Images in a note are lost when using "reply to note".
+ - 2016-08-26 Fixed bug#[12263](http://bugs.otrs.org/show_bug.cgi?id=12263) - Time-related search attributes only cover last 10 years.
  - 2016-08-22 Fixed bug#[12264](http://bugs.otrs.org/show_bug.cgi?id=12264) - Incorrect link to ACL documentation.
  - 2016-08-19 Fixed bug#[12236](http://bugs.otrs.org/show_bug.cgi?id=12236) - ACL - negate a role.
  - 2016-08-19 Fixed bug#[12242](http://bugs.otrs.org/show_bug.cgi?id=12242) - GenericInterface Dynamic Fields with multiple values not possible (TicketCreate).
