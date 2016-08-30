@@ -848,6 +848,14 @@ sub TicketListShow {
         }
     }
 
+    # get layout object
+    my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+
+    $LayoutObject->AddJSData(
+        Key   => 'View',
+        Value => $View,
+    );
+
     # load overview backend module
     if ( !$Kernel::OM->Get('Kernel::System::Main')->Require( $Backends->{$View}->{Module} ) ) {
         return $Env->{LayoutObject}->FatalError();
@@ -932,6 +940,10 @@ sub TicketListShow {
         $Self->Block(
             Name => 'OverviewNavBarPageBack',
             Data => \%Param,
+        );
+        $LayoutObject->AddJSData(
+            Key   => 'Profile',
+            Value => $Param{Profile},
         );
     }
 

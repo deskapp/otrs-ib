@@ -2791,7 +2791,7 @@ sub TicketEscalationIndexBuild {
         if ( !defined $Param{$Needed} ) {
             $Kernel::OM->Get('Kernel::System::Log')->Log(
                 Priority => 'error',
-                Message  => "Need $Needed!"
+                Message  => "Need $Needed!",
             );
             return;
         }
@@ -2807,7 +2807,7 @@ sub TicketEscalationIndexBuild {
     my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
 
     # do no escalations on (merge|close|remove) tickets
-    if ( $Ticket{StateType} =~ /^(merge|close|remove)/i ) {
+    if ( $Ticket{StateType} && $Ticket{StateType} =~ /^(merge|close|remove)/i ) {
 
         # update escalation times with 0
         my %EscalationTimes = (
@@ -2839,10 +2839,13 @@ sub TicketEscalationIndexBuild {
     }
 
     # get escalation properties
-    my %Escalation = $Self->TicketEscalationPreferences(
-        Ticket => \%Ticket,
-        UserID => $Param{UserID},
-    );
+    my %Escalation;
+    if (%Ticket) {
+        %Escalation = $Self->TicketEscalationPreferences(
+            Ticket => \%Ticket,
+            UserID => $Param{UserID},
+        );
+    }
 
     # find escalation times
     my $EscalationTime = 0;
