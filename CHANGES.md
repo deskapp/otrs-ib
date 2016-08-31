@@ -1,4 +1,5 @@
 #5.0.13 2016-??-??
+ - 2016-08-31 Daemon::Log::RotationType option added.
  - 2016-08-30 Product name in messages instead of hardcoded OTRS.
  - 2016-08-29 Configurable shortcut icon.
  - 2016-08-26 Fixed bug#[12233](http://bugs.otrs.org/show_bug.cgi?id=12233) - ACL for restricting services depending on queue does not work as exspected.
@@ -204,7 +205,6 @@
  - 2016-04-15 Fixed bug#[11430](http://bugs.otrs.org/show_bug.cgi?id=11430) - (Ticket )Cache won't get updated on DynamicField ValueDelete.
  - 2016-04-15 Fixed bug#[11994](http://bugs.otrs.org/show_bug.cgi?id=11994) - Activating  PreferencesGroups###CSVSeparator triggers internal server error.
  - 2016-04-15 Fixed bug#[11992](http://bugs.otrs.org/show_bug.cgi?id=11992) - Cannot add or update a child row: a foreign key constraint fails when saving customer user theme.
- - 2016-04-14 Daemon::Log::RotationType option added.
  - 2016-04-12 Added ssha256 password hash type login support for backward compatibility.
  - 2016-04-12 Fixed bug#[11749](http://bugs.otrs.org/show_bug.cgi?id=11749) - Customer Search: attributes can't add with '+'.
  - 2016-04-08 Fixed bug#[11921](http://bugs.otrs.org/show_bug.cgi?id=11921) - Wrong attachment is deleted if deleting from multiple attachments from template in new ticket.
