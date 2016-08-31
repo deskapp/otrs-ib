@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-08-31 Daemon::Log::RotationType option added.
  - 2016-08-30 Product name in messages instead of hardcoded OTRS.
  - 2016-08-29 Configurable shortcut icon.
  - 2016-08-25 Added possibility to send encrypted emails to multiple recipients.
@@ -78,7 +79,6 @@
  - 2016-04-20 Image pasting as data URI reenabled.
  - 2016-04-19 Added ExtFQDN option, parameter name fixed, internal data removed from some Message-IDs.
  - 2016-04-15 Added possibility to use multiple named captures in Postmaster filters, thanks to Renée Bäcker.
- - 2016-04-14 Daemon::Log::RotationType option added.
  - 2016-04-12 Added ssha256 password hash type login support for backawrd compatibility.
  - 2016-04-08 Removed dummy 'Reply All' and 'Forward' options to align with 'Reply' select, thanks to Nils Leideck.
  - 2016-04-01 Fixed dropdown for CustomerTicketOverview.
