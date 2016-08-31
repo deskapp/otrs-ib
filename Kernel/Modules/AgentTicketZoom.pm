@@ -1212,6 +1212,22 @@ sub MaskAgentZoom {
         );
     }
 
+    # show number of tickets with the same customer id if feature is active:
+    if ( $ConfigObject->Get('Ticket::Frontend::ZoomCustomerTickets') ) {
+        if ( $Ticket{CustomerID} ) {
+            $Ticket{CustomerIDTickets} = $TicketObject->TicketSearch(
+                CustomerID => $Ticket{CustomerID},
+                Result     => 'COUNT',
+                Permission => 'ro',
+                UserID     => $Self->{UserID},
+            );
+            $LayoutObject->Block(
+                Name => 'CustomerIDTickets',
+                Data => \%Ticket,
+            );
+        }
+    }
+
     # show total accounted time if feature is active:
     if ( $ConfigObject->Get('Ticket::Frontend::AccountTime') ) {
         $Ticket{TicketTimeUnits} = $TicketObject->TicketAccountedTimeGet(%Ticket);
