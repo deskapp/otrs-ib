@@ -281,6 +281,7 @@ sub Send {
     my $Version = $ConfigObject->Get('Version');
 
     if ( $ConfigObject->Get('Secure::DisableBanner') ) {
+
         # Set this to undef to avoid having a value like "MIME-tools 5.507 (Entity 5.507)"
         #   which could lead to the mail being treated as SPAM.
         $Header{'X-Mailer'} = undef;
@@ -341,11 +342,7 @@ sub Send {
     KEY:
     for my $Key ( 'In-Reply-To', 'References' ) {
         next KEY if !$Param{$Key};
-        my $Value = $Param{$Key};
-
-        # Split up '<msgid><msgid>' to allow line folding (see bug#9345).
-        $Value =~ s{><}{> <}xmsg;
-        $Header->replace( $Key, $Value );
+        $Header->replace( $Key, $Param{$Key} );
     }
 
     # add attachments to email
@@ -703,6 +700,13 @@ sub Send {
     $Param{Header} = '';
     for my $Line (@Headers) {
         $Line =~ s/^    (.*)$/ $1/;
+
+        # Perform own wrapping of long lines due to MIME::Tools problems (see bug#9345).
+        #  MIME::Tools fails to wrap long lines where the Message-IDs are too long or
+        #  directly concatenated without spaces in between.
+        if ( $Line =~ m{^(References|In-Reply-To):}smx ) {
+            $Line =~ s{(.{64,}?)>\s*<}{$1>\n <}sxmg;
+        }
         $Param{Header} .= $Line . "\n";
     }
 
@@ -822,13 +826,7 @@ sub Bounce {
     }
 
     # check and create message id
-    my $MessageID = '';
-    if ( $Param{'Message-ID'} ) {
-        $MessageID = $Param{'Message-ID'};
-    }
-    else {
-        $MessageID = $Self->_MessageIDCreate();
-    }
+    my $MessageID = $Param{'Message-ID'} || $Self->_MessageIDCreate();
 
     # split body && header
     my @EmailPlain = split( /\n/, $Param{Email} );
@@ -838,13 +836,12 @@ sub Bounce {
     my @Sender   = Mail::Address->parse( $Param{From} );
     my $RealFrom = $Sender[0]->address();
 
-    # add ReSent header
+    # add ReSent header (see https://www.ietf.org/rfc/rfc2822.txt A.3. Resent messages)
     my $HeaderObject = $EmailObject->head();
-    my $OldMessageID = $HeaderObject->get('Message-ID') || '??';
-    $HeaderObject->replace( 'Message-ID',        $MessageID );
-    $HeaderObject->replace( 'ReSent-Message-ID', $OldMessageID );
+    $HeaderObject->replace( 'Resent-Message-ID', $MessageID );
     $HeaderObject->replace( 'Resent-To',         $Param{To} );
     $HeaderObject->replace( 'Resent-From',       $RealFrom );
+    $HeaderObject->replace( 'Resent-Date',       $Kernel::OM->Get('Kernel::System::Time')->MailTimeStamp() );
     my $Body         = $EmailObject->body();
     my $BodyAsString = '';
     for ( @{$Body} ) {
@@ -854,6 +851,7 @@ sub Bounce {
 
     # debug
     if ( $Self->{Debug} > 1 ) {
+        my $OldMessageID = $HeaderObject->get('Message-ID') || '??';
         $Kernel::OM->Get('Kernel::System::Log')->Log(
             Priority => 'notice',
             Message  => "Bounced email to '$Param{To}' from '$RealFrom'. "
@@ -901,7 +899,7 @@ sub _MessageIDCreate {
 
     my $FQDN = $Kernel::OM->Get('Kernel::Config')->Get('FQDN');
 
-    return 'Message-ID: <' . time() . '.' . rand(999999) . '@' . $FQDN . '>';
+    return '<' . time() . '.' . rand(999999) . '@' . $FQDN . '>';
 }
 
 1;

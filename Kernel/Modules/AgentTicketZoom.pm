@@ -62,7 +62,7 @@ sub new {
             }
         }
 
-        if ( defined $Self->{ZoomExpand} || defined $Self->{ZoomTimeline} ) {
+        elsif ( defined $Self->{ZoomExpand} || defined $Self->{ZoomTimeline} ) {
 
             my $LastUsedZoomViewType = '';
             if ( defined $Self->{ZoomExpand} && $Self->{ZoomExpand} == 1 ) {
@@ -630,7 +630,10 @@ sub Run {
     }
 
     # generate output
-    my $Output = $LayoutObject->Header( Value => $Ticket{TicketNumber} );
+    my $Output = $LayoutObject->Header(
+        Value    => $Ticket{TicketNumber},
+        TicketID => $Ticket{TicketID},
+    );
     $Output .= $LayoutObject->NavigationBar();
     $Output .= $Self->MaskAgentZoom(
         Ticket    => \%Ticket,
@@ -1405,7 +1408,7 @@ sub MaskAgentZoom {
         ObjectType  => ['Ticket'],
         FieldFilter => $DynamicFieldFilter || {},
     );
-    my $DynamicFieldBeckendObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
+    my $DynamicFieldBackendObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
 
     # to store dynamic fields to be displayed in the process widget and in the sidebar
     my ( @FieldsWidget, @FieldsSidebar );
@@ -1425,7 +1428,7 @@ sub MaskAgentZoom {
             $Self->{DisplaySettings}->{ProcessWidgetDynamicField}->{ $DynamicFieldConfig->{Name} }
             )
         {
-            my $ValueStrg = $DynamicFieldBeckendObject->DisplayValueRender(
+            my $ValueStrg = $DynamicFieldBackendObject->DisplayValueRender(
                 DynamicFieldConfig => $DynamicFieldConfig,
                 Value              => $Ticket{ 'DynamicField_' . $DynamicFieldConfig->{Name} },
                 LayoutObject       => $LayoutObject,
@@ -1441,11 +1444,12 @@ sub MaskAgentZoom {
                     => $Ticket{ 'DynamicField_' . $DynamicFieldConfig->{Name} },
                 Label                       => $Label,
                 Link                        => $ValueStrg->{Link},
+                LinkPreview                 => $ValueStrg->{LinkPreview},
                 $DynamicFieldConfig->{Name} => $ValueStrg->{Title},
             };
         }
 
-        my $ValueStrg = $DynamicFieldBeckendObject->DisplayValueRender(
+        my $ValueStrg = $DynamicFieldBackendObject->DisplayValueRender(
             DynamicFieldConfig => $DynamicFieldConfig,
             Value              => $Ticket{ 'DynamicField_' . $DynamicFieldConfig->{Name} },
             LayoutObject       => $LayoutObject,
@@ -1464,6 +1468,7 @@ sub MaskAgentZoom {
                 Value                       => $ValueStrg->{Value},
                 Label                       => $Label,
                 Link                        => $ValueStrg->{Link},
+                LinkPreview                 => $ValueStrg->{LinkPreview},
                 $DynamicFieldConfig->{Name} => $ValueStrg->{Title},
             };
         }
@@ -1534,6 +1539,7 @@ sub MaskAgentZoom {
                                     Value          => $Field->{Value},
                                     Title          => $Field->{Title},
                                     Link           => $Field->{Link},
+                                    LinkPreview    => $Field->{LinkPreview},
                                     $Field->{Name} => $Field->{Title},
                                 },
                             );
@@ -1610,6 +1616,7 @@ sub MaskAgentZoom {
                         Value          => $Field->{Value},
                         Title          => $Field->{Title},
                         Link           => $Field->{Link},
+                        LinkPreview    => $Field->{LinkPreview},
                         $Field->{Name} => $Field->{Title},
                     },
                 );
@@ -1647,6 +1654,7 @@ sub MaskAgentZoom {
                     Value          => $Field->{Value},
                     Title          => $Field->{Title},
                     Link           => $Field->{Link},
+                    LinkPreview    => $Field->{LinkPreview},
                     $Field->{Name} => $Field->{Title},
                 },
             );
@@ -2393,14 +2401,6 @@ sub _ArticleTree {
             if ( $Item->{ArticleID} ) {
                 $Item->{ArticleData} = $ArticlesByArticleID->{ $Item->{ArticleID} };
 
-                # security="restricted" may break SSO - disable this feature if requested
-                if ( $ConfigObject->Get('DisableMSIFrameSecurityRestricted') ) {
-                    $Item->{ArticleData}->{MSSecurityRestricted} = '';
-                }
-                else {
-                    $Item->{ArticleData}->{MSSecurityRestricted} = 'security="restricted"';
-                }
-
                 my %ArticleFlagsAll = $TicketObject->ArticleFlagGet(
                     ArticleID => $Item->{ArticleID},
                     UserID    => 1,
@@ -2483,8 +2483,8 @@ sub _ArticleTree {
             }
 
             # make the history type more readable (if applicable)
-            $Item->{HistoryTypeReadable}
-                = $Self->{HistoryTypeMapping}->{ $Item->{HistoryType} } || $Item->{HistoryType};
+            $Item->{HistoryTypeReadable} = $Self->{HistoryTypeMapping}->{ $Item->{HistoryType} }
+                || $Item->{HistoryType};
 
             # group items which happened (nearly) coincidently together
             $Item->{CreateSystemTime} = $Kernel::OM->Get('Kernel::System::Time')->TimeStamp2SystemTime(
@@ -2654,9 +2654,18 @@ sub _ArticleItem {
     # get layout object
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
 
+    # collect article meta
+    my @ArticleMetaData = $Self->_ArticleCollectMeta(
+        Article => \%Article
+    );
+
     $LayoutObject->Block(
         Name => 'ArticleItem',
-        Data => { %Param, %Article, %AclAction, MenuItems => \@MenuItems },
+        Data => {
+            %Param, %Article, %AclAction,
+            MenuItems       => \@MenuItems,
+            ArticleMetaData => \@ArticleMetaData
+        },
     );
 
     # show created by if different from User ID 1
@@ -2750,14 +2759,14 @@ sub _ArticleItem {
         ObjectType  => ['Article'],
         FieldFilter => $DynamicFieldFilter || {},
     );
-    my $DynamicFieldBeckendObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
+    my $DynamicFieldBackendObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
 
     # cycle trough the activated Dynamic Fields
     DYNAMICFIELD:
     for my $DynamicFieldConfig ( @{$DynamicField} ) {
         next DYNAMICFIELD if !IsHashRefWithData($DynamicFieldConfig);
 
-        my $Value = $DynamicFieldBeckendObject->ValueGet(
+        my $Value = $DynamicFieldBackendObject->ValueGet(
             DynamicFieldConfig => $DynamicFieldConfig,
             ObjectID           => $Article{ArticleID},
         );
@@ -2766,7 +2775,7 @@ sub _ArticleItem {
         next DYNAMICFIELD if $Value eq '';
 
         # get print string for this dynamic field
-        my $ValueStrg = $DynamicFieldBeckendObject->DisplayValueRender(
+        my $ValueStrg = $DynamicFieldBackendObject->DisplayValueRender(
             DynamicFieldConfig => $DynamicFieldConfig,
             Value              => $Value,
             ValueMaxChars      => $ConfigObject->
@@ -2797,6 +2806,7 @@ sub _ArticleItem {
                     Value                       => $ValueStrg->{Value},
                     Title                       => $ValueStrg->{Title},
                     Link                        => $ValueStrg->{Link},
+                    LinkPreview                 => $ValueStrg->{LinkPreview},
                     $DynamicFieldConfig->{Name} => $ValueStrg->{Title}
                 },
             );
@@ -2836,6 +2846,7 @@ sub _ArticleItem {
                     Value                       => $ValueStrg->{Value},
                     Title                       => $ValueStrg->{Title},
                     Link                        => $ValueStrg->{Link},
+                    LinkPreview                 => $ValueStrg->{LinkPreview},
                     $DynamicFieldConfig->{Name} => $ValueStrg->{Title}
                 },
             );
@@ -3008,14 +3019,6 @@ sub _ArticleItem {
             HTMLResultMode => 1,
             LinkFeature    => 1,
         );
-    }
-
-    # security="restricted" may break SSO - disable this feature if requested
-    if ( $ConfigObject->Get('DisableMSIFrameSecurityRestricted') ) {
-        $Article{MSSecurityRestricted} = '';
-    }
-    else {
-        $Article{MSSecurityRestricted} = 'security="restricted"';
     }
 
     # show body
@@ -3476,6 +3479,107 @@ sub _ArticleMenu {
     }
 
     return @MenuItems;
+}
+
+sub _ArticleCollectMeta {
+
+    my ( $Self, %Param ) = @_;
+
+    my %Article = %{ $Param{Article} };
+
+    # get config object
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+    my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+
+    # check whether auto article links should be used
+    return if !$ConfigObject->Get('Ticket::Frontend::ZoomCollectMeta');
+    return if !$ConfigObject->Get('Ticket::Frontend::ZoomCollectMetaFilters');
+
+    my @Data;
+
+    # find words to replace
+    my %Config = %{ $ConfigObject->Get('Ticket::Frontend::ZoomCollectMetaFilters') };
+
+    FILTER:
+    for my $Filter ( values %Config ) {
+
+        my %FilterData;
+
+        # check for needed data
+        next FILTER if !$Filter->{RegExp};
+        next FILTER if !$Filter->{Meta};
+        next FILTER if !$Filter->{Meta}->{Name};
+        next FILTER if !$Filter->{Meta}->{URL};
+
+        # iterage through regular expressions and create a hash with found matches
+        my @Matches;
+        for my $RegExp ( @{ $Filter->{RegExp} } ) {
+
+            my @Count    = $RegExp =~ m{\(}gx;
+            my $Elements = scalar @Count;
+
+            if ( my @MatchData = $Article{Body} =~ m{([\s:]$RegExp)}gxi ) {
+                my $Counter = 0;
+
+                MATCH:
+                while ( $MatchData[$Counter] ) {
+
+                    my $WholeMatchString = $MatchData[$Counter];
+                    $WholeMatchString =~ s/^\s+|\s+$//g;
+                    if ( grep { $_->{Name} eq $WholeMatchString } @Matches ) {
+                        $Counter += $Elements + 1;
+                        next MATCH;
+                    }
+
+                    my %Parts;
+                    for ( 1 .. $Elements ) {
+                        $Parts{$_} = $MatchData[ $Counter + $_ ];
+                    }
+                    $Counter += $Elements + 1;
+
+                    push @Matches, {
+                        Name  => $WholeMatchString,
+                        Parts => \%Parts,
+                    };
+                }
+            }
+        }
+
+        if ( scalar @Matches ) {
+
+            $FilterData{Name} = $Filter->{Meta}->{Name};
+
+            # iterate trough matches and build URLs from configuration
+            for my $Match (@Matches) {
+
+                my $MatchQuote = $LayoutObject->Ascii2Html( Text => $Match->{Name} );
+                my $URL        = $Filter->{Meta}->{URL};
+                my $URLPreview = $Filter->{Meta}->{URLPreview};
+
+                # replace the whole keyword
+                my $MatchLinkEncode = $LayoutObject->LinkEncode( $Match->{Name} );
+                $URL =~ s/<MATCH>/$MatchLinkEncode/g;
+                $URLPreview =~ s/<MATCH>/$MatchLinkEncode/g;
+
+                # replace the keyword components
+                for my $Part ( sort keys %{ $Match->{Parts} || {} } ) {
+                    $MatchLinkEncode = $LayoutObject->LinkEncode( $Match->{Parts}->{$Part} );
+                    $URL =~ s/<MATCH$Part>/$MatchLinkEncode/g;
+                    $URLPreview =~ s/<MATCH$Part>/$MatchLinkEncode/g;
+                }
+
+                push @{ $FilterData{Matches} }, {
+                    Text       => $Match->{Name},
+                    URL        => $URL,
+                    URLPreview => $URLPreview,
+                    Target     => $Filter->{Meta}->{Target} || '_blank',
+                };
+            }
+            push @Data, \%FilterData;
+        }
+    }
+
+    return @Data;
 }
 
 sub _CollectArticleAttachments {

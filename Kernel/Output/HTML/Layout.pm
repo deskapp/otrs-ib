@@ -1026,13 +1026,17 @@ sub Error {
     if ( !$Param{Message} ) {
         $Param{Message} = $Param{BackendMessage};
     }
-    $Param{Message} =~ s/^(.{200}).*$/${1}[...]/gs;
 
     if ( $Param{BackendTraceback} ) {
         $Self->Block(
             Name => 'ShowBackendTraceback',
             Data => \%Param,
         );
+    }
+
+    # Don't check for business package if the database was not yet configured (in the installer)
+    if ( $Kernel::OM->Get('Kernel::Config')->Get('SecureMode') ) {
+        $Param{OTRSBusinessIsInstalled} = $Kernel::OM->Get('Kernel::System::OTRSBusiness')->OTRSBusinessIsInstalled();
     }
 
     # create & return output
@@ -1969,8 +1973,8 @@ sub CustomerAgeInHours {
     my $HourDsc   = Translatable('h');
     my $MinuteDsc = Translatable('m');
     if ( $Kernel::OM->Get('Kernel::Config')->Get('TimeShowCompleteDescription') ) {
-        $HourDsc   = Translatable('hour');
-        $MinuteDsc = Translatable('minute');
+        $HourDsc   = Translatable('hour(s)');
+        $MinuteDsc = Translatable('minute(s)');
     }
     if ( $Age =~ /^-(.*)/ ) {
         $Age     = $1;
@@ -2004,9 +2008,9 @@ sub CustomerAge {
     my $HourDsc   = Translatable('h');
     my $MinuteDsc = Translatable('m');
     if ( $ConfigObject->Get('TimeShowCompleteDescription') ) {
-        $DayDsc    = Translatable('day');
-        $HourDsc   = Translatable('hour');
-        $MinuteDsc = Translatable('minute');
+        $DayDsc    = Translatable('day(s)');
+        $HourDsc   = Translatable('hour(s)');
+        $MinuteDsc = Translatable('minute(s)');
     }
     if ( $Age =~ /^-(.*)/ ) {
         $Age     = $1;
@@ -2237,13 +2241,11 @@ sub NoPermission {
 
     my $WithHeader = $Param{WithHeader} || 'yes';
 
-    my $TranslatableMessage = $Self->{LanguageObject}->Translate(
-        "We are sorry, you do not have permissions anymore to access this ticket in its current state."
-    );
-    $TranslatableMessage .= '<br/>';
-    $TranslatableMessage
-        .= $Self->{LanguageObject}->Translate(" You can take one of the next actions:");
-    $Param{Message} = $TranslatableMessage if ( !$Param{Message} );
+    if ( !$Param{Message} ) {
+        $Param{Message} = $Self->{LanguageObject}->Translate(
+            'We are sorry, you do not have permissions anymore to access this ticket in its current state. You can take one of the following actions:'
+        );
+    }
 
     # get config option for possible next actions
     my $PossibleNextActions = $Kernel::OM->Get('Kernel::Config')->Get('PossibleNextActions');
@@ -2833,8 +2835,10 @@ sub NavigationBar {
             },
         );
 
-        # show sub menu
+        # show sub menu (only if sub elements available)
         next ITEM if !$Sub;
+        next ITEM if !keys %{$Sub};
+
         $Self->Block(
             Name => 'ItemAreaSub',
             Data => $Item,
@@ -3099,7 +3103,7 @@ sub BuildDateSelection {
             }
         }
         else {
-            for ( $Y - 10 .. $Y + 1 + ( $Param{YearDiff} || 0 ) ) {
+            for ( 2001 .. $Y + 1 + ( $Param{YearDiff} || 0 ) ) {
                 $Year{$_} = $_;
             }
         }
@@ -3740,7 +3744,7 @@ sub CustomerFatalError {
         Area  => 'Frontend',
         Title => 'Fatal Error'
     );
-    $Output .= $Self->Error(%Param);
+    $Output .= $Self->CustomerError(%Param);
     $Output .= $Self->CustomerFooter();
     $Self->Print( Output => \$Output );
     exit;
@@ -3893,7 +3897,7 @@ sub CustomerNavigationBar {
             if (
                 !$SelectedFlag
                 && $NavBarModule{$Item}->{Link} =~ /Action=$Self->{Action}/
-                && $NavBarModule{$Item}->{Link} =~ /$Self->{Subaction}/    # Subaction can be empty
+                && $NavBarModule{$Item}->{Link} =~ /$Self->{Subaction}/       # Subaction can be empty
                 )
             {
                 $NavBarModule{$Item}->{Class} .= ' Selected';
@@ -3923,8 +3927,7 @@ sub CustomerNavigationBar {
             # check if we must mark the parent element as selected
             if ( $ItemSub->{Link} ) {
                 if (
-                    !$SelectedFlag
-                    && $ItemSub->{Link} =~ /Action=$Self->{Action}/
+                    $ItemSub->{Link} =~ /Action=$Self->{Action}/
                     && $ItemSub->{Link} =~ /$Self->{Subaction}/    # Subaction can be empty
                     )
                 {
@@ -4256,7 +4259,7 @@ sub _RichTextReplaceLinkOfInlineContent {
 
     # replace image link with content id for uploaded images
     ${ $Param{String} } =~ s{
-        (<img.+?src=("|'))[^>]+ContentID=(.+?)("|')([^>]+>)
+        (<img.+?src=("|'))[^"'>]+?ContentID=(.+?)("|')([^>]*>)
     }
     {
         my ($Start, $CID, $Close, $End) = ($1, $3, $4, $5);
@@ -4330,7 +4333,7 @@ sub RichTextDocumentServe {
 
         # replace charset in content
         $Param{Data}->{ContentType} =~ s/\Q$Charset\E/utf-8/gi;
-        $Param{Data}->{Content} =~ s/(<meta[^>]+charset=("|'|))\Q$Charset\E/$1utf-8/gi;
+        $Param{Data}->{Content}     =~ s/(<meta[^>]+charset=("|'|))\Q$Charset\E/$1utf-8/gi;
     }
 
     # add html links
@@ -5062,7 +5065,10 @@ sub _BuildSelectionDataRefCreate {
                 }
             }
 
-            my $Space = '&nbsp;&nbsp;' x scalar @Fragment;
+            # Use unicode 'NO-BREAK SPACE' since unicode characters doesn't need to be escaped.
+            # Previously, we used '&nbsp;' and we had issue that Option needs to be html encoded
+            # in AJAX, and it was causing issues.
+            my $Space = "\xA0\xA0" x scalar @Fragment;
             $Space ||= '';
 
             $Row->{Value} = $Space . $Row->{Value};

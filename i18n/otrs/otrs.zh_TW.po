@@ -1,10 +1,11 @@
 # 
 # Translators:
+# Ann Li <dn.annli@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: OTRS\n"
-"POT-Creation-Date: 2016-03-30 11:40+0000\n"
-"PO-Revision-Date: 2016-03-30 17:41+0000\n"
+"POT-Creation-Date: 2016-08-03 10:16+0000\n"
+"PO-Revision-Date: 2016-08-03 15:18+0000\n"
 "Last-Translator: Carlos Rodríguez <carlos.rodriguez@otrs.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/otrs/OTRS/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -187,7 +188,7 @@ msgstr ""
 
 #. Template: AAABase
 msgid "half-year"
-msgstr ""
+msgstr "半年"
 
 #. Template: AAABase
 msgid "half-year(s)"
@@ -231,7 +232,7 @@ msgstr "寫道"
 
 #. Template: AAABase
 msgid "Message"
-msgstr "消息"
+msgstr "訊息"
 
 #. Template: AAABase
 msgid "Error"
@@ -251,11 +252,11 @@ msgstr "警告"
 
 #. Template: AAABase
 msgid "Module"
-msgstr "模塊"
+msgstr "模組"
 
 #. Template: AAABase
 msgid "Modulefile"
-msgstr "模塊文件"
+msgstr "模組文件"
 
 #. Template: AAABase
 msgid "Subfunction"
@@ -747,15 +748,15 @@ msgstr ""
 
 #. Template: AAABase
 msgid "The field content is too long!"
-msgstr ""
+msgstr "欄位內容過長!"
 
 #. Template: AAABase
 msgid "Maximum size is %s characters."
-msgstr ""
+msgstr "最大長度為 %s 字元。"
 
 #. Template: AAABase
 msgid "This field is required or"
-msgstr ""
+msgstr "此欄位為必須或"
 
 #. Template: AAABase
 msgid "New message"
@@ -1504,7 +1505,7 @@ msgstr ""
 
 #. Template: AAABase
 msgid "Upgrade to %s now!"
-msgstr ""
+msgstr "即時升級至 %s！"
 
 #. Template: AAABase
 msgid "%s Go to the upgrade center %s"
@@ -1524,7 +1525,7 @@ msgstr ""
 
 #. Template: AAABase
 msgid "Your system was successfully upgraded to %s."
-msgstr ""
+msgstr "您的系統成功升級至 %s。"
 
 #. Template: AAABase
 msgid "There was a problem during the upgrade to %s."
@@ -1540,7 +1541,7 @@ msgstr ""
 
 #. Template: AAABase
 msgid "Your %s was successfully updated."
-msgstr ""
+msgstr "您的 %s 已成功更新。 "
 
 #. Template: AAABase
 msgid "There was a problem during the upgrade of %s."
@@ -1712,7 +1713,7 @@ msgstr "其它設置"
 
 #. Template: AAAPreferences
 msgid "Notification Settings"
-msgstr ""
+msgstr "系統通知設定"
 
 #. Template: AAAPreferences
 msgid "Change Password"
@@ -1796,7 +1797,7 @@ msgstr "狀態視圖"
 
 #. Template: AAATicket
 msgid "Service View"
-msgstr ""
+msgstr "服務檢閱模式"
 
 #. Template: AAATicket
 msgid "Bulk"
@@ -2368,11 +2369,11 @@ msgstr "搜索工單"
 
 #. Template: AAATicket
 msgid "Customer Realname"
-msgstr ""
+msgstr "客戶真實名稱"
 
 #. Template: AAATicket
 msgid "Customer History"
-msgstr ""
+msgstr "客戶歷史"
 
 #. Template: AAATicket
 msgid "Edit Customer Users"
@@ -2817,7 +2818,7 @@ msgstr "三月"
 
 #. Template: AAAWeekDay
 msgid "Wed"
-msgstr ""
+msgstr "星期三"
 
 #. Template: AAAWeekDay
 msgid "Thu"
@@ -3150,7 +3151,7 @@ msgstr "這裡有一個範例"
 
 #. Template: AdminCloudServiceSupportDataCollector
 msgid "Cloud Service Management"
-msgstr ""
+msgstr "雲端服務管理"
 
 #. Template: AdminCloudServiceSupportDataCollector
 msgid "Support Data Collector"
@@ -3180,7 +3181,7 @@ msgstr "配置"
 
 #. Template: AdminCloudServiceSupportDataCollector
 msgid "Send support data"
-msgstr ""
+msgstr "發送支援數據"
 
 #. Template: AdminCloudServiceSupportDataCollector
 msgid ""
@@ -3201,7 +3202,7 @@ msgstr ""
 
 #. Template: AdminCloudServiceSupportDataCollector
 msgid "Register this System"
-msgstr ""
+msgstr "登記此系統"
 
 #. Template: AdminCloudServiceSupportDataCollector
 msgid ""
@@ -3223,7 +3224,7 @@ msgstr ""
 
 #. Template: AdminCloudServices
 msgid "Register this system"
-msgstr ""
+msgstr "登記此系統"
 
 #. Template: AdminCloudServices
 msgid ""
@@ -3233,11 +3234,11 @@ msgstr ""
 
 #. Template: AdminCloudServices
 msgid "Available Cloud Services"
-msgstr ""
+msgstr "可使用的雲端服務"
 
 #. Template: AdminCloudServices
 msgid "Upgrade to %s"
-msgstr ""
+msgstr "升級至 %s"
 
 #. Template: AdminCustomerCompany
 msgid "Customer Management"
@@ -3256,11 +3257,11 @@ msgid "Select"
 msgstr "選擇"
 
 #. Template: AdminCustomerCompany
-msgid "shown"
+msgid "List (only %s shown - more available)"
 msgstr ""
 
 #. Template: AdminCustomerCompany
-msgid "total"
+msgid "List (%s total)"
 msgstr ""
 
 #. Template: AdminCustomerCompany
@@ -3424,7 +3425,7 @@ msgstr "不能更改默認組."
 
 #. Template: AdminCustomerUserGroup
 msgid "ro"
-msgstr ""
+msgstr "唯讀"
 
 #. Template: AdminCustomerUserGroup
 msgid "Read only access to the ticket in this group/queue."
@@ -3432,7 +3433,7 @@ msgstr "對於組/隊列中的工單具有 '讀' 的權限"
 
 #. Template: AdminCustomerUserGroup
 msgid "rw"
-msgstr ""
+msgstr "可讀寫"
 
 #. Template: AdminCustomerUserGroup
 msgid "Full read and write access to the tickets in this group/queue."
@@ -3650,8 +3651,19 @@ msgid ""
 msgstr "可以為字段值指定一個可選的HTTP鏈接，以便其顯示在工單概況和工單詳情中。"
 
 #. Template: AdminDynamicFieldDateTime
-msgid "Restrict entering of dates"
+msgid "Link for preview"
 msgstr ""
+
+#. Template: AdminDynamicFieldDateTime
+msgid ""
+"If filled in, this URL will be used for a preview which is shown when this "
+"link is hovered in ticket zoom. Please note that for this to work, the "
+"regular URL field above needs to be filled in, too."
+msgstr ""
+
+#. Template: AdminDynamicFieldDateTime
+msgid "Restrict entering of dates"
+msgstr "日期限制輸入"
 
 #. Template: AdminDynamicFieldDateTime
 msgid "Here you can restrict the entering of dates of tickets."
@@ -3913,7 +3925,7 @@ msgstr "添加事件觸發器"
 
 #. Template: AdminGenericAgent
 msgid "Add Event"
-msgstr ""
+msgstr "添事件"
 
 #. Template: AdminGenericAgent
 msgid ""
@@ -3923,7 +3935,7 @@ msgstr "選擇事件對象和事件名稱，然後點擊\"+\"按鈕，即可添�
 
 #. Template: AdminGenericAgent
 msgid "Duplicate event."
-msgstr ""
+msgstr "重複的事件"
 
 #. Template: AdminGenericAgent
 msgid "This event is already attached to the job, Please use a different one."
@@ -3939,7 +3951,7 @@ msgstr ""
 
 #. Template: AdminGenericAgent
 msgid "Select Tickets"
-msgstr ""
+msgstr "選取工單"
 
 #. Template: AdminGenericAgent
 msgid "(e. g. 10*5155 or 105658*)"
@@ -3987,15 +3999,15 @@ msgstr "工單創建時間(絕對)"
 
 #. Template: AdminGenericAgent
 msgid "Last changed times"
-msgstr ""
+msgstr "最後更新時間"
 
 #. Template: AdminGenericAgent
 msgid "No last changed time settings."
-msgstr ""
+msgstr "沒有最後更新時間設定"
 
 #. Template: AdminGenericAgent
 msgid "Ticket last changed"
-msgstr ""
+msgstr "最後更新的工單"
 
 #. Template: AdminGenericAgent
 msgid "Ticket last changed between"
@@ -4151,7 +4163,7 @@ msgstr "工單鎖定"
 
 #. Template: AdminGenericAgent
 msgid "New customer user"
-msgstr ""
+msgstr "新客戶用戶"
 
 #. Template: AdminGenericAgent
 msgid "New customer ID"
@@ -4261,7 +4273,7 @@ msgstr "Web服務%s的通用接口調試器"
 
 #. Template: AdminGenericInterfaceDebugger
 msgid "You are here"
-msgstr ""
+msgstr "您在此"
 
 #. Template: AdminGenericInterfaceDebugger
 msgid "Web Services"
@@ -4714,7 +4726,7 @@ msgstr ""
 
 #. Template: AdminGenericInterfaceTransportHTTPREST
 msgid "Default command"
-msgstr ""
+msgstr "默認指令"
 
 #. Template: AdminGenericInterfaceTransportHTTPREST
 msgid "The default HTTP command to use for the requests."
@@ -4963,7 +4975,7 @@ msgstr ""
 
 #. Template: AdminGenericInterfaceTransportHTTPSOAP
 msgid "Sort options"
-msgstr ""
+msgstr "排序選項"
 
 #. Template: AdminGenericInterfaceTransportHTTPSOAP
 msgid "Add new first level element"
@@ -5030,6 +5042,26 @@ msgstr "刪除Web服務"
 #. Template: AdminGenericInterfaceWebservice
 msgid "Do you really want to delete this web service?"
 msgstr "您確定要刪除這個Web服務嗎？"
+
+#. Template: AdminGenericInterfaceWebservice
+msgid "Example Web Services"
+msgstr ""
+
+#. Template: AdminGenericInterfaceWebservice
+msgid ""
+"Here you can activate best practice example web service that are part of %s."
+" Please note that some additional configuration may be required."
+msgstr ""
+
+#. Template: AdminGenericInterfaceWebservice
+msgid "Import example web service"
+msgstr ""
+
+#. Template: AdminGenericInterfaceWebservice
+msgid ""
+"Do you want to benefit from web services created by experts? Upgrade to %s "
+"to be able to import some sophisticated example web services."
+msgstr ""
 
 #. Template: AdminGenericInterfaceWebservice
 msgid ""
@@ -5209,6 +5241,10 @@ msgid "It's useful for ASP solutions. "
 msgstr "這對於ASP解決方案它很有用。"
 
 #. Template: AdminGroup
+msgid "total"
+msgstr "總計"
+
+#. Template: AdminGroup
 msgid "Add Group"
 msgstr "添加組"
 
@@ -5313,11 +5349,11 @@ msgstr "系統管理員"
 
 #. Template: AdminNavigationBar
 msgid "Online Admin Manual"
-msgstr ""
+msgstr "在終管理員手冊"
 
 #. Template: AdminNotificationEvent
 msgid "Ticket Notification Management"
-msgstr ""
+msgstr "工單通知管理"
 
 #. Template: AdminNotificationEvent
 msgid "Add notification"
@@ -5325,11 +5361,11 @@ msgstr "添加通知"
 
 #. Template: AdminNotificationEvent
 msgid "Export Notifications"
-msgstr ""
+msgstr "導出通知"
 
 #. Template: AdminNotificationEvent
 msgid "Configuration Import"
-msgstr ""
+msgstr "配置導入"
 
 #. Template: AdminNotificationEvent
 msgid ""
@@ -5340,7 +5376,7 @@ msgstr ""
 
 #. Template: AdminNotificationEvent
 msgid "Overwrite existing notifications?"
-msgstr ""
+msgstr "覆寫現存通知？"
 
 #. Template: AdminNotificationEvent
 msgid "Upload Notification configuration"
@@ -5356,7 +5392,7 @@ msgstr "刪除通知"
 
 #. Template: AdminNotificationEvent
 msgid "Do you really want to delete this notification?"
-msgstr ""
+msgstr "您確定要刪除此通知？"
 
 #. Template: AdminNotificationEvent
 msgid "Add Notification"
@@ -5368,11 +5404,11 @@ msgstr "編輯通知"
 
 #. Template: AdminNotificationEvent
 msgid "Show in agent preferences"
-msgstr ""
+msgstr "顯示於服務員喜好設定"
 
 #. Template: AdminNotificationEvent
 msgid "Agent preferences tooltip"
-msgstr ""
+msgstr "服務員喜好設定工具題示"
 
 #. Template: AdminNotificationEvent
 msgid ""
@@ -5432,15 +5468,15 @@ msgstr "接收人"
 
 #. Template: AdminNotificationEvent
 msgid "Send to"
-msgstr ""
+msgstr "發送至"
 
 #. Template: AdminNotificationEvent
 msgid "Send to these agents"
-msgstr ""
+msgstr "發送至此服務員"
 
 #. Template: AdminNotificationEvent
 msgid "Send to all group members"
-msgstr ""
+msgstr "發送至所有群組成員"
 
 #. Template: AdminNotificationEvent
 msgid "Send to all role members"
@@ -5456,7 +5492,7 @@ msgstr ""
 
 #. Template: AdminNotificationEvent
 msgid "Once per day"
-msgstr ""
+msgstr "每日一次"
 
 #. Template: AdminNotificationEvent
 msgid ""
@@ -5466,7 +5502,7 @@ msgstr ""
 
 #. Template: AdminNotificationEvent
 msgid "Notification Methods"
-msgstr ""
+msgstr "通知方式"
 
 #. Template: AdminNotificationEvent
 msgid ""
@@ -5476,7 +5512,7 @@ msgstr ""
 
 #. Template: AdminNotificationEvent
 msgid "Enable this notification method"
-msgstr ""
+msgstr "啓用此通知方式"
 
 #. Template: AdminNotificationEvent
 msgid "Transport"
@@ -5503,11 +5539,11 @@ msgstr ""
 
 #. Template: AdminNotificationEvent
 msgid "No data found"
-msgstr ""
+msgstr "沒有找到數據。"
 
 #. Template: AdminNotificationEvent
 msgid "No notification method found."
-msgstr ""
+msgstr "沒有找到通知方式。"
 
 #. Template: AdminNotificationEvent
 msgid "Notification Text"
@@ -5525,15 +5561,15 @@ msgstr ""
 
 #. Template: AdminNotificationEvent
 msgid "Message body"
-msgstr ""
+msgstr "訊息內容"
 
 #. Template: AdminNotificationEvent
 msgid "Add new notification language"
-msgstr ""
+msgstr "添加新通知語言"
 
 #. Template: AdminNotificationEvent
 msgid "Do you really want to delete this notification language?"
-msgstr ""
+msgstr "您確定要刪除此通知語言？"
 
 #. Template: AdminNotificationEvent
 msgid "Tag Reference"
@@ -5598,7 +5634,7 @@ msgstr ""
 
 #. Template: AdminNotificationEvent
 msgid "Example notification"
-msgstr ""
+msgstr "通知範例"
 
 #. Template: AdminNotificationEventTransportEmailSettings
 msgid "Additional recipient email addresses"
@@ -5616,7 +5652,7 @@ msgstr ""
 
 #. Template: AdminNotificationEventTransportEmailSettings
 msgid "Email template"
-msgstr ""
+msgstr "電郵模板"
 
 #. Template: AdminNotificationEventTransportEmailSettings
 msgid ""
@@ -7374,7 +7410,7 @@ msgstr "對於組/隊列具有 '所有者' 的權限"
 
 #. Template: AdminRoleGroup
 msgid "priority"
-msgstr ""
+msgstr "優先級"
 
 #. Template: AdminRoleGroup
 msgid "Permissions to change the ticket priority in this group/queue."
@@ -7538,6 +7574,10 @@ msgstr "可選的証書"
 #. Template: AdminSMIME
 msgid "Relate this certificate"
 msgstr "關聯這個証書"
+
+#. Template: AdminSMIMECertRead
+msgid "Close dialog"
+msgstr ""
 
 #. Template: AdminSMIMECertRead
 msgid "Certificate details"
@@ -8009,6 +8049,10 @@ msgid "Add NavBar entry"
 msgstr "添加導航欄條目"
 
 #. Template: AdminSysConfigEdit
+msgid "NavBar module"
+msgstr ""
+
+#. Template: AdminSysConfigEdit
 msgid "Year"
 msgstr "年"
 
@@ -8397,6 +8441,10 @@ msgid "in"
 msgstr "之内"
 
 #. Template: AgentDashboardCommon
+msgid "Close this widget"
+msgstr ""
+
+#. Template: AgentDashboardCommon
 msgid "Available Columns"
 msgstr "可選擇的字段"
 
@@ -8600,12 +8648,8 @@ msgid "Select Target Object"
 msgstr "選擇目標對象"
 
 #. Template: AgentLinkObject
-msgid "Link Object"
-msgstr "鏈接對象"
-
-#. Template: AgentLinkObject
-msgid "with"
-msgstr "和"
+msgid "Link object %s with"
+msgstr ""
 
 #. Template: AgentLinkObject
 msgid "Unlink Object: %s"
@@ -8771,31 +8815,31 @@ msgid ""
 msgstr ""
 
 #. Template: AgentTicketActionCommon
-msgid "Change Free Text of %s%s"
+msgid "Change Free Text of %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketActionCommon
-msgid "Change Owner of %s%s"
+msgid "Change Owner of %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketActionCommon
-msgid "Close %s%s"
+msgid "Close %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketActionCommon
-msgid "Add Note to %s%s"
+msgid "Add Note to %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketActionCommon
-msgid "Set Pending Time for %s%s"
+msgid "Set Pending Time for %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketActionCommon
-msgid "Change Priority of %s%s"
+msgid "Change Priority of %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketActionCommon
-msgid "Change Responsible of %s%s"
+msgid "Change Responsible of %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketActionCommon
@@ -8849,7 +8893,7 @@ msgid ""
 msgstr ""
 
 #. Template: AgentTicketActionCommon
-msgid "Text will also be received by:"
+msgid "Text will also be received by"
 msgstr ""
 
 #. Template: AgentTicketActionCommon
@@ -8869,7 +8913,7 @@ msgid "Note type"
 msgstr "備註類型"
 
 #. Template: AgentTicketBounce
-msgid "Bounce %s%s"
+msgid "Bounce %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketBounce
@@ -8933,7 +8977,7 @@ msgid "Execute Bulk Action"
 msgstr ""
 
 #. Template: AgentTicketCompose
-msgid "Compose Answer for %s%s"
+msgid "Compose Answer for %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketCompose
@@ -8969,7 +9013,7 @@ msgid "Date Invalid!"
 msgstr "日期無效！"
 
 #. Template: AgentTicketCustomer
-msgid "Change Customer of %s%s"
+msgid "Change Customer of %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketEmail
@@ -9005,7 +9049,7 @@ msgid "Get all"
 msgstr "獲取全部"
 
 #. Template: AgentTicketEmailOutbound
-msgid "Outbound Email for %s%s"
+msgid "Outbound Email for %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketEscalation
@@ -9014,6 +9058,10 @@ msgstr ""
 
 #. Template: AgentTicketEscalation
 msgid "Ticket %s: first response time will be over in %s/%s!"
+msgstr ""
+
+#. Template: AgentTicketEscalation
+msgid "Ticket %s: update time is over (%s/%s)!"
 msgstr ""
 
 #. Template: AgentTicketEscalation
@@ -9029,11 +9077,11 @@ msgid "Ticket %s: solution time will be over in %s/%s!"
 msgstr ""
 
 #. Template: AgentTicketForward
-msgid "Forward %s%s"
+msgid "Forward %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketHistory
-msgid "History of %s%s"
+msgid "History of %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketHistory
@@ -9045,7 +9093,7 @@ msgid "Zoom view"
 msgstr "缩放視圖"
 
 #. Template: AgentTicketMerge
-msgid "Merge %s%s"
+msgid "Merge %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketMerge
@@ -9065,7 +9113,7 @@ msgid "Need a valid email address."
 msgstr "需要有效的郵件地址。"
 
 #. Template: AgentTicketMove
-msgid "Move %s%s"
+msgid "Move %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketMove
@@ -9157,11 +9205,11 @@ msgid "The chat will be appended as a separate article."
 msgstr ""
 
 #. Template: AgentTicketPhoneCommon
-msgid "Phone Call for %s%s"
+msgid "Phone Call for %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketPlain
-msgid "View Email Plain Text for %s%s"
+msgid "View Email Plain Text for %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketPlain
@@ -9484,6 +9532,24 @@ msgstr ""
 msgid "Article could not be opened! Perhaps it is on another article page?"
 msgstr ""
 
+#. Template: AgentTicketZoom
+msgid "Scale preview content"
+msgstr ""
+
+#. Template: AgentTicketZoom
+msgid "Open URL in new tab"
+msgstr ""
+
+#. Template: AgentTicketZoom
+msgid "Close preview"
+msgstr ""
+
+#. Template: AgentTicketZoom
+msgid ""
+"A preview of this website can't be provided because it didn't allow to be "
+"embedded."
+msgstr ""
+
 #. Template: AttachmentBlocker
 msgid "To protect your privacy, remote content was blocked."
 msgstr "為了保護您的隱私,遠程内容被阻擋。"
@@ -9507,6 +9573,14 @@ msgstr "您可以"
 #. Template: CloudServicesDisabled
 msgid "go back to the previous page"
 msgstr "返回上一頁"
+
+#. Template: CustomerError
+msgid "An Error Occurred"
+msgstr ""
+
+#. Template: CustomerError
+msgid "Error Details"
+msgstr "詳細錯誤信息"
 
 #. Template: CustomerError
 msgid "Traceback"
@@ -9709,6 +9783,10 @@ msgstr ""
 msgid "Split Quote"
 msgstr ""
 
+#. Template: CustomerRichTextEditor
+msgid "Open link"
+msgstr ""
+
 #. Template: CustomerTicketMessage
 msgid "Service level agreement"
 msgstr "服務水平協議"
@@ -9847,7 +9925,7 @@ msgstr ""
 
 #. Template: DashboardEventsTicketCalendar
 msgid "All-day"
-msgstr ""
+msgstr "全日"
 
 #. Template: DashboardEventsTicketCalendar
 msgid "Sunday"
@@ -9935,15 +10013,27 @@ msgstr "打開日歷"
 
 #. Template: Error
 msgid "An error occurred."
+msgstr "發生錯誤"
+
+#. Template: Error
+msgid ""
+"Really a bug? 5 out of 10 bug reports result from a wrong or incomplete "
+"installation of OTRS."
+msgstr ""
+
+#. Template: Error
+msgid ""
+"With %s, our experts take care of correct installation and cover your back "
+"with support and periodic security updates."
+msgstr ""
+
+#. Template: Error
+msgid "Contact our service team now."
 msgstr ""
 
 #. Template: Error
 msgid "Send a bugreport"
 msgstr "發送一個錯誤報告"
-
-#. Template: Error
-msgid "Error Details"
-msgstr "詳細錯誤信息"
 
 #. Template: FooterJS
 msgid "Please enter at least one search value or * to find anything."
@@ -9997,7 +10087,7 @@ msgstr ""
 
 #. Template: FooterJS
 msgid "New activity"
-msgstr ""
+msgstr "新活動"
 
 #. Template: FooterJS
 msgid "New activity on one of your monitored chats."
@@ -10005,7 +10095,7 @@ msgstr ""
 
 #. Template: FooterJS
 msgid "Do you really want to continue?"
-msgstr ""
+msgstr "您確定繼續?"
 
 #. Template: FooterJS
 msgid "Information about the OTRS Daemon"
@@ -10450,7 +10540,7 @@ msgstr "通知服務人員"
 
 #. Template: PublicDefault
 msgid "Welcome"
-msgstr ""
+msgstr "歡迎"
 
 #. Template: PublicDefault
 msgid ""
@@ -10466,7 +10556,7 @@ msgstr ""
 
 #. Template: RichTextEditor
 msgid "Remove Quote"
-msgstr ""
+msgstr "移除佇列"
 
 #. Template: GeneralSpecificationsWidget
 msgid "Permissions"
@@ -10490,7 +10580,7 @@ msgid "Create summation row"
 msgstr ""
 
 #. Template: GeneralSpecificationsWidget
-msgid "Generate an additional row containing sums for all data columns."
+msgid "Generate an additional row containing sums for all data rows."
 msgstr ""
 
 #. Template: GeneralSpecificationsWidget
@@ -10498,12 +10588,12 @@ msgid "Create summation column"
 msgstr ""
 
 #. Template: GeneralSpecificationsWidget
-msgid "Generate an additional column containing sums for all data rows."
+msgid "Generate an additional column containing sums for all data columns."
 msgstr ""
 
 #. Template: GeneralSpecificationsWidget
 msgid "Cache results"
-msgstr ""
+msgstr "緩存結果"
 
 #. Template: GeneralSpecificationsWidget
 msgid ""
@@ -10551,7 +10641,7 @@ msgstr ""
 
 #. Template: PreviewWidget
 msgid "Configure X-Axis"
-msgstr ""
+msgstr "設定X軸"
 
 #. Template: PreviewWidget
 msgid "X-axis"
@@ -10559,11 +10649,11 @@ msgstr "X軸"
 
 #. Template: PreviewWidget
 msgid "Configure Y-Axis"
-msgstr ""
+msgstr "設定Y軸"
 
 #. Template: PreviewWidget
 msgid "Y-axis"
-msgstr ""
+msgstr "Y軸"
 
 #. Template: PreviewWidget
 msgid "Configure Filter"
@@ -10613,6 +10703,14 @@ msgstr "沒有被選参數"
 msgid "Scale"
 msgstr "時間刻度"
 
+#. Template: StatsParamsWidget
+msgid "show more"
+msgstr ""
+
+#. Template: StatsParamsWidget
+msgid "show less"
+msgstr ""
+
 #. Template: D3
 msgid "Download SVG"
 msgstr ""
@@ -10645,7 +10743,7 @@ msgstr "OTRS測試頁"
 
 #. Template: Test
 msgid "Welcome %s %s"
-msgstr ""
+msgstr "歡迎 %s %s"
 
 #. Template: Test
 msgid "Counter"
@@ -10719,9 +10817,33 @@ msgstr ""
 msgid "There was an error getting data for ACL with ID %s"
 msgstr ""
 
+#. Perl Module: Kernel/Modules/AdminACL.pm
+msgid "Exact match"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminACL.pm
+msgid "Negated exact match"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminACL.pm
+msgid "Regular expression"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminACL.pm
+msgid "Regular expression (ignore case)"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminACL.pm
+msgid "Negated regular expression"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminACL.pm
+msgid "Negated regular expression (ignore case)"
+msgstr ""
+
 #. Perl Module: Kernel/Modules/AdminCustomerCompany.pm
 msgid "Customer Company %s already exists!"
-msgstr ""
+msgstr "客戶公司 %S 已經存在!"
 
 #. Perl Module: Kernel/Modules/AdminCustomerUser.pm
 msgid "New phone ticket"
@@ -10791,6 +10913,22 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminDynamicFieldCheckbox.pm
 msgid "Currently"
+msgstr "現時"
+
+#. Perl Module: Kernel/Modules/AdminDynamicFieldCheckbox.pm
+msgid "Unchecked"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminDynamicFieldCheckbox.pm
+msgid "Checked"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminDynamicFieldDateTime.pm
+msgid "Prevent entry of dates in the future"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminDynamicFieldDateTime.pm
+msgid "Prevent entry of dates in the past"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminDynamicFieldDropdown.pm
@@ -10799,6 +10937,18 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminEmail.pm
 msgid "Select at least one recipient."
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericAgent.pm
+msgid "archive tickets"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericAgent.pm
+msgid "restore tickets from archive"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericAgent.pm
+msgid "Need Profile!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminGenericAgent.pm
@@ -10851,6 +11001,30 @@ msgstr ""
 msgid "Could not update configuration data for WebserviceID %s"
 msgstr ""
 
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceMappingSimple.pm
+msgid "Keep (leave unchanged)"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceMappingSimple.pm
+msgid "Ignore (drop key/value pair)"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceMappingSimple.pm
+msgid "Map to (use provided value as default)"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceMappingSimple.pm
+msgid "Exact value(s)"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceMappingSimple.pm
+msgid "Ignore (drop Value/value pair)"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceMappingXSLT.pm
+msgid "Could not find required library %s"
+msgstr ""
+
 #. Perl Module: Kernel/Modules/AdminGenericInterfaceOperationDefault.pm
 msgid "Need OperationType"
 msgstr ""
@@ -10897,7 +11071,15 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminGenericInterfaceWebservice.pm
 msgid "Need Name!"
+msgstr "需要名稱!"
+
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceWebservice.pm
+msgid "Need ExampleWebService!"
 msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceWebservice.pm
+msgid "Could not read %s!"
+msgstr "無法讀取 %S!"
 
 #. Perl Module: Kernel/Modules/AdminGenericInterfaceWebservice.pm
 msgid "Need a file to import!"
@@ -10917,13 +11099,17 @@ msgstr ""
 msgid "Got no WebserviceHistoryID!"
 msgstr ""
 
-#. Perl Module: Kernel/Modules/AdminNotificationEvent.pm
-msgid "Notification updated!"
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceWebserviceHistory.pm
+msgid "Could not get history data for WebserviceHistoryID %s"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminNotificationEvent.pm
+msgid "Notification updated!"
+msgstr "通知已被更新!"
+
+#. Perl Module: Kernel/Modules/AdminNotificationEvent.pm
 msgid "Notification added!"
-msgstr ""
+msgstr "通知已被添加!"
 
 #. Perl Module: Kernel/Modules/AdminNotificationEvent.pm
 msgid "There was an error getting data for Notification with ID:%s!"
@@ -11045,6 +11231,18 @@ msgid ""
 "Package not verified due a communication issue with verification server!"
 msgstr ""
 
+#. Perl Module: Kernel/Modules/AdminPackageManager.pm
+msgid "Can't connect to OTRS Feature Add-on list server!"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminPackageManager.pm
+msgid "Can't get OTRS Feature Add-on list from server!"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminPackageManager.pm
+msgid "Can't get OTRS Feature Add-on from server!"
+msgstr ""
+
 #. Perl Module: Kernel/Modules/AdminPostMasterFilter.pm
 msgid "No such filter: %s"
 msgstr ""
@@ -11054,12 +11252,12 @@ msgid "Need ExampleProcesses!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminProcessManagement.pm
-msgid "Could not read %s!"
+msgid "Need ProcessID!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminProcessManagement.pm
-msgid "Need ProcessID!"
-msgstr ""
+msgid "Yes (mandatory)"
+msgstr "是 (必須)"
 
 #. Perl Module: Kernel/Modules/AdminProcessManagement.pm
 msgid "Unknown Process %s!"
@@ -11119,6 +11317,10 @@ msgid "Could not get %s"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminProcessManagement.pm
+msgid "Need %s!"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminProcessManagement.pm
 msgid "Process: %s is not Inactive"
 msgstr ""
 
@@ -11153,7 +11355,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementActivity.pm
 msgid "Activity not found!"
-msgstr ""
+msgstr "沒有找到活動!"
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementActivity.pm
 msgid "ActivityDialog not found!"
@@ -11209,39 +11411,35 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementActivityDialog.pm
 msgid "Agent Interface"
-msgstr ""
+msgstr "服務員界面"
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementActivityDialog.pm
 msgid "Customer Interface"
-msgstr ""
+msgstr "客戶界面"
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementActivityDialog.pm
 msgid "Agent and Customer Interface"
-msgstr ""
+msgstr "服務員及客戶界面"
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementActivityDialog.pm
 msgid "Do not show Field"
-msgstr ""
+msgstr "不要顯示字段"
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementActivityDialog.pm
 msgid "Show Field"
-msgstr ""
+msgstr "顯示字段"
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementActivityDialog.pm
 msgid "Show Field As Mandatory"
-msgstr ""
+msgstr "顯示字段為必須"
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementActivityDialog.pm
 msgid "fax"
-msgstr ""
-
-#. Perl Module: Kernel/Modules/AdminProcessManagementPath.pm
-msgid "Need %s!"
-msgstr ""
+msgstr "傳真"
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementPath.pm
 msgid "Edit Path"
-msgstr ""
+msgstr "編輯路徑"
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementTransition.pm
 msgid "There was an error generating a new EntityID for this Transition"
@@ -11278,11 +11476,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementTransition.pm
 msgid "String"
-msgstr ""
-
-#. Perl Module: Kernel/Modules/AdminProcessManagementTransition.pm
-msgid "Regular expression"
-msgstr ""
+msgstr "字串"
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementTransition.pm
 msgid "Transition validation module"
@@ -11398,13 +11592,17 @@ msgstr ""
 msgid "Salutation added!"
 msgstr ""
 
+#. Perl Module: Kernel/Modules/AdminSupportDataCollector.pm
+msgid "File %s could not be read!"
+msgstr ""
+
 #. Perl Module: Kernel/Modules/AdminSysConfig.pm
 msgid "Import not allowed!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminSysConfig.pm
 msgid "Need File!"
-msgstr ""
+msgstr "需要檔案!"
 
 #. Perl Module: Kernel/Modules/AdminSysConfig.pm
 msgid "Can't write ConfigItem!"
@@ -11448,11 +11646,11 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminTemplate.pm
 msgid "Template updated!"
-msgstr ""
+msgstr "模板已被更新!"
 
 #. Perl Module: Kernel/Modules/AdminTemplate.pm
 msgid "Template added!"
-msgstr ""
+msgstr "模板已被添加!"
 
 #. Perl Module: Kernel/Modules/AdminType.pm
 msgid "Need Type!"
@@ -11464,7 +11662,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentDashboardCommon.pm
 msgid "Statistic"
-msgstr ""
+msgstr "統計"
 
 #. Perl Module: Kernel/Modules/AgentDashboardCommon.pm
 msgid "No preferences for %s!"
@@ -11488,18 +11686,18 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentLinkObject.pm
 msgid "You need ro permission!"
-msgstr ""
+msgstr "您需要唯讀權限!"
 
 #. Perl Module: Kernel/Modules/AgentLinkObject.pm
 msgid "Can not delete link with %s!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentLinkObject.pm
-msgid "Can not create link with %s!"
+msgid "Can not create link with %s! Object already linked as %s."
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentLinkObject.pm
-msgid "Object already linked as %s."
+msgid "Can not create link with %s!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentLinkObject.pm
@@ -11564,7 +11762,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketActionCommon.pm
 msgid "No subject"
-msgstr ""
+msgstr "沒有主旨"
 
 #. Perl Module: Kernel/Modules/AgentTicketActionCommon.pm
 msgid "Previous Owner"
@@ -11618,7 +11816,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketBulk.pm
 msgid "You need to select at least one ticket"
-msgstr ""
+msgstr "您需要選取至少一張工單"
 
 #. Perl Module: Kernel/Modules/AgentTicketBulk.pm
 msgid "Ticket is locked by another agent and will be ignored!"
@@ -11638,6 +11836,10 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketEmailOutbound.pm
 msgid "System Error!"
+msgstr "系統錯誤!"
+
+#. Perl Module: Kernel/Modules/AgentTicketEscalationView.pm
+msgid "Invalid Filter: %s!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketHistory.pm
@@ -11662,7 +11864,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketLock.pm
 msgid "Change the owner!"
-msgstr ""
+msgstr "更改擁有者!"
 
 #. Perl Module: Kernel/Modules/AgentTicketMerge.pm
 msgid "Can't merge ticket with itself!"
@@ -11678,7 +11880,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketPhone.pm
 msgid "No permission."
-msgstr ""
+msgstr "沒有權限。"
 
 #. Perl Module: Kernel/Modules/AgentTicketPhone.pm
 msgid "%s has left the chat."
@@ -11748,11 +11950,6 @@ msgstr ""
 msgid ""
 "Couldn't determine ActivityEntityID. DynamicField or Config isn't set "
 "properly!"
-msgstr ""
-
-#. Perl Module: Kernel/Modules/AgentTicketProcess.pm
-msgid ""
-"DynamicFieldConfig missing for field: %s, or is not a Ticket Dynamic Field!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketProcess.pm
@@ -11883,25 +12080,33 @@ msgstr ""
 msgid "Default Config for Process::Default%s invalid!"
 msgstr ""
 
-#. Perl Module: Kernel/Modules/AgentTicketResponsibleView.pm
-msgid "Invalid Filter: %s!"
+#. Perl Module: Kernel/Modules/AgentTicketSearch.pm
+msgid "Untitled"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketSearch.pm
 msgid "Invalid Users"
+msgstr "無效的用戶"
+
+#. Perl Module: Kernel/Modules/AgentTicketSearch.pm
+msgid "CSV"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AgentTicketSearch.pm
+msgid "Excel"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketService.pm
 msgid "Feature not enabled!"
-msgstr ""
+msgstr "沒有啓用功能!"
 
 #. Perl Module: Kernel/Modules/AgentTicketWatcher.pm
 msgid "Feature is not active"
-msgstr ""
+msgstr "功能沒有激活"
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Ticket Created"
-msgstr ""
+msgstr "已創建的工單"
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Note Added"
@@ -11913,7 +12118,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Outgoing Email"
-msgstr ""
+msgstr "外發電郵"
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Outgoing Email (internal)"
@@ -11929,11 +12134,11 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Outgoing Phone Call"
-msgstr ""
+msgstr "打出的電話通話"
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Incoming Phone Call"
-msgstr ""
+msgstr "打進的電話通話"
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Outgoing Answer"
@@ -11945,15 +12150,15 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Service Updated"
-msgstr ""
+msgstr "已更新的服務"
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Customer Updated"
-msgstr ""
+msgstr " 已更新的客戶"
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "State Updated"
-msgstr ""
+msgstr "已更新的狀態"
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Incoming Follow-Up"
@@ -11977,11 +12182,11 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Link Added"
-msgstr ""
+msgstr "已添加的連結"
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Link Deleted"
-msgstr ""
+msgstr "已刪除的連結"
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Ticket Merged"
@@ -11993,7 +12198,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Ticket Locked"
-msgstr ""
+msgstr "已鎖定的工單"
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Ticket Unlocked"
@@ -12001,7 +12206,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Queue Updated"
-msgstr ""
+msgstr "已更新佇列"
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Priority Updated"
@@ -12013,7 +12218,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Type Updated"
-msgstr ""
+msgstr "已更新的類型"
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Incoming Web Request"
@@ -12025,7 +12230,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Automatic Reply Sent"
-msgstr ""
+msgstr "自動回覆已發送"
 
 #. Perl Module: Kernel/Modules/AgentTicketZoom.pm
 msgid "Time Accounted"
@@ -12097,6 +12302,18 @@ msgstr ""
 msgid "Need CustomerID!"
 msgstr ""
 
+#. Perl Module: Kernel/Modules/CustomerTicketOverview.pm
+msgid "My Tickets"
+msgstr "我的工單"
+
+#. Perl Module: Kernel/Modules/CustomerTicketOverview.pm
+msgid "Company Tickets"
+msgstr "單位工單"
+
+#. Perl Module: Kernel/Modules/CustomerTicketOverview.pm
+msgid "Untitled!"
+msgstr ""
+
 #. Perl Module: Kernel/Modules/CustomerTicketSearch.pm
 msgid ""
 "Please remove the following words because they cannot be used for the "
@@ -12138,6 +12355,18 @@ msgid ""
 msgstr ""
 
 #. Perl Module: Kernel/Modules/Installer.pm
+msgid "Unknown Check!"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/Installer.pm
+msgid "The check \"%s\" doesn't exist!"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/Installer.pm
+msgid "Database %s"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/Installer.pm
 msgid "Unknown database type \"%s\"."
 msgstr ""
 
@@ -12155,7 +12384,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/Installer.pm
 msgid "Contact your Admin!"
-msgstr ""
+msgstr "聯系您的管理員!"
 
 #. Perl Module: Kernel/Modules/Installer.pm
 msgid "Can't write Config file!"
@@ -12224,19 +12453,19 @@ msgid "The start time of a ticket has been set after the end time!"
 msgstr ""
 
 #. Perl Module: Kernel/Output/HTML/Dashboard/TicketGeneric.pm
-msgid "filter not active"
-msgstr ""
-
-#. Perl Module: Kernel/Output/HTML/Dashboard/TicketGeneric.pm
-msgid "filter active"
-msgstr ""
-
-#. Perl Module: Kernel/Output/HTML/Dashboard/TicketGeneric.pm
 msgid "sorted ascending"
 msgstr ""
 
 #. Perl Module: Kernel/Output/HTML/Dashboard/TicketGeneric.pm
 msgid "sorted descending"
+msgstr ""
+
+#. Perl Module: Kernel/Output/HTML/Dashboard/TicketGeneric.pm
+msgid "filter not active"
+msgstr ""
+
+#. Perl Module: Kernel/Output/HTML/Dashboard/TicketGeneric.pm
+msgid "filter active"
 msgstr ""
 
 #. Perl Module: Kernel/Output/HTML/Dashboard/TicketGeneric.pm
@@ -12262,16 +12491,12 @@ msgstr ""
 #. Perl Module: Kernel/Output/HTML/Layout.pm
 msgid ""
 "We are sorry, you do not have permissions anymore to access this ticket in "
-"its current state."
-msgstr ""
-
-#. Perl Module: Kernel/Output/HTML/Layout.pm
-msgid " You can take one of the next actions:"
+"its current state. You can take one of the following actions:"
 msgstr ""
 
 #. Perl Module: Kernel/Output/HTML/Layout.pm
 msgid "No Permission"
-msgstr ""
+msgstr "沒有權限"
 
 #. Perl Module: Kernel/Output/HTML/Layout/LinkObject.pm
 msgid "Linked as"
@@ -12279,7 +12504,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Output/HTML/Layout/LinkObject.pm
 msgid "Search Result"
-msgstr ""
+msgstr "搜尋結果"
 
 #. Perl Module: Kernel/Output/HTML/Notification/AgentOTRSBusiness.pm
 msgid "%s Upgrade to %s now! %s"
@@ -12292,11 +12517,11 @@ msgstr ""
 
 #. Perl Module: Kernel/Output/HTML/Notification/DaemonCheck.pm
 msgid "Please contact your administrator!"
-msgstr ""
+msgstr "請聯系您的管理員!"
 
 #. Perl Module: Kernel/Output/HTML/Preferences/Language.pm
 msgid "(in process)"
-msgstr ""
+msgstr "(進行中)"
 
 #. Perl Module: Kernel/Output/HTML/Preferences/NotificationEvent.pm
 msgid ""
@@ -12310,7 +12535,11 @@ msgstr ""
 
 #. Perl Module: Kernel/Output/HTML/Preferences/Password.pm
 msgid "Please supply your new password!"
-msgstr ""
+msgstr "請提供您的新密碼!"
+
+#. Perl Module: Kernel/Output/HTML/Statistics/View.pm
+msgid "No (not supported)"
+msgstr "不支持"
 
 #. Perl Module: Kernel/Output/HTML/Statistics/View.pm
 msgid ""
@@ -12330,7 +12559,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Output/HTML/Statistics/View.pm
 msgid "The selected date is not valid."
-msgstr ""
+msgstr "選取的日期為無效。"
 
 #. Perl Module: Kernel/Output/HTML/Statistics/View.pm
 msgid "The selected end time is before the start time."
@@ -12413,7 +12642,7 @@ msgstr ""
 
 #. Perl Module: Kernel/System/Package.pm
 msgid "not installed"
-msgstr ""
+msgstr "沒有安裝"
 
 #. Perl Module: Kernel/System/Registration.pm
 msgid "Can't get Token from sever"
@@ -12421,7 +12650,7 @@ msgstr ""
 
 #. Perl Module: Kernel/System/Stats/Dynamic/Ticket.pm
 msgid "State Type"
-msgstr ""
+msgstr "狀態類別"
 
 #. Perl Module: Kernel/System/Stats/Dynamic/Ticket.pm
 msgid "Created Priority"
@@ -12483,6 +12712,54 @@ msgstr "工單關閉時間"
 msgid "Accounted time by Agent"
 msgstr "服務人員處理工單所用的時間"
 
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Total Time"
+msgstr "時間總合"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Ticket Average"
+msgstr "工單平均處理時間"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Ticket Min Time"
+msgstr "工單最小處理時間"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Ticket Max Time"
+msgstr "工單最大處理時間"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Number of Tickets"
+msgstr "工單數"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Article Average"
+msgstr "信件平均處理時間"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Article Min Time"
+msgstr "信件最小處理時間"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Article Max Time"
+msgstr "信件最大處理時間"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Number of Articles"
+msgstr "信件數"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketList.pm
+msgid "unlimited"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketList.pm
+msgid "ascending"
+msgstr "升序"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketList.pm
+msgid "descending"
+msgstr "降序"
+
 #. Perl Module: Kernel/System/Stats/Dynamic/TicketList.pm
 msgid "Attributes to be printed"
 msgstr "打印的屬性"
@@ -12503,9 +12780,73 @@ msgstr ""
 msgid "Historic Time Range"
 msgstr ""
 
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Average"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Min Time"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Max Time"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Average (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Min Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Max Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Working Time Average (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Min Working Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Max Working Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Response Average (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Response Min Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Response Max Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Response Working Time Average (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Response Min Working Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Response Max Working Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Number of Tickets (affected by escalation configuration)"
+msgstr ""
+
 #. Perl Module: Kernel/System/Stats/Static/StateAction.pm
 msgid "Days"
-msgstr ""
+msgstr "日"
 
 #. Perl Module:
 #. Kernel/System/SupportDataCollector/Plugin/Database/TablePresence.pm
@@ -12535,7 +12876,7 @@ msgstr ""
 #. Perl Module:
 #. Kernel/System/SupportDataCollector/Plugin/Database/mssql/Size.pm
 msgid "Database Size"
-msgstr ""
+msgstr "數據庫大小"
 
 #. Perl Module:
 #. Kernel/System/SupportDataCollector/Plugin/Database/mssql/Size.pm
@@ -12545,7 +12886,7 @@ msgstr ""
 #. Perl Module:
 #. Kernel/System/SupportDataCollector/Plugin/Database/mssql/Version.pm
 msgid "Database Version"
-msgstr ""
+msgstr "數據庫版本"
 
 #. Perl Module:
 #. Kernel/System/SupportDataCollector/Plugin/Database/mssql/Version.pm
@@ -12638,7 +12979,7 @@ msgstr ""
 #. Perl Module:
 #. Kernel/System/SupportDataCollector/Plugin/Database/oracle/NLS.pm
 msgid "NLS_LANG Setting"
-msgstr ""
+msgstr "NLS_LANG 設定"
 
 #. Perl Module:
 #. Kernel/System/SupportDataCollector/Plugin/Database/oracle/NLS.pm
@@ -12673,7 +13014,7 @@ msgstr ""
 #. Perl Module:
 #. Kernel/System/SupportDataCollector/Plugin/Database/postgresql/DateStyle.pm
 msgid "Date Format"
-msgstr ""
+msgstr "日期格式"
 
 #. Perl Module:
 #. Kernel/System/SupportDataCollector/Plugin/Database/postgresql/DateStyle.pm
@@ -12692,7 +13033,7 @@ msgstr ""
 
 #. Perl Module: Kernel/System/SupportDataCollector/Plugin/OS/DiskSpace.pm
 msgid "Disk Usage"
-msgstr ""
+msgstr "磁碟用量"
 
 #. Perl Module: Kernel/System/SupportDataCollector/Plugin/OS/DiskSpace.pm
 msgid "The partition where OTRS is located is almost full."
@@ -12800,7 +13141,7 @@ msgstr ""
 #. Perl Module:
 #. Kernel/System/SupportDataCollector/Plugin/OTRS/DatabaseRecords.pm
 msgid "Articles"
-msgstr ""
+msgstr "文章"
 
 #. Perl Module:
 #. Kernel/System/SupportDataCollector/Plugin/OTRS/DatabaseRecords.pm
@@ -12856,7 +13197,7 @@ msgstr ""
 
 #. Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/DefaultUser.pm
 msgid "Default Admin Password"
-msgstr ""
+msgstr "預設管理員密碼"
 
 #. Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/DefaultUser.pm
 msgid ""
@@ -12882,7 +13223,7 @@ msgstr ""
 
 #. Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/FQDN.pm
 msgid "Domain Name"
-msgstr ""
+msgstr "域名"
 
 #. Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/FQDN.pm
 msgid "Your FQDN setting is invalid."
@@ -13008,7 +13349,7 @@ msgstr ""
 
 #. Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/TimeSettings.pm
 msgid "Server time zone"
-msgstr ""
+msgstr "伺服器時區"
 
 #. Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/TimeSettings.pm
 msgid "Computed server time offset"
@@ -13151,6 +13492,10 @@ msgstr ""
 msgid "Problem"
 msgstr ""
 
+#. Perl Module: Kernel/System/Ticket.pm
+msgid "Reset of unlock time."
+msgstr ""
+
 #. Perl Module: Kernel/System/Web/InterfaceAgent.pm
 msgid ""
 "Panic, user authenticated but no user data can be found in OTRS DB!! Perhaps"
@@ -13160,6 +13505,10 @@ msgstr ""
 #. Perl Module: Kernel/System/Web/InterfaceAgent.pm
 msgid "Can`t remove SessionID"
 msgstr ""
+
+#. Perl Module: Kernel/System/Web/InterfaceAgent.pm
+msgid "Logout successful."
+msgstr "成功登出"
 
 #. Perl Module: Kernel/System/Web/InterfaceAgent.pm
 msgid "Panic! Invalid Session!!!"
@@ -13183,6 +13532,19 @@ msgstr ""
 
 #. Perl Module: Kernel/System/Web/InterfaceCustomer.pm
 msgid "Can't send account info!"
+msgstr ""
+
+#. Perl Module: Kernel/System/Web/InterfaceInstaller.pm
+msgid "SecureMode active!"
+msgstr ""
+
+#. Perl Module: Kernel/System/Web/InterfaceInstaller.pm
+msgid ""
+"If you want to re-run the Installer, disable the SecureMode in the SysConfig"
+msgstr ""
+
+#. Perl Module: Kernel/System/Web/InterfaceInstaller.pm
+msgid "Action \"%s\" not found!"
 msgstr ""
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
@@ -13289,7 +13651,7 @@ msgstr ""
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid "new ticket"
-msgstr ""
+msgstr "新工單"
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid ""
@@ -13507,16 +13869,20 @@ msgid "(UserLogin) Lastname, Firstname"
 msgstr ""
 
 #. SysConfig
-msgid "100 (Expert)"
+msgid "*** out of office until %s (%s d left) ***"
 msgstr ""
+
+#. SysConfig
+msgid "100 (Expert)"
+msgstr "100 (專家)"
 
 #. SysConfig
 msgid "200 (Advanced)"
-msgstr ""
+msgstr "200 (進階)"
 
 #. SysConfig
 msgid "300 (Beginner)"
-msgstr ""
+msgstr "300 (初階)"
 
 #. SysConfig
 msgid "A TicketWatcher Module."
@@ -13535,7 +13901,7 @@ msgstr ""
 
 #. SysConfig
 msgid "A picture"
-msgstr ""
+msgstr "一幅圖片"
 
 #. SysConfig
 msgid ""
@@ -13674,8 +14040,16 @@ msgid "After"
 msgstr ""
 
 #. SysConfig
-msgid "Agent Preferences."
+msgid "Agent Name"
 msgstr ""
+
+#. SysConfig
+msgid "Agent Name + FromSeparator + System Address Display Name"
+msgstr ""
+
+#. SysConfig
+msgid "Agent Preferences."
+msgstr "服務員喜好設定"
 
 #. SysConfig
 msgid "Agent called customer."
@@ -13897,6 +14271,13 @@ msgstr ""
 
 #. SysConfig
 msgid ""
+"Allows extended search conditions in ticket search of the generic agent "
+"interface. With this feature you can search e. g. ticket title with this "
+"kind of conditions like \"(*key1*&&*key2*)\" or \"(*key1*||*key2*)\"."
+msgstr ""
+
+#. SysConfig
+msgid ""
 "Allows having a medium format ticket overview (CustomerInfo => 1 - shows "
 "also the customer information)."
 msgstr ""
@@ -14038,10 +14419,6 @@ msgid ""
 msgstr ""
 
 #. SysConfig
-msgid "CSV"
-msgstr ""
-
-#. SysConfig
 msgid ""
 "Cache time in seconds for agent authentication in the GenericInterface."
 msgstr ""
@@ -14136,11 +14513,11 @@ msgstr ""
 
 #. SysConfig
 msgid "Chinese (Simplified)"
-msgstr ""
+msgstr "中文 (簡體)"
 
 #. SysConfig
 msgid "Chinese (Traditional)"
-msgstr ""
+msgstr "中文 (繁體)"
 
 #. SysConfig
 msgid ""
@@ -14157,7 +14534,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Cloud Services"
-msgstr ""
+msgstr "雲端服務"
 
 #. SysConfig
 msgid "Cloud service admin module registration for the transport layer."
@@ -14257,15 +14634,11 @@ msgstr ""
 
 #. SysConfig
 msgid "Company Status"
-msgstr ""
-
-#. SysConfig
-msgid "Company Tickets"
-msgstr "單位工單"
+msgstr "公司狀態"
 
 #. SysConfig
 msgid "Company Tickets."
-msgstr ""
+msgstr "公司工單"
 
 #. SysConfig
 msgid "Company name which will be included in outgoing emails as an X-Header."
@@ -14277,7 +14650,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Complex"
-msgstr ""
+msgstr "複雜"
 
 #. SysConfig
 msgid "Configure Processes."
@@ -14435,7 +14808,7 @@ msgstr "創建和管理Web服務"
 
 #. SysConfig
 msgid "Create new Ticket."
-msgstr ""
+msgstr "創建新工單"
 
 #. SysConfig
 msgid "Create new email ticket and send this out (outbound)."
@@ -14443,7 +14816,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Create new email ticket."
-msgstr ""
+msgstr "創建新電郵工單"
 
 #. SysConfig
 msgid "Create new phone ticket (inbound)."
@@ -14459,7 +14832,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Create tickets."
-msgstr ""
+msgstr "創建工單"
 
 #. SysConfig
 msgid "Croatian"
@@ -14485,7 +14858,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Customer Information Center."
-msgstr ""
+msgstr "客戶資訊中心"
 
 #. SysConfig
 msgid "Customer Ticket Print Module."
@@ -14527,19 +14900,27 @@ msgstr ""
 
 #. SysConfig
 msgid "Customer preferences."
-msgstr ""
+msgstr "客戶喜好設定"
 
 #. SysConfig
 msgid "Customer request via web."
 msgstr "Customer request via web."
 
 #. SysConfig
+msgid "Customer ticket overview"
+msgstr "客戶工單概況"
+
+#. SysConfig
 msgid "Customer ticket search."
+msgstr "客戶工單搜尋"
+
+#. SysConfig
+msgid "Customer ticket zoom"
 msgstr ""
 
 #. SysConfig
 msgid "Customer user search"
-msgstr ""
+msgstr "客戶用戶搜尋"
 
 #. SysConfig
 msgid "CustomerID search"
@@ -14581,7 +14962,7 @@ msgstr "日期 / 時間"
 
 #. SysConfig
 msgid "Debug"
-msgstr ""
+msgstr "除錯"
 
 #. SysConfig
 msgid ""
@@ -14593,7 +14974,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Default"
-msgstr ""
+msgstr "默許"
 
 #. SysConfig
 msgid "Default (Slim)"
@@ -14667,6 +15048,15 @@ msgstr ""
 
 #. SysConfig
 msgid ""
+"Define Actions where a settings button is available in the linked objects "
+"widget (LinkObject::ViewMode = \"complex\"). Please note that these Actions "
+"must have registered the following JS and CSS files: "
+"Core.AllocationList.css, Core.UI.AllocationList.js, Core.UI.Table.Sort.js, "
+"Core.Agent.TableFilters.js."
+msgstr ""
+
+#. SysConfig
+msgid ""
 "Define a filter for html output to add links behind a defined string. The "
 "element Image allows two input kinds. At once the name of an image (e.g. "
 "faq.png). In this case the OTRS image path will be used. The second "
@@ -14723,6 +15113,14 @@ msgstr ""
 
 #. SysConfig
 msgid "Define the start day of the week for the date picker."
+msgstr ""
+
+#. SysConfig
+msgid ""
+"Define which columns are shown in the linked tickets widget "
+"(LinkObject::ViewMode = \"complex\"). Note: Only Ticket attributes and "
+"Dynamic Fields (DynamicField_NameX) are allowed for DefaultColumns. Possible"
+" settings: 0 = Disabled, 1 = Available, 2 = Enabled by default."
 msgstr ""
 
 #. SysConfig
@@ -14788,6 +15186,17 @@ msgstr ""
 
 #. SysConfig
 msgid ""
+"Defines a filter to collect CVE numbers from article texts in "
+"AgentTicketZoom. The results will be displayed in a meta box next to the "
+"article. Fill in URLPreview if you would like to see a preview when moving "
+"your mouse cursor above the link element. This could be the same URL as in "
+"URL, but also an alternate one. Please note that some websites deny being "
+"displayed within an iframe (e.g. Google) and thus won't work with the "
+"preview mode."
+msgstr ""
+
+#. SysConfig
+msgid ""
 "Defines a filter to process the text in the articles, in order to highlight "
 "predefined keywords."
 msgstr ""
@@ -14847,6 +15256,18 @@ msgstr ""
 
 #. SysConfig
 msgid "Defines all the parameters for this item in the customer preferences."
+msgstr ""
+
+#. SysConfig
+msgid ""
+"Defines all the parameters for this item in the customer preferences. "
+"'PasswordRegExp' allows to match passwords against a regular expression. "
+"Define the minimum number of characters using 'PasswordMinSize'. Define if "
+"at least 2 lowercase and 2 uppercase letter characters are needed by setting"
+" the appropriate option to '1'. 'PasswordMin2Characters' defines if the "
+"password needs to contain at least 2 letter characters (set to 0 or 1). "
+"'PasswordNeedDigit' controls the need of at least 1 digit (set to 0 or 1 to "
+"control)."
 msgstr ""
 
 #. SysConfig
@@ -15061,6 +15482,12 @@ msgstr ""
 
 #. SysConfig
 msgid ""
+"Defines out of office message template. Two string parameters (%s) "
+"available: end date and number of days left."
+msgstr ""
+
+#. SysConfig
+msgid ""
 "Defines queues that's tickets are used for displaying as calendar events."
 msgstr ""
 
@@ -15161,6 +15588,19 @@ msgstr ""
 msgid ""
 "Defines the config parameters of this item, to be shown in the preferences "
 "view."
+msgstr ""
+
+#. SysConfig
+msgid ""
+"Defines the config parameters of this item, to be shown in the preferences "
+"view. 'PasswordRegExp' allows to match passwords against a regular "
+"expression. Define the minimum number of characters using 'PasswordMinSize'."
+" Define if at least 2 lowercase and 2 uppercase letter characters are needed"
+" by setting the appropriate option to '1'. 'PasswordMin2Characters' defines "
+"if the password needs to contain at least 2 letter characters (set to 0 or "
+"1). 'PasswordNeedDigit' controls the need of at least 1 digit (set to 0 or 1"
+" to control). 'PasswordMaxLoginFailed' allows to set an agent to invalid-"
+"temporarily if max failed logins reached."
 msgstr ""
 
 #. SysConfig
@@ -16677,6 +17117,12 @@ msgid "Deletes requested sessions if they have timed out."
 msgstr ""
 
 #. SysConfig
+msgid ""
+"Delivers extended debugging information in the frontend in case any AJAX "
+"errors occur, if enabled."
+msgstr ""
+
+#. SysConfig
 msgid "Deploy and manage OTRS Business Solution™."
 msgstr ""
 
@@ -17302,10 +17748,6 @@ msgid "Events Ticket Calendar"
 msgstr ""
 
 #. SysConfig
-msgid "Excel"
-msgstr ""
-
-#. SysConfig
 msgid "Execute SQL statements."
 msgstr "執行SQL命令"
 
@@ -17578,7 +18020,7 @@ msgstr ""
 
 #. SysConfig
 msgid "German"
-msgstr ""
+msgstr "德國"
 
 #. SysConfig
 msgid ""
@@ -17618,7 +18060,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Greek"
-msgstr ""
+msgstr "希臘"
 
 #. SysConfig
 msgid "HTML Reference"
@@ -18056,7 +18498,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Incoming Phone Call."
-msgstr ""
+msgstr "打進來電"
 
 #. SysConfig
 msgid ""
@@ -18069,6 +18511,14 @@ msgid ""
 "\"bin/otrs.Console.pl Maint::Ticket::QueueIndexRebuild\" for initial index "
 "creation."
 msgstr ""
+
+#. SysConfig
+msgid "Indonesian"
+msgstr ""
+
+#. SysConfig
+msgid "Input"
+msgstr "輸入"
 
 #. SysConfig
 msgid ""
@@ -18113,7 +18563,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Italian"
-msgstr ""
+msgstr "意大利文"
 
 #. SysConfig
 msgid ""
@@ -18131,19 +18581,23 @@ msgstr ""
 
 #. SysConfig
 msgid "Japanese"
-msgstr ""
+msgstr "日本語"
 
 #. SysConfig
 msgid "JavaScript function for the search frontend."
 msgstr ""
 
 #. SysConfig
-msgid "Lastname Firstname"
+msgid "Last customer subject"
 msgstr ""
 
 #. SysConfig
+msgid "Lastname Firstname"
+msgstr "姓氏 名字"
+
+#. SysConfig
 msgid "Lastname Firstname (UserLogin)"
-msgstr ""
+msgstr "姓氏 名字 (用戶登錄)"
 
 #. SysConfig
 msgid "Lastname, Firstname"
@@ -18159,7 +18613,11 @@ msgstr ""
 
 #. SysConfig
 msgid "Left"
-msgstr ""
+msgstr "左"
+
+#. SysConfig
+msgid "Link Object"
+msgstr "鏈接對象"
 
 #. SysConfig
 msgid "Link Object."
@@ -18299,7 +18757,7 @@ msgstr "Loop-Protection! No auto-response sent to \"%s\"."
 
 #. SysConfig
 msgid "Mail Accounts"
-msgstr ""
+msgstr "郵件帳號"
 
 #. SysConfig
 msgid "Main menu registration."
@@ -18559,15 +19017,11 @@ msgstr "多選"
 
 #. SysConfig
 msgid "My Services"
-msgstr ""
-
-#. SysConfig
-msgid "My Tickets"
-msgstr "我的工單"
+msgstr "我的服務"
 
 #. SysConfig
 msgid "My Tickets."
-msgstr ""
+msgstr "我的工單"
 
 #. SysConfig
 msgid ""
@@ -18679,6 +19133,10 @@ msgid "Open tickets (customer)"
 msgstr ""
 
 #. SysConfig
+msgid "Option"
+msgstr ""
+
+#. SysConfig
 msgid ""
 "Optional queue limitation for the CreatorCheck permission module. If set, "
 "permission is only granted for tickets in the specified queues."
@@ -18749,10 +19207,6 @@ msgid "Package event module file a scheduler task for update registration."
 msgstr ""
 
 #. SysConfig
-msgid "Parameters for ."
-msgstr ""
-
-#. SysConfig
 msgid ""
 "Parameters for the CreateNextMask object in the preference view of the agent"
 " interface."
@@ -18774,6 +19228,10 @@ msgstr ""
 msgid ""
 "Parameters for the RefreshTime object in the preference view of the agent "
 "interface."
+msgstr ""
+
+#. SysConfig
+msgid "Parameters for the column filters of the small ticket overview."
 msgstr ""
 
 #. SysConfig
@@ -19266,7 +19724,7 @@ msgstr ""
 
 #. SysConfig
 msgid "SMS (Short Message Service)"
-msgstr ""
+msgstr "SMS (短訊服務)"
 
 #. SysConfig
 msgid "Sample command output"
@@ -20639,7 +21097,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Simple"
-msgstr ""
+msgstr "簡易"
 
 #. SysConfig
 msgid "Skin"
@@ -20871,7 +21329,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Spell checker."
-msgstr ""
+msgstr "拼寫檢查"
 
 #. SysConfig
 msgid ""
@@ -20923,8 +21381,12 @@ msgid "Swedish"
 msgstr ""
 
 #. SysConfig
+msgid "System Address Display Name"
+msgstr "系統郵件地址顯示名稱"
+
+#. SysConfig
 msgid "System Maintenance"
-msgstr ""
+msgstr "系統維護"
 
 #. SysConfig
 msgid "System Request (%s)."
@@ -20932,7 +21394,7 @@ msgstr "System Request (%s)."
 
 #. SysConfig
 msgid "Target"
-msgstr ""
+msgstr "目標"
 
 #. SysConfig
 msgid "Templates <-> Queues"
@@ -20944,7 +21406,7 @@ msgstr "文本塊"
 
 #. SysConfig
 msgid "Thai"
-msgstr ""
+msgstr "泰文"
 
 #. SysConfig
 msgid ""
@@ -21159,7 +21621,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Ticket Customer."
-msgstr ""
+msgstr "工單客戶"
 
 #. SysConfig
 msgid "Ticket Forward Email."
@@ -21171,7 +21633,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Ticket History."
-msgstr ""
+msgstr "工單歷史"
 
 #. SysConfig
 msgid "Ticket Lock."
@@ -21191,15 +21653,15 @@ msgstr ""
 
 #. SysConfig
 msgid "Ticket Notifications"
-msgstr ""
+msgstr "工單通知"
 
 #. SysConfig
 msgid "Ticket Outbound Email."
-msgstr ""
+msgstr "工單外發電郵"
 
 #. SysConfig
 msgid "Ticket Owner."
-msgstr ""
+msgstr "工單所有者"
 
 #. SysConfig
 msgid "Ticket Pending."
@@ -21207,11 +21669,11 @@ msgstr ""
 
 #. SysConfig
 msgid "Ticket Print."
-msgstr ""
+msgstr "工單打印"
 
 #. SysConfig
 msgid "Ticket Priority."
-msgstr ""
+msgstr "工單優先級"
 
 #. SysConfig
 msgid "Ticket Queue Overview"
@@ -21243,7 +21705,7 @@ msgstr "Ticket moved into Queue \"%s\" (%s) from Queue \"%s\" (%s)."
 
 #. SysConfig
 msgid "Ticket notifications"
-msgstr ""
+msgstr "工單通知"
 
 #. SysConfig
 msgid "Ticket overview"
@@ -21252,6 +21714,10 @@ msgstr "工單一覽"
 #. SysConfig
 msgid "Ticket plain view of an email."
 msgstr ""
+
+#. SysConfig
+msgid "Ticket title"
+msgstr "工單標題"
 
 #. SysConfig
 msgid "Ticket zoom view."
@@ -21263,7 +21729,7 @@ msgstr "工單編號"
 
 #. SysConfig
 msgid "Tickets."
-msgstr ""
+msgstr "工單"
 
 #. SysConfig
 msgid ""
@@ -21281,7 +21747,7 @@ msgstr ""
 
 #. SysConfig
 msgid "To download attachments."
-msgstr ""
+msgstr "下載附件"
 
 #. SysConfig
 msgid "Toggles display of OTRS FeatureAddons list in PackageManager."
@@ -21300,7 +21766,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Tree view"
-msgstr ""
+msgstr "樹狀視圖"
 
 #. SysConfig
 msgid ""
@@ -21400,11 +21866,11 @@ msgstr ""
 
 #. SysConfig
 msgid "UserFirstname"
-msgstr ""
+msgstr "用戶名字"
 
 #. SysConfig
 msgid "UserLastname"
-msgstr ""
+msgstr "用戶姓氏"
 
 #. SysConfig
 msgid ""
@@ -21424,7 +21890,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Vietnam"
-msgstr ""
+msgstr "越南文"
 
 #. SysConfig
 msgid "View performance benchmark results."
@@ -21478,6 +21944,12 @@ msgid ""
 msgstr ""
 
 #. SysConfig
+msgid ""
+"Whether or not to collect meta information from articles using filters "
+"configured in Ticket::Frontend::ZoomCollectMetaFilters."
+msgstr ""
+
+#. SysConfig
 msgid "Yes, but hide archived tickets"
 msgstr ""
 
@@ -21501,7 +21973,7 @@ msgstr ""
 
 #. SysConfig
 msgid "attachment"
-msgstr ""
+msgstr "附件"
 
 #. SysConfig
 msgid "debug"
@@ -21509,7 +21981,7 @@ msgstr ""
 
 #. SysConfig
 msgid "error"
-msgstr ""
+msgstr "錯誤"
 
 #. SysConfig
 msgid "info"

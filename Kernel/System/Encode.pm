@@ -51,6 +51,9 @@ sub new {
     # 0=off; 1=on;
     $Self->{Debug} = 0;
 
+    # use "locale" as an arg to encode/decode
+    @ARGV = map { decode( locale => $_, 1 ) } @ARGV;
+
     # check if the encodeobject is used from the command line
     # if so, we need to decode @ARGV
     if ( !is_interactive() ) {
@@ -60,10 +63,6 @@ sub new {
     }
     else {
 
-        # use "locale" as an arg to encode/decode
-        if ( is_interactive(*STDIN) ) {
-            @ARGV = map { decode( locale => $_, 1 ) } @ARGV;
-        }
         if ( is_interactive(*STDOUT) ) {
             binmode STDOUT, ":encoding(console_out)";
         }
@@ -342,10 +341,9 @@ sub SetIO {
         next ROW if !defined $Row;
         next ROW if ref $Row ne 'GLOB';
 
-        # set binmode
         # http://www.perlmonks.org/?node_id=644786
-        # http://bugs.otrs.org/show_bug.cgi?id=5158
-        binmode( $Row, ':encoding(utf8)' );
+        # http://bugs.otrs.org/show_bug.cgi?id=12100
+        binmode( $Row, ':utf8' );    ## no critic
     }
 
     return;

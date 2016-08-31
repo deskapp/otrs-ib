@@ -19,18 +19,23 @@ $Selenium->RunTest(
     sub {
 
         # get helper object
-        $Kernel::OM->ObjectParamAdd(
-            'Kernel::System::UnitTest::Helper' => {
-                RestoreSystemConfiguration => 1,
-            },
-        );
         my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 
+        # get needed variable
+        my $RandomID = $Helper->GetRandomID();
+
         # set generic agent run limit
-        $Kernel::OM->Get('Kernel::System::SysConfig')->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'Ticket::GenericAgentRunLimit',
             Value => 10
+        );
+
+        # enable extended condition search for generic agent ticket search
+        $Helper->ConfigSettingChange(
+            Valid => 1,
+            Key   => 'Ticket::GenericAgentTicketSearch###ExtendedSearchCondition',
+            Value => 1,
         );
 
         # create test user and login
@@ -49,11 +54,58 @@ $Selenium->RunTest(
             UserLogin => $TestUserLogin,
         );
 
+        # get dynamic field object
+        my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField');
+
+        # create test dynamic field of type date
+        my $DynamicFieldName = 'Test' . $RandomID;
+        my $DynamicFieldID   = $DynamicFieldObject->DynamicFieldAdd(
+            Name       => $DynamicFieldName,
+            Label      => $DynamicFieldName,
+            FieldOrder => 9991,
+            FieldType  => 'Date',
+            ObjectType => 'Ticket',
+            Config     => {
+                DefaultValue    => 0,
+                YearsInFuture   => 0,
+                YearsInPast     => 0,
+                YearsPeriod     => 0,
+                DateRestriction => 'DisablePastDates',    # turn on validation of no past dates
+            },
+            ValidID => 1,
+            UserID  => $UserID,
+        );
+
+        $Self->True(
+            $DynamicFieldID,
+            "Dynamic field $DynamicFieldName - ID $DynamicFieldID - created",
+        );
+
+        # create also a dynamic field of type checkbox
+        my $CheckboxDynamicFieldName = 'TestCheckbox' . $RandomID;
+        my $CheckboxDynamicFieldID   = $DynamicFieldObject->DynamicFieldAdd(
+            Name       => $CheckboxDynamicFieldName,
+            Label      => $CheckboxDynamicFieldName,
+            FieldOrder => 9992,
+            FieldType  => 'Checkbox',
+            ObjectType => 'Ticket',
+            Config     => {
+                DefaultValue => 0,
+            },
+            ValidID => 1,
+            UserID  => $UserID,
+        );
+
+        $Self->True(
+            $DynamicFieldID,
+            "Dynamic field $CheckboxDynamicFieldName - ID $CheckboxDynamicFieldID - created",
+        );
+
         # get ticket object
         my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
 
         # create test tickets
-        my $TestTicketTitle = 'TicketGenericAgent' . $Helper->GetRandomID();
+        my $TestTicketTitle = "Test Ticket $RandomID Generic Agent";
         my @TicketNumbers;
         for ( 1 .. 20 ) {
 
@@ -105,19 +157,29 @@ $Selenium->RunTest(
         $Selenium->execute_script('$(".WidgetSimple.Collapsed .WidgetAction.Toggle a").click();');
 
         # create test job
-        my $RandomID = "GenericAgent" . $Helper->GetRandomID();
-        $Selenium->find_element( "#Profile", 'css' )->send_keys($RandomID);
-        $Selenium->find_element( "#Title",   'css' )->send_keys($TestTicketTitle);
+        my $GenericTicketSearch = "*Ticket $RandomID Generic*";
+        my $GenericAgentJob     = "GenericAgent" . $RandomID;
+        $Selenium->find_element( "#Profile", 'css' )->send_keys($GenericAgentJob);
+        $Selenium->find_element( "#Title",   'css' )->send_keys($GenericTicketSearch);
+
+        # set test dynamic field to date in the past, but do not activate it
+        # validation used to kick in even if checkbox in front wasn't activated
+        # see bug#12210 for more information
+        $Selenium->find_element( "#DynamicField_${DynamicFieldName}Year", 'css' )->send_keys('2015');
+
+        $Selenium->find_element( "#DynamicField_${CheckboxDynamicFieldName}Used1", 'css' )->VerifiedClick();
+
+        # save job
         $Selenium->find_element( "#Profile", 'css' )->VerifiedSubmit();
 
         # check if test job show on AdminGenericAgent
         $Self->True(
-            index( $Selenium->get_page_source(), $RandomID ) > -1,
-            "$RandomID job found on page",
+            index( $Selenium->get_page_source(), $GenericAgentJob ) > -1,
+            "$GenericAgentJob job found on page",
         );
 
         # edit test job to delete test ticket
-        $Selenium->find_element( $RandomID, 'link_text' )->VerifiedClick();
+        $Selenium->find_element( $GenericAgentJob, 'link_text' )->VerifiedClick();
 
         # toggle Execute Ticket Commands widget
         $Selenium->execute_script('$(".WidgetSimple.Collapsed .WidgetAction.Toggle a").click();');
@@ -125,7 +187,26 @@ $Selenium->RunTest(
         $Selenium->find_element( "#Profile", 'css' )->VerifiedSubmit();
 
         # run test job
-        $Selenium->find_element("//a[contains(\@href, \'Subaction=Run;Profile=$RandomID' )]")->VerifiedClick();
+        $Selenium->find_element("//a[contains(\@href, \'Subaction=Run;Profile=$GenericAgentJob' )]")->VerifiedClick();
+
+        # verify there are no tickets found with enabled ExtendedSearchCondition
+        $Self->True(
+            index( $Selenium->get_page_source(), '0 Tickets affected! What do you want to do?' ) > -1,
+            "No tickets found on page with ExtendedSearchCondition enabled",
+        );
+
+        # disable extended condition search for generic agent ticket search
+        $Helper->ConfigSettingChange(
+            Valid => 1,
+            Key   => 'Ticket::GenericAgentTicketSearch###ExtendedSearchCondition',
+            Value => 0,
+        );
+
+        # navigate to AgentGenericAgent screen again
+        $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AdminGenericAgent");
+
+        # run test job
+        $Selenium->find_element("//a[contains(\@href, \'Subaction=Run;Profile=$GenericAgentJob' )]")->VerifiedClick();
 
         # check if test job show expected result
         for my $TicketNumber (@TicketNumbers) {
@@ -150,7 +231,7 @@ $Selenium->RunTest(
         $Selenium->find_element("//a[contains(\@href, \'Subaction=RunNow' )]")->VerifiedClick();
 
         # run test job again
-        $Selenium->find_element("//a[contains(\@href, \'Subaction=Run;Profile=$RandomID' )]")->VerifiedClick();
+        $Selenium->find_element("//a[contains(\@href, \'Subaction=Run;Profile=$GenericAgentJob' )]")->VerifiedClick();
 
         # check if there is no warning message:
         # "Affected more tickets than how many will be executed on run job"
@@ -165,23 +246,41 @@ $Selenium->RunTest(
         $Selenium->find_element("//a[contains(\@href, \'Subaction=RunNow' )]")->VerifiedClick();
 
         # set test job to invalid
-        $Selenium->find_element( $RandomID, 'link_text' )->VerifiedClick();
+        $Selenium->find_element( $GenericAgentJob, 'link_text' )->VerifiedClick();
 
         $Selenium->execute_script("\$('#Valid').val('0').trigger('redraw.InputField').trigger('change');");
+
+        # check if the checkbox from dynamicfield is selected
+        $Self->Is(
+            $Selenium->find_element( "#DynamicField_${CheckboxDynamicFieldName}Used1", 'css' )->is_selected(),
+            1,
+            "$CheckboxDynamicFieldName Used1 is selected",
+        );
+
         $Selenium->find_element( "#Profile", 'css' )->VerifiedSubmit();
 
         # check class of invalid generic job in the overview table
         $Self->True(
             $Selenium->execute_script(
-                "return \$('tr.Invalid td:contains($RandomID)').length"
+                "return \$('tr.Invalid td:contains($GenericAgentJob)').length"
             ),
             "There is a class 'Invalid' for test generic job",
         );
 
         # delete test job
-        $Selenium->find_element("//a[contains(\@href, \'Subaction=Delete;Profile=$RandomID\' )]")->VerifiedClick();
+        $Selenium->find_element("//a[contains(\@href, \'Subaction=Delete;Profile=$GenericAgentJob\' )]")
+            ->VerifiedClick();
 
-    }
+        # delete created test dynamic field
+        my $Success = $DynamicFieldObject->DynamicFieldDelete(
+            ID     => $DynamicFieldID,
+            UserID => $UserID,
+        );
+        $Self->True(
+            $Success,
+            "Dynamic field - ID $DynamicFieldID - deleted",
+        );
+    },
 
 );
 

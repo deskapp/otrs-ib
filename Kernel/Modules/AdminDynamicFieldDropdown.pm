@@ -76,7 +76,7 @@ sub _Add {
     my %GetParam;
     for my $Needed (qw(ObjectType FieldType FieldOrder)) {
         $GetParam{$Needed} = $Kernel::OM->Get('Kernel::System::Web::Request')->GetParam( Param => $Needed );
-        if ( !$Needed ) {
+        if ( !$GetParam{$Needed} ) {
             return $LayoutObject->ErrorScreen(
                 Message => $LayoutObject->{LanguageObject}->Translate( 'Need %s', $Needed ),
             );
@@ -163,7 +163,7 @@ sub _AddAction {
     for my $ConfigParam (
         qw(
         ObjectType ObjectTypeName FieldType FieldTypeName DefaultValue PossibleNone
-        TranslatableValues ValidID Link
+        TranslatableValues ValidID Link LinkPreview
         )
         )
     {
@@ -226,6 +226,7 @@ sub _AddAction {
         PossibleNone       => $GetParam{PossibleNone},
         TranslatableValues => $GetParam{TranslatableValues},
         Link               => $GetParam{Link},
+        LinkPreview        => $GetParam{LinkPreview},
     };
 
     # create a new field
@@ -260,7 +261,7 @@ sub _Change {
     my %GetParam;
     for my $Needed (qw(ObjectType FieldType)) {
         $GetParam{$Needed} = $ParamObject->GetParam( Param => $Needed );
-        if ( !$Needed ) {
+        if ( !$GetParam{$Needed} ) {
             return $LayoutObject->ErrorScreen(
                 Message => $LayoutObject->{LanguageObject}->Translate( 'Need %s', $Needed ),
             );
@@ -319,7 +320,8 @@ sub _Change {
         $Config{TreeView} = $DynamicFieldData->{Config}->{TreeView};
 
         # set Link
-        $Config{Link} = $DynamicFieldData->{Config}->{Link};
+        $Config{Link}        = $DynamicFieldData->{Config}->{Link};
+        $Config{LinkPreview} = $DynamicFieldData->{Config}->{LinkPreview};
     }
 
     return $Self->_ShowScreen(
@@ -437,7 +439,7 @@ sub _ChangeAction {
     for my $ConfigParam (
         qw(
         ObjectType ObjectTypeName FieldType FieldTypeName DefaultValue PossibleNone
-        TranslatableValues ValidID Link
+        TranslatableValues ValidID Link LinkPreview
         )
         )
     {
@@ -499,6 +501,7 @@ sub _ChangeAction {
         PossibleNone       => $GetParam{PossibleNone},
         TranslatableValues => $GetParam{TranslatableValues},
         Link               => $GetParam{Link},
+        LinkPreview        => $GetParam{LinkPreview},
     };
 
     # update dynamic field (FieldType and ObjectType cannot be changed; use old values)
@@ -746,7 +749,8 @@ sub _ShowScreen {
         Class      => 'Modernize W50pc',
     );
 
-    my $Link = $Param{Link} || '';
+    my $Link        = $Param{Link}        || '';
+    my $LinkPreview = $Param{LinkPreview} || '';
 
     my $ReadonlyInternalField = '';
 
@@ -773,6 +777,7 @@ sub _ShowScreen {
             TranslatableValuesStrg => $TranslatableValuesStrg,
             ReadonlyInternalField  => $ReadonlyInternalField,
             Link                   => $Link,
+            LinkPreview            => $LinkPreview,
             }
     );
 

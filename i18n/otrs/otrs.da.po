@@ -2,12 +2,14 @@
 # Translators:
 # Jens Larsen <termi@termi.dk>, 2016
 # Jens Larsen <termi@termi.dk>, 2015-2016
-# Lars Jorgensen <ljorg6@gmail.com>, 2015
+# Lars Jørgensen <ljorg6@gmail.com>, 2015
+# Lars Jørgensen <ljorg6@gmail.com>, 2016
+# Lasse Holst-Gloy <lg@wwi.dk>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: OTRS\n"
-"POT-Creation-Date: 2016-03-30 11:40+0000\n"
-"PO-Revision-Date: 2016-03-30 17:41+0000\n"
+"POT-Creation-Date: 2016-08-03 10:16+0000\n"
+"PO-Revision-Date: 2016-08-03 15:18+0000\n"
 "Last-Translator: Carlos Rodríguez <carlos.rodriguez@otrs.com>\n"
 "Language-Team: Danish (http://www.transifex.com/otrs/OTRS/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -998,7 +1000,7 @@ msgstr "(Klik her for at tilføje)"
 
 #. Template: AAABase
 msgid "Preview"
-msgstr "Vis udskrift"
+msgstr "Forhåndsvisning"
 
 #. Template: AAABase
 msgid "Package not correctly deployed! Please reinstall the package."
@@ -1026,7 +1028,7 @@ msgstr "Nyheder om OTRS-udgivelser."
 
 #. Template: AAABase
 msgid "Go to dashboard!"
-msgstr ""
+msgstr "Gå til dashboard!"
 
 #. Template: AAABase
 msgid "Customer %s added"
@@ -1559,7 +1561,7 @@ msgstr "Der var et problem med at afinstallere %s."
 
 #. Template: AAABase
 msgid "Enable cloud services to unleash all OTRS features!"
-msgstr ""
+msgstr "Aktiver cloud service for at få adgang til alle OTRS muligheder!"
 
 #. Template: AAACalendar
 msgid "New Year's Day"
@@ -1715,7 +1717,7 @@ msgstr "Andre Indstillinger"
 
 #. Template: AAAPreferences
 msgid "Notification Settings"
-msgstr "Notifikations indstillinger"
+msgstr "Meldings-indstillinger"
 
 #. Template: AAAPreferences
 msgid "Change Password"
@@ -2589,29 +2591,29 @@ msgstr "Retning"
 
 #. Template: AAATicket
 msgid "New ticket notification"
-msgstr "Besked om ny sag"
+msgstr "Melding om ny sag"
 
 #. Template: AAATicket
 msgid "Send me a notification if there is a new ticket in \"My Queues\"."
-msgstr "Send mig en besked, hvis der er en ny sag i \"Mine køer\"."
+msgstr "Send mig en melding, hvis der er en ny sag i \"Mine køer\"."
 
 #. Template: AAATicket
 msgid "Send new ticket notifications"
-msgstr "Send besked om nye sager"
+msgstr "Send melding om nye sager"
 
 #. Template: AAATicket
 msgid "Ticket follow up notification"
-msgstr "Besked om opfølgning på sager"
+msgstr "Melding om opfølgning på sager"
 
 #. Template: AAATicket
 msgid ""
 "Send me a notification if a customer sends a follow up and I'm the owner of "
 "the ticket or the ticket is unlocked and is in one of my subscribed queues."
-msgstr "Send mig en besked, hvis en kunde sender en opfølgning, og jeg er denne sags indehaver."
+msgstr "Send mig en melding, hvis en kunde sender en opfølgning, og jeg er denne sags indehaver."
 
 #. Template: AAATicket
 msgid "Send ticket follow up notifications"
-msgstr "Send besked om opfølgning til brugere"
+msgstr "Send melding om opfølgning til brugere"
 
 #. Template: AAATicket
 msgid "Ticket lock timeout notification"
@@ -2619,29 +2621,29 @@ msgstr "Besked om sagsfrigivelse efter tidsfristens udløb"
 
 #. Template: AAATicket
 msgid "Send me a notification if a ticket is unlocked by the system."
-msgstr "Send mig en besked, hvis systemet frigiver en sag."
+msgstr "Send mig en melding, hvis systemet frigiver en sag."
 
 #. Template: AAATicket
 msgid "Send ticket lock timeout notifications"
-msgstr "Send besked om udløb af tidsfrister"
+msgstr "Send meldinger om udløb af tidsfrister"
 
 #. Template: AAATicket
 msgid "Ticket move notification"
-msgstr "Besked om flyttede sager"
+msgstr "Melding om flyttet sag"
 
 #. Template: AAATicket
 msgid "Send me a notification if a ticket is moved into one of \"My Queues\"."
-msgstr "Send mig en besked, hvis en sag flyttes ind i en af \"Mine køer\"."
+msgstr "Send mig en melding, hvis en sag flyttes ind i en af \"Mine køer\"."
 
 #. Template: AAATicket
 msgid "Send ticket move notifications"
-msgstr "Send besked om flyttede sager"
+msgstr "Send meldinger om flyttede sager"
 
 #. Template: AAATicket
 msgid ""
 "Your queue selection of your favourite queues. You also get notified about "
 "those queues via email if enabled."
-msgstr "Dit valg af favirot-køer. Du får også beskeder om hændelser i de køer, hvis det er aktiveret."
+msgstr "Dit valg af favorit-køer. Du får også meldinger om hændelser i de køer, hvis det er aktiveret."
 
 #. Template: AAATicket
 msgid "Custom Queue"
@@ -2707,17 +2709,17 @@ msgstr "Antal sager pr side for Sagsoversigt \"Forhåndsvisning\""
 
 #. Template: AAATicket
 msgid "Ticket watch notification"
-msgstr "Besked om fulgte sager"
+msgstr "Meldinger om fulgte sager"
 
 #. Template: AAATicket
 msgid ""
 "Send me the same notifications for my watched tickets that the ticket owners"
 " will get."
-msgstr "For mine fulgte sager, send mig samme notifikationer som sagernes ejere får."
+msgstr "For mine fulgte sager, send mig samme meldinger som sagernes ejere får."
 
 #. Template: AAATicket
 msgid "Send ticket watch notifications"
-msgstr "Send besked om fulgte sager"
+msgstr "Send meldinger om fulgte sager"
 
 #. Template: AAATicket
 msgid "Out Of Office Time"
@@ -3259,12 +3261,12 @@ msgid "Select"
 msgstr "Vælg"
 
 #. Template: AdminCustomerCompany
-msgid "shown"
-msgstr "vist"
+msgid "List (only %s shown - more available)"
+msgstr ""
 
 #. Template: AdminCustomerCompany
-msgid "total"
-msgstr "total"
+msgid "List (%s total)"
+msgstr ""
 
 #. Template: AdminCustomerCompany
 msgid "Please enter a search term to look for customers."
@@ -3290,11 +3292,11 @@ msgstr "Tilføj kundebruger"
 msgid ""
 "Customer user are needed to have a customer history and to login via "
 "customer panel."
-msgstr "Kundebruger behøves for at få vist kundehistorik og til at logge på i kundepanelet."
+msgstr "Kundebrugere skal oprettes for at få vist kundehistorik og for at kunne logge på i kundepanelet."
 
 #. Template: AdminCustomerUser
 msgid "Last Login"
-msgstr "Sidste login"
+msgstr "Seneste login"
 
 #. Template: AdminCustomerUser
 msgid "Login as"
@@ -3653,6 +3655,17 @@ msgid ""
 msgstr "Her kan du angive et valgfrit HTTP-link for felt-værdien i oversigter og Zoom-skærmbilleder."
 
 #. Template: AdminDynamicFieldDateTime
+msgid "Link for preview"
+msgstr ""
+
+#. Template: AdminDynamicFieldDateTime
+msgid ""
+"If filled in, this URL will be used for a preview which is shown when this "
+"link is hovered in ticket zoom. Please note that for this to work, the "
+"regular URL field above needs to be filled in, too."
+msgstr ""
+
+#. Template: AdminDynamicFieldDateTime
 msgid "Restrict entering of dates"
 msgstr "Begræns dato-indtastninger"
 
@@ -3764,7 +3777,7 @@ msgstr "Tilføj RegEx"
 
 #. Template: AdminEmail
 msgid "Admin Notification"
-msgstr "Besked til admin"
+msgstr "Melding til admin"
 
 #. Template: AdminEmail
 msgid ""
@@ -3880,11 +3893,11 @@ msgstr "For at aktivere automatisk kørsel, vælg mindst en værdi fra minutter,
 
 #. Template: AdminGenericAgent
 msgid "Event based execution (single ticket)"
-msgstr "Hændelses baseret tidsplan (enkelt sag)"
+msgstr "Hændelsesbaseret tidsplan (enkelt sag)"
 
 #. Template: AdminGenericAgent
 msgid "Event Triggers"
-msgstr "Hændelses udløsere"
+msgstr "Hændelsens udløsere"
 
 #. Template: AdminGenericAgent
 msgid "List of all configured events"
@@ -3908,7 +3921,7 @@ msgstr ""
 
 #. Template: AdminGenericAgent
 msgid "Do you really want to delete this event trigger?"
-msgstr "Ønsker du at slette denne hændelses-udløser"
+msgstr "Ønsker du at slette denne hændelses udløser"
 
 #. Template: AdminGenericAgent
 msgid "Add Event Trigger"
@@ -4154,7 +4167,7 @@ msgstr "Tildel ny sagsejer"
 
 #. Template: AdminGenericAgent
 msgid "New customer user"
-msgstr ""
+msgstr "Ny kunde bruger"
 
 #. Template: AdminGenericAgent
 msgid "New customer ID"
@@ -5035,6 +5048,26 @@ msgid "Do you really want to delete this web service?"
 msgstr "Vil du virkelig slette denne web-service?"
 
 #. Template: AdminGenericInterfaceWebservice
+msgid "Example Web Services"
+msgstr ""
+
+#. Template: AdminGenericInterfaceWebservice
+msgid ""
+"Here you can activate best practice example web service that are part of %s."
+" Please note that some additional configuration may be required."
+msgstr ""
+
+#. Template: AdminGenericInterfaceWebservice
+msgid "Import example web service"
+msgstr ""
+
+#. Template: AdminGenericInterfaceWebservice
+msgid ""
+"Do you want to benefit from web services created by experts? Upgrade to %s "
+"to be able to import some sophisticated example web services."
+msgstr ""
+
+#. Template: AdminGenericInterfaceWebservice
 msgid ""
 "After you save the configuration you will be redirected again to the edit "
 "screen."
@@ -5144,7 +5177,7 @@ msgstr "Her kan du se, eksportere eller gendanne ældre versioner af den aktive 
 
 #. Template: AdminGenericInterfaceWebserviceHistory
 msgid "Configuration History List"
-msgstr "Konfigurations historik"
+msgstr "Historik over Konfigurationen"
 
 #. Template: AdminGenericInterfaceWebserviceHistory
 msgid "Version"
@@ -5210,6 +5243,10 @@ msgstr "Opret grupper for at give adgang til forskellige grupper af agenter (f.e
 #. Template: AdminGroup
 msgid "It's useful for ASP solutions. "
 msgstr "Det er nyttigt for ASP-løsninger."
+
+#. Template: AdminGroup
+msgid "total"
+msgstr "i alt"
 
 #. Template: AdminGroup
 msgid "Add Group"
@@ -5320,15 +5357,15 @@ msgstr "Online Admin Manual"
 
 #. Template: AdminNotificationEvent
 msgid "Ticket Notification Management"
-msgstr "Håndter sags notifikationer"
+msgstr "Håndter sagsmeldinger"
 
 #. Template: AdminNotificationEvent
 msgid "Add notification"
-msgstr "Tilføj besked"
+msgstr "Tilføj melding"
 
 #. Template: AdminNotificationEvent
 msgid "Export Notifications"
-msgstr "Eksporter notifikationer"
+msgstr "Eksporter meldinger"
 
 #. Template: AdminNotificationEvent
 msgid "Configuration Import"
@@ -5339,35 +5376,35 @@ msgid ""
 "Here you can upload a configuration file to import Ticket Notifications to "
 "your system. The file needs to be in .yml format as exported by the Ticket "
 "Notification module."
-msgstr "Her kan du indlæse en konfigurationsfil for at importere sags-notifikationer til dit system. Filen skal være eksporteret i .yml format af sags-notifikations modulet."
+msgstr "Her kan du indlæse en konfigurationsfil for at importere sagsmeldinger til dit system. Filen skal være eksporteret i .yml format af sagsmeldings-modulet."
 
 #. Template: AdminNotificationEvent
 msgid "Overwrite existing notifications?"
-msgstr "Overskriv eksisterende notifikationer?"
+msgstr "Overskriv eksisterende meldinger?"
 
 #. Template: AdminNotificationEvent
 msgid "Upload Notification configuration"
-msgstr "Upload notifikations konfiguration"
+msgstr "Upload meldings-konfiguration"
 
 #. Template: AdminNotificationEvent
 msgid "Import Notification configuration"
-msgstr "Importer notifikations konfiguration"
+msgstr "Importer meldings-konfiguration"
 
 #. Template: AdminNotificationEvent
 msgid "Delete this notification"
-msgstr "Slet denne besked"
+msgstr "Slet denne melding"
 
 #. Template: AdminNotificationEvent
 msgid "Do you really want to delete this notification?"
-msgstr "Ønsker du at slette denne notifikation?"
+msgstr "Ønsker du at slette denne melding?"
 
 #. Template: AdminNotificationEvent
 msgid "Add Notification"
-msgstr "Tilføj besked"
+msgstr "Tilføj melding"
 
 #. Template: AdminNotificationEvent
 msgid "Edit Notification"
-msgstr "Rediger besked"
+msgstr "Rediger melding"
 
 #. Template: AdminNotificationEvent
 msgid "Show in agent preferences"
@@ -5427,7 +5464,7 @@ msgstr "Match brødtekst"
 
 #. Template: AdminNotificationEvent
 msgid "Include attachments to notification"
-msgstr "Inkluder vedhæftninger til beskeden"
+msgstr "Inkluder vedhæftninger til melding"
 
 #. Template: AdminNotificationEvent
 msgid "Recipients"
@@ -5469,7 +5506,7 @@ msgstr ""
 
 #. Template: AdminNotificationEvent
 msgid "Notification Methods"
-msgstr "Notifikations metoder"
+msgstr "Meldingafgivelsesmetoder"
 
 #. Template: AdminNotificationEvent
 msgid ""
@@ -5479,7 +5516,7 @@ msgstr ""
 
 #. Template: AdminNotificationEvent
 msgid "Enable this notification method"
-msgstr "Aktiver denne notifikations metode"
+msgstr "Aktiver denne meldingafgivelsesmetode"
 
 #. Template: AdminNotificationEvent
 msgid "Transport"
@@ -5487,7 +5524,7 @@ msgstr ""
 
 #. Template: AdminNotificationEvent
 msgid "At least one method is needed per notification."
-msgstr "Mindst en metode er krævet pr. notifikation"
+msgstr "Mindst en metode er krævet pr. melding"
 
 #. Template: AdminNotificationEvent
 msgid "Active by default in agent preferences"
@@ -5510,21 +5547,21 @@ msgstr "Ingen data fundet"
 
 #. Template: AdminNotificationEvent
 msgid "No notification method found."
-msgstr "Ingen notifikations metode fundet."
+msgstr "Ingen meldingafgivelsesmetode fundet."
 
 #. Template: AdminNotificationEvent
 msgid "Notification Text"
-msgstr "Notifikations tekst"
+msgstr "Meldingstekst"
 
 #. Template: AdminNotificationEvent
 msgid ""
 "This language is not present or enabled on the system. This notification "
 "text could be deleted if it is not needed anymore."
-msgstr "Dette sprog er deaktiveret eller ikke tilstede på dette system.  Denne notifikations-tekst  kan slettes hvis den ikke skal bruges mere."
+msgstr "Dette sprog er deaktiveret eller ikke tilstede på dette system.  Denne meldings-tekst  kan slettes hvis den ikke skal bruges mere."
 
 #. Template: AdminNotificationEvent
 msgid "Remove Notification Language"
-msgstr "Fjern notifikationssprog"
+msgstr "Fjern meldingsssprog"
 
 #. Template: AdminNotificationEvent
 msgid "Message body"
@@ -5532,11 +5569,11 @@ msgstr ""
 
 #. Template: AdminNotificationEvent
 msgid "Add new notification language"
-msgstr "Tilføj notifikationssprog"
+msgstr "Tilføj meldingssprog"
 
 #. Template: AdminNotificationEvent
 msgid "Do you really want to delete this notification language?"
-msgstr "Er du sikker på at du vil slette dette notifikationsssprog"
+msgstr "Er du sikker på at du vil slette dette meldingssprog"
 
 #. Template: AdminNotificationEvent
 msgid "Tag Reference"
@@ -5544,7 +5581,7 @@ msgstr ""
 
 #. Template: AdminNotificationEvent
 msgid "Notifications are sent to an agent or a customer."
-msgstr "Beskeder sendes til en agent eller kunde."
+msgstr "Meldinger sendes til en agent eller kunde."
 
 #. Template: AdminNotificationEvent
 msgid ""
@@ -5553,7 +5590,7 @@ msgstr "For at få de første 20 tegn af emnet (af den seneste agent-indlæg)."
 
 #. Template: AdminNotificationEvent
 msgid "To get the first 5 lines of the body (of the latest agent article)."
-msgstr "For at få de første 5 linier af beskeden (af den seneste agent-indlæg)."
+msgstr "For at få de første 5 linier af indholdet (af den seneste agent-indlæg)."
 
 #. Template: AdminNotificationEvent
 msgid ""
@@ -5563,7 +5600,7 @@ msgstr "For at få de første 20 tegn af emnet (af det seneste kunde-indlæg)."
 
 #. Template: AdminNotificationEvent
 msgid "To get the first 5 lines of the body (of the latest customer article)."
-msgstr "For at få de første 5 linier af beskeden (af den seneste agent-indlæg)."
+msgstr "For at få de første 5 linier af indholdet (af det seneste agent-indlæg)."
 
 #. Template: AdminNotificationEvent
 msgid "Attributes of the current customer user data"
@@ -5601,7 +5638,7 @@ msgstr ""
 
 #. Template: AdminNotificationEvent
 msgid "Example notification"
-msgstr "Eksempel notifikation"
+msgstr "Eksempel på melding"
 
 #. Template: AdminNotificationEventTransportEmailSettings
 msgid "Additional recipient email addresses"
@@ -5609,7 +5646,7 @@ msgstr "Yderligere modtageres email adresser"
 
 #. Template: AdminNotificationEventTransportEmailSettings
 msgid "Notification article type"
-msgstr "Beskedens indlægstype"
+msgstr "Meldingens indlægstype"
 
 #. Template: AdminNotificationEventTransportEmailSettings
 msgid ""
@@ -7543,6 +7580,10 @@ msgid "Relate this certificate"
 msgstr "Relater dette certifikat"
 
 #. Template: AdminSMIMECertRead
+msgid "Close dialog"
+msgstr ""
+
+#. Template: AdminSMIMECertRead
 msgid "Certificate details"
 msgstr "Certifikat-detaljer"
 
@@ -7625,7 +7666,7 @@ msgstr "Kør forespørgsel"
 
 #. Template: AdminSelectBox
 msgid "Query is executed."
-msgstr ""
+msgstr "Forespørgslen er udført"
 
 #. Template: AdminService
 msgid "Service Management"
@@ -7772,7 +7813,7 @@ msgstr "Det var ikke muligt at sende Support Data."
 
 #. Template: AdminSupportDataCollector
 msgid "Update Result"
-msgstr ""
+msgstr "Opdater resultat"
 
 #. Template: AdminSupportDataCollector
 msgid "Currently this data is only shown in this system."
@@ -7799,7 +7840,7 @@ msgstr "Det var ikke muligt at generere Support Pakken."
 
 #. Template: AdminSupportDataCollector
 msgid "Generate Result"
-msgstr ""
+msgstr "Generer resultat"
 
 #. Template: AdminSupportDataCollector
 msgid "Support Bundle"
@@ -7905,7 +7946,7 @@ msgstr "Elementer"
 
 #. Template: AdminSysConfigEdit
 msgid "Edit Config Settings in %s → %s"
-msgstr ""
+msgstr "Rediger indstillinger for %s → %s"
 
 #. Template: AdminSysConfigEdit
 msgid "This setting is read only."
@@ -8010,6 +8051,10 @@ msgstr "AdgangsNøgle"
 #. Template: AdminSysConfigEdit
 msgid "Add NavBar entry"
 msgstr "Tilføj punkt til NavBar"
+
+#. Template: AdminSysConfigEdit
+msgid "NavBar module"
+msgstr ""
 
 #. Template: AdminSysConfigEdit
 msgid "Year"
@@ -8257,7 +8302,7 @@ msgstr "Angiv en søgestreng for at lede efter agenter."
 
 #. Template: AdminUser
 msgid "Last login"
-msgstr "Sidste Login"
+msgstr "Seneste Login"
 
 #. Template: AdminUser
 msgid "Switch to agent"
@@ -8273,7 +8318,7 @@ msgstr "Rediger agent"
 
 #. Template: AdminUser
 msgid "Title or salutation"
-msgstr ""
+msgstr "Titel eller titulering"
 
 #. Template: AdminUser
 msgid "Firstname"
@@ -8400,6 +8445,10 @@ msgid "in"
 msgstr "om"
 
 #. Template: AgentDashboardCommon
+msgid "Close this widget"
+msgstr "Luk widget"
+
+#. Template: AgentDashboardCommon
 msgid "Available Columns"
 msgstr "Tilgængelige kolonner"
 
@@ -8475,7 +8524,7 @@ msgstr "Offentliggjort %s siden."
 msgid ""
 "The configuration for this statistic widget contains errors, please review "
 "your settings."
-msgstr ""
+msgstr "Konfigurationen for denne rapport-widget har fejl. Tjek venligst dine indstillinger."
 
 #. Template: AgentDashboardStats
 msgid "Download as SVG file"
@@ -8528,7 +8577,7 @@ msgstr "Indholdet af rapporten forberedes, vær tålmodig."
 msgid ""
 "This statistic can currently not be used because its configuration needs to "
 "be corrected by the statistics administrator."
-msgstr ""
+msgstr "Rapporten kan ikke bruges i øjeblikket, da den afventer at konfigurationen bliver korrigeret af rapport-administratoren."
 
 #. Template: AgentDashboardTicketGeneric
 msgid "My locked tickets"
@@ -8603,12 +8652,8 @@ msgid "Select Target Object"
 msgstr "Vælg destinations-objekt"
 
 #. Template: AgentLinkObject
-msgid "Link Object"
-msgstr "Kæd"
-
-#. Template: AgentLinkObject
-msgid "with"
-msgstr "med"
+msgid "Link object %s with"
+msgstr ""
 
 #. Template: AgentLinkObject
 msgid "Unlink Object: %s"
@@ -8640,11 +8685,11 @@ msgstr "Anvend disse ændringer"
 
 #. Template: AgentStatisticsAdd
 msgid "Statistics » Add"
-msgstr "Statistikker » Tilføj"
+msgstr "Rapporter » Tilføj"
 
 #. Template: AgentStatisticsAdd
 msgid "Add New Statistic"
-msgstr "Tilføj ny statistik"
+msgstr "Tilføj ny rapport"
 
 #. Template: AgentStatisticsAdd
 msgid "Dynamic Matrix"
@@ -8674,19 +8719,19 @@ msgstr "Statisk"
 msgid ""
 "Complex statistics that cannot be configured and may return non-tabular "
 "data."
-msgstr ""
+msgstr "Komplekse rapporter, der ikke kan konfigureres i web-interfacet."
 
 #. Template: AgentStatisticsAdd
 msgid "General Specification"
-msgstr ""
+msgstr "Generel Specifikation"
 
 #. Template: AgentStatisticsAdd
 msgid "Create Statistic"
-msgstr "Opret Statistik"
+msgstr "Opret Rapport"
 
 #. Template: AgentStatisticsEdit
 msgid "Statistics » Edit %s%s — %s"
-msgstr "Statistikker » Rediger %s%s — %s"
+msgstr "Rapporter » Rediger %s%s — %s"
 
 #. Template: AgentStatisticsEdit
 msgid "Run now"
@@ -8694,23 +8739,23 @@ msgstr "Kør nu"
 
 #. Template: AgentStatisticsEdit
 msgid "Statistics Preview"
-msgstr "Statistik forhåndsvisning"
+msgstr "Forhåndsvisning af Rapport"
 
 #. Template: AgentStatisticsEdit
 msgid "Save statistic"
-msgstr "Gem statistik"
+msgstr "Gem rapport"
 
 #. Template: AgentStatisticsImport
 msgid "Statistics » Import"
-msgstr "Statistik » Import"
+msgstr "Rapport » Import"
 
 #. Template: AgentStatisticsImport
 msgid "Import Statistic Configuration"
-msgstr "Importer statistik konfiguration"
+msgstr "Importer Rapport-konfiguration"
 
 #. Template: AgentStatisticsOverview
 msgid "Statistics » Overview"
-msgstr "Statistikker » Oversigt"
+msgstr "Rapporter » Oversigt"
 
 #. Template: AgentStatisticsOverview
 msgid "Statistics"
@@ -8722,35 +8767,35 @@ msgstr "Kør"
 
 #. Template: AgentStatisticsOverview
 msgid "Edit statistic \"%s\"."
-msgstr "Rediger statistik \"%s\"."
+msgstr "Rediger rapport \"%s\"."
 
 #. Template: AgentStatisticsOverview
 msgid "Export statistic \"%s\""
-msgstr "Eksporter statistik \"%s\""
+msgstr "Eksporter rapport \"%s\""
 
 #. Template: AgentStatisticsOverview
 msgid "Export statistic %s"
-msgstr "Eksporter statistik %s"
+msgstr "Eksporter rapport %s"
 
 #. Template: AgentStatisticsOverview
 msgid "Delete statistic \"%s\""
-msgstr "Slet statistik \"%s\""
+msgstr "Slet rapport \"%s\""
 
 #. Template: AgentStatisticsOverview
 msgid "Delete statistic %s"
-msgstr "Slet statistik %s"
+msgstr "Slet rapport %s"
 
 #. Template: AgentStatisticsOverview
 msgid "Do you really want to delete this statistic?"
-msgstr "Vil du virkelig slette denne statistik?"
+msgstr "Vil du virkelig slette denne rapport?"
 
 #. Template: AgentStatisticsView
 msgid "Statistics » View %s%s — %s"
-msgstr "Statistikker » Vis %s%s — %s"
+msgstr "Rapporter » Vis %s%s — %s"
 
 #. Template: AgentStatisticsView
 msgid "Statistic Information"
-msgstr "Statistik Information"
+msgstr "Rapport-information"
 
 #. Template: AgentStatisticsView
 msgid "Sum rows"
@@ -8771,35 +8816,35 @@ msgstr "Cache"
 #. Template: AgentStatisticsView
 msgid ""
 "This statistic contains configuration errors and can currently not be used."
-msgstr "Denne statistik er fejl konfigureret og kan ikke benyttes i øjeblikket."
+msgstr "Denne rapport er fejlkonfigureret og kan ikke benyttes i øjeblikket."
 
 #. Template: AgentTicketActionCommon
-msgid "Change Free Text of %s%s"
+msgid "Change Free Text of %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketActionCommon
-msgid "Change Owner of %s%s"
-msgstr "Skift ejer af %s%s"
+msgid "Change Owner of %s%s%s"
+msgstr ""
 
 #. Template: AgentTicketActionCommon
-msgid "Close %s%s"
-msgstr "Luk %s%s"
+msgid "Close %s%s%s"
+msgstr ""
 
 #. Template: AgentTicketActionCommon
-msgid "Add Note to %s%s"
-msgstr "Tilføj note til %s%s"
+msgid "Add Note to %s%s%s"
+msgstr ""
 
 #. Template: AgentTicketActionCommon
-msgid "Set Pending Time for %s%s"
-msgstr "Sæt afventer tidspunkt på %s%s"
+msgid "Set Pending Time for %s%s%s"
+msgstr ""
 
 #. Template: AgentTicketActionCommon
-msgid "Change Priority of %s%s"
-msgstr "Skift prioritet på %s%s"
+msgid "Change Priority of %s%s%s"
+msgstr ""
 
 #. Template: AgentTicketActionCommon
-msgid "Change Responsible of %s%s"
-msgstr "Skift ansvarlig for %s%s"
+msgid "Change Responsible of %s%s%s"
+msgstr ""
 
 #. Template: AgentTicketActionCommon
 msgid "All fields marked with an asterisk (*) are mandatory."
@@ -8849,11 +8894,11 @@ msgstr "Informer involverede agenter"
 msgid ""
 "Here you can select additional agents which should receive a notification "
 "regarding the new article."
-msgstr "Her kan du vælge yderligere agenter der skal have besked om den nye artikel."
+msgstr "Her kan du vælge yderligere agenter der skal have melding om den nye artikel."
 
 #. Template: AgentTicketActionCommon
-msgid "Text will also be received by:"
-msgstr "Teksten vil også modtages af:"
+msgid "Text will also be received by"
+msgstr ""
 
 #. Template: AgentTicketActionCommon
 msgid "Spell check"
@@ -8872,8 +8917,8 @@ msgid "Note type"
 msgstr "Bemærkningstype"
 
 #. Template: AgentTicketBounce
-msgid "Bounce %s%s"
-msgstr "Overgiv %s%s"
+msgid "Bounce %s%s%s"
+msgstr ""
 
 #. Template: AgentTicketBounce
 msgid "Bounce to"
@@ -8933,11 +8978,11 @@ msgstr "Frigiv sager"
 
 #. Template: AgentTicketBulk
 msgid "Execute Bulk Action"
-msgstr ""
+msgstr "Udfør massehandling"
 
 #. Template: AgentTicketCompose
-msgid "Compose Answer for %s%s"
-msgstr "Skriv svar til %s%s"
+msgid "Compose Answer for %s%s%s"
+msgstr ""
 
 #. Template: AgentTicketCompose
 msgid "This address is registered as system address and cannot be used: %s"
@@ -8972,8 +9017,8 @@ msgid "Date Invalid!"
 msgstr "Ugyldig dato!"
 
 #. Template: AgentTicketCustomer
-msgid "Change Customer of %s%s"
-msgstr "Skift ejer af %s%s"
+msgid "Change Customer of %s%s%s"
+msgstr ""
 
 #. Template: AgentTicketEmail
 msgid "Create New Email Ticket"
@@ -9008,15 +9053,19 @@ msgid "Get all"
 msgstr "Hent alle"
 
 #. Template: AgentTicketEmailOutbound
-msgid "Outbound Email for %s%s"
-msgstr "Udgående email til %s%s"
-
-#. Template: AgentTicketEscalation
-msgid "Ticket %s: first response time is over (%s/%s)!"
+msgid "Outbound Email for %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketEscalation
+msgid "Ticket %s: first response time is over (%s/%s)!"
+msgstr "Sag %s: Tid til første svar er overskredet (%s/%s)!"
+
+#. Template: AgentTicketEscalation
 msgid "Ticket %s: first response time will be over in %s/%s!"
+msgstr "Sag %s: Tid til første svar overskrides om %s/%s!"
+
+#. Template: AgentTicketEscalation
+msgid "Ticket %s: update time is over (%s/%s)!"
 msgstr ""
 
 #. Template: AgentTicketEscalation
@@ -9025,31 +9074,31 @@ msgstr ""
 
 #. Template: AgentTicketEscalation
 msgid "Ticket %s: solution time is over (%s/%s)!"
-msgstr ""
+msgstr "Sag %s: Tid til løsning er overskredet (%s/%s)!"
 
 #. Template: AgentTicketEscalation
 msgid "Ticket %s: solution time will be over in %s/%s!"
-msgstr ""
+msgstr "Sag %s: Tid til løsning overskrides om %s/%s!"
 
 #. Template: AgentTicketForward
-msgid "Forward %s%s"
-msgstr "Frem %s%s"
+msgid "Forward %s%s%s"
+msgstr ""
 
 #. Template: AgentTicketHistory
-msgid "History of %s%s"
-msgstr "Historik for %s%s"
+msgid "History of %s%s%s"
+msgstr ""
 
 #. Template: AgentTicketHistory
 msgid "History Content"
-msgstr "Historikindhold"
+msgstr "Historik"
 
 #. Template: AgentTicketHistory
 msgid "Zoom view"
 msgstr "Zoom-visning"
 
 #. Template: AgentTicketMerge
-msgid "Merge %s%s"
-msgstr "Saml %s%s"
+msgid "Merge %s%s%s"
+msgstr ""
 
 #. Template: AgentTicketMerge
 msgid "Merge Settings"
@@ -9068,8 +9117,8 @@ msgid "Need a valid email address."
 msgstr "Angiv en gyldig mail-adresse"
 
 #. Template: AgentTicketMove
-msgid "Move %s%s"
-msgstr "Flyt %s%s"
+msgid "Move %s%s%s"
+msgstr ""
 
 #. Template: AgentTicketMove
 msgid "New Queue"
@@ -9160,11 +9209,11 @@ msgid "The chat will be appended as a separate article."
 msgstr "Chatten vil blive tilføjet som et separat indlæg."
 
 #. Template: AgentTicketPhoneCommon
-msgid "Phone Call for %s%s"
-msgstr "Telefonopkald til %s%s"
+msgid "Phone Call for %s%s%s"
+msgstr ""
 
 #. Template: AgentTicketPlain
-msgid "View Email Plain Text for %s%s"
+msgid "View Email Plain Text for %s%s%s"
 msgstr ""
 
 #. Template: AgentTicketPlain
@@ -9243,7 +9292,7 @@ msgstr "Kundebrugers login"
 
 #. Template: AgentTicketSearch
 msgid "Attachment Name"
-msgstr ""
+msgstr "Vedhæftningsnavn"
 
 #. Template: AgentTicketSearch
 msgid "(e. g. m*file or myfi*)"
@@ -9335,7 +9384,7 @@ msgstr "Gem disse filterinstillinger som standard"
 
 #. Template: AgentTicketZoom
 msgid "Event Type Filter"
-msgstr "Hændelsestype filter"
+msgstr "Hændelsestype-filter"
 
 #. Template: AgentTicketZoom
 msgid "Event Type"
@@ -9487,6 +9536,24 @@ msgstr "Luk denne besked"
 msgid "Article could not be opened! Perhaps it is on another article page?"
 msgstr "Et indlæg kunne ikke åbnes! Måske er det på en anden indlægs side?"
 
+#. Template: AgentTicketZoom
+msgid "Scale preview content"
+msgstr ""
+
+#. Template: AgentTicketZoom
+msgid "Open URL in new tab"
+msgstr ""
+
+#. Template: AgentTicketZoom
+msgid "Close preview"
+msgstr "Luk forhåndsvisning"
+
+#. Template: AgentTicketZoom
+msgid ""
+"A preview of this website can't be provided because it didn't allow to be "
+"embedded."
+msgstr ""
+
 #. Template: AttachmentBlocker
 msgid "To protect your privacy, remote content was blocked."
 msgstr "For at beskytte dit privatliv blev fjernindhold blokeret."
@@ -9510,6 +9577,14 @@ msgstr "Du kan"
 #. Template: CloudServicesDisabled
 msgid "go back to the previous page"
 msgstr "gå tilbage til den forrige side"
+
+#. Template: CustomerError
+msgid "An Error Occurred"
+msgstr ""
+
+#. Template: CustomerError
+msgid "Error Details"
+msgstr "Fejldetaljer"
 
 #. Template: CustomerError
 msgid "Traceback"
@@ -9712,6 +9787,10 @@ msgstr "Logaf %s %s"
 msgid "Split Quote"
 msgstr ""
 
+#. Template: CustomerRichTextEditor
+msgid "Open link"
+msgstr "Åbn link"
+
 #. Template: CustomerTicketMessage
 msgid "Service level agreement"
 msgstr "Service level agreement"
@@ -9770,15 +9849,15 @@ msgstr "Ingen tidsindstillinger"
 
 #. Template: CustomerTicketSearch
 msgid "Specific date"
-msgstr ""
+msgstr "Specifik dato"
 
 #. Template: CustomerTicketSearch
 msgid "Only tickets created"
-msgstr "Kun sager oprettet"
+msgstr "Kun oprettede sager"
 
 #. Template: CustomerTicketSearch
 msgid "Date range"
-msgstr ""
+msgstr "Datointerval"
 
 #. Template: CustomerTicketSearch
 msgid "Only tickets created between"
@@ -9941,12 +10020,24 @@ msgid "An error occurred."
 msgstr "Der er sket en fejl."
 
 #. Template: Error
-msgid "Send a bugreport"
-msgstr "Sende en fejlrapport"
+msgid ""
+"Really a bug? 5 out of 10 bug reports result from a wrong or incomplete "
+"installation of OTRS."
+msgstr ""
 
 #. Template: Error
-msgid "Error Details"
-msgstr "Fejldetaljer"
+msgid ""
+"With %s, our experts take care of correct installation and cover your back "
+"with support and periodic security updates."
+msgstr ""
+
+#. Template: Error
+msgid "Contact our service team now."
+msgstr "Kontakt vores service-team nu."
+
+#. Template: Error
+msgid "Send a bugreport"
+msgstr "Sende en fejlrapport"
 
 #. Template: FooterJS
 msgid "Please enter at least one search value or * to find anything."
@@ -10049,7 +10140,7 @@ msgstr "Færdig"
 
 #. Template: Installer
 msgid "Welcome to %s"
-msgstr ""
+msgstr "Velkommen til %s"
 
 #. Template: Installer
 msgid "Web site"
@@ -10354,14 +10445,14 @@ msgstr "Tilbage til login"
 
 #. Template: MobileNotAvailableWidget
 msgid "Feature not available"
-msgstr ""
+msgstr "Denne funktion er ikke tilgængelig"
 
 #. Template: MobileNotAvailableWidget
 msgid ""
 "Sorry, but this feature of OTRS is currently not available for mobile "
 "devices. If you'd like to use it, you can either switch to desktop mode or "
 "use your regular desktop device."
-msgstr ""
+msgstr "Beklager, men denne funktion i OTRS er ikke tilgængelig for mobile enheder. Hvis du gerne vil bruge den, kan du enten skifte til desktop-visning eller bruge din almindelige desktop-pc."
 
 #. Template: Motd
 msgid "Message of the Day"
@@ -10413,7 +10504,7 @@ msgstr "Dette billede kan ikke vises!"
 
 #. Template: PreferencesNotificationEvent
 msgid "Notification"
-msgstr "Besked"
+msgstr "Melding"
 
 #. Template: PreferencesNotificationEvent
 msgid "No user configurable notifications found."
@@ -10482,37 +10573,37 @@ msgstr "Du kan vælge en eller flere grupper for at give adgang for forskellige 
 
 #. Template: GeneralSpecificationsWidget
 msgid "Result formats"
-msgstr ""
+msgstr "Formater resultat som"
 
 #. Template: GeneralSpecificationsWidget
 msgid "The selected time periods in the statistic are time zone neutral."
-msgstr ""
+msgstr "De valgte tidsperioder i rapportern tager ikke højde for tidszoner."
 
 #. Template: GeneralSpecificationsWidget
 msgid "Create summation row"
-msgstr ""
+msgstr "Summer rækker"
 
 #. Template: GeneralSpecificationsWidget
-msgid "Generate an additional row containing sums for all data columns."
+msgid "Generate an additional row containing sums for all data rows."
 msgstr ""
 
 #. Template: GeneralSpecificationsWidget
 msgid "Create summation column"
-msgstr ""
+msgstr "Summer kolonner"
 
 #. Template: GeneralSpecificationsWidget
-msgid "Generate an additional column containing sums for all data rows."
+msgid "Generate an additional column containing sums for all data columns."
 msgstr ""
 
 #. Template: GeneralSpecificationsWidget
 msgid "Cache results"
-msgstr ""
+msgstr "Gem resultater i cache"
 
 #. Template: GeneralSpecificationsWidget
 msgid ""
 "Stores statistics result data in a cache to be used in subsequent views with"
 " the same configuration."
-msgstr ""
+msgstr "Gem rapportens resultat i en cache, der kan bruges til fremtidige visninger med samme parametre."
 
 #. Template: GeneralSpecificationsWidget
 msgid ""
@@ -10524,7 +10615,7 @@ msgstr "Tilbyd rapporten som en widget, agenter kan aktivere på deres dashboard
 msgid ""
 "Please note that enabling the dashboard widget will activate caching for "
 "this statistic in the dashboard."
-msgstr ""
+msgstr "Bemærk, at ved at aktivere dashboard-widget, vil caching også blive aktiveret."
 
 #. Template: GeneralSpecificationsWidget
 msgid "If set to invalid end users can not generate the stat."
@@ -10532,25 +10623,25 @@ msgstr "Hvis sat til ugyldig, kan brugere ikke køre rapporten."
 
 #. Template: PreviewWidget
 msgid "There are problems in the configuration of this statistic:"
-msgstr ""
+msgstr "Der er problemer i konfigurationen af denne rapport:"
 
 #. Template: PreviewWidget
 msgid "You may now configure the X-axis of your statistic."
-msgstr ""
+msgstr "Du kan nu konfigurere X-aksen i din rapport."
 
 #. Template: PreviewWidget
 msgid "This statistic does not provide preview data."
-msgstr ""
+msgstr "Denne rapport har ikke mulighed for forhåndsvisning."
 
 #. Template: PreviewWidget
 msgid "Preview format:"
-msgstr ""
+msgstr "Format for forhåndsvisning:"
 
 #. Template: PreviewWidget
 msgid ""
 "Please note that the preview uses random data and does not consider data "
 "filters."
-msgstr ""
+msgstr "Bemærk at forhåndsvisningen bruger tilfældigt data og ikke tager filtre i betragtning."
 
 #. Template: PreviewWidget
 msgid "Configure X-Axis"
@@ -10594,7 +10685,7 @@ msgstr ""
 
 #. Template: RestrictionsWidget
 msgid "Do not allow changes to this element when the statistic is generated."
-msgstr ""
+msgstr "Tillad ikke ændringer i dette element, når rapporten genereres."
 
 #. Template: StatsParamsWidget
 msgid "Format"
@@ -10616,6 +10707,14 @@ msgstr "Intet element er valgt"
 msgid "Scale"
 msgstr "Skala"
 
+#. Template: StatsParamsWidget
+msgid "show more"
+msgstr ""
+
+#. Template: StatsParamsWidget
+msgid "show less"
+msgstr ""
+
 #. Template: D3
 msgid "Download SVG"
 msgstr "Hent SVG"
@@ -10628,7 +10727,7 @@ msgstr "Hent PNG"
 msgid ""
 "The selected time period defines the default time frame for this statistic "
 "to collect data from."
-msgstr ""
+msgstr "Den valgte tidsperiode definerer tidsrammen, som denne rapport samler data i."
 
 #. Template: XAxisWidget
 msgid ""
@@ -10722,6 +10821,30 @@ msgstr ""
 msgid "There was an error getting data for ACL with ID %s"
 msgstr ""
 
+#. Perl Module: Kernel/Modules/AdminACL.pm
+msgid "Exact match"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminACL.pm
+msgid "Negated exact match"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminACL.pm
+msgid "Regular expression"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminACL.pm
+msgid "Regular expression (ignore case)"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminACL.pm
+msgid "Negated regular expression"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminACL.pm
+msgid "Negated regular expression (ignore case)"
+msgstr ""
+
 #. Perl Module: Kernel/Modules/AdminCustomerCompany.pm
 msgid "Customer Company %s already exists!"
 msgstr ""
@@ -10796,12 +10919,40 @@ msgstr ""
 msgid "Currently"
 msgstr ""
 
+#. Perl Module: Kernel/Modules/AdminDynamicFieldCheckbox.pm
+msgid "Unchecked"
+msgstr "Fravalgt"
+
+#. Perl Module: Kernel/Modules/AdminDynamicFieldCheckbox.pm
+msgid "Checked"
+msgstr "Valgt"
+
+#. Perl Module: Kernel/Modules/AdminDynamicFieldDateTime.pm
+msgid "Prevent entry of dates in the future"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminDynamicFieldDateTime.pm
+msgid "Prevent entry of dates in the past"
+msgstr ""
+
 #. Perl Module: Kernel/Modules/AdminDynamicFieldDropdown.pm
 msgid "This field value is duplicated."
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminEmail.pm
 msgid "Select at least one recipient."
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericAgent.pm
+msgid "archive tickets"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericAgent.pm
+msgid "restore tickets from archive"
+msgstr "gendan sager fra arkivet"
+
+#. Perl Module: Kernel/Modules/AdminGenericAgent.pm
+msgid "Need Profile!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminGenericAgent.pm
@@ -10854,6 +11005,30 @@ msgstr ""
 msgid "Could not update configuration data for WebserviceID %s"
 msgstr ""
 
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceMappingSimple.pm
+msgid "Keep (leave unchanged)"
+msgstr "Behold (ignorer ændringer)"
+
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceMappingSimple.pm
+msgid "Ignore (drop key/value pair)"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceMappingSimple.pm
+msgid "Map to (use provided value as default)"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceMappingSimple.pm
+msgid "Exact value(s)"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceMappingSimple.pm
+msgid "Ignore (drop Value/value pair)"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceMappingXSLT.pm
+msgid "Could not find required library %s"
+msgstr ""
+
 #. Perl Module: Kernel/Modules/AdminGenericInterfaceOperationDefault.pm
 msgid "Need OperationType"
 msgstr ""
@@ -10903,6 +11078,14 @@ msgid "Need Name!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminGenericInterfaceWebservice.pm
+msgid "Need ExampleWebService!"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceWebservice.pm
+msgid "Could not read %s!"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceWebservice.pm
 msgid "Need a file to import!"
 msgstr ""
 
@@ -10920,31 +11103,35 @@ msgstr "Web tjeneste \"%s\" er slettet!"
 msgid "Got no WebserviceHistoryID!"
 msgstr ""
 
+#. Perl Module: Kernel/Modules/AdminGenericInterfaceWebserviceHistory.pm
+msgid "Could not get history data for WebserviceHistoryID %s"
+msgstr ""
+
 #. Perl Module: Kernel/Modules/AdminNotificationEvent.pm
 msgid "Notification updated!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminNotificationEvent.pm
 msgid "Notification added!"
-msgstr ""
+msgstr "Melding tilføjet."
 
 #. Perl Module: Kernel/Modules/AdminNotificationEvent.pm
 msgid "There was an error getting data for Notification with ID:%s!"
-msgstr ""
+msgstr "Der var en fejl med at hente data for meldingen med ID:%s."
 
 #. Perl Module: Kernel/Modules/AdminNotificationEvent.pm
 msgid "Unknown Notification %s!"
-msgstr ""
+msgstr "Ukendt melding %s."
 
 #. Perl Module: Kernel/Modules/AdminNotificationEvent.pm
 msgid "There was an error creating the Notification"
-msgstr ""
+msgstr "Der var en fejl i oprettelse af meldingen"
 
 #. Perl Module: Kernel/Modules/AdminNotificationEvent.pm
 msgid ""
 "Notifications could not be Imported due to a unknown error, please check "
 "OTRS logs for more information"
-msgstr ""
+msgstr "Meldinger kunne ikke importeres grundet en ukendt fejl. Tjek OTRS-loggen for mere information."
 
 #. Perl Module: Kernel/Modules/AdminNotificationEvent.pm
 msgid "The following Notifications have been added successfully: %s"
@@ -11006,7 +11193,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminPGP.pm
 msgid "Key %s deleted!"
-msgstr ""
+msgstr "Nøgle %s slettet."
 
 #. Perl Module: Kernel/Modules/AdminPGP.pm
 msgid "Need param Key to download!"
@@ -11021,7 +11208,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminPackageManager.pm
 msgid "No such package!"
-msgstr ""
+msgstr "Den pakke findes ikke!"
 
 #. Perl Module: Kernel/Modules/AdminPackageManager.pm
 msgid "No such file %s in package!"
@@ -11033,7 +11220,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminPackageManager.pm
 msgid "Can't read %s!"
-msgstr ""
+msgstr "Kan ikke læse %s!"
 
 #. Perl Module: Kernel/Modules/AdminPackageManager.pm
 msgid "Package has locally modified files."
@@ -11048,6 +11235,18 @@ msgid ""
 "Package not verified due a communication issue with verification server!"
 msgstr "Pakke ikke verificeret pga. kommunikationsfejl med server!"
 
+#. Perl Module: Kernel/Modules/AdminPackageManager.pm
+msgid "Can't connect to OTRS Feature Add-on list server!"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminPackageManager.pm
+msgid "Can't get OTRS Feature Add-on list from server!"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminPackageManager.pm
+msgid "Can't get OTRS Feature Add-on from server!"
+msgstr ""
+
 #. Perl Module: Kernel/Modules/AdminPostMasterFilter.pm
 msgid "No such filter: %s"
 msgstr ""
@@ -11057,11 +11256,11 @@ msgid "Need ExampleProcesses!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminProcessManagement.pm
-msgid "Could not read %s!"
+msgid "Need ProcessID!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminProcessManagement.pm
-msgid "Need ProcessID!"
+msgid "Yes (mandatory)"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminProcessManagement.pm
@@ -11119,6 +11318,10 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminProcessManagement.pm
 msgid "Could not get %s"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminProcessManagement.pm
+msgid "Need %s!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminProcessManagement.pm
@@ -11239,10 +11442,6 @@ msgid "fax"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementPath.pm
-msgid "Need %s!"
-msgstr ""
-
-#. Perl Module: Kernel/Modules/AdminProcessManagementPath.pm
 msgid "Edit Path"
 msgstr ""
 
@@ -11281,10 +11480,6 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementTransition.pm
 msgid "String"
-msgstr ""
-
-#. Perl Module: Kernel/Modules/AdminProcessManagementTransition.pm
-msgid "Regular expression"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminProcessManagementTransition.pm
@@ -11401,6 +11596,10 @@ msgstr ""
 msgid "Salutation added!"
 msgstr ""
 
+#. Perl Module: Kernel/Modules/AdminSupportDataCollector.pm
+msgid "File %s could not be read!"
+msgstr ""
+
 #. Perl Module: Kernel/Modules/AdminSysConfig.pm
 msgid "Import not allowed!"
 msgstr ""
@@ -11467,7 +11666,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentDashboardCommon.pm
 msgid "Statistic"
-msgstr "Statistik"
+msgstr "Rapport"
 
 #. Perl Module: Kernel/Modules/AgentDashboardCommon.pm
 msgid "No preferences for %s!"
@@ -11498,12 +11697,12 @@ msgid "Can not delete link with %s!"
 msgstr "Kan ikke slette link med %s!"
 
 #. Perl Module: Kernel/Modules/AgentLinkObject.pm
-msgid "Can not create link with %s!"
-msgstr "Kan ikke oprette link med %s!"
+msgid "Can not create link with %s! Object already linked as %s."
+msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentLinkObject.pm
-msgid "Object already linked as %s."
-msgstr "Objekt allerede linket som %s."
+msgid "Can not create link with %s!"
+msgstr "Kan ikke oprette link med %s!"
 
 #. Perl Module: Kernel/Modules/AgentLinkObject.pm
 msgid "The object %s cannot link with other object!"
@@ -11523,11 +11722,11 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentStatistics.pm
 msgid "Statistic could not be imported."
-msgstr "Statistik kunne ikke importeres"
+msgstr "Rapport kunne ikke importeres"
 
 #. Perl Module: Kernel/Modules/AgentStatistics.pm
 msgid "Please upload a valid statistic file."
-msgstr "Upload venligst en gyldig statistik fil."
+msgstr "Upload venligst en gyldig rapport-fil."
 
 #. Perl Module: Kernel/Modules/AgentStatistics.pm
 msgid "Export: Need StatID!"
@@ -11547,7 +11746,7 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentStatistics.pm
 msgid "Could not create statistic."
-msgstr ""
+msgstr "Kunne ikke oprette rapport."
 
 #. Perl Module: Kernel/Modules/AgentStatistics.pm
 msgid "Run: Get no %s!"
@@ -11641,6 +11840,10 @@ msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketEmailOutbound.pm
 msgid "System Error!"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AgentTicketEscalationView.pm
+msgid "Invalid Filter: %s!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketHistory.pm
@@ -11751,11 +11954,6 @@ msgstr ""
 msgid ""
 "Couldn't determine ActivityEntityID. DynamicField or Config isn't set "
 "properly!"
-msgstr ""
-
-#. Perl Module: Kernel/Modules/AgentTicketProcess.pm
-msgid ""
-"DynamicFieldConfig missing for field: %s, or is not a Ticket Dynamic Field!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketProcess.pm
@@ -11886,12 +12084,20 @@ msgstr ""
 msgid "Default Config for Process::Default%s invalid!"
 msgstr ""
 
-#. Perl Module: Kernel/Modules/AgentTicketResponsibleView.pm
-msgid "Invalid Filter: %s!"
+#. Perl Module: Kernel/Modules/AgentTicketSearch.pm
+msgid "Untitled"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketSearch.pm
 msgid "Invalid Users"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AgentTicketSearch.pm
+msgid "CSV"
+msgstr "CSV"
+
+#. Perl Module: Kernel/Modules/AgentTicketSearch.pm
+msgid "Excel"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketService.pm
@@ -12100,6 +12306,18 @@ msgstr ""
 msgid "Need CustomerID!"
 msgstr ""
 
+#. Perl Module: Kernel/Modules/CustomerTicketOverview.pm
+msgid "My Tickets"
+msgstr "Mine Sager"
+
+#. Perl Module: Kernel/Modules/CustomerTicketOverview.pm
+msgid "Company Tickets"
+msgstr "Firma Sager"
+
+#. Perl Module: Kernel/Modules/CustomerTicketOverview.pm
+msgid "Untitled!"
+msgstr ""
+
 #. Perl Module: Kernel/Modules/CustomerTicketSearch.pm
 msgid ""
 "Please remove the following words because they cannot be used for the "
@@ -12138,6 +12356,18 @@ msgstr ""
 msgid ""
 "If you want to use the installer, set the Kernel/Config.pm writable for the "
 "webserver user!"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/Installer.pm
+msgid "Unknown Check!"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/Installer.pm
+msgid "The check \"%s\" doesn't exist!"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/Installer.pm
+msgid "Database %s"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/Installer.pm
@@ -12227,19 +12457,19 @@ msgid "The start time of a ticket has been set after the end time!"
 msgstr ""
 
 #. Perl Module: Kernel/Output/HTML/Dashboard/TicketGeneric.pm
-msgid "filter not active"
-msgstr ""
-
-#. Perl Module: Kernel/Output/HTML/Dashboard/TicketGeneric.pm
-msgid "filter active"
-msgstr ""
-
-#. Perl Module: Kernel/Output/HTML/Dashboard/TicketGeneric.pm
 msgid "sorted ascending"
 msgstr ""
 
 #. Perl Module: Kernel/Output/HTML/Dashboard/TicketGeneric.pm
 msgid "sorted descending"
+msgstr ""
+
+#. Perl Module: Kernel/Output/HTML/Dashboard/TicketGeneric.pm
+msgid "filter not active"
+msgstr ""
+
+#. Perl Module: Kernel/Output/HTML/Dashboard/TicketGeneric.pm
+msgid "filter active"
 msgstr ""
 
 #. Perl Module: Kernel/Output/HTML/Dashboard/TicketGeneric.pm
@@ -12265,11 +12495,7 @@ msgstr ""
 #. Perl Module: Kernel/Output/HTML/Layout.pm
 msgid ""
 "We are sorry, you do not have permissions anymore to access this ticket in "
-"its current state."
-msgstr ""
-
-#. Perl Module: Kernel/Output/HTML/Layout.pm
-msgid " You can take one of the next actions:"
+"its current state. You can take one of the following actions:"
 msgstr ""
 
 #. Perl Module: Kernel/Output/HTML/Layout.pm
@@ -12314,6 +12540,10 @@ msgstr "Angiv en slutdato der ligger efter startdatoen."
 #. Perl Module: Kernel/Output/HTML/Preferences/Password.pm
 msgid "Please supply your new password!"
 msgstr "Skriv venligst din nye adgangskode!"
+
+#. Perl Module: Kernel/Output/HTML/Statistics/View.pm
+msgid "No (not supported)"
+msgstr "Nej (ikke understøttet)"
 
 #. Perl Module: Kernel/Output/HTML/Statistics/View.pm
 msgid ""
@@ -12486,6 +12716,54 @@ msgstr "Sagens lukningstidspunkt"
 msgid "Accounted time by Agent"
 msgstr "Bogført tid af agent"
 
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Total Time"
+msgstr "Total tid"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Ticket Average"
+msgstr "Sagsgennemsnit"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Ticket Min Time"
+msgstr "Sag min. tid"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Ticket Max Time"
+msgstr "Sag max. tid"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Number of Tickets"
+msgstr "Antal sager"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Article Average"
+msgstr "Indlæg-gennemsnit"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Article Min Time"
+msgstr "Indlæg min. tid"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Article Max Time"
+msgstr "Indlæg max. tid"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketAccountedTime.pm
+msgid "Number of Articles"
+msgstr "Antal indlæg"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketList.pm
+msgid "unlimited"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketList.pm
+msgid "ascending"
+msgstr "stigende"
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketList.pm
+msgid "descending"
+msgstr "faldende"
+
 #. Perl Module: Kernel/System/Stats/Dynamic/TicketList.pm
 msgid "Attributes to be printed"
 msgstr "Attributter til udskrift"
@@ -12496,14 +12774,78 @@ msgstr "Sorteringsrækkefølge"
 
 #. Perl Module: Kernel/System/Stats/Dynamic/TicketList.pm
 msgid "State Historic"
-msgstr "Tilstands Historik"
+msgstr "Historik over tilstande"
 
 #. Perl Module: Kernel/System/Stats/Dynamic/TicketList.pm
 msgid "State Type Historic"
-msgstr "Tilstandstype Historik"
+msgstr "Historik over Tilstandstyper"
 
 #. Perl Module: Kernel/System/Stats/Dynamic/TicketList.pm
 msgid "Historic Time Range"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Average"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Min Time"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Max Time"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Average (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Min Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Max Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Working Time Average (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Min Working Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Solution Max Working Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Response Average (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Response Min Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Response Max Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Response Working Time Average (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Response Min Working Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Response Max Working Time (affected by escalation configuration)"
+msgstr ""
+
+#. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+msgid "Number of Tickets (affected by escalation configuration)"
 msgstr ""
 
 #. Perl Module: Kernel/System/Stats/Static/StateAction.pm
@@ -12798,7 +13140,7 @@ msgstr "Sager"
 #. Perl Module:
 #. Kernel/System/SupportDataCollector/Plugin/OTRS/DatabaseRecords.pm
 msgid "Ticket History Entries"
-msgstr "Sags historik"
+msgstr "Sagens Historik"
 
 #. Perl Module:
 #. Kernel/System/SupportDataCollector/Plugin/OTRS/DatabaseRecords.pm
@@ -13154,6 +13496,10 @@ msgstr "OK"
 msgid "Problem"
 msgstr "Problem"
 
+#. Perl Module: Kernel/System/Ticket.pm
+msgid "Reset of unlock time."
+msgstr "Tid til automatisk frigivelse nulstillet."
+
 #. Perl Module: Kernel/System/Web/InterfaceAgent.pm
 msgid ""
 "Panic, user authenticated but no user data can be found in OTRS DB!! Perhaps"
@@ -13162,6 +13508,10 @@ msgstr ""
 
 #. Perl Module: Kernel/System/Web/InterfaceAgent.pm
 msgid "Can`t remove SessionID"
+msgstr ""
+
+#. Perl Module: Kernel/System/Web/InterfaceAgent.pm
+msgid "Logout successful."
 msgstr ""
 
 #. Perl Module: Kernel/System/Web/InterfaceAgent.pm
@@ -13188,6 +13538,19 @@ msgstr ""
 msgid "Can't send account info!"
 msgstr ""
 
+#. Perl Module: Kernel/System/Web/InterfaceInstaller.pm
+msgid "SecureMode active!"
+msgstr ""
+
+#. Perl Module: Kernel/System/Web/InterfaceInstaller.pm
+msgid ""
+"If you want to re-run the Installer, disable the SecureMode in the SysConfig"
+msgstr ""
+
+#. Perl Module: Kernel/System/Web/InterfaceInstaller.pm
+msgid "Action \"%s\" not found!"
+msgstr ""
+
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid "Group for default access."
 msgstr ""
@@ -13198,7 +13561,7 @@ msgstr ""
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid "Group for statistics access."
-msgstr ""
+msgstr "Gruppe for adgang til rapporter."
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid "All new state types (default: viewable)."
@@ -13380,7 +13743,7 @@ msgstr ""
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid "Ticket create notification"
-msgstr ""
+msgstr "Melding om oprettelse af ny sag"
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid ""
@@ -13390,7 +13753,7 @@ msgstr ""
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid "Ticket follow-up notification (unlocked)"
-msgstr ""
+msgstr "Melding om opfølgning på sag (fri)"
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid ""
@@ -13400,7 +13763,7 @@ msgstr ""
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid "Ticket follow-up notification (locked)"
-msgstr ""
+msgstr "Melding om opfølgning på sag (trukket)"
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid ""
@@ -13428,7 +13791,7 @@ msgstr ""
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid "Ticket queue update notification"
-msgstr ""
+msgstr "Melding om ændring af sagens kø"
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid ""
@@ -13454,7 +13817,7 @@ msgstr ""
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid "Ticket service update notification"
-msgstr ""
+msgstr "Melding om ændring af service på sag"
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid ""
@@ -13483,7 +13846,7 @@ msgstr ""
 
 #. SysConfig
 msgid "\"%s\" notification was sent to \"%s\" by \"%s\"."
-msgstr ""
+msgstr "\"%s\"-melding blev sendt til \"%s\" via \"%s\"."
 
 #. SysConfig
 msgid "\"Slim\" skin which tries to save screen space for power users."
@@ -13495,7 +13858,7 @@ msgstr "Diverse %s"
 
 #. SysConfig
 msgid "%s time unit(s) accounted. Now total %s time unit(s)."
-msgstr "%s tidsenheder registreret. Nu totalt %s tidsenheder brugt."
+msgstr "%s tidsenheder registreret. Nu i alt %s tidsenheder brugt."
 
 #. SysConfig
 msgid "(UserLogin) Firstname Lastname"
@@ -13508,6 +13871,10 @@ msgstr "(BrugerLogin) Efternavn Fornavn"
 #. SysConfig
 msgid "(UserLogin) Lastname, Firstname"
 msgstr "(BrugerLogin) Efternavn Fornavn"
+
+#. SysConfig
+msgid "*** out of office until %s (%s d left) ***"
+msgstr ""
 
 #. SysConfig
 msgid "100 (Expert)"
@@ -13675,6 +14042,14 @@ msgstr ""
 #. SysConfig
 msgid "After"
 msgstr "Efter"
+
+#. SysConfig
+msgid "Agent Name"
+msgstr ""
+
+#. SysConfig
+msgid "Agent Name + FromSeparator + System Address Display Name"
+msgstr ""
 
 #. SysConfig
 msgid "Agent Preferences."
@@ -13889,14 +14264,21 @@ msgid ""
 "Allows extended search conditions in ticket search of the agent interface. "
 "With this feature you can search e. g. with this kind of conditions like "
 "\"(key1&&key2)\" or \"(key1||key2)\"."
-msgstr ""
+msgstr "Tillader udvidede søgetermer i sagssøgningen i agent-interfacet. Med denne funktionalitet kan du søge f.eks. \"(nøgle1&&nøgle2)\" eller \"(nøgle1||nøgle2)\"."
 
 #. SysConfig
 msgid ""
 "Allows extended search conditions in ticket search of the customer "
 "interface. With this feature you can search e. g. with this kind of "
 "conditions like \"(key1&&key2)\" or \"(key1||key2)\"."
-msgstr ""
+msgstr "Tillader udvidede søgetermer i sagssøgningen i kunde-interfacet. Med denne funktionalitet kan du søge f.eks. \"(nøgle1&&nøgle2)\" eller \"(nøgle1||nøgle2)\"."
+
+#. SysConfig
+msgid ""
+"Allows extended search conditions in ticket search of the generic agent "
+"interface. With this feature you can search e. g. ticket title with this "
+"kind of conditions like \"(*key1*&&*key2*)\" or \"(*key1*||*key2*)\"."
+msgstr "Tillader udvidede søgetermer i sagssøgningen i automatisk agent-interfacet. Med denne funktionalitet kan du søge f.eks. \"(nøgle1&&nøgle2)\" eller \"(nøgle1||nøgle2)\"."
 
 #. SysConfig
 msgid ""
@@ -14041,10 +14423,6 @@ msgid ""
 msgstr ""
 
 #. SysConfig
-msgid "CSV"
-msgstr "CSV"
-
-#. SysConfig
 msgid ""
 "Cache time in seconds for agent authentication in the GenericInterface."
 msgstr ""
@@ -14172,7 +14550,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Column ticket filters for Ticket Overviews type \"Small\"."
-msgstr ""
+msgstr "Kolonnefiltre for sagsoversigter af typen \"Small\"."
 
 #. SysConfig
 msgid ""
@@ -14261,10 +14639,6 @@ msgstr "Kommunikation"
 #. SysConfig
 msgid "Company Status"
 msgstr "Firma Status"
-
-#. SysConfig
-msgid "Company Tickets"
-msgstr "Firma Sager"
 
 #. SysConfig
 msgid "Company Tickets."
@@ -14402,7 +14776,7 @@ msgstr "Administrer roller"
 
 #. SysConfig
 msgid "Create and manage salutations."
-msgstr "Administrer tituleringer."
+msgstr "Administrer indledninger."
 
 #. SysConfig
 msgid "Create and manage services."
@@ -14418,7 +14792,7 @@ msgstr "Opret og administrer skabeloner"
 
 #. SysConfig
 msgid "Create and manage ticket notifications."
-msgstr "Opret og håndter sags notifikationer."
+msgstr "Opret og håndter meldinger om sager"
 
 #. SysConfig
 msgid "Create and manage ticket priorities."
@@ -14537,7 +14911,15 @@ msgid "Customer request via web."
 msgstr "Kundeanmodning via web."
 
 #. SysConfig
+msgid "Customer ticket overview"
+msgstr ""
+
+#. SysConfig
 msgid "Customer ticket search."
+msgstr ""
+
+#. SysConfig
+msgid "Customer ticket zoom"
 msgstr ""
 
 #. SysConfig
@@ -14670,6 +15052,15 @@ msgstr ""
 
 #. SysConfig
 msgid ""
+"Define Actions where a settings button is available in the linked objects "
+"widget (LinkObject::ViewMode = \"complex\"). Please note that these Actions "
+"must have registered the following JS and CSS files: "
+"Core.AllocationList.css, Core.UI.AllocationList.js, Core.UI.Table.Sort.js, "
+"Core.Agent.TableFilters.js."
+msgstr ""
+
+#. SysConfig
+msgid ""
 "Define a filter for html output to add links behind a defined string. The "
 "element Image allows two input kinds. At once the name of an image (e.g. "
 "faq.png). In this case the OTRS image path will be used. The second "
@@ -14727,6 +15118,14 @@ msgstr ""
 #. SysConfig
 msgid "Define the start day of the week for the date picker."
 msgstr "Definer ugens første dag for datovælgeren."
+
+#. SysConfig
+msgid ""
+"Define which columns are shown in the linked tickets widget "
+"(LinkObject::ViewMode = \"complex\"). Note: Only Ticket attributes and "
+"Dynamic Fields (DynamicField_NameX) are allowed for DefaultColumns. Possible"
+" settings: 0 = Disabled, 1 = Available, 2 = Enabled by default."
+msgstr ""
 
 #. SysConfig
 msgid ""
@@ -14791,6 +15190,17 @@ msgstr ""
 
 #. SysConfig
 msgid ""
+"Defines a filter to collect CVE numbers from article texts in "
+"AgentTicketZoom. The results will be displayed in a meta box next to the "
+"article. Fill in URLPreview if you would like to see a preview when moving "
+"your mouse cursor above the link element. This could be the same URL as in "
+"URL, but also an alternate one. Please note that some websites deny being "
+"displayed within an iframe (e.g. Google) and thus won't work with the "
+"preview mode."
+msgstr ""
+
+#. SysConfig
+msgid ""
 "Defines a filter to process the text in the articles, in order to highlight "
 "predefined keywords."
 msgstr ""
@@ -14850,6 +15260,18 @@ msgstr ""
 
 #. SysConfig
 msgid "Defines all the parameters for this item in the customer preferences."
+msgstr ""
+
+#. SysConfig
+msgid ""
+"Defines all the parameters for this item in the customer preferences. "
+"'PasswordRegExp' allows to match passwords against a regular expression. "
+"Define the minimum number of characters using 'PasswordMinSize'. Define if "
+"at least 2 lowercase and 2 uppercase letter characters are needed by setting"
+" the appropriate option to '1'. 'PasswordMin2Characters' defines if the "
+"password needs to contain at least 2 letter characters (set to 0 or 1). "
+"'PasswordNeedDigit' controls the need of at least 1 digit (set to 0 or 1 to "
+"control)."
 msgstr ""
 
 #. SysConfig
@@ -15064,6 +15486,12 @@ msgstr ""
 
 #. SysConfig
 msgid ""
+"Defines out of office message template. Two string parameters (%s) "
+"available: end date and number of days left."
+msgstr ""
+
+#. SysConfig
+msgid ""
 "Defines queues that's tickets are used for displaying as calendar events."
 msgstr ""
 
@@ -15169,6 +15597,19 @@ msgstr ""
 #. SysConfig
 msgid ""
 "Defines the config parameters of this item, to be shown in the preferences "
+"view. 'PasswordRegExp' allows to match passwords against a regular "
+"expression. Define the minimum number of characters using 'PasswordMinSize'."
+" Define if at least 2 lowercase and 2 uppercase letter characters are needed"
+" by setting the appropriate option to '1'. 'PasswordMin2Characters' defines "
+"if the password needs to contain at least 2 letter characters (set to 0 or "
+"1). 'PasswordNeedDigit' controls the need of at least 1 digit (set to 0 or 1"
+" to control). 'PasswordMaxLoginFailed' allows to set an agent to invalid-"
+"temporarily if max failed logins reached."
+msgstr ""
+
+#. SysConfig
+msgid ""
+"Defines the config parameters of this item, to be shown in the preferences "
 "view. Take care to maintain the dictionaries installed in the system in the "
 "data section."
 msgstr ""
@@ -15228,7 +15669,7 @@ msgstr ""
 msgid ""
 "Defines the default maximum number of statistics per page on the overview "
 "screen."
-msgstr ""
+msgstr "Definerer det maksimale antal rapporter pr. side på oversigtsskærmen."
 
 #. SysConfig
 msgid ""
@@ -15477,49 +15918,49 @@ msgstr ""
 msgid ""
 "Defines the default ticket attribute for ticket sorting in a ticket search "
 "of the customer interface."
-msgstr ""
+msgstr "Vælg standard-feltet for sortering af sager i en søgning foretaget i kunde-interfacet."
 
 #. SysConfig
 msgid ""
 "Defines the default ticket attribute for ticket sorting in the escalation "
 "view of the agent interface."
-msgstr ""
+msgstr "Vælg standard-feltet for sortering af sager i oversigten over eskalerede sager i agent-interfacet."
 
 #. SysConfig
 msgid ""
 "Defines the default ticket attribute for ticket sorting in the locked ticket"
 " view of the agent interface."
-msgstr ""
+msgstr "Vælg standard-feltet for sortering af sager i oversigten over trukkede sager i agent-interfacet."
 
 #. SysConfig
 msgid ""
 "Defines the default ticket attribute for ticket sorting in the responsible "
 "view of the agent interface."
-msgstr ""
+msgstr "Vælg standard-feltet for sortering af sager i oversigten over ansvarlige i agent-interfacet."
 
 #. SysConfig
 msgid ""
 "Defines the default ticket attribute for ticket sorting in the status view "
 "of the agent interface."
-msgstr ""
+msgstr "Vælg standard-feltet for sortering af sager i status-oversigten i agent-interfacet."
 
 #. SysConfig
 msgid ""
 "Defines the default ticket attribute for ticket sorting in the watch view of"
 " the agent interface."
-msgstr ""
+msgstr "Vælg standard-feltet for sortering af sager i oversigten over fulgte sager i agent-interfacet."
 
 #. SysConfig
 msgid ""
 "Defines the default ticket attribute for ticket sorting of the ticket search"
 " result of the agent interface."
-msgstr ""
+msgstr "Vælg standard-feltet for sortering af sager i en søgning foretaget i agent-interfacet."
 
 #. SysConfig
 msgid ""
 "Defines the default ticket attribute for ticket sorting of the ticket search"
 " result of this operation."
-msgstr ""
+msgstr "Vælg standard-feltet for sortering af sager i en søgning foretaget af denne handling."
 
 #. SysConfig
 msgid ""
@@ -16680,6 +17121,12 @@ msgid "Deletes requested sessions if they have timed out."
 msgstr ""
 
 #. SysConfig
+msgid ""
+"Delivers extended debugging information in the frontend in case any AJAX "
+"errors occur, if enabled."
+msgstr ""
+
+#. SysConfig
 msgid "Deploy and manage OTRS Business Solution™."
 msgstr ""
 
@@ -16692,7 +17139,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Determines if the statistics module may generate ticket lists."
-msgstr ""
+msgstr "Angiver om rapport-modulet må generere sagslister."
 
 #. SysConfig
 msgid ""
@@ -17108,7 +17555,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Enabled filters."
-msgstr ""
+msgstr "Aktive filtre."
 
 #. SysConfig
 msgid ""
@@ -17302,10 +17749,6 @@ msgstr ""
 
 #. SysConfig
 msgid "Events Ticket Calendar"
-msgstr ""
-
-#. SysConfig
-msgid "Excel"
 msgstr ""
 
 #. SysConfig
@@ -17521,7 +17964,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Generate dashboard statistics."
-msgstr ""
+msgstr "Generer dashboard-rapporter."
 
 #. SysConfig
 msgid "Generic Info module."
@@ -18074,6 +18517,14 @@ msgid ""
 msgstr ""
 
 #. SysConfig
+msgid "Indonesian"
+msgstr ""
+
+#. SysConfig
+msgid "Input"
+msgstr ""
+
+#. SysConfig
 msgid ""
 "Install ispell or aspell on the system, if you want to use a spell checker. "
 "Please specify the path to the aspell or ispell binary on your operating "
@@ -18141,6 +18592,10 @@ msgid "JavaScript function for the search frontend."
 msgstr ""
 
 #. SysConfig
+msgid "Last customer subject"
+msgstr ""
+
+#. SysConfig
 msgid "Lastname Firstname"
 msgstr "Efternavn Fornavn"
 
@@ -18163,6 +18618,10 @@ msgstr ""
 #. SysConfig
 msgid "Left"
 msgstr "Venstre"
+
+#. SysConfig
+msgid "Link Object"
+msgstr "Kæd"
 
 #. SysConfig
 msgid "Link Object."
@@ -18190,7 +18649,7 @@ msgstr "Kæd kundebrugere til services."
 
 #. SysConfig
 msgid "Link queues to auto responses."
-msgstr "Kæd køer til autosvar"
+msgstr "Kæd autosvar til køer"
 
 #. SysConfig
 msgid "Link roles to groups."
@@ -18351,11 +18810,11 @@ msgstr "Administrer eksisterende sessioner."
 
 #. SysConfig
 msgid "Manage support data."
-msgstr "Håndter support data."
+msgstr "Håndter support-data."
 
 #. SysConfig
 msgid "Manage system registration."
-msgstr "Håndter system registrering."
+msgstr "Håndter systemregistrering."
 
 #. SysConfig
 msgid "Manage tasks triggered by event or time based execution."
@@ -18415,18 +18874,18 @@ msgstr ""
 msgid ""
 "Maximum number of tickets to be displayed in the result of a search in the "
 "agent interface."
-msgstr ""
+msgstr "Det højeste antal sager, der kan vises som resultat af en søgning i agent-interfacet."
 
 #. SysConfig
 msgid ""
 "Maximum number of tickets to be displayed in the result of a search in the "
 "customer interface."
-msgstr ""
+msgstr "Det højeste antal sager, der kan vises som resultat af en søgning i kunde-interfacet."
 
 #. SysConfig
 msgid ""
 "Maximum number of tickets to be displayed in the result of this operation."
-msgstr ""
+msgstr "Det højeste antal sager, der kan vises som resultat af denne handling."
 
 #. SysConfig
 msgid ""
@@ -18565,10 +19024,6 @@ msgid "My Services"
 msgstr "Mine Services"
 
 #. SysConfig
-msgid "My Tickets"
-msgstr "Mine Sager"
-
-#. SysConfig
 msgid "My Tickets."
 msgstr ""
 
@@ -18634,7 +19089,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Notification sent to \"%s\"."
-msgstr "Besked sendt til \"%s\"."
+msgstr "Melding sendt til \"%s\"."
 
 #. SysConfig
 msgid "Number of displayed tickets"
@@ -18644,19 +19099,19 @@ msgstr "Antal viste sager"
 msgid ""
 "Number of lines (per ticket) that are shown by the search utility in the "
 "agent interface."
-msgstr ""
+msgstr "Antal linier (per sag), der vises af søgeprogrammet i agent-interfacet."
 
 #. SysConfig
 msgid ""
 "Number of tickets to be displayed in each page of a search result in the "
 "agent interface."
-msgstr ""
+msgstr "Antallet af sager i søgeresultatet, der vises på hver side i agent-interfacet."
 
 #. SysConfig
 msgid ""
 "Number of tickets to be displayed in each page of a search result in the "
 "customer interface."
-msgstr ""
+msgstr "Antallet af sager i søgeresultatet, der vises på hver side i kunde-interfacet."
 
 #. SysConfig
 msgid ""
@@ -18680,6 +19135,10 @@ msgstr "Åbne sager (kundebruger)"
 #. SysConfig
 msgid "Open tickets (customer)"
 msgstr "Åbne sager (kunde)"
+
+#. SysConfig
+msgid "Option"
+msgstr ""
 
 #. SysConfig
 msgid ""
@@ -18752,10 +19211,6 @@ msgid "Package event module file a scheduler task for update registration."
 msgstr ""
 
 #. SysConfig
-msgid "Parameters for ."
-msgstr ""
-
-#. SysConfig
 msgid ""
 "Parameters for the CreateNextMask object in the preference view of the agent"
 " interface."
@@ -18777,6 +19232,10 @@ msgstr ""
 msgid ""
 "Parameters for the RefreshTime object in the preference view of the agent "
 "interface."
+msgstr ""
+
+#. SysConfig
+msgid "Parameters for the column filters of the small ticket overview."
 msgstr ""
 
 #. SysConfig
@@ -19360,7 +19819,7 @@ msgstr "Send ny udgående mail fra denne sag"
 
 #. SysConfig
 msgid "Send notifications to users."
-msgstr "Send beskeder til brugere."
+msgstr "Send meldinger til brugere."
 
 #. SysConfig
 msgid "Sender type for new tickets from the customer inteface."
@@ -20926,6 +21385,10 @@ msgid "Swedish"
 msgstr "Svensk"
 
 #. SysConfig
+msgid "System Address Display Name"
+msgstr ""
+
+#. SysConfig
 msgid "System Maintenance"
 msgstr "System vedligeholdelse"
 
@@ -21194,7 +21657,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Ticket Notifications"
-msgstr "Sagsnotifikationer"
+msgstr "Sagsmeldinger"
 
 #. SysConfig
 msgid "Ticket Outbound Email."
@@ -21246,7 +21709,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Ticket notifications"
-msgstr "Sagsnotifikationer"
+msgstr "Sagsmeldinger"
 
 #. SysConfig
 msgid "Ticket overview"
@@ -21254,6 +21717,10 @@ msgstr "Sagsoversigt"
 
 #. SysConfig
 msgid "Ticket plain view of an email."
+msgstr ""
+
+#. SysConfig
+msgid "Ticket title"
 msgstr ""
 
 #. SysConfig
@@ -21374,7 +21841,7 @@ msgstr "Opdaterede Type til %s (ID=%s)."
 
 #. SysConfig
 msgid "Updated: %s"
-msgstr "Sag afventer til %s"
+msgstr "Opdateret: %s"
 
 #. SysConfig
 msgid "Updated: %s=%s;%s=%s;%s=%s;"
@@ -21417,7 +21884,7 @@ msgstr ""
 
 #. SysConfig
 msgid "Uses richtext for viewing and editing ticket notification."
-msgstr "Bruger richtext til til visning og redigering af sagsnotifikationer."
+msgstr "Bruger richtext til til visning og redigering af sagsmeldinger."
 
 #. SysConfig
 msgid ""
@@ -21481,6 +21948,12 @@ msgid ""
 msgstr ""
 
 #. SysConfig
+msgid ""
+"Whether or not to collect meta information from articles using filters "
+"configured in Ticket::Frontend::ZoomCollectMetaFilters."
+msgstr ""
+
+#. SysConfig
 msgid "Yes, but hide archived tickets"
 msgstr "Ja, men skjul arkiverede sager"
 
@@ -21494,7 +21967,7 @@ msgstr "Din e-mail med sagsnummer \"<OTRS_TICKET>\" er overgivet til \"<OTRS_BOU
 msgid ""
 "Your queue selection of your favorite queues. You also get notified about "
 "those queues via email if enabled."
-msgstr "Dit valg af foretrukne køer. Du får besked om handlinger i disse køer via mail, hvis det er aktiveret."
+msgstr "Dit valg af foretrukne køer. Du får melding om handlinger i disse køer via mail, hvis det er aktiveret."
 
 #. SysConfig
 msgid ""

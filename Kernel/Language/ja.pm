@@ -27,7 +27,7 @@ sub Data {
     $Self->{DateFormatShort}     = '%Y/%M/%D';
     $Self->{DateInputFormat}     = '%Y/%M/%D';
     $Self->{DateInputFormatLong} = '%Y/%M/%D - %T';
-    $Self->{Completeness}        = 0.660767590618337;
+    $Self->{Completeness}        = 0.687526074259491;
 
     # csv separator
     $Self->{Separator} = ';';
@@ -185,7 +185,7 @@ sub Data {
         'Description' => '説明',
         'description' => '説明',
         'Theme' => 'テーマ',
-        'Created' => '作成日時',
+        'Created' => '作成',
         'Created by' => '作成者',
         'Changed' => '変更日時',
         'Changed by' => '変更者',
@@ -200,7 +200,7 @@ sub Data {
         'Item' => 'アイテム',
         'Delete' => '削除',
         'Edit' => '編集',
-        'View' => '一覧',
+        'View' => 'ビュー',
         'Number' => '番号',
         'System' => 'システム',
         'Contact' => '連絡',
@@ -211,7 +211,7 @@ sub Data {
         'Add' => '追加',
         'Added!' => '追加しました。',
         'Category' => '区分',
-        'Viewer' => '閲覧者',
+        'Viewer' => 'ビューア',
         'Expand' => '展開',
         'Small' => '小',
         'Medium' => '中',
@@ -224,7 +224,7 @@ sub Data {
         'New message' => '新規メッセージ',
         'New message!' => '新規メッセージ！',
         'Please answer this ticket(s) to get back to the normal queue view!' =>
-            '通常のキュー画面に戻るにはこのチケットに回答してください。',
+            '通常のキュー・ビューに戻るにはこのチケットに回答してください。',
         'You have %s new message(s)!' => '%s件の新規メッセージがあります。',
         'You have %s reminder ticket(s)!' => '%s件の保留期限チケットがあります',
         'The recommended charset for your language is %s!' => '選択した言語の文字コードは %s を推奨します',
@@ -429,13 +429,13 @@ sub Data {
             ' %s のアップデートが利用可能です。しかしあなたのフレームワークのバージョンとコンフリクトしていますので、事前にフレームワークの更新を行ってください。',
         'Your system was successfully upgraded to %s.' => 'システムは正常に%sにアップグレードされました。',
         'There was a problem during the upgrade to %s.' => '%sにアップグレード中に問題が発生しました。',
-        '%s was correctly reinstalled.' => '%s は現在再インストールされました',
+        '%s was correctly reinstalled.' => '%s は正常に再インストールされました',
         'There was a problem reinstalling %s.' => '%s をインストール中に問題が発生しました',
         'Your %s was successfully updated.' => '%sは正常に更新されました。',
         'There was a problem during the upgrade of %s.' => '%sのアップグレード中に問題が発生しました。',
-        '%s was correctly uninstalled.' => '%sは正しくアンインストールされました。',
+        '%s was correctly uninstalled.' => '%sは正常にアンインストールされました。',
         'There was a problem uninstalling %s.' => '%sのアンインストール時に問題が発生しました。',
-        'Enable cloud services to unleash all OTRS features!' => '',
+        'Enable cloud services to unleash all OTRS features!' => 'クラウドサービスを利用して、OTRSのすべての機能を活用しましょう！',
 
         # Template: AAACalendar
         'New Year\'s Day' => '元日',
@@ -508,8 +508,8 @@ sub Data {
         'CSV Separator' => 'CSV区切り文字',
 
         # Template: AAATicket
-        'Status View' => 'ステータス一覧',
-        'Service View' => 'サービス ビュー',
+        'Status View' => 'ステータス・ビュー',
+        'Service View' => 'サービス・ビュー',
         'Bulk' => '一括',
         'Lock' => 'ロック',
         'Unlock' => 'ロック解除',
@@ -557,7 +557,7 @@ sub Data {
         'plain' => '書式なし',
         'Email' => 'メール',
         'email' => 'メール',
-        'Close' => '完了',
+        'Close' => 'クローズ',
         'Action' => '操作',
         'Attachment' => '添付ファイル',
         'Attachments' => '添付ファイル',
@@ -570,8 +570,8 @@ sub Data {
         'Free Fields' => '自由領域',
         'Merge' => '結合',
         'merged' => '結合済',
-        'closed successful' => '完了 (成功)',
-        'closed unsuccessful' => '完了 (不成功)',
+        'closed successful' => 'クローズ (成功)',
+        'closed unsuccessful' => 'クローズ (不成功)',
         'Locked Tickets Total' => 'ロック済チケット合計',
         'Locked Tickets Reminder Reached' => 'ロック済チケット時間切れ',
         'Locked Tickets New' => 'ロック済チケット新規',
@@ -585,8 +585,8 @@ sub Data {
         'Available tickets' => '利用可能チケット',
         'Escalation' => 'エスカレーション',
         'last-search' => '最終検索',
-        'QueueView' => 'キュー一覧',
-        'Ticket Escalation View' => 'チケットエスカレーション一覧',
+        'QueueView' => 'キュー・ビュー',
+        'Ticket Escalation View' => 'チケット・エスカレーション・ビュー',
         'Message from' => 'Message from',
         'End message' => 'End message',
         'Forwarded message from' => 'Forwarded message from',
@@ -597,14 +597,14 @@ sub Data {
         'open' => '対応中',
         'Open' => '対応中',
         'Open tickets' => '対応中チケット',
-        'closed' => '完了',
-        'Closed' => '完了',
-        'Closed tickets' => '完了チケット',
+        'closed' => 'クローズ',
+        'Closed' => 'クローズ',
+        'Closed tickets' => 'クローズ・チケット',
         'removed' => '削除',
         'pending reminder' => '保留 (期限付)',
         'pending auto' => '保留 (自動)',
-        'pending auto close+' => '保留 (自動完了＋)',
-        'pending auto close-' => '保留 (自動完了－)',
+        'pending auto close+' => '保留 (自動クローズ＋)',
+        'pending auto close-' => '保留 (自動クローズ－)',
         'email-external' => 'メール-外部',
         'email-internal' => 'メール-内部',
         'note-external' => 'メモ-外部',
@@ -644,8 +644,8 @@ sub Data {
         'Ticket selected.' => 'チケットが選択されました。',
         'Ticket is locked by another agent.' => 'チケットは他の担当者によってロックされています。',
         'Ticket locked.' => 'チケットがロックされました。',
-        'Don\'t show closed Tickets' => '完了チケットを非表示',
-        'Show closed Tickets' => '完了チケットを表示',
+        'Don\'t show closed Tickets' => 'クローズ・チケットを非表示',
+        'Show closed Tickets' => 'クローズ・チケットを表示',
         'New Article' => '新規項目',
         'Unread article(s) available' => '未読の記事があります',
         'Remove from list of watched tickets' => '監視チケットリストから削除',
@@ -690,7 +690,7 @@ sub Data {
         'Add a note to this ticket' => 'このチケットにメモを追加',
         'Merge into a different ticket' => '別のチケットに結合',
         'Set this ticket to pending' => 'このチケットを保留に設定',
-        'Close this ticket' => 'このチケットを完了',
+        'Close this ticket' => 'このチケットをクローズ',
         'Look into a ticket!' => 'チケットを閲覧する',
         'Delete this ticket' => 'このチケットを削除',
         'Mark as Spam!' => '迷惑メールにする',
@@ -728,15 +728,15 @@ sub Data {
         'Your queue selection of your favourite queues. You also get notified about those queues via email if enabled.' =>
             'お気に入りのキューを選択。有効にした場合、これらのキューについてメールで通知を受信します',
         'Custom Queue' => 'カスタムキュー',
-        'QueueView refresh time' => 'キュー一覧自動更新間隔',
+        'QueueView refresh time' => 'キュー・ビュー自動更新間隔',
         'If enabled, the QueueView will automatically refresh after the specified time.' =>
-            '有効にした場合、キュー一覧は自動で指定時間後に更新されます',
-        'Refresh QueueView after' => 'この時間が経過後、キュー一覧を更新',
+            '有効にした場合、キュー・ビューは自動で指定時間後に更新されます',
+        'Refresh QueueView after' => 'この時間が経過後、キュー・ビューを更新',
         'Screen after new ticket' => '新規チケット作成後の画面',
         'Show this screen after I created a new ticket' => '新規チケット作成後に表示する画面',
-        'Closed Tickets' => '完了チケット',
-        'Show closed tickets.' => '完了チケットを見る',
-        'Max. shown Tickets a page in QueueView.' => 'キュー一覧での1ページ毎のチケット数',
+        'Closed Tickets' => 'クローズ・チケット',
+        'Show closed tickets.' => 'クローズ・チケットを見る',
+        'Max. shown Tickets a page in QueueView.' => 'キュー・ビューでの1ページ毎のチケット数',
         'Ticket Overview "Small" Limit' => 'チケット一覧(S)の表示数',
         'Ticket limit per page for Ticket Overview "Small"' => 'チケット一覧(S)での1ページ毎のチケット数',
         'Ticket Overview "Medium" Limit' => 'チケット一覧(M)の表示数',
@@ -837,7 +837,7 @@ sub Data {
 
         # Template: AdminACLNew
         'Create a new ACL by submitting the form data. After creating the ACL, you will be able to add configuration items in edit mode.' =>
-            '',
+            'フォームを送信することにより、新規にACLを作成する事ができます。ACLを作成後、編集モードより構成アイテムを追加することができます。',
 
         # Template: AdminAttachment
         'Attachment Management' => '添付ファイル管理',
@@ -884,10 +884,10 @@ sub Data {
         'Configuration' => '設定',
         'Send support data' => 'サポート情報の送信',
         'This will allow the system to send additional support data information to OTRS Group.' =>
-            '',
+            'この操作は、システムによる OTRS Group への追加サポート情報の送信を許可します。',
         'System Registration' => 'システム登録',
         'To enable data sending, please register your system with OTRS Group or update your system registration information (make sure to activate the \'send support data\' option.)' =>
-            '',
+            'データ送信を有効にするために、OTRS Group へのシステムの登録・更新をお願いします (併せて「サポート情報の送信」のチェックを有効にするのを忘れずに)。',
         'Register this System' => 'このシステムをサポート登録する',
         'System Registration is disabled for your system. Please check your configuration.' =>
             'システムのサポート登録機能が無効になっています。設定をご確認ください。',
@@ -896,7 +896,7 @@ sub Data {
         'System registration is a service of OTRS Group, which provides a lot of advantages!' =>
             'OTRSグループへのシステムのサポート登録により、多くのメリットが提供されます。',
         'Please note that the use of OTRS cloud services requires the system to be registered.' =>
-            '',
+            'OTRS クラウドサービスのご利用には、システムの登録が必要となりますのでご注意ください。',
         'Register this system' => 'このシステムをサポート登録する',
         'Here you can configure available cloud services that communicate securely with %s.' =>
             '',
@@ -908,8 +908,8 @@ sub Data {
         'Wildcards like \'*\' are allowed.' => 'ワイルドカード（*）が使用できます。',
         'Add customer' => '顧客を追加',
         'Select' => '選択',
-        'shown' => '表示',
-        'total' => '合計',
+        'List (only %s shown - more available)' => '',
+        'List (%s total)' => '',
         'Please enter a search term to look for customers.' => '顧客を検索するための条件を入力してください',
         'Add Customer' => '顧客を追加',
 
@@ -989,7 +989,7 @@ sub Data {
         'Do you really want to delete this dynamic field? ALL associated data will be LOST!' =>
             'この動的領域を本当に削除しますか？全てのデータが失われます。',
         'Delete field' => '動的領域',
-        'Deleting the field and its data. This may take a while...' => '',
+        'Deleting the field and its data. This may take a while...' => 'フィールドとそれに属するデータを削除します。これには少々時間が掛かることがあります。',
 
         # Template: AdminDynamicFieldCheckbox
         'Dynamic Fields' => 'ダイナミック・フィールド',
@@ -1030,6 +1030,9 @@ sub Data {
         'Years in the future to display (default: 5 years).' => '表示する未来の年数(デフォルト:5年)。',
         'Show link' => 'リンクを表示',
         'Here you can specify an optional HTTP link for the field value in Overviews and Zoom screens.' =>
+            '',
+        'Link for preview' => '',
+        'If filled in, this URL will be used for a preview which is shown when this link is hovered in ticket zoom. Please note that for this to work, the regular URL field above needs to be filled in, too.' =>
             '',
         'Restrict entering of dates' => '日付入力の制限',
         'Here you can restrict the entering of dates of tickets.' => '本項目でチケットの日付入力の制限できます',
@@ -1139,10 +1142,10 @@ sub Data {
         'No change time settings.' => '変更時間設定を指定しない',
         'Ticket changed' => 'チケットを変更しました',
         'Ticket changed between' => 'チケットの変更がこの期間の間',
-        'Close times' => '完了時間',
-        'No close time settings.' => '完了時間を指定しない',
-        'Ticket closed' => 'チケットを完了したのが',
-        'Ticket closed between' => 'チケットを完了したのがこの期間内',
+        'Close times' => 'クローズ時間',
+        'No close time settings.' => 'クローズ時間を指定しない',
+        'Ticket closed' => 'チケットをクローズしたのが',
+        'Ticket closed between' => 'チケットをクローズしたのがこの期間内',
         'Pending times' => '保留時間',
         'No pending time settings.' => '保留時間を指定しない',
         'Ticket pending time reached' => '保留期限切れが',
@@ -1172,7 +1175,7 @@ sub Data {
         'new owner' => '新しい所有者',
         'new responsible' => '新しい責任者',
         'Set new ticket lock' => '新しいチケットロックを設定',
-        'New customer user' => '',
+        'New customer user' => '新規顧客ユーザー',
         'New customer ID' => '新しい顧客ID',
         'New title' => '新しいタイトル',
         'New type' => '新しいタイプ',
@@ -1245,15 +1248,15 @@ sub Data {
         'Configure' => '設定',
         'The data from the invoker of OTRS will be processed by this mapping, to transform it to the kind of data the remote system expects.' =>
             '',
-        'Mapping for incoming response data' => '',
+        'Mapping for incoming response data' => '着信応答データのマッピング',
         'The response data will be processed by this mapping, to transform it to the kind of data the invoker of OTRS expects.' =>
-            '',
+            'レスポンスデータをこのマッピングにのっとって OTRS の呼び出し元が期待するデータの種類に変換します。',
         'Asynchronous' => '非同期',
-        'This invoker will be triggered by the configured events.' => '',
+        'This invoker will be triggered by the configured events.' => 'この呼び出しは予め設定されたトリガーによって実行されます。',
         'Asynchronous event triggers are handled by the OTRS Scheduler Daemon in background (recommended).' =>
-            '',
+            '非同期型イベントトリガーは、OTRSスケジューラー・デーモンによってバックグラウンドで実行されます（推奨）。',
         'Synchronous event triggers would be processed directly during the web request.' =>
-            '',
+            '同期型イベントトリガーは直接Web画面上のリクエストから実行されます。',
         'Save and continue' => '保存して継続',
         'Delete this Invoker' => 'この呼び出し元を削除',
 
@@ -1290,8 +1293,8 @@ sub Data {
         'Insert XSLT stylesheet.' => 'XSLT形式スタイルシートの挿入',
 
         # Template: AdminGenericInterfaceOperationDefault
-        'Add new Operation to Web Service %s' => '',
-        'Change Operation %s of Web Service %s' => '',
+        'Add new Operation to Web Service %s' => '新しいオペレーションをWebサービス %s に追加',
+        'Change Operation %s of Web Service %s' => 'Webサービス %s のオペレーション %s を変更',
         'Add new operation' => '新しいオペレーションを追加',
         'Change operation %s' => 'オペレーション%sを変更',
         'Do you really want to delete this operation?' => 'このオペレーションを本当に削除しますか？',
@@ -1328,7 +1331,7 @@ sub Data {
         'This configuration defines if incoming connections should get closed or kept alive.' =>
             '',
         'Host' => 'ホスト',
-        'Remote host URL for the REST requests.' => '',
+        'Remote host URL for the REST requests.' => 'RESTリクエスト用リモートホストURL',
         'e.g https://www.otrs.com:10745/api/v1.0 (without trailing backslash)' =>
             '例… https://www.otrs.com:10745/api/v1.0 (バックスラッシュを除く)',
         'Controller mapping for Invoker' => '',
@@ -1340,17 +1343,17 @@ sub Data {
         'Default command' => 'デフォルトコマンド',
         'The default HTTP command to use for the requests.' => '',
         'Authentication' => '認証',
-        'The authentication mechanism to access the remote system.' => '',
+        'The authentication mechanism to access the remote system.' => 'リモート・システムにアクセスするときに用いる認証方式',
         'A "-" value means no authentication.' => '"-"は認証なしを意味します。',
-        'The user name to be used to access the remote system.' => '',
-        'The password for the privileged user.' => '',
-        'Use SSL Options' => '',
-        'Show or hide SSL options to connect to the remote system.' => '',
+        'The user name to be used to access the remote system.' => 'リモート・システムにアクセスするときに用いるユーザー名',
+        'The password for the privileged user.' => '特権ユーザー用パスワード',
+        'Use SSL Options' => 'SSLオプションを利用する',
+        'Show or hide SSL options to connect to the remote system.' => 'リモートシステムに接続するためのSSLオプションの表示/非表示を切替えます。',
         'Certificate File' => '証明書ファイル',
-        'The full path and name of the SSL certificate file.' => '',
+        'The full path and name of the SSL certificate file.' => 'SSL証明書ファイル名（フルパスで表記）',
         'e.g. /opt/otrs/var/certificates/REST/ssl.crt' => '例… /opt/otrs/var/certificates/REST/ssl.crt',
-        'Certificate Password File' => '',
-        'The full path and name of the SSL key file.' => '',
+        'Certificate Password File' => '秘密鍵のパスワードファイル',
+        'The full path and name of the SSL key file.' => 'SSL秘密鍵ファイル名（フルパスで表記）',
         'e.g. /opt/otrs/var/certificates/REST/ssl.key' => '例… /opt/otrs/var/certificates/REST/ssl.key',
         'Certification Authority (CA) File' => '認証局(CA)ファイル',
         'The full path and name of the certification authority certificate file that validates the SSL certificate.' =>
@@ -1384,13 +1387,13 @@ sub Data {
             '',
         'Here you can specify the maximum size (in bytes) of SOAP messages that OTRS will process.' =>
             '',
-        'Encoding' => '',
+        'Encoding' => 'エンコーディング',
         'The character encoding for the SOAP message contents.' => 'SOAPメッセージコンテントの文字エンコード',
         'e.g utf-8, latin1, iso-8859-1, cp1250, Etc.' => '例… utf-8, latin1, iso-8859-1, cp1250, Etc.',
         'SOAPAction' => 'SOAPアクション',
-        'Set to "Yes" to send a filled SOAPAction header.' => '',
-        'Set to "No" to send an empty SOAPAction header.' => '',
-        'SOAPAction separator' => '',
+        'Set to "Yes" to send a filled SOAPAction header.' => '有効にするには SOAPAction ヘッダーを入力してください。',
+        'Set to "No" to send an empty SOAPAction header.' => '無効にするには SOAPAction ヘッダーを空にしてください。',
+        'SOAPAction separator' => 'SOAPアクション・セパレータ',
         'Character to use as separator between name space and SOAP method.' =>
             '',
         'Usually .Net web services uses a "/" as separator.' => '',
@@ -1400,11 +1403,11 @@ sub Data {
         'Proxy User' => 'Proxy ユーザー',
         'The user name to be used to access the proxy server.' => '',
         'Proxy Password' => 'Proxy パスワード',
-        'The password for the proxy user.' => '',
+        'The password for the proxy user.' => 'プロキシユーザーのパスワード',
         'The full path and name of the SSL certificate file (must be in .p12 format).' =>
-            '',
+            'SSL証明書ファイル名（フルパスで表記、"*.p12" 形式を指定してください）',
         'e.g. /opt/otrs/var/certificates/SOAP/certificate.p12' => '例… /opt/otrs/var/certificates/SOAP/certificate.p12',
-        'The password to open the SSL certificate.' => '',
+        'The password to open the SSL certificate.' => 'SSL証明書を開くためのパスワード。',
         'The full path and name of the certification authority certificate file that validates SSL certificate.' =>
             '',
         'e.g. /opt/otrs/var/certificates/SOAP/CA/ca.pem' => '例… /opt/otrs/var/certificates/SOAP/CA/ca.pem',
@@ -1414,7 +1417,7 @@ sub Data {
         'e.g. /opt/otrs/var/certificates/SOAP/CA' => '例… /opt/otrs/var/certificates/SOAP/CA',
         'Sort options' => '並べ替えオプション',
         'Add new first level element' => '',
-        'Element' => '',
+        'Element' => '要素',
         'Outbound sort order for xml fields (structure starting below function name wrapper) - see documentation for SOAP transport.' =>
             '',
 
@@ -1426,19 +1429,25 @@ sub Data {
         'Clone' => '複製',
         'Export web service' => 'ウェブサービスのエクスポート',
         'Import web service' => 'ウェブサービスのインポート',
-        'Configuration File' => '',
+        'Configuration File' => '設定ファイル',
         'The file must be a valid web service configuration YAML file.' =>
             '',
         'Import' => 'インポート',
-        'Configuration history' => '',
+        'Configuration history' => '構成履歴',
         'Delete web service' => 'ウェブサービスの削除',
         'Do you really want to delete this web service?' => '本当にこのWebサービスを削除しますか？',
+        'Example Web Services' => '',
+        'Here you can activate best practice example web service that are part of %s. Please note that some additional configuration may be required.' =>
+            '',
+        'Import example web service' => '',
+        'Do you want to benefit from web services created by experts? Upgrade to %s to be able to import some sophisticated example web services.' =>
+            '',
         'After you save the configuration you will be redirected again to the edit screen.' =>
             '',
         'If you want to return to overview please click the "Go to overview" button.' =>
             '',
         'Web Service List' => 'ウェブサービス一覧',
-        'Remote system' => '',
+        'Remote system' => 'リモートシステム',
         'Provider transport' => '',
         'Requester transport' => '',
         'Debug threshold' => '',
@@ -1488,6 +1497,7 @@ sub Data {
         'Create new groups to handle access permissions for different groups of agent (e. g. purchasing department, support department, sales department, ...). ' =>
             '統計グループは統計エリアを取得します。異なるエージェントグループへのアクセス許可を操作するには、グループを新規作成してください。（例：購買部、サポート部、営業部等）',
         'It\'s useful for ASP solutions. ' => 'ASPソリューションが便利です',
+        'total' => '合計',
         'Add Group' => 'グループ追加',
         'Edit Group' => 'グループ編集',
 
@@ -1622,12 +1632,12 @@ sub Data {
         'Unauthorized Usage Detected' => '',
         'This system uses the %s without a proper license! Please make contact with %s to renew or activate your contract!' =>
             '',
-        '%s not Correctly Installed' => '',
+        '%s not Correctly Installed' => '%s は正常にインストールされました',
         'Your %s is not correctly installed. Please reinstall it with the button below.' =>
-            '%s は正しくインストールされていません。下のボタンを押して再インストールしてください。',
+            '%s は正常にインストールされていません。下のボタンを押して再インストールしてください。',
         'Reinstall %s' => '%s の再インストール',
         'Your %s is not correctly installed, and there is also an update available.' =>
-            '',
+            '%s は正常にインストールされていません。また、こちらのパッケージにはアップデートがあります。',
         'You can either reinstall your current version or perform an update with the buttons below (update recommended).' =>
             '',
         'Update %s' => '%s のアップデート',
@@ -1638,7 +1648,7 @@ sub Data {
             '',
         '%s Correctly Deployed' => '%s 正しくデプロイされました',
         'Congratulations, your %s is correctly installed and up to date!' =>
-            '',
+            'おめでとうございます。 %s は最新版として正常にインストールされました。',
 
         # Template: AdminOTRSBusinessNotInstalled
         '%s will be available soon. Please check again in a few days.' =>
@@ -1995,7 +2005,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         '0 = no unlock' => '0 = ロック解除しない',
         'Only business hours are counted.' => '勤務時間のみ計算されます',
         'If an agent locks a ticket and does not close it before the unlock timeout has passed, the ticket will unlock and will become available for other agents.' =>
-            '担当者がチケットロック後、ロック期限切れ前に完了していない場合、ロックは解除され、他の担当者がチケットを担当できるようになります。',
+            '担当者がチケットロック後、ロック期限切れ前にクローズしていない場合、ロックは解除され、他の担当者がチケットを担当できるようになります。',
         'Notify by' => '通知する時間',
         '0 = no escalation' => '0 = エスカレーションしない',
         'If there is not added a customer contact, either email-external or phone, to a new ticket before the time defined here expires, the ticket is escalated.' =>
@@ -2003,13 +2013,13 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'If there is an article added, such as a follow-up via email or the customer portal, the escalation update time is reset. If there is no customer contact, either email-external or phone, added to a ticket before the time defined here expires, the ticket is escalated.' =>
             'メールでのフォローアップやカスタマーポータルに追加された記事があれば、エスカレーション更新期限はリセットされます。ここで定義された時間内に顧客からの外部メールや電話の記録が追加されない場合、チケットがエスカレーションされます。',
         'If the ticket is not set to closed before the time defined here expires, the ticket is escalated.' =>
-            'ここで定義された時間の前にチケットが完了しない場合、チケットがエスカレーションされます。',
+            'ここで定義された時間の前にチケットがクローズしない場合、チケットがエスカレーションされます。',
         'Follow up Option' => 'フォローアップ・オプション',
         'Specifies if follow up to closed tickets would re-open the ticket, be rejected or lead to a new ticket.' =>
-            '完了したチケットにフォローアップしたい場合、チケットを再度対応中にするか、拒否して新規チケットにするかを指定します。',
+            'クローズしたチケットにフォローアップしたい場合、チケットを再度対応中にするか、拒否して新規チケットにするかを指定します。',
         'Ticket lock after a follow up' => 'フォローアップ後にチケットをロック',
         'If a ticket is closed and the customer sends a follow up the ticket will be locked to the old owner.' =>
-            'チケットが完了した後に顧客がチケットにフォローアップする場合、旧所有者にロックされます。',
+            'チケットがクローズした後に顧客がチケットにフォローアップする場合、旧所有者にロックされます。',
         'System address' => 'システムアドレス',
         'Will be the sender address of this queue for email answers.' => 'このキューでのメール回答はこの送信者アドレスになります。',
         'Default sign key' => '既定のサインキー',
@@ -2202,6 +2212,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Relate this certificate' => '',
 
         # Template: AdminSMIMECertRead
+        'Close dialog' => 'ダイアログを閉じる',
         'Certificate details' => '',
 
         # Template: AdminSalutation
@@ -2270,16 +2281,16 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'State type' => '状態のタイプ',
 
         # Template: AdminSupportDataCollector
-        'Sending support data to OTRS Group is not possible!' => '',
+        'Sending support data to OTRS Group is not possible!' => 'OTRS Group へのサポートデータの送信ができません！',
         'Enable Cloud Services' => '',
         'This data is sent to OTRS Group on a regular basis. To stop sending this data please update your system registration.' =>
             '',
         'You can manually trigger the Support Data sending by pressing this button:' =>
-            '',
+            '手動でこのボタンを押すことにより、サポートデータを送信することができます。',
         'Send Update' => '',
         'Sending Update...' => '',
         'Support Data information was successfully sent.' => '',
-        'Was not possible to send Support Data information.' => '',
+        'Was not possible to send Support Data information.' => 'OTRS Group へのサポートデータを送信できませんでした。',
         'Update Result' => '',
         'Currently this data is only shown in this system.' => '',
         'A support bundle (including: system registration information, support data, a list of installed packages and all locally modified source code files) can be generated by pressing this button:' =>
@@ -2348,6 +2359,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Block' => 'ブロック',
         'AccessKey' => 'アクセスキー',
         'Add NavBar entry' => 'ナビゲーションバーに追加',
+        'NavBar module' => '',
         'Year' => '年',
         'Month' => '月',
         'Day' => '日',
@@ -2486,6 +2498,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'in' => '＞',
 
         # Template: AgentDashboardCommon
+        'Close this widget' => 'このウィジェットを閉じる',
         'Available Columns' => '利用可能な列',
         'Visible Columns (order by drag & drop)' => '表示する列 (ドラッグ&ドロップで並び替えできます)',
 
@@ -2553,7 +2566,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
 
         # Template: AgentHTMLReferencePageLayout
         'The ticket has been locked' => 'チケットはロック済です',
-        'Undo & close' => '',
+        'Undo & close' => '元に戻して閉じる',
 
         # Template: AgentInfo
         'Info' => '情報',
@@ -2563,8 +2576,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Link Object: %s' => '連結対象: %s',
         'go to link delete screen' => '連結解除画面へ移動',
         'Select Target Object' => '対象を選択',
-        'Link Object' => '連結対象',
-        'with' => 'と',
+        'Link object %s with' => '',
         'Unlink Object: %s' => '連結解除対象: %s',
         'go to link add screen' => '連結画面へ移動',
 
@@ -2624,13 +2636,13 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
             '',
 
         # Template: AgentTicketActionCommon
-        'Change Free Text of %s%s' => '',
-        'Change Owner of %s%s' => '',
-        'Close %s%s' => '',
-        'Add Note to %s%s' => '',
-        'Set Pending Time for %s%s' => '',
-        'Change Priority of %s%s' => '',
-        'Change Responsible of %s%s' => '',
+        'Change Free Text of %s%s%s' => '',
+        'Change Owner of %s%s%s' => '',
+        'Close %s%s%s' => '',
+        'Add Note to %s%s%s' => '',
+        'Set Pending Time for %s%s%s' => '',
+        'Change Priority of %s%s%s' => '',
+        'Change Responsible of %s%s%s' => '',
         'All fields marked with an asterisk (*) are mandatory.' => 'アスタリスク（*）が付いている全ての領域は必須入力です。',
         'Service invalid.' => '無効なサービスです',
         'New Owner' => '新しい所有者',
@@ -2644,14 +2656,14 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Inform involved agents' => '',
         'Here you can select additional agents which should receive a notification regarding the new article.' =>
             '',
-        'Text will also be received by:' => '',
+        'Text will also be received by' => '',
         'Spell check' => 'スペルチェック',
         'Text Template' => '本文テンプレート',
         'Setting a template will overwrite any text or attachment.' => 'テンプレートを設定すると作成中の本文または添付ファイルは上書きされます。',
         'Note type' => 'メモタイプ',
 
         # Template: AgentTicketBounce
-        'Bounce %s%s' => '',
+        'Bounce %s%s%s' => '',
         'Bounce to' => 'バウンスto',
         'You need a email address.' => 'メールアドレスが必要です',
         'Need a valid email address or don\'t use a local email address.' =>
@@ -2669,10 +2681,10 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Link together' => '一緒に連結',
         'Link to parent' => '親へ連結',
         'Unlock tickets' => 'チケットのロック解除',
-        'Execute Bulk Action' => '',
+        'Execute Bulk Action' => '一括処理を実行',
 
         # Template: AgentTicketCompose
-        'Compose Answer for %s%s' => '',
+        'Compose Answer for %s%s%s' => '',
         'This address is registered as system address and cannot be used: %s' =>
             '',
         'Please include at least one recipient' => '',
@@ -2685,7 +2697,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Date Invalid!' => '日時が無効です。',
 
         # Template: AgentTicketCustomer
-        'Change Customer of %s%s' => '',
+        'Change Customer of %s%s%s' => '',
 
         # Template: AgentTicketEmail
         'Create New Email Ticket' => '新規メールチケットの作成',
@@ -2698,32 +2710,33 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Get all' => '全てを取得',
 
         # Template: AgentTicketEmailOutbound
-        'Outbound Email for %s%s' => '',
+        'Outbound Email for %s%s%s' => '',
 
         # Template: AgentTicketEscalation
         'Ticket %s: first response time is over (%s/%s)!' => '',
         'Ticket %s: first response time will be over in %s/%s!' => '',
+        'Ticket %s: update time is over (%s/%s)!' => '',
         'Ticket %s: update time will be over in %s/%s!' => '',
         'Ticket %s: solution time is over (%s/%s)!' => '',
         'Ticket %s: solution time will be over in %s/%s!' => '',
 
         # Template: AgentTicketForward
-        'Forward %s%s' => '',
+        'Forward %s%s%s' => '',
 
         # Template: AgentTicketHistory
-        'History of %s%s' => '',
+        'History of %s%s%s' => '',
         'History Content' => '履歴内容',
-        'Zoom view' => 'ズームビュー',
+        'Zoom view' => 'ズーム・ビュー',
 
         # Template: AgentTicketMerge
-        'Merge %s%s' => '',
+        'Merge %s%s%s' => '',
         'Merge Settings' => '',
         'You need to use a ticket number!' => '使用するチケット番号が必要です。',
         'A valid ticket number is required.' => '有効なチケット番号が必要です。',
         'Need a valid email address.' => '有効なメールアドレスが必要です。',
 
         # Template: AgentTicketMove
-        'Move %s%s' => '',
+        'Move %s%s%s' => '',
         'New Queue' => '新規キュー',
 
         # Template: AgentTicketOverviewMedium
@@ -2756,10 +2769,10 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'The chat will be appended as a separate article.' => 'チャットは新規記事として追加されます。',
 
         # Template: AgentTicketPhoneCommon
-        'Phone Call for %s%s' => '',
+        'Phone Call for %s%s%s' => '',
 
         # Template: AgentTicketPlain
-        'View Email Plain Text for %s%s' => '',
+        'View Email Plain Text for %s%s%s' => '',
         'Plain' => '書式なし',
         'Download this email' => 'このメールをダウンロード',
 
@@ -2791,17 +2804,17 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Lock state' => 'ロックの状態',
         'Watcher' => '監視者',
         'Article Create Time (before/after)' => '記事作成時間 (前／後)',
-        'Article Create Time (between)' => '記事作成時間 (期間中)',
+        'Article Create Time (between)' => '記事作成日時がこの期間内',
         'Ticket Create Time (before/after)' => 'チケット作成時間 (前／後)',
-        'Ticket Create Time (between)' => 'チケット作成時間 (期間中)',
+        'Ticket Create Time (between)' => 'チケット作成日時がこの期間内',
         'Ticket Change Time (before/after)' => 'チケット変更時間 (前／後)',
-        'Ticket Change Time (between)' => 'チケット変更時間 (期間中)',
+        'Ticket Change Time (between)' => 'チケット変更日時がこの期間内',
         'Ticket Last Change Time (before/after)' => 'チケット最終変更時間 (前／後)',
-        'Ticket Last Change Time (between)' => 'チケット最終変更時間 (期間中)',
-        'Ticket Close Time (before/after)' => 'チケット完了時間 (前／後)',
-        'Ticket Close Time (between)' => 'チケット完了時間 (期間中)',
+        'Ticket Last Change Time (between)' => 'チケット最終変更日時がこの期間内',
+        'Ticket Close Time (before/after)' => 'チケット・クローズ時間 (前／後)',
+        'Ticket Close Time (between)' => 'チケットのクローズ日時がこの期間内',
         'Ticket Escalation Time (before/after)' => 'チケットエスカレーション時間 (前／後)',
-        'Ticket Escalation Time (between)' => 'チケットエスカレーション時間 (期間中)',
+        'Ticket Escalation Time (between)' => 'チケットエスカレーション日時がこの期間内',
         'Archive Search' => '書庫検索',
         'Run search' => '検索を実行',
 
@@ -2852,6 +2865,11 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Close this message' => 'このメッセージを閉じる',
         'Article could not be opened! Perhaps it is on another article page?' =>
             '',
+        'Scale preview content' => '',
+        'Open URL in new tab' => '',
+        'Close preview' => 'プレビューを閉じる',
+        'A preview of this website can\'t be provided because it didn\'t allow to be embedded.' =>
+            '',
 
         # Template: AttachmentBlocker
         'To protect your privacy, remote content was blocked.' => '',
@@ -2866,6 +2884,8 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'go back to the previous page' => '直前のページに戻る',
 
         # Template: CustomerError
+        'An Error Occurred' => '',
+        'Error Details' => 'エラーの詳細',
         'Traceback' => 'トレースバック',
 
         # Template: CustomerFooter
@@ -2930,6 +2950,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
 
         # Template: CustomerRichTextEditor
         'Split Quote' => '',
+        'Open link' => '',
 
         # Template: CustomerTicketMessage
         'Service level agreement' => 'サービスレベル契約 (SLA)',
@@ -3003,8 +3024,12 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
 
         # Template: Error
         'An error occurred.' => '',
+        'Really a bug? 5 out of 10 bug reports result from a wrong or incomplete installation of OTRS.' =>
+            '',
+        'With %s, our experts take care of correct installation and cover your back with support and periodic security updates.' =>
+            '',
+        'Contact our service team now.' => '',
         'Send a bugreport' => 'バグ報告を送信',
-        'Error Details' => 'エラーの詳細',
 
         # Template: FooterJS
         'Please enter at least one search value or * to find anything.' =>
@@ -3038,7 +3063,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Database Settings' => 'データベース設定',
         'General Specifications and Mail Settings' => '共通仕様とメール設定',
         'Finish' => '完了',
-        'Welcome to %s' => '',
+        'Welcome to %s' => '%s にようこそ',
         'Web site' => 'Webサイト',
         'Mail check successful.' => 'メールチェックに成功しました。',
         'Error in the mail settings. Please correct and try again.' => 'メール設定中にエラーが発生しました。再設定してください。',
@@ -3065,7 +3090,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Inbound mail user' => '受信メールユーザー',
         'User for inbound mail.' => 'メールを受信するユーザー',
         'Inbound mail password' => '受信メールパスワード',
-        'Password for inbound mail.' => 'メールを受信するパスワード',
+        'Password for inbound mail.' => '受信メールのパスワード',
         'Result of mail configuration check' => 'メール設定チェックの結果',
         'Check mail configuration' => 'メール設定チェック',
         'Skip this step' => 'この手順を飛ばす',
@@ -3140,7 +3165,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Back to login' => 'ログイン画面に戻る',
 
         # Template: MobileNotAvailableWidget
-        'Feature not available' => '',
+        'Feature not available' => '利用できない機能',
         'Sorry, but this feature of OTRS is currently not available for mobile devices. If you\'d like to use it, you can either switch to desktop mode or use your regular desktop device.' =>
             '',
 
@@ -3160,7 +3185,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Show last page' => '最後のページを表示',
 
         # Template: PictureUpload
-        'Need FormID!' => '',
+        'Need FormID!' => 'フォームIDの入力が必要です！',
         'No file found!' => 'ファイルがありません！',
         'The file is not an image that can be shown inline!' => '',
 
@@ -3172,9 +3197,9 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Please note that you can\'t completely disable notifications marked as mandatory.' =>
             '必須とマークされている通知を完全に無効化することはできませんのでご了承ください。',
         'Sorry, but you can\'t disable all methods for notifications marked as mandatory.' =>
-            '',
+            '申し訳ありません。必須とマークされている通知は無効化することはできません。',
         'Sorry, but you can\'t disable all methods for this notification.' =>
-            '',
+            '申し訳ありません。この通知を無効化することはできません。',
 
         # Template: ActivityDialogHeader
         'Process Information' => 'プロセス情報',
@@ -3201,10 +3226,10 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'The selected time periods in the statistic are time zone neutral.' =>
             '',
         'Create summation row' => '',
-        'Generate an additional row containing sums for all data columns.' =>
+        'Generate an additional row containing sums for all data rows.' =>
             '',
         'Create summation column' => '',
-        'Generate an additional column containing sums for all data rows.' =>
+        'Generate an additional column containing sums for all data columns.' =>
             '',
         'Cache results' => '',
         'Stores statistics result data in a cache to be used in subsequent views with the same configuration.' =>
@@ -3217,11 +3242,11 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
 
         # Template: PreviewWidget
         'There are problems in the configuration of this statistic:' => '',
-        'You may now configure the X-axis of your statistic.' => '',
+        'You may now configure the X-axis of your statistic.' => '統計のX軸を設定できます。',
         'This statistic does not provide preview data.' => '',
         'Preview format:' => '',
         'Please note that the preview uses random data and does not consider data filters.' =>
-            '',
+            'プレビュー画面ではランダムデータを利用しており、またデータ・フィルタを考慮していませんので、ご留意願います。',
         'Configure X-Axis' => 'X軸の設定',
         'X-axis' => 'X軸',
         'Configure Y-Axis' => 'Y軸の設定',
@@ -3230,10 +3255,10 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
 
         # Template: RestrictionsWidget
         'Please select only one element or turn off the button \'Fixed\'.' =>
-            '',
-        'Absolute period' => '',
+            '選択する項目を1つのみにするか、「固定値」をオフにしてください。',
+        'Absolute period' => '絶対値',
         'Between' => 'この間',
-        'Relative period' => '',
+        'Relative period' => '相対値',
         'The past complete %s and the current+upcoming complete %s %s' =>
             '',
         'Do not allow changes to this element when the statistic is generated.' =>
@@ -3245,6 +3270,8 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Configurable params of static stat' => '静的統計情報の設定可能パラメータ',
         'No element selected.' => '要素が選択されていません。',
         'Scale' => '目盛',
+        'show more' => '',
+        'show less' => '',
 
         # Template: D3
         'Download SVG' => 'SVG画像のダウンロード',
@@ -3258,7 +3285,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
 
         # Template: YAxisWidget
         'Please remember that the scale for the Y-axis has to be larger than the scale for the X-axis (e.g. X-axis => Month, Y-Axis => Year).' =>
-            '',
+            'Y軸の目盛はX軸の目盛より大きくする必要があります (例: X軸=>月、Y軸=>年)',
 
         # Template: Test
         'OTRS Test Page' => 'OTRS テストページ',
@@ -3269,7 +3296,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Go back to the previous page' => '前のページへ戻る',
 
         # Perl Module: Kernel/Config/Defaults.pm
-        'View system log messages.' => 'システムログメッセージを見る。',
+        'View system log messages.' => 'システム・ログ・メッセージを見る。',
         'Update and extend your system with software packages.' => 'このシステムのソフトウェアパッケージの更新と展開',
 
         # Perl Module: Kernel/Modules/AdminACL.pm
@@ -3280,17 +3307,23 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'There where errors adding/updating the following ACLs: %s. Please check the log file for more information.' =>
             '',
         'This field is required' => 'このフィールドは必須です',
-        'There was an error creating the ACL' => '',
-        'Need ACLID!' => '',
-        'Could not get data for ACLID %s' => '',
-        'There was an error updating the ACL' => '',
+        'There was an error creating the ACL' => 'ACLデータの作成時にエラーが発生しました。',
+        'Need ACLID!' => 'ACL IDの入力が必要です！',
+        'Could not get data for ACLID %s' => 'ACL ID %s の値を取得できませんでした',
+        'There was an error updating the ACL' => 'ACLの更新時にエラーが発生しました。',
         'There was an error setting the entity sync status.' => '',
-        'There was an error synchronizing the ACLs.' => '',
-        'ACL %s could not be deleted' => '',
+        'There was an error synchronizing the ACLs.' => 'ACL間の同期処理中にエラーが発生しました。',
+        'ACL %s could not be deleted' => 'ACL %s は削除できません',
         'There was an error getting data for ACL with ID %s' => '',
+        'Exact match' => '完全に一致',
+        'Negated exact match' => '',
+        'Regular expression' => '',
+        'Regular expression (ignore case)' => '',
+        'Negated regular expression' => '',
+        'Negated regular expression (ignore case)' => '',
 
         # Perl Module: Kernel/Modules/AdminCustomerCompany.pm
-        'Customer Company %s already exists!' => '',
+        'Customer Company %s already exists!' => '顧客企業 %s は、既に存在します！',
 
         # Perl Module: Kernel/Modules/AdminCustomerUser.pm
         'New phone ticket' => '新規電話チケットの作成',
@@ -3303,8 +3336,8 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
             '',
 
         # Perl Module: Kernel/Modules/AdminDynamicFieldCheckbox.pm
-        'Undefined subaction.' => '',
-        'Need %s' => '',
+        'Undefined subaction.' => '未定義のサブアクションです。',
+        'Need %s' => '%s の入力が必要です。',
         'The field does not contain only ASCII letters and numbers.' => '',
         'There is another field with the same name.' => '',
         'The field must be numeric.' => '',
@@ -3314,7 +3347,13 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Could not get data for dynamic field %s' => '',
         'The name for this field should not change.' => '',
         'Could not update the field %s' => '',
-        'Currently' => '',
+        'Currently' => '現在の',
+        'Unchecked' => '未選択',
+        'Checked' => '選択済み',
+
+        # Perl Module: Kernel/Modules/AdminDynamicFieldDateTime.pm
+        'Prevent entry of dates in the future' => '',
+        'Prevent entry of dates in the past' => '',
 
         # Perl Module: Kernel/Modules/AdminDynamicFieldDropdown.pm
         'This field value is duplicated.' => '',
@@ -3323,13 +3362,16 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Select at least one recipient.' => '',
 
         # Perl Module: Kernel/Modules/AdminGenericAgent.pm
+        'archive tickets' => 'チケットをアーカイブする',
+        'restore tickets from archive' => '',
+        'Need Profile!' => 'プロファイルの入力が必要です！',
         'Got no values to check.' => '',
         'Please remove the following words because they cannot be used for the ticket selection:' =>
             '',
 
         # Perl Module: Kernel/Modules/AdminGenericInterfaceDebugger.pm
-        'Need WebserviceID!' => '',
-        'Could not get data for WebserviceID %s' => '',
+        'Need WebserviceID!' => 'WebサービスIDの入力が必要です！',
+        'Could not get data for WebserviceID %s' => 'WebサービスID %s の値を取得できませんでした',
 
         # Perl Module: Kernel/Modules/AdminGenericInterfaceInvokerDefault.pm
         'Need InvokerType' => '',
@@ -3342,6 +3384,14 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Could not get registered configuration for action type %s' => '',
         'Could not get backend for %s %s' => '',
         'Could not update configuration data for WebserviceID %s' => '',
+        'Keep (leave unchanged)' => '保持 (変更せずに終了する)',
+        'Ignore (drop key/value pair)' => '無視 (キー/値のペアを破棄する)',
+        'Map to (use provided value as default)' => '',
+        'Exact value(s)' => '',
+        'Ignore (drop Value/value pair)' => '',
+
+        # Perl Module: Kernel/Modules/AdminGenericInterfaceMappingXSLT.pm
+        'Could not find required library %s' => '',
 
         # Perl Module: Kernel/Modules/AdminGenericInterfaceOperationDefault.pm
         'Need OperationType' => '',
@@ -3359,14 +3409,17 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Web service "%s" updated!' => 'Webサービス "%s" を更新しました。',
         'There was an error creating the web service.' => '',
         'Web service "%s" created!' => 'Webサービス "%s" を作成しました。',
-        'Need Name!' => '',
-        'Need a file to import!' => '',
+        'Need Name!' => '名前の入力が必要です！',
+        'Need ExampleWebService!' => '',
+        'Could not read %s!' => '%s を読み込めません！',
+        'Need a file to import!' => 'インポートするファイルを指定してください！',
         'The imported file has not valid YAML content! Please check OTRS log for details' =>
             '',
         'Web service "%s" deleted!' => 'Webサービス "%s" を削除しました。',
 
         # Perl Module: Kernel/Modules/AdminGenericInterfaceWebserviceHistory.pm
         'Got no WebserviceHistoryID!' => '',
+        'Could not get history data for WebserviceHistoryID %s' => '',
 
         # Perl Module: Kernel/Modules/AdminNotificationEvent.pm
         'Notification updated!' => '',
@@ -3383,44 +3436,47 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
             '',
         'There where errors adding/updating the following Notifications: %s. Please check the log file for more information.' =>
             '',
-        'Agent who owns the ticket' => '',
-        'Agent who is responsible for the ticket' => '',
-        'All agents watching the ticket' => '',
-        'All agents with write permission for the ticket' => '',
-        'All agents subscribed to the ticket\'s queue' => '',
-        'All agents subscribed to the ticket\'s service' => '',
+        'Agent who owns the ticket' => 'チケットを保有する担当者',
+        'Agent who is responsible for the ticket' => 'チケットの責任者',
+        'All agents watching the ticket' => 'チケットを閲覧可能なすべての担当者',
+        'All agents with write permission for the ticket' => 'チケット編集可能権限を持つすべての担当者',
+        'All agents subscribed to the ticket\'s queue' => 'チケットのキューを購読しているすべての担当者',
+        'All agents subscribed to the ticket\'s service' => 'チケットのサービスを購読しているすべての担当者',
         'All agents subscribed to both the ticket\'s queue and service' =>
-            '',
-        'Customer of the ticket' => '',
+            'チケットのキュー及びサービスを購読しているすべての担当者',
+        'Customer of the ticket' => 'チケットの顧客',
         'Yes, but require at least one active notification method' => '',
 
         # Perl Module: Kernel/Modules/AdminPGP.pm
         'PGP environment is not working. Please check log for more info!' =>
-            '',
-        'Need param Key to delete!' => '',
-        'Key %s deleted!' => '',
-        'Need param Key to download!' => '',
+            'PGP 機構が動作していません。詳しくはログをご覧ください！',
+        'Need param Key to delete!' => '削除するには、キーを入力する必要があります！',
+        'Key %s deleted!' => 'キー %s を削除しました。',
+        'Need param Key to download!' => 'ダウンロードを行うには、キーを入力する必要があります！',
 
         # Perl Module: Kernel/Modules/AdminPackageManager.pm
         'Sorry, Apache::Reload is needed as PerlModule and PerlInitHandler in Apache config file. See also scripts/apache2-httpd.include.conf. Alternatively, you can use the command line tool bin/otrs.Console.pl to install packages!' =>
             '',
-        'No such package!' => '',
-        'No such file %s in package!' => '',
-        'No such file %s in local file system!' => '',
-        'Can\'t read %s!' => '',
+        'No such package!' => 'そのようなパッケージはありません！',
+        'No such file %s in package!' => 'パッケージ内にファイル %s はありません！',
+        'No such file %s in local file system!' => 'ローカルファイルシステム内にファイル %s はありません！',
+        'Can\'t read %s!' => '%s を読み込めません！',
         'Package has locally modified files.' => '',
         'No packages or no new packages found in selected repository.' =>
             '',
         'Package not verified due a communication issue with verification server!' =>
             '',
+        'Can\'t connect to OTRS Feature Add-on list server!' => '',
+        'Can\'t get OTRS Feature Add-on list from server!' => '',
+        'Can\'t get OTRS Feature Add-on from server!' => '',
 
         # Perl Module: Kernel/Modules/AdminPostMasterFilter.pm
-        'No such filter: %s' => '',
+        'No such filter: %s' => 'そのようなフィルタはありません: %s',
 
         # Perl Module: Kernel/Modules/AdminProcessManagement.pm
         'Need ExampleProcesses!' => '',
-        'Could not read %s!' => '',
         'Need ProcessID!' => '',
+        'Yes (mandatory)' => '',
         'Unknown Process %s!' => '',
         'There was an error generating a new EntityID for this Process' =>
             '',
@@ -3438,6 +3494,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'There was an error setting the entity sync status for %s entity: %s' =>
             '',
         'Could not get %s' => '',
+        'Need %s!' => '',
         'Process: %s is not Inactive' => '',
 
         # Perl Module: Kernel/Modules/AdminProcessManagementActivity.pm
@@ -3477,7 +3534,6 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'fax' => 'fax',
 
         # Perl Module: Kernel/Modules/AdminProcessManagementPath.pm
-        'Need %s!' => '',
         'Edit Path' => '',
 
         # Perl Module: Kernel/Modules/AdminProcessManagementTransition.pm
@@ -3492,7 +3548,6 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Edit Transition "%s"' => '',
         'xor' => '',
         'String' => '',
-        'Regular expression' => '',
         'Transition validation module' => '',
 
         # Perl Module: Kernel/Modules/AdminProcessManagementTransitionAction.pm
@@ -3509,7 +3564,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Error: Not all keys seem to have values or vice versa.' => '',
 
         # Perl Module: Kernel/Modules/AdminQueue.pm
-        'Don\'t use :: in queue name!' => '',
+        'Don\'t use :: in queue name!' => 'キューの名称に"::"を使わないでください！',
         'Click back and change it!' => '',
 
         # Perl Module: Kernel/Modules/AdminQueueAutoResponse.pm
@@ -3535,6 +3590,9 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Salutation updated!' => '',
         'Salutation added!' => '',
 
+        # Perl Module: Kernel/Modules/AdminSupportDataCollector.pm
+        'File %s could not be read!' => '',
+
         # Perl Module: Kernel/Modules/AdminSysConfig.pm
         'Import not allowed!' => '',
         'Need File!' => '',
@@ -3559,7 +3617,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Need Type!' => '',
 
         # Perl Module: Kernel/Modules/AgentDashboardCommon.pm
-        'No such config for %s' => '',
+        'No such config for %s' => '設定項目 %s は存在しません',
         'Statistic' => '統計',
         'No preferences for %s!' => '',
         'Can\'t get element data of %s!' => '',
@@ -3570,8 +3628,8 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Please contact the admin.' => '',
         'You need ro permission!' => '',
         'Can not delete link with %s!' => '',
+        'Can not create link with %s! Object already linked as %s.' => '',
         'Can not create link with %s!' => '',
-        'Object already linked as %s.' => '',
         'The object %s cannot link with other object!' => '',
 
         # Perl Module: Kernel/Modules/AgentPreferences.pm
@@ -3624,6 +3682,9 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Got no TicketID!' => '',
         'System Error!' => '',
 
+        # Perl Module: Kernel/Modules/AgentTicketEscalationView.pm
+        'Invalid Filter: %s!' => '',
+
         # Perl Module: Kernel/Modules/AgentTicketHistory.pm
         'Can\'t show history, no TicketID is given!' => '',
 
@@ -3644,7 +3705,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Chat is not active.' => '',
         'No permission.' => '',
         '%s has left the chat.' => '%s はチャットから退出しました。',
-        'This chat has been closed and will be removed in %s hours.' => 'このチャットはすでに閉じられています、  %s 時間後に削除されます。',
+        'This chat has been closed and will be removed in %s hours.' => 'このチャットは既にクローズしています。%s 時間後に削除されます。',
 
         # Perl Module: Kernel/Modules/AgentTicketPlain.pm
         'No ArticleID!' => '',
@@ -3667,8 +3728,6 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
             '',
         'Couldn\'t get Ticket for TicketID: %s in _GetParam!' => '',
         'Couldn\'t determine ActivityEntityID. DynamicField or Config isn\'t set properly!' =>
-            '',
-        'DynamicFieldConfig missing for field: %s, or is not a Ticket Dynamic Field!' =>
             '',
         'Process::Default%s Config Value missing!' => '',
         'Got no ProcessEntityID or TicketID and ActivityDialogEntityID!' =>
@@ -3711,14 +3770,14 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
             '',
         'Could not set %s for Ticket with ID "%s" in ActivityDialog "%s"!' =>
             '',
-        'Default Config for Process::Default%s missing!' => '',
-        'Default Config for Process::Default%s invalid!' => '',
-
-        # Perl Module: Kernel/Modules/AgentTicketResponsibleView.pm
-        'Invalid Filter: %s!' => '',
+        'Default Config for Process::Default%s missing!' => 'Process::Default%s のデフォルト値が未指定となっています！',
+        'Default Config for Process::Default%s invalid!' => 'Process::Default%s のデフォルト値が未指定となっています！',
 
         # Perl Module: Kernel/Modules/AgentTicketSearch.pm
+        'Untitled' => '',
         'Invalid Users' => '',
+        'CSV' => 'CSV',
+        'Excel' => '',
 
         # Perl Module: Kernel/Modules/AgentTicketService.pm
         'Feature not enabled!' => '',
@@ -3741,11 +3800,11 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Service Updated' => 'サービスが更新されました',
         'Customer Updated' => '顧客が更新されました',
         'State Updated' => '状態が更新されました',
-        'Incoming Follow-Up' => '',
-        'Escalation Update Time Stopped' => '',
-        'Escalation Solution Time Stopped' => '',
-        'Escalation First Response Time Stopped' => '',
-        'Escalation Response Time Stopped' => '',
+        'Incoming Follow-Up' => 'フォローアップがあります',
+        'Escalation Update Time Stopped' => 'エスカレーション更新期限タイマーが停止されました',
+        'Escalation Solution Time Stopped' => 'エスカレーション解決期限タイマーが停止されました',
+        'Escalation First Response Time Stopped' => 'エスカレーション初回応答期限タイマーが停止されました',
+        'Escalation Response Time Stopped' => 'エスカレーション応答期限タイマーが停止されました',
         'Link Added' => 'リンクが追加されました',
         'Link Deleted' => 'リンクが削除されました',
         'Ticket Merged' => 'チケットが結合されました',
@@ -3775,37 +3834,43 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         # Perl Module: Kernel/Modules/CustomerTicketAttachment.pm
         'FileID and ArticleID are needed!' => '',
         'No TicketID for ArticleID (%s)!' => '',
-        'No such attachment (%s)!' => '',
+        'No such attachment (%s)!' => 'そのような添付ファイル( %s )はありません！',
 
         # Perl Module: Kernel/Modules/CustomerTicketMessage.pm
-        'Check SysConfig setting for %s::QueueDefault.' => '',
-        'Check SysConfig setting for %s::TicketTypeDefault.' => '',
+        'Check SysConfig setting for %s::QueueDefault.' => '%s::QueueDefault の設定値をご確認ください。',
+        'Check SysConfig setting for %s::TicketTypeDefault.' => '%s::TicketTypeDefault の設定値をご確認ください。',
 
         # Perl Module: Kernel/Modules/CustomerTicketOverview.pm
-        'Need CustomerID!' => '',
+        'Need CustomerID!' => '顧客IDの入力が必要です！',
+        'My Tickets' => '担当チケット',
+        'Company Tickets' => '企業チケット',
+        'Untitled!' => '',
 
         # Perl Module: Kernel/Modules/CustomerTicketSearch.pm
         'Please remove the following words because they cannot be used for the search:' =>
             '',
 
         # Perl Module: Kernel/Modules/CustomerTicketZoom.pm
-        'Can\'t reopen ticket, not possible in this queue!' => '',
-        'Create a new ticket!' => '',
+        'Can\'t reopen ticket, not possible in this queue!' => 'このキューにあるチケットは再オープンできません！',
+        'Create a new ticket!' => '新規チケットを作成！',
 
         # Perl Module: Kernel/Modules/Installer.pm
-        'Directory "%s" doesn\'t exist!' => '',
-        'Configure "Home" in Kernel/Config.pm first!' => '',
-        'File "%s/Kernel/Config.pm" not found!' => '',
-        'Directory "%s" not found!' => '',
-        'Kernel/Config.pm isn\'t writable!' => '',
+        'Directory "%s" doesn\'t exist!' => 'ディレクトリ "%s" は存在しません！',
+        'Configure "Home" in Kernel/Config.pm first!' => 'まず、 ”Kernel/Config.pm” ファイルの "Home" を設定してください！',
+        'File "%s/Kernel/Config.pm" not found!' => '"%s/Kernel/Config.pm" ファイルが見つかりません！',
+        'Directory "%s" not found!' => 'ディレクトリ "%s" が見つかりません！',
+        'Kernel/Config.pm isn\'t writable!' => '"Kernel/Config.pm" ファイルに書き込み権限がありません！',
         'If you want to use the installer, set the Kernel/Config.pm writable for the webserver user!' =>
-            '',
-        'Unknown database type "%s".' => '',
-        'Please go back' => '',
-        'Install OTRS - Error' => '',
-        'File "%s/%s.xml" not found!' => '',
-        'Contact your Admin!' => '',
-        'Can\'t write Config file!' => '',
+            'インストーラーをご利用の場合は、”Kernel.Config.pm” ファイルにWebサーバ実行ユーザによる書き込み権限を付与してください！',
+        'Unknown Check!' => '原因不明な障害です！',
+        'The check "%s" doesn\'t exist!' => '',
+        'Database %s' => '',
+        'Unknown database type "%s".' => '"%s"は不明なデータベース形式です。',
+        'Please go back' => '前のページに戻ってください',
+        'Install OTRS - Error' => 'OTRSをインストール － エラーが発生しました',
+        'File "%s/%s.xml" not found!' => 'ファイル "%s/%s.xml" が見つかりません！',
+        'Contact your Admin!' => '管理者に連絡してください！',
+        'Can\'t write Config file!' => '設定ファイルに書き込み出来ません！',
         'Unknown Subaction %s!' => '',
         'Can\'t connect to database, Perl module DBD::%s not installed!' =>
             '',
@@ -3833,22 +3898,21 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'The start time of a ticket has been set after the end time!' => '',
 
         # Perl Module: Kernel/Output/HTML/Dashboard/TicketGeneric.pm
+        'sorted ascending' => '昇順に並べ替え',
+        'sorted descending' => '降順に並べ替え',
         'filter not active' => '',
-        'filter active' => '',
-        'sorted ascending' => '',
-        'sorted descending' => '',
-        'This ticket has no title or subject' => '',
+        'filter active' => 'フィルタを有効化',
+        'This ticket has no title or subject' => 'このチケットにはタイトルもしくはテーマが入力されていません',
 
         # Perl Module: Kernel/Output/HTML/Dashboard/UserOnline.pm
-        'This user is currently offline' => '',
-        'This user is currently active' => '',
-        'This user is currently away' => '',
-        'This user is currently unavailable' => '',
+        'This user is currently offline' => 'このユーザーは現在オフラインです',
+        'This user is currently active' => 'このユーザーは現在オンラインです',
+        'This user is currently away' => 'このユーザーは現在離席中です',
+        'This user is currently unavailable' => 'このユーザーは現在利用できません。',
 
         # Perl Module: Kernel/Output/HTML/Layout.pm
-        'We are sorry, you do not have permissions anymore to access this ticket in its current state.' =>
+        'We are sorry, you do not have permissions anymore to access this ticket in its current state. You can take one of the following actions:' =>
             '',
-        ' You can take one of the next actions:' => '',
         'No Permission' => '',
 
         # Perl Module: Kernel/Output/HTML/Layout/LinkObject.pm
@@ -3878,6 +3942,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Please supply your new password!' => '',
 
         # Perl Module: Kernel/Output/HTML/Statistics/View.pm
+        'No (not supported)' => 'いいえ(サポートされていません)',
         'No past complete or the current+upcoming complete relative time value selected.' =>
             '',
         'The selected time period is larger than the allowed time period.' =>
@@ -3927,7 +3992,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Created State' => '作成時の状態',
         'CustomerUserLogin' => '顧客ユーザーログイン',
         'Create Time' => '作成日時',
-        'Close Time' => '完了時間',
+        'Close Time' => 'クローズ時間',
         'Escalation - First Response Time' => 'エスカレーション - 第1の応答時間',
         'Escalation - Update Time' => 'エスカレーション - 更新時間',
         'Escalation - Solution Time' => 'エスカレーション - 解決時間',
@@ -3938,22 +4003,58 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Evaluation by' => '評価',
         'Ticket/Article Accounted Time' => 'チケット／記事の作業時間',
         'Ticket Create Time' => 'チケット作成時間',
-        'Ticket Close Time' => 'チケット完了時間',
+        'Ticket Close Time' => 'チケット・クローズ時間',
         'Accounted time by Agent' => '担当者の作業時間',
+        'Total Time' => '合計時間',
+        'Ticket Average' => 'チケット平均',
+        'Ticket Min Time' => 'チケット最少時間',
+        'Ticket Max Time' => 'チケット最大時間',
+        'Number of Tickets' => 'チケットの数',
+        'Article Average' => '記事平均',
+        'Article Min Time' => '記事最少時間',
+        'Article Max Time' => '記事最大時間',
+        'Number of Articles' => '記事の数',
 
         # Perl Module: Kernel/System/Stats/Dynamic/TicketList.pm
+        'unlimited' => '',
+        'ascending' => '昇順',
+        'descending' => '降順',
         'Attributes to be printed' => '印刷する属性',
         'Sort sequence' => '並べ替え順序',
         'State Historic' => '',
         'State Type Historic' => '',
         'Historic Time Range' => '',
 
+        # Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
+        'Solution Average' => '',
+        'Solution Min Time' => '',
+        'Solution Max Time' => '',
+        'Solution Average (affected by escalation configuration)' => '',
+        'Solution Min Time (affected by escalation configuration)' => '',
+        'Solution Max Time (affected by escalation configuration)' => '',
+        'Solution Working Time Average (affected by escalation configuration)' =>
+            '',
+        'Solution Min Working Time (affected by escalation configuration)' =>
+            '',
+        'Solution Max Working Time (affected by escalation configuration)' =>
+            '',
+        'Response Average (affected by escalation configuration)' => '',
+        'Response Min Time (affected by escalation configuration)' => '',
+        'Response Max Time (affected by escalation configuration)' => '',
+        'Response Working Time Average (affected by escalation configuration)' =>
+            '',
+        'Response Min Working Time (affected by escalation configuration)' =>
+            '',
+        'Response Max Working Time (affected by escalation configuration)' =>
+            '',
+        'Number of Tickets (affected by escalation configuration)' => '',
+
         # Perl Module: Kernel/System/Stats/Static/StateAction.pm
         'Days' => '日',
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/Database/TablePresence.pm
         'Table Presence' => 'テーブル プレゼンス',
-        'Internal Error: Could not open file.' => 'インターナルエラー: ファイルを開けることができません',
+        'Internal Error: Could not open file.' => 'インターナルエラー: ファイルをオープンすることができません',
         'Table Check' => 'テーブルチェック',
         'Internal Error: Could not read file.' => 'インターナルエラー: ファイルが読み込めませんでした',
         'Tables found which are not present in the database.' => 'データベースに存在しないテーブルが見つかりました',
@@ -4075,7 +4176,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Tickets Per Month (avg)' => '月毎のチケット数(平均)',
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/DefaultSOAPUser.pm
-        'Default SOAP Username And Password' => '',
+        'Default SOAP Username And Password' => 'デフォルトのSOAPユーザ名とパスワード',
         'Security risk: you use the default setting for SOAP::User and SOAP::Password. Please change it.' =>
             'セキュリティーリスク: SOAP::User 及び SOAP::Password のデフォルト設定を利用しています、変更を行ってください。',
 
@@ -4101,7 +4202,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/PackageDeployment.pm
         'Package Installation Status' => '',
         'Some packages have locally modified files.' => '',
-        'Some packages are not correctly installed.' => '正しくインストールされていないパッケージが存在します',
+        'Some packages are not correctly installed.' => '正常にインストールされていないパッケージが存在します',
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/PackageList.pm
         'OTRS/Package List' => '',
@@ -4125,7 +4226,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'There are invalid users with locked tickets.' => '',
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/Ticket/OpenTickets.pm
-        'Open Tickets' => 'オープンチケット',
+        'Open Tickets' => '対応中チケット',
         'You should not have more than 8,000 open tickets in your system.' =>
             'システム内にチケットが 8,000以上オープンにしないでください',
 
@@ -4194,19 +4295,29 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'OK' => 'OK',
         'Problem' => '問題',
 
+        # Perl Module: Kernel/System/Ticket.pm
+        'Reset of unlock time.' => '',
+
         # Perl Module: Kernel/System/Web/InterfaceAgent.pm
         'Panic, user authenticated but no user data can be found in OTRS DB!! Perhaps the user is invalid.' =>
             '',
         'Can`t remove SessionID' => '',
+        'Logout successful.' => '',
         'Panic! Invalid Session!!!' => '',
         'No Permission to use this frontend module!' => '',
 
         # Perl Module: Kernel/System/Web/InterfaceCustomer.pm
         'Reset password unsuccessful. Please contact your administrator' =>
-            '',
+            'パスワードのリセットができません。管理者に連絡してください。',
         'Added via Customer Panel (%s)' => '',
         'Customer user can\'t be added!' => '',
         'Can\'t send account info!' => '',
+
+        # Perl Module: Kernel/System/Web/InterfaceInstaller.pm
+        'SecureMode active!' => '',
+        'If you want to re-run the Installer, disable the SecureMode in the SysConfig' =>
+            '',
+        'Action "%s" not found!' => '',
 
         # Database XML Definition: scripts/database/otrs-initial_insert.xml
         'Group for default access.' => '',
@@ -4220,12 +4331,12 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'All \'removed\' state types (default: not viewable).' => '',
         'State type for merged tickets (default: not viewable).' => '',
         'New ticket created by customer.' => '',
-        'Ticket is closed successful.' => '',
-        'Ticket is closed unsuccessful.' => '',
+        'Ticket is closed successful.' => 'チケットは成功としてクローズされました。',
+        'Ticket is closed unsuccessful.' => 'チケットは不成功としてクローズされました。',
         'Open tickets.' => '対応中チケット',
         'Customer removed ticket.' => '',
         'Ticket is pending for agent reminder.' => '',
-        'Ticket is pending for automatic close.' => '',
+        'Ticket is pending for automatic close.' => 'チケットは自動クローズ設定月で保留されました。',
         'State for merged tickets.' => '',
         'system standard salutation (en)' => '',
         'Standard Salutation.' => '',
@@ -4233,12 +4344,12 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
         'Standard Signature.' => '',
         'Standard Address.' => '',
         'Follow-ups for closed tickets are possible. Ticket will be reopened.' =>
-            '',
+            'クローズ・チケットに対するフォローアップが可能です。チケットは再オープンされます。',
         'Follow-ups for closed tickets are not possible. No new ticket will be created.' =>
-            '',
+            'クローズ・チケットへのフォローアップはできません。新規チケットも作成されません。',
         'new ticket' => '新規チケット',
         'Follow-ups for closed tickets are not possible. A new ticket will be created..' =>
-            '',
+            'クローズ・チケットへのフォローアップはできません。新規にチケットが作成されます。',
         'Postmaster queue.' => '',
         'All default incoming tickets.' => '',
         'All junk tickets.' => '',
@@ -4319,6 +4430,7 @@ Thanks for your help!
         '(UserLogin) Firstname Lastname' => '(ユーザー名) 姓 名 ',
         '(UserLogin) Lastname Firstname' => '',
         '(UserLogin) Lastname, Firstname' => '(ユーザー名) 名, 姓',
+        '*** out of office until %s (%s d left) ***' => '',
         '100 (Expert)' => '',
         '200 (Advanced)' => '',
         '300 (Beginner)' => '',
@@ -4328,7 +4440,7 @@ Thanks for your help!
             '',
         'A picture' => '',
         'ACL module that allows closing parent tickets only if all its children are already closed ("State" shows which states are not available for the parent ticket until all child tickets are closed).' =>
-            '親チケットについて、その全ての子チケットがすでにクローズされている場合にのみ、クローズすることを許可するACLモジュールです（“State”は、全ての子チケットがクローズされるまで、親チケットにどの状態が適用不可であるかを示しています）。',
+            '親チケットについて、その全ての子チケットが既にクローズされている場合にのみ、クローズすることを許可するACLモジュールです（“State”は、全ての子チケットがクローズされるまで、親チケットにどの状態が適用不可であるかを示しています）。',
         'Access Control Lists (ACL)' => 'アクセス制御リスト (ACL)',
         'AccountedTime' => '作業時間',
         'Activates a blinking mechanism of the queue that contains the oldest ticket.' =>
@@ -4338,7 +4450,7 @@ Thanks for your help!
         'Activates lost password feature for customers.' => '顧客に関する、パスワード忘れ機能を有効にします。',
         'Activates support for customer groups.' => '顧客グループのためのサポートを有効にします。',
         'Activates the article filter in the zoom view to specify which articles should be shown.' =>
-            'ズームビューで、どの項目を表示するか特定するために項目フィルタを有効にします。',
+            'ズーム・ビューで、どの項目を表示するか特定するために項目フィルタを有効にします。',
         'Activates the available themes on the system. Value 1 means active, 0 means inactive.' =>
             'システムで利用可能なテーマをアクティベートします。値1がアクティブ、0が非アクティブを意味します。',
         'Activates the ticket archive system search in the customer interface.' =>
@@ -4368,6 +4480,8 @@ Thanks for your help!
             '定常的な休日を追加します。数字は1～9までの単純な数字のパターンを使用してください（01～09ではない）。',
         'Admin Area.' => '',
         'After' => '',
+        'Agent Name' => '',
+        'Agent Name + FromSeparator + System Address Display Name' => '',
         'Agent Preferences.' => '',
         'Agent called customer.' => 'Agent called customer.',
         'Agent interface article notification module to check PGP.' => 'PGPをチェックするための、担当者インタフェースの項目通知のモジュールです。',
@@ -4439,6 +4553,8 @@ Thanks for your help!
             '',
         'Allows extended search conditions in ticket search of the customer interface. With this feature you can search e. g. with this kind of conditions like "(key1&&key2)" or "(key1||key2)".' =>
             '',
+        'Allows extended search conditions in ticket search of the generic agent interface. With this feature you can search e. g. ticket title with this kind of conditions like "(*key1*&&*key2*)" or "(*key1*||*key2*)".' =>
+            '',
         'Allows having a medium format ticket overview (CustomerInfo => 1 - shows also the customer information).' =>
             '中程度のフォーマットでのチケット一覧の表示を許可します（CustomerInfo => 1 - 顧客情報も表示します)。',
         'Allows having a small format ticket overview (CustomerInfo => 1 - shows also the customer information).' =>
@@ -4482,7 +4598,6 @@ Thanks for your help!
         'Bulgarian' => '',
         'CMD example setup. Ignores emails where external CMD returns some output on STDOUT (email will be piped into STDIN of some.bin).' =>
             'CMD例のセットアップです。外部CMDがSTDOUTにおいてアウトプットを戻してくる場合にEメールを無視します（Eメールは、STDIN of some.binへとパイプされます）。',
-        'CSV' => 'CSV',
         'Cache time in seconds for agent authentication in the GenericInterface.' =>
             '',
         'Cache time in seconds for customer authentication in the GenericInterface.' =>
@@ -4515,8 +4630,8 @@ Thanks for your help!
         'Chinese (Traditional)' => '',
         'Choose for which kind of ticket changes you want to receive notifications.' =>
             '通知を受け取りたいチケットの変更の種類を選択してください。',
-        'Closed tickets (customer user)' => '完了チケット(顧客ユーザー)',
-        'Closed tickets (customer)' => '完了チケット(顧客)',
+        'Closed tickets (customer user)' => 'クローズ・チケット(顧客ユーザー)',
+        'Closed tickets (customer)' => 'クローズ・チケット(顧客)',
         'Cloud Services' => 'クラウドサービス',
         'Cloud service admin module registration for the transport layer.' =>
             '',
@@ -4542,7 +4657,6 @@ Thanks for your help!
         'Comment2' => '',
         'Communication' => 'コミュニケーション',
         'Company Status' => '企業ステータス',
-        'Company Tickets' => '企業チケット',
         'Company Tickets.' => '',
         'Company name which will be included in outgoing emails as an X-Header.' =>
             '',
@@ -4619,7 +4733,9 @@ Thanks for your help!
             '',
         'Customer preferences.' => '',
         'Customer request via web.' => 'Customer request via web.',
+        'Customer ticket overview' => '',
         'Customer ticket search.' => '',
+        'Customer ticket zoom' => '',
         'Customer user search' => '',
         'CustomerID search' => '',
         'CustomerName' => '顧客名',
@@ -4657,6 +4773,8 @@ Thanks for your help!
         'Default ticket ID used by the system in the customer interface.' =>
             '顧客インタフェースで、システムによって使用されるデフォルトのチケットIDです。',
         'Default value for NameX' => '',
+        'Define Actions where a settings button is available in the linked objects widget (LinkObject::ViewMode = "complex"). Please note that these Actions must have registered the following JS and CSS files: Core.AllocationList.css, Core.UI.AllocationList.js, Core.UI.Table.Sort.js, Core.Agent.TableFilters.js.' =>
+            '',
         'Define a filter for html output to add links behind a defined string. The element Image allows two input kinds. At once the name of an image (e.g. faq.png). In this case the OTRS image path will be used. The second possiblity is to insert the link to the image.' =>
             '定義された文字列（string）の後ろにリンクを追加するhtmlアウトプットのための、フィルタを定義します。エレメント・イメージは、2種類のインプットを許可します。すぐに、イメージの名前です（つまりfaq.png）。この場合、OTRSイメージ・パスが使用されます。2つめの可能性は、イメージにリンクを挿入することです。',
         'Define a mapping between variables of the customer user data (keys) and dynamic fields of a ticket (values). The purpose is to store customer user data in ticket dynamic fields. The dynamic fields must be present in the system and should be enabled for AgentTicketFreeText, so that they can be set/updated manually by the agent. They mustn\'t be enabled for AgentTicketPhone, AgentTicketEmail and AgentTicketCustomer. If they were, they would have precedence over the automatically set values. To use this mapping, you have to also activate the next setting below.' =>
@@ -4672,6 +4790,8 @@ Thanks for your help!
         'Define the start day of the week for the date picker for the indicated calendar.' =>
             '',
         'Define the start day of the week for the date picker.' => '日付ピッカーにおける週の開始曜日を設定します。',
+        'Define which columns are shown in the linked tickets widget (LinkObject::ViewMode = "complex"). Note: Only Ticket attributes and Dynamic Fields (DynamicField_NameX) are allowed for DefaultColumns. Possible settings: 0 = Disabled, 1 = Available, 2 = Enabled by default.' =>
+            '',
         'Defines a customer item, which generates a LinkedIn icon at the end of a customer info block.' =>
             '顧客情報ブロックの最後において、LinkedInアイコンを作成するための顧客アイテムを定義します。',
         'Defines a customer item, which generates a XING icon at the end of a customer info block.' =>
@@ -4690,6 +4810,8 @@ Thanks for your help!
             '定義された文字列（string）の後ろにリンクを追加するhtmlアウトプットのための、フィルタを定義します。エレメント・イメージは、2種類のインプットを許可します。すぐに、イメージの名前です（つまりfaq.png）。この場合、OTRSイメージ・パスが使用されます。2つめの可能性は、イメージにリンクを挿入することです。',
         'Defines a filter for html output to add links behind bugtraq numbers. The element Image allows two input kinds. At once the name of an image (e.g. faq.png). In this case the OTRS image path will be used. The second possiblity is to insert the link to the image.' =>
             'バグトラック・ナンバーの後ろにリンクを追加するhtmlアウトプットのための、フィルタを定義します。エレメント・イメージは、2種類のインプットを許可します。すぐに、イメージの名前です（つまりfaq.png）。この場合、OTRSイメージ・パスが使用されます。2つめの可能性は、イメージにリンクを挿入することです。',
+        'Defines a filter to collect CVE numbers from article texts in AgentTicketZoom. The results will be displayed in a meta box next to the article. Fill in URLPreview if you would like to see a preview when moving your mouse cursor above the link element. This could be the same URL as in URL, but also an alternate one. Please note that some websites deny being displayed within an iframe (e.g. Google) and thus won\'t work with the preview mode.' =>
+            '',
         'Defines a filter to process the text in the articles, in order to highlight predefined keywords.' =>
             '事前定義されたキーワードをハイライトするため、項目の中のテキストを処理するフィルタを定義します。',
         'Defines a regular expression that excludes some addresses from the syntax check (if "CheckEmailAddresses" is set to "Yes"). Please enter a regex in this field for email addresses, that aren\'t syntactically valid, but are necessary for the system (i.e. "root@localhost").' =>
@@ -4711,6 +4833,8 @@ Thanks for your help!
             '顧客インタフェースの顧客プレファレンスにおいて、ShownTicketsオブジェクトのための全パラメータを定義します。',
         'Defines all the parameters for this item in the customer preferences.' =>
             '顧客プレファレンスにおいて、本アイテムの全パラメータを定義してください。',
+        'Defines all the parameters for this item in the customer preferences. \'PasswordRegExp\' allows to match passwords against a regular expression. Define the minimum number of characters using \'PasswordMinSize\'. Define if at least 2 lowercase and 2 uppercase letter characters are needed by setting the appropriate option to \'1\'. \'PasswordMin2Characters\' defines if the password needs to contain at least 2 letter characters (set to 0 or 1). \'PasswordNeedDigit\' controls the need of at least 1 digit (set to 0 or 1 to control).' =>
+            '',
         'Defines all the parameters for this notification transport.' => '',
         'Defines all the possible stats output formats.' => '全ての可能な統計アウトプットのフォーマットを定義します。',
         'Defines an alternate URL, where the login link refers to.' => 'ログイン・リンクが参照する、代替URLを定義します。',
@@ -4773,6 +4897,8 @@ Thanks for your help!
             '',
         'Defines if time accounting must be set to all tickets in bulk action.' =>
             'タイム・アカウンティングがバルク・アクションにおける全てのチケットに対して、必ず設定されるかどうかを定義します。',
+        'Defines out of office message template. Two string parameters (%s) available: end date and number of days left.' =>
+            '',
         'Defines queues that\'s tickets are used for displaying as calendar events.' =>
             '',
         'Defines the IP regular expression for accessing the local repository. You need to enable this to have access to your local repository and the package::RepositoryList is required on the remote host.' =>
@@ -4805,6 +4931,8 @@ Thanks for your help!
         'Defines the config options for the autocompletion feature.' => '',
         'Defines the config parameters of this item, to be shown in the preferences view.' =>
             '本アイテムのコンフィグ・パラメータを、プレファレンス・ビューで表示されるように定義します。',
+        'Defines the config parameters of this item, to be shown in the preferences view. \'PasswordRegExp\' allows to match passwords against a regular expression. Define the minimum number of characters using \'PasswordMinSize\'. Define if at least 2 lowercase and 2 uppercase letter characters are needed by setting the appropriate option to \'1\'. \'PasswordMin2Characters\' defines if the password needs to contain at least 2 letter characters (set to 0 or 1). \'PasswordNeedDigit\' controls the need of at least 1 digit (set to 0 or 1 to control). \'PasswordMaxLoginFailed\' allows to set an agent to invalid-temporarily if max failed logins reached.' =>
+            '',
         'Defines the config parameters of this item, to be shown in the preferences view. Take care to maintain the dictionaries installed in the system in the data section.' =>
             '本アイテムのコンフィグ・パラメータを、プレファレンス・ビューで表示されるように定義します。データ・セクションにおいては、システムにインストールされたディクショナリを保持するよう注意してください。',
         'Defines the connections for http/ftp, via a proxy.' => 'プロキシ経由で、http/ftpのための接続を定義します。',
@@ -4827,7 +4955,7 @@ Thanks for your help!
         'Defines the default maximum number of statistics per page on the overview screen.' =>
             '',
         'Defines the default next state for a ticket after customer follow-up in the customer interface.' =>
-            '',
+            '顧客インタフェースで、顧客フォローアップ後のチケットに対するデフォルトの次の状態を定義します。',
         'Defines the default next state of a ticket after adding a note, in the close ticket screen of the agent interface.' =>
             '担当者インタフェースのクローズ・チケット画面で、チケットのメモを追加した後の、デフォルトの次の状態を定義します。',
         'Defines the default next state of a ticket after adding a note, in the ticket bulk screen of the agent interface.' =>
@@ -4847,9 +4975,9 @@ Thanks for your help!
         'Defines the default next state of a ticket after being bounced, in the ticket bounce screen of the agent interface.' =>
             '担当者インタフェースのチケット・バウンス画面で、チケットがバウンスされた後の、デフォルトの次の状態を定義します。',
         'Defines the default next state of a ticket after being forwarded, in the ticket forward screen of the agent interface.' =>
-            '担当者インタフェースのチケット転送画面で、チケットの転送された後の、デフォルトの次の状態を定義します。',
+            '担当者インタフェースのチケット転送画面で、チケットが転送された後の、デフォルトの次の状態を定義します。',
         'Defines the default next state of a ticket after the message has been sent, in the email outbound screen of the agent interface.' =>
-            '',
+            '担当者インタフェースの外部メール送信画面で、メッセージが送信された後の、デフォルトの次の状態を定義します。',
         'Defines the default next state of a ticket if it is composed / answered in the ticket compose screen of the agent interface.' =>
             '担当者インタフェースのチケット構成画面で、チケットが構成（compose）/回答（answer）された後の、デフォルトの次の状態を定義します。',
         'Defines the default note body text for phone tickets in the ticket phone inbound screen of the agent interface.' =>
@@ -4920,9 +5048,9 @@ Thanks for your help!
         'Defines the default ticket bounced notification for customer/sender in the ticket bounce screen of the agent interface.' =>
             '担当者インタフェースのチケット・バウンス画面で、顧客/送信者に対するデフォルトのチケット・バウンス通知を定義します。',
         'Defines the default ticket next state after adding a phone note in the ticket phone inbound screen of the agent interface.' =>
-            '',
+            '担当者インタフェースの電話応答着信画面で、電話メモを追加した後のチケットのデフォルトの次の状態を定義します。',
         'Defines the default ticket next state after adding a phone note in the ticket phone outbound screen of the agent interface.' =>
-            '担当者インタフェースのチケット電話アウトバウンド画面で、電話メモを追加した後のチケットのデフォルトの次の状態を定義してください。',
+            '担当者インタフェースの電話応答発信画面で、電話メモを追加した後のチケットのデフォルトの次の状態を定義します。',
         'Defines the default ticket order (after priority sort) in the escalation view of the agent interface. Up: oldest on top. Down: latest on top.' =>
             '担当者インタフェースのエスカレーション・ビューで、デフォルトのチケット順番（優先度ソート後）を定義します。Up:一番古いものをトップに. Down:最新のものをトップに。',
         'Defines the default ticket order (after priority sort) in the status view of the agent interface. Up: oldest on top. Down: latest on top.' =>
@@ -5288,6 +5416,8 @@ Thanks for your help!
         'Deletes a session if the session id is used with an invalid remote IP address.' =>
             'もしセッションIDが、無効なリモートIPアドレスと共に使用されている場合、セッションを削除します。',
         'Deletes requested sessions if they have timed out.' => 'リクエストされたセッションがタイムアウトしている場合に削除します。',
+        'Delivers extended debugging information in the frontend in case any AJAX errors occur, if enabled.' =>
+            '',
         'Deploy and manage OTRS Business Solution™.' => 'OTRS Business Solution™のデプロイと管理',
         'Determines if the list of possible queues to move to ticket into should be displayed in a dropdown list or in a new window in the agent interface. If "New Window" is set you can add a move note to the ticket.' =>
             'チケットへ移動していくであろう、可能性あるキューのリストが、担当者インタフェースにドロップ・ダウン・リストまたは新規ウィンドウとして表示されるべきかどうかを定義します。"New Window"を設定した場合、チケットに移動メモを追加することができます。',
@@ -5334,7 +5464,7 @@ Thanks for your help!
             '',
         'Display settings to override defaults for Process Tickets.' => '',
         'Displays the accounted time for an article in the ticket zoom view.' =>
-            'チケットズームビューで、項目に関してアカウントされた時間を表示します。',
+            'チケット・ズーム・ビューで、項目に関してアカウントされた時間を表示します。',
         'Dropdown' => 'ドロップダウン',
         'Dutch stop words for fulltext index. These words will be removed from the search index.' =>
             '',
@@ -5460,7 +5590,7 @@ Thanks for your help!
         'Escalation update time finished' => '',
         'Escalation update time forewarned' => '',
         'Escalation update time in effect' => '',
-        'Escalation view' => 'エスカレーション一覧',
+        'Escalation view' => 'エスカレーション・ビュー',
         'EscalationTime' => '',
         'Estonian' => 'エストニア語',
         'Event module registration. For more performance you can define a trigger event (e. g. Event => TicketCreate).' =>
@@ -5480,7 +5610,6 @@ Thanks for your help!
         'Event module that updates tickets after an update of the Customer.' =>
             '',
         'Events Ticket Calendar' => 'イベント・チケット・カレンダー',
-        'Excel' => '',
         'Execute SQL statements.' => 'SQL文の実行',
         'Executes a custom command or module. Note: if module is used, function is required.' =>
             '',
@@ -5689,7 +5818,7 @@ Thanks for your help!
         'If enabled, the customer can search for tickets in all services (regardless what services are assigned to the customer).' =>
             '',
         'If enabled, the different overviews (Dashboard, LockedView, QueueView) will automatically refresh after the specified time.' =>
-            '有効にした場合、ダッシュボード、ロック済チケット一覧、キュー一覧は自動で指定時間後に更新されます。',
+            '有効にした場合、ダッシュボード、ロック済チケット・ビュー、キュー・ビューは自動で指定時間後に更新されます。',
         'If enabled, the first level of the main menu opens on mouse hover (instead of click only).' =>
             '有効にした場合、メイン・メニューの1つめのレベルのものが、マウスを乗せるだけで開きます（1回クリックの代わりに）。',
         'If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty.' =>
@@ -5714,6 +5843,8 @@ Thanks for your help!
         'Incoming Phone Call.' => '',
         'IndexAccelerator: to choose your backend TicketViewAccelerator module. "RuntimeDB" generates each queue view on the fly from ticket table (no performance problems up to approx. 60.000 tickets in total and 6.000 open tickets in the system). "StaticDB" is the most powerful module, it uses an extra ticket-index table that works like a view (recommended if more than 80.000 and 6.000 open tickets are stored in the system). Use the command "bin/otrs.Console.pl Maint::Ticket::QueueIndexRebuild" for initial index creation.' =>
             '',
+        'Indonesian' => '',
+        'Input' => '入力',
         'Install ispell or aspell on the system, if you want to use a spell checker. Please specify the path to the aspell or ispell binary on your operating system.' =>
             '利用者がスペル・チェッカーを使用したい場合、システム上にispellまたはaspellをインストールします。ご利用のオペレーティング・システム上で、aspellまたはispellへのパスを特定します。',
         'Interface language' => 'インターフェイスの言語',
@@ -5730,12 +5861,14 @@ Thanks for your help!
         'Ivory (Slim)' => '',
         'Japanese' => '日本語',
         'JavaScript function for the search frontend.' => '',
+        'Last customer subject' => '',
         'Lastname Firstname' => '',
         'Lastname Firstname (UserLogin)' => '',
         'Lastname, Firstname' => '名, 姓',
         'Lastname, Firstname (UserLogin)' => '名, 姓 (ユーザー名)',
         'Latvian' => 'ラトビア語',
         'Left' => '',
+        'Link Object' => '連結対象',
         'Link Object.' => '',
         'Link agents to groups.' => '担当者をグループへ連結',
         'Link agents to roles.' => '担当者をロールへ連結',
@@ -5861,7 +5994,6 @@ Thanks for your help!
         'Module to use database filter storage.' => 'データベース・フィルタ・ストレージを使用するモジュールです。',
         'Multiselect' => 'Multiselect',
         'My Services' => '担当サービス',
-        'My Tickets' => '担当チケット',
         'My Tickets.' => '',
         'Name of custom queue. The custom queue is a queue selection of your preferred queues and can be selected in the preferences settings.' =>
             'カスタム・キューの名前です。カスタム・キューとは、利用者が特に優先するキューの一覧であり、プレファレンス設定から選択できます。',
@@ -5892,8 +6024,9 @@ Thanks for your help!
             '',
         'Old: "%s" New: "%s"' => 'Old: "%s" New: "%s"',
         'Online' => 'オンライン',
-        'Open tickets (customer user)' => 'オープンチケット(顧客ユーザー)',
-        'Open tickets (customer)' => 'オープンチケット(顧客)',
+        'Open tickets (customer user)' => '対応中チケット(顧客ユーザー)',
+        'Open tickets (customer)' => '対応中チケット(顧客)',
+        'Option' => '',
         'Optional queue limitation for the CreatorCheck permission module. If set, permission is only granted for tickets in the specified queues.' =>
             '',
         'Optional queue limitation for the InvolvedCheck permission module. If set, permission is only granted for tickets in the specified queues.' =>
@@ -5915,7 +6048,6 @@ Thanks for your help!
         'PGP Key Upload' => 'PGP鍵アップロード',
         'Package event module file a scheduler task for update registration.' =>
             '',
-        'Parameters for .' => 'パラメータ',
         'Parameters for the CreateNextMask object in the preference view of the agent interface.' =>
             '担当者インタフェースのプレファレンス・ビューにあるCreateNextMaskオブジェクトのパラメータです。',
         'Parameters for the CustomQueue object in the preference view of the agent interface.' =>
@@ -5924,6 +6056,8 @@ Thanks for your help!
             '',
         'Parameters for the RefreshTime object in the preference view of the agent interface.' =>
             '担当者インタフェースのプレファレンス・ビューにある、RefreshTimeオブジェクトのパラメータです。',
+        'Parameters for the column filters of the small ticket overview.' =>
+            '',
         'Parameters for the dashboard backend of the customer company information of the agent interface . "Group" is used to restrict the access to the plugin (e. g. Group: admin;group1;group2;). "Default" determines if the plugin is enabled by default or if the user needs to enable it manually. "CacheTTLLocal" is the cache time in minutes for the plugin.' =>
             '',
         'Parameters for the dashboard backend of the customer id status widget of the agent interface . "Group" is used to restrict the access to the plugin (e. g. Group: admin;group1;group2;). "Default" determines if the plugin is enabled by default or if the user needs to enable it manually. "CacheTTLLocal" is the cache time in minutes for the plugin.' =>
@@ -5990,7 +6124,7 @@ Thanks for your help!
             'CSRF (Cross Site Request Forgery)攻撃に対するプロテクションです（さらに詳細はhttp://en.wikipedia.org/wiki/Cross-site_request_forgeryを参照ください）。',
         'Provides a matrix overview of the tickets per state per queue.' =>
             '',
-        'Queue view' => 'キュー一覧',
+        'Queue view' => 'キュー・ビュー',
         'Rebuild the ticket index for AgentTicketQueue.' => '',
         'Recognize if a ticket is a follow-up to an existing ticket using an external ticket number.' =>
             '',
@@ -6056,7 +6190,7 @@ Thanks for your help!
         'Russian' => 'ロシア語',
         'S/MIME Certificate Upload' => 'S/MIME証明書アップロード',
         'SMS' => 'SMS',
-        'SMS (Short Message Service)' => '',
+        'SMS (Short Message Service)' => 'SMS (Short Message Service)',
         'Sample command output' => '',
         'Saves the attachments of articles. "DB" stores all data in the database (not recommended for storing big attachments). "FS" stores the data on the filesystem; this is faster but the webserver should run under the OTRS user. You can switch between the modules even on a system that is already in production without any loss of data. Note: Searching for attachment names is not supported when "FS" is used.' =>
             '',
@@ -6092,8 +6226,8 @@ Thanks for your help!
             '管理インタフェースの"Notfication (Event)"の下で設定された通知を送信します。',
         'Serbian Cyrillic' => 'セルビア語（キリル文字）',
         'Serbian Latin' => 'セルビア語（ラテン文字）',
-        'Service view' => 'サービス一覧',
-        'ServiceView' => '',
+        'Service view' => 'サービス・ビュー',
+        'ServiceView' => 'サービス・ビュー',
         'Set minimum loglevel. If you select \'error\', just errors are logged. With \'debug\' you get all logging messages.' =>
             '',
         'Set sender email addresses for this system.' => 'このシステムのメール送信者を設定',
@@ -6209,13 +6343,13 @@ Thanks for your help!
         'Sets the prefix to the scripts folder on the server, as configured on the web server. This setting is used as a variable, OTRS_CONFIG_ScriptAlias which is found in all forms of messaging used by the application, to build links to the tickets within the system.' =>
             'ウェブ・サーバ上に設定されるように、サーバ上のスクリプト・フォルダに対する接頭辞を設定します。この設定は、OTRS_CONFIG_ScriptAlias変数として設定され、これはアプリケーションによって使用されるメッセージングの全フォームに存在し、システム内のチケットへのリンクを作成するために使用されます。',
         'Sets the queue in the ticket close screen of a zoomed ticket in the agent interface.' =>
-            '担当者インタフェースのズームされたチケットのチケット完了画面で、キューを設定します。',
+            '担当者インタフェースのズームされたチケットのチケット・クローズ画面で、キューを設定します。',
         'Sets the queue in the ticket free text screen of a zoomed ticket in the agent interface.' =>
             '担当者インタフェースのズームされたチケットのチケット自由テキスト画面で、キューを設定します。',
         'Sets the queue in the ticket note screen of a zoomed ticket in the agent interface.' =>
             '担当者インタフェースのズームされたチケットのチケットノート画面で、キューを設定します。',
         'Sets the queue in the ticket owner screen of a zoomed ticket in the agent interface.' =>
-            '担当者インタフェースのズームされたチケットのチケットチケット所有者画面で、キューを設定します。',
+            '担当者インタフェースのズームされたチケットのチケットのチケット所有者画面で、キューを設定します。',
         'Sets the queue in the ticket pending screen of a zoomed ticket in the agent interface.' =>
             '担当者インタフェースのズームされたチケットのチケット保留画面で、キューを設定します。',
         'Sets the queue in the ticket priority screen of a zoomed ticket in the agent interface.' =>
@@ -6223,7 +6357,7 @@ Thanks for your help!
         'Sets the queue in the ticket responsible screen of a zoomed ticket in the agent interface.' =>
             '担当者インタフェースのズームされたチケットのチケット責任者画面で、キューを設定します。',
         'Sets the responsible agent of the ticket in the close ticket screen of the agent interface.' =>
-            '担当者インタフェースのチケットチケット完了画面で、チケットの責任を有する担当者を設定します。',
+            '担当者インタフェースのチケット・クローズ画面で、チケットの責任を有する担当者を設定します。',
         'Sets the responsible agent of the ticket in the ticket bulk screen of the agent interface.' =>
             '担当者インタフェースのチケット・バルク画面で、チケットの責任を有する担当者を設定します。',
         'Sets the responsible agent of the ticket in the ticket free text screen of the agent interface.' =>
@@ -6239,7 +6373,7 @@ Thanks for your help!
         'Sets the responsible agent of the ticket in the ticket responsible screen of the agent interface.' =>
             '担当者インタフェースのチケット責任者画面で、チケットの責任を持つ担当者を設定します。',
         'Sets the service in the close ticket screen of the agent interface (Ticket::Service needs to be activated).' =>
-            '担当者インタフェースのチケット完了画面で、サービスを設定します(Ticket::Serviceを有効とする必要があります)。',
+            '担当者インタフェースのチケット・クローズ画面で、サービスを設定します(Ticket::Serviceを有効とする必要があります)。',
         'Sets the service in the ticket free text screen of the agent interface (Ticket::Service needs to be activated).' =>
             '担当者インタフェースのチケット自由テキスト画面で、サービスを設定します(Ticket::Serviceを有効とする必要があります)。',
         'Sets the service in the ticket note screen of the agent interface (Ticket::Service needs to be activated).' =>
@@ -6403,7 +6537,7 @@ Thanks for your help!
         'Shows a select of ticket attributes to order the queue view ticket list. The possible selections can be configured via \'TicketOverviewMenuSort###SortAttributes\'.' =>
             '',
         'Shows all both ro and rw queues in the queue view.' => 'キュー・ビューで、roとrwの両方全てのキューを表示します。',
-        'Shows all both ro and rw tickets in the service view.' => 'サービスビュー内の読み取り専用と読み書き可能なチケットの両方を全て表示する。',
+        'Shows all both ro and rw tickets in the service view.' => 'サービス・ビュー内の読み取り専用と読み書き可能なチケットの両方を全て表示する。',
         'Shows all open tickets (even if they are locked) in the escalation view of the agent interface.' =>
             '担当者インタフェースのエスカレーション・ビューにある、全てのオープン・チケット（たとえロックされていたとしても）を表示します。',
         'Shows all open tickets (even if they are locked) in the status view of the agent interface.' =>
@@ -6541,7 +6675,7 @@ Thanks for your help!
         'Specify the channel to be used to fetch OTRS Business Solution™ updates. Warning: Development releases might not be complete, your system might experience unrecoverable errors and on extreme cases could become unresponsive!' =>
             '',
         'Specify the password to authenticate for the first mirror database.' =>
-            '',
+            'データベースの第一ミラーの認証パスワードを指定してください。',
         'Specify the username to authenticate for the first mirror database.' =>
             '',
         'Spell checker.' => '',
@@ -6552,13 +6686,14 @@ Thanks for your help!
         'Starts a wildcard search of the active object after the link object mask is started.' =>
             '',
         'Stat#' => '統計番号',
-        'Status view' => 'ステータス一覧',
+        'Status view' => 'ステータス・ビュー',
         'Stores cookies after the browser has been closed.' => 'ブラウザが閉じられた後に、クッキーを格納します。',
         'Strips empty lines on the ticket preview in the queue view.' => 'キュー画面で、チケット・プレビューの空の行を削除します。',
         'Strips empty lines on the ticket preview in the service view.' =>
             '',
         'Swahili' => 'スワヒリ語',
         'Swedish' => 'スウェーデン語',
+        'System Address Display Name' => '',
         'System Maintenance' => 'システムメンテナンス',
         'System Request (%s).' => 'System Request (%s).',
         'Target' => '',
@@ -6596,7 +6731,7 @@ Thanks for your help!
         'The logo shown in the header of the agent interface. The URL to the image can be a relative URL to the skin image directory, or a full URL to a remote web server.' =>
             '',
         'The logo shown in the header of the customer interface. The URL to the image can be a relative URL to the skin image directory, or a full URL to a remote web server.' =>
-            '',
+            '顧客画面のヘッダ部分に表示するロゴを設定します。画像の',
         'The logo shown on top of the login box of the agent interface. The URL to the image must be relative URL to the skin image directory.' =>
             '担当者インタフェースのログイン・ボックスに表示されるロゴです。本イメージに対するURLは、スキン・イメージ・ディレクトリへの相対URLである必要があります。',
         'The maximal number of articles expanded on a single page in AgentTicketZoom.' =>
@@ -6604,7 +6739,7 @@ Thanks for your help!
         'The maximal number of articles shown on a single page in AgentTicketZoom.' =>
             'AgentTicketZoomの通常表示モードで1ページあたりに表示する記事の数',
         'The maximum number of mails fetched at once before reconnecting to the server.' =>
-            '',
+            '一度にメール取得を実施可能な最大数に達しました。',
         'The text at the beginning of the subject in an email reply, e.g. RE, AW, or AS.' =>
             'Eメール・リプライにおける件名の最初のテキストです。例：RE, AW, AS。',
         'The text at the beginning of the subject when an email is forwarded, e.g. FW, Fwd, or WG.' =>
@@ -6612,60 +6747,61 @@ Thanks for your help!
         'This event module stores attributes from CustomerUser as DynamicFields tickets. Please see the setting above for how to configure the mapping.' =>
             '',
         'This is the default orange - black skin for the customer interface.' =>
-            '',
-        'This is the default orange - black skin.' => '',
+            'これは、デフォルトの黒地と橙色をモチーフにした、顧客インタフェース向けのスキンです。',
+        'This is the default orange - black skin.' => 'これは、デフォルトの黒地と橙色をモチーフにしたスキンです。',
         'This module and its PreRun() function will be executed, if defined, for every request. This module is useful to check some user options or to display news about new applications.' =>
             '定義された場合、全てのリクエストに対して、本モジュールおよびそのPreRun()機能が実行されます。本モジュールは、いくつかのユーザ・オプションをチェックするため、または新しいアプリケーションのニュースを表示させるために、役立つものです。',
-        'This module is part of the admin area of OTRS.' => '',
+        'This module is part of the admin area of OTRS.' => 'このモジュールは、OTRS の管理者エリアの一機能です。',
         'This option defines the dynamic field in which a Process Management activity entity id is stored.' =>
             '',
         'This option defines the dynamic field in which a Process Management process entity id is stored.' =>
             '',
-        'This option defines the process tickets default lock.' => '',
-        'This option defines the process tickets default priority.' => '',
-        'This option defines the process tickets default queue.' => '',
+        'This option defines the process tickets default lock.' => 'このオプションは、プロセスチケットの標準ロック状態を定義します。',
+        'This option defines the process tickets default priority.' => 'このオプションは、プロセスチケットの標準重要度を定義します。',
+        'This option defines the process tickets default queue.' => 'このオプションは、プロセスチケットの標準キューを定義します。',
         'This option defines the process tickets default state.' => '',
         'This option will deny the access to customer company tickets, which are not created by the customer user.' =>
             '',
         'This setting allows you to override the built-in country list with your own list of countries. This is particularly handy if you just want to use a small select group of countries.' =>
             '',
         'This will allow the system to send text messages via SMS.' => '',
-        'Ticket Close.' => '',
+        'Ticket Close.' => 'チケットをクローズする',
         'Ticket Compose Bounce Email.' => '',
         'Ticket Compose email Answer.' => '',
         'Ticket Customer.' => '',
-        'Ticket Forward Email.' => '',
+        'Ticket Forward Email.' => 'チケットをメール転送する',
         'Ticket FreeText.' => '',
-        'Ticket History.' => '',
-        'Ticket Lock.' => '',
-        'Ticket Merge.' => '',
-        'Ticket Move.' => '',
-        'Ticket Note.' => '',
+        'Ticket History.' => 'チケット履歴を見る',
+        'Ticket Lock.' => 'チケットをロックする',
+        'Ticket Merge.' => 'チケットを結合する',
+        'Ticket Move.' => 'チケットを移動する',
+        'Ticket Note.' => 'チケットに記事を残す',
         'Ticket Notifications' => 'チケット通知',
-        'Ticket Outbound Email.' => '',
-        'Ticket Owner.' => '',
-        'Ticket Pending.' => '',
-        'Ticket Print.' => '',
-        'Ticket Priority.' => '',
-        'Ticket Queue Overview' => 'チケットキュー一覧',
-        'Ticket Responsible.' => '',
-        'Ticket Watcher' => '',
-        'Ticket Zoom.' => '',
+        'Ticket Outbound Email.' => '外部メールを送信する',
+        'Ticket Owner.' => 'チケット所有者',
+        'Ticket Pending.' => 'チケットを保留する',
+        'Ticket Print.' => 'チケット印刷',
+        'Ticket Priority.' => 'チケットの優先度',
+        'Ticket Queue Overview' => 'チケット・キュー一覧',
+        'Ticket Responsible.' => 'チケット責任者',
+        'Ticket Watcher' => 'チケット監視者',
+        'Ticket Zoom.' => 'チケット・ズーム',
         'Ticket bulk module.' => '',
         'Ticket event module that triggers the escalation stop events.' =>
             '',
         'Ticket moved into Queue "%s" (%s) from Queue "%s" (%s).' => 'Ticket moved into Queue "%s" (%s) from Queue "%s" (%s).',
         'Ticket notifications' => 'チケット通知',
         'Ticket overview' => 'チケット一覧',
-        'Ticket plain view of an email.' => '',
-        'Ticket zoom view.' => '',
+        'Ticket plain view of an email.' => 'メール用チケット簡易表示',
+        'Ticket title' => 'チケットタイトル',
+        'Ticket zoom view.' => 'チケット・ズーム・ビュー',
         'TicketNumber' => 'チケット番号',
-        'Tickets.' => '',
+        'Tickets.' => 'チケット',
         'Time in seconds that gets added to the actual time if setting a pending-state (default: 86400 = 1 day).' =>
             '保留中のステートを設定した場合、実際の時間に加えられる時間（秒）です。(default: 86400 = 1 day)',
         'Title updated: Old: "%s", New: "%s"' => 'タイトルを更新しました: Old…"%s"、New…"%s"',
         'To accept login information, such as an EULA or license.' => '',
-        'To download attachments.' => '',
+        'To download attachments.' => '添付ファイルをダウンロード',
         'Toggles display of OTRS FeatureAddons list in PackageManager.' =>
             '',
         'Toolbar Item for a shortcut. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2".' =>
@@ -6676,14 +6812,14 @@ Thanks for your help!
             '',
         'Turkish' => 'トルコ語',
         'Turns off SSL certificate validation, for example if you use a transparent HTTPS proxy. Use at your own risk!' =>
-            '',
+            '透過型HTTPSプロキシを利用するなどの理由によりSSL証明書の有効性チェックを無効化することもありますが、自己責任で実施願います。',
         'Turns on drag and drop for the main navigation.' => '',
         'Turns on the animations used in the GUI. If you have problems with these animations (e.g. performance issues), you can turn them off here.' =>
             'GUIで使用されるアニメーションをONにします。もし、これらのアニメーションに問題がある場合（パフォーマンス問題など）、ここでOFFにできます。',
         'Turns on the remote ip address check. It should be set to "No" if the application is used, for example, via a proxy farm or a dialup connection, because the remote ip address is mostly different for the requests.' =>
             'リモートIPアドレス・チェックをONにします。もし、例えばproxy farmまたはdialup connection経由でアプリケーションが使用されている場合、"No"の設定する必要があります。なぜなら、リモートIPアドレスは、ほとんどの場合リクエストごとに異なるからです。',
         'Ukrainian' => 'ウクライナ語',
-        'Unlock tickets that are past their unlock timeout.' => '',
+        'Unlock tickets that are past their unlock timeout.' => 'アンロック期限を過ぎたチケットはロックが解除されます。',
         'Unlock tickets whenever a note is added and the owner is out of office.' =>
             '',
         'Unlocked ticket.' => 'Unlocked ticket.',
@@ -6705,25 +6841,27 @@ Thanks for your help!
         'UserLastname' => '名',
         'Uses Cc recipients in reply Cc list on compose an email answer in the ticket compose screen of the agent interface.' =>
             '担当者インタフェースのチケット構成画面で、コンポーズEメール回答にあるCCリスト上からCC受信者を使用します。',
-        'Uses richtext for viewing and editing ticket notification.' => '',
+        'Uses richtext for viewing and editing ticket notification.' => 'チケット通知の作成と表示確認にリッチテキストを利用します。',
         'Uses richtext for viewing and editing: articles, salutations, signatures, standard templates, auto responses and notifications.' =>
-            '',
+            '作成と表示確認にリッチテキストを利用します。: 記事、挨拶、署名、標準テンプレート、自動応答と通知',
         'Vietnam' => 'ベトナム',
-        'View performance benchmark results.' => 'パフォーマンスベンチマーク結果を見る。',
+        'View performance benchmark results.' => 'パフォーマンス・ベンチマーク結果を見る。',
         'Watch this ticket' => 'このチケットを見る。',
-        'Watched Tickets.' => '',
-        'We are performing scheduled maintenance.' => '',
+        'Watched Tickets.' => '監視チケット',
+        'We are performing scheduled maintenance.' => '定期メンテナンスを実施中です。',
         'We are performing scheduled maintenance. Login is temporarily not available.' =>
-            '',
+            '定期メンテナンスを実施中です。ログインはしばらくお待ちください。',
         'We are performing scheduled maintenance. We should be back online shortly.' =>
-            '',
-        'Web View' => '',
+            '定期メンテナンスを実施中です。',
+        'Web View' => 'Web ビュー',
         'When tickets are merged, a note will be added automatically to the ticket which is no longer active. Here you can define the body of this note (this text cannot be changed by the agent).' =>
             '',
         'When tickets are merged, a note will be added automatically to the ticket which is no longer active. Here you can define the subject of this note (this subject cannot be changed by the agent).' =>
             '',
         'When tickets are merged, the customer can be informed per email by setting the check box "Inform Sender". In this text area, you can define a pre-formatted text which can later be modified by the agents.' =>
             '担当者インタフェースでズームされたチケットのチケット結合画面で、チケット・ロックが必要かどうかを定義します。（チケットがまだロックされていない場合、チケットはロックされ現在の担当者が自動的に所有者として設定されます）。',
+        'Whether or not to collect meta information from articles using filters configured in Ticket::Frontend::ZoomCollectMetaFilters.' =>
+            '',
         'Yes, but hide archived tickets' => '',
         'Your email with ticket number "<OTRS_TICKET>" is bounced to "<OTRS_BOUNCE_TO>". Contact this address for further information.' =>
             'チケット番号"<OTRS_TICKET>" のメールは、"<OTRS_BOUNCE_TO>"宛にバウンスされました。詳細は、このアドレスまでお問合せください。',
@@ -6731,12 +6869,12 @@ Thanks for your help!
             'お気に入りのキューを選択。有効にした場合、それらのキューについてメールで通知を受信します。',
         'Your service selection of your favorite services. You also get notified about those services via email if enabled.' =>
             'お気に入りのサービスを選択。有効にした場合、これらのサービスについてメールで通知を受信します。',
-        'attachment' => '',
-        'debug' => '',
-        'error' => '',
-        'info' => '',
+        'attachment' => '添付ファイル',
+        'debug' => 'デバッグ',
+        'error' => 'エラー',
+        'info' => '情報',
         'inline' => '',
-        'notice' => '',
+        'notice' => '通知',
 
     };
    # $$STOP$$
