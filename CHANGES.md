@@ -1,4 +1,5 @@
 #5.0.13 2016-??-??
+ - 2016-09-07 Fixed errors on entering AdminCustomerUser with RunInitialWildcardSearch disabled. 
  - 2016-08-31 Added option to display number of all customer tickets in AgentTicketZoom.
  - 2016-08-31 Daemon::Log::RotationType option added.
  - 2016-08-30 Product name in messages instead of hardcoded OTRS.
