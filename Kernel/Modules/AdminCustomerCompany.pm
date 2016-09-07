@@ -526,8 +526,6 @@ sub _Overview {
         # get config object
         my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
-        my %List = ();
-
         # same Limit as $Self->{CustomerCompanyMap}->{'CustomerCompanySearchListLimit'}
         # smallest Limit from all sources
         my $Limit = 400;
