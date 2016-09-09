@@ -249,7 +249,7 @@ sub ArticleCreate {
         }
     }
     ATTRIBUTE:
-    for my $Attribute (qw(InReplyTo References)) {
+    for my $Attribute (qw(MessageID)) {
         next ATTRIBUTE if !$Param{$Attribute};
         $Param{$Attribute} = substr( $Param{$Attribute}, 0, 3800 );
     }

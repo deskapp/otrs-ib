@@ -1,4 +1,8 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-09-08 Made possible to define ServiceIDs and SLAIDs as default shown ticket search attributes, thanks to Paweł Bogusławski.
+ - 2016-09-08 Fixed status passing and redundant TicketGet calls, thanks to Paweł Bogusławski.
+ - 2016-09-08 Fixed bug#[5420](http://bugs.otrs.org/show_bug.cgi?id=5420) - Email received with many recipients or large 'From' can't be created in OTRS.
+ - 2016-09-07 Fixed empty attachment links and file size formatting, thanks to Paweł Bogusławski.
  - 2016-09-07 Fixed errors on entering AdminCustomerUser with RunInitialWildcardSearch disabled.
  - 2016-08-31 Added option to display number of all customer tickets in AgentTicketZoom.
  - 2016-08-31 Daemon::Log::RotationType option added.
@@ -136,6 +140,16 @@
  - 2015-11-27 Improved command Maint::Ticket::InvalidUserCleanup. It can now now both unlock tickets of invalid users and also (optionally) change their state to make sure they will not be overlooked. Thanks to Moritz Lenz @ noris networks.
 
 #5.0.13 2016-??-??
+ - 2016-09-09 Fixed bug#[12273](http://bugs.otrs.org/show_bug.cgi?id=12273) - ACLs do not work if referencing on DF with value 0.
+ - 2016-09-05 Added new console commands to print (Maint::Log::Print) and clear (Maint::Log::Clear) the OTRS log.
+ - 2016-09-05 Followup for bug#[11922](http://bugs.otrs.org/show_bug.cgi?id=11922) - Notification to non RealCustomer.
+ - 2016-09-02 Fixed bug#[12199](http://bugs.otrs.org/show_bug.cgi?id=12199) - ProcessManagement: Comma separated Lastnames are not shown correctly on article creation.
+ - 2016-09-02 Fixed bug#[12079](http://bugs.otrs.org/show_bug.cgi?id=12079) - Regex in transition condition not working for empty match.
+ - 2016-09-02 Added additional positive ResponseCodes for Generic Interface transport module REST, thanks to Robert Ullrich.
+ - 2016-09-02 Fixed bug#[12280](http://bugs.otrs.org/show_bug.cgi?id=12280) - GenericAgent job does not send out notifications, even when the option is set to Yes. Thanks to Johannes Hoerburger.
+ - 2016-09-02 Fixed bug#[12257](http://bugs.otrs.org/show_bug.cgi?id=12257) - Ticketnotification: Ticketfilter of a uncheck checkbox doesn't work.
+ - 2016-09-02 Fixed bug#[7288](http://bugs.otrs.org/show_bug.cgi?id=7288) - Hyperlink creation cuts URLs after a closing square bracket.
+ - 2016-09-01 Fixed bug#[12106](http://bugs.otrs.org/show_bug.cgi?id=12106) - Use of uninitialized value in splice.
  - 2016-08-26 Fixed bug#[12233](http://bugs.otrs.org/show_bug.cgi?id=12233) - ACL for restricting services depending on queue does not work as exspected.
  - 2016-08-26 Fixed bug#[10608](http://bugs.otrs.org/show_bug.cgi?id=10608) - Can't search tickets by CustomerID that contain quotes.
  - 2016-08-26 Fixed bug#[12270](http://bugs.otrs.org/show_bug.cgi?id=12270) - AdminMailAccount - Mail account password returned back to form.
