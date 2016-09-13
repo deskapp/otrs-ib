@@ -667,13 +667,13 @@ sub _Overview {
         );
     }
 
-    if ( $Param{Search} ) {
+    # when there is no data to show, a message is displayed on the table with this colspan
+    my $ColSpan = 6;
+
+        if ( $Param{Search} ) {
 
         # get config object
         my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
-
-        # when there is no data to show, a message is displayed on the table with this colspan
-        my $ColSpan = 6;
 
         # same Limit as $Self->{CustomerUserMap}->{CustomerUserSearchListLimit}
         # smallest Limit from all sources
