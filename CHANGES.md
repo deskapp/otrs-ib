@@ -1,4 +1,5 @@
 #5.0.13 2016-??-??
+ - 2016-09-14 Fixed error Argument "" isn't numeric in bitwise xor (^) at [...]MatchDBSource.pm.
  - 2016-09-14 Fixed typo in HTML tag.
  - 2016-09-13 Optimized user and customer lists generation.
  - 2016-09-12 Fixed bug#[11365](http://bugs.otrs.org/show_bug.cgi?id=11365) - ACLs editor shows actions where ACLs does not apply.
