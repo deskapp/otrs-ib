@@ -34,11 +34,8 @@ This task handler executes scheduler tasks based in cron notation.
 
 =head1 PUBLIC INTERFACE
 
-=over 4
 
-=cut
-
-=item new()
+=head2 new()
 
     use Kernel::System::ObjectManager;
     local $Kernel::OM = Kernel::System::ObjectManager->new();
@@ -58,9 +55,9 @@ sub new {
     return $Self;
 }
 
-=item Run()
+=head2 Run()
 
-performs the selected Cron task.
+Performs the selected Cron task.
 
     my $Success = $TaskHandlerObject->Run(
         TaskID   => 123,
@@ -85,24 +82,22 @@ Returns:
 sub Run {
     my ( $Self, %Param ) = @_;
 
-    # check task params
+    # Check task params.
     my $CheckResult = $Self->_CheckTaskParams(
         %Param,
         NeededDataAttributes => [ 'Module', 'Function' ],
         DataParamsRef        => 'ARRAY',
     );
 
-    # stop execution if an error in params is detected
+    # Stop execution if an error in params is detected.
     return if !$CheckResult;
 
     my $StartSystemTime = $Kernel::OM->Get('Kernel::System::Time')->SystemTime();
 
-    # get module object
     my $ModuleObject;
     eval {
         $ModuleObject = $Kernel::OM->Get( $Param{Data}->{Module} );
     };
-
     if ( !$ModuleObject ) {
         $Kernel::OM->Get('Kernel::System::Log')->Log(
             Priority => 'error',
@@ -114,12 +109,12 @@ sub Run {
 
     my $Function = $Param{Data}->{Function};
 
-    # check if the module provide the required function
+    # Check if the module provide the required function.
     return if !$ModuleObject->can($Function);
 
     my @Parameters = @{ $Param{Data}->{Params} || [] };
 
-    # to capture the standard error
+    # To capture the standard error.
     my $ErrorMessage;
 
     my $Result;
@@ -130,26 +125,31 @@ sub Run {
 
     eval {
 
-        # localize the standard error, everything will be restored after the eval block
+        # Restore child signal to default, main daemon set it to 'IGNORE' to be able to create
+        #   multiple process at the same time, but in workers this causes problems if function does
+        #   system calls (on linux), since system calls returns -1. See bug#12126.
+        local $SIG{CHLD} = 'DEFAULT';
+
+        # Localize the standard error, everything will be restored after the eval block.
         local *STDERR;
 
-        # redirect the standard error to a variable
+        # Redirect the standard error to a variable.
         open STDERR, ">>", \$ErrorMessage;
 
-        # disable ANSI terminal colors for console commands, then in case of an error the output
-        #   will be clean
-        # prevent used once warning, setting the variable as local and then assign the value
-        #   in the next statement
+        # Disable ANSI terminal colors for console commands, then in case of an error the output
+        #   will be clean.
+        # Prevent used once warning, setting the variable as local and then assign the value
+        #   in the next statement.
         local $Kernel::System::Console::BaseCommand::SuppressANSI;
         $Kernel::System::Console::BaseCommand::SuppressANSI = 1;
 
-        # run function on the module with the specified parameters in Data->{Params}
+        # Run function on the module with the specified parameters in Data->{Params}
         $Result = $ModuleObject->$Function(
             @Parameters,
         );
     };
 
-    # get current system time (as soon as the method has been called)
+    # Get current system time (as soon as the method has been called).
     my $EndSystemTime = $Kernel::OM->Get('Kernel::System::Time')->SystemTime();
 
     my $IsConsoleCommand;
@@ -163,14 +163,14 @@ sub Run {
 
     my $ConsoleCommandFailure;
 
-    # console commands send 1 as result if fail
+    # Console commands send 1 as result if fail.
     if ( $IsConsoleCommand && $Result ) {
         $ConsoleCommandFailure = 1;
     }
 
     my $Success = 1;
 
-    # check if there are errors
+    # Check if there are errors.
     if ( $ErrorMessage || $ConsoleCommandFailure ) {
 
         $ErrorMessage //= '';
@@ -185,7 +185,7 @@ sub Run {
         $Success = 0;
     }
 
-    # update worker task
+    # Update worker task.
     $Kernel::OM->Get('Kernel::System::Daemon::SchedulerDB')->RecurrentTaskWorkerInfoSet(
         LastWorkerTaskID      => $Param{TaskID},
         LastWorkerStatus      => $Success,
@@ -196,8 +196,6 @@ sub Run {
 }
 
 1;
-
-=back
 
 =head1 TERMS AND CONDITIONS
 

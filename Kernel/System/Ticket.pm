@@ -61,11 +61,8 @@ All ticket functions.
 
 =head1 PUBLIC INTERFACE
 
-=over 4
 
-=cut
-
-=item new()
+=head2 new()
 
 create an object. Do not use it directly, instead use:
 
@@ -154,7 +151,7 @@ sub new {
     return $Self;
 }
 
-=item TicketCreateNumber()
+=head2 TicketCreateNumber()
 
 creates a new ticket number
 
@@ -171,7 +168,7 @@ sub TicketCreateNumber {
     return $Kernel::OM->Get($GeneratorModule)->TicketCreateNumber(%Param);
 }
 
-=item GetTNByString()
+=head2 GetTNByString()
 
 creates a new ticket number
 
@@ -188,7 +185,7 @@ sub GetTNByString {
     return $Kernel::OM->Get($GeneratorModule)->GetTNByString($String);
 }
 
-=item TicketCheckNumber()
+=head2 TicketCheckNumber()
 
 checks if ticket number exists, returns ticket id if number exists.
 
@@ -266,7 +263,7 @@ sub TicketCheckNumber {
     }
 }
 
-=item TicketCreate()
+=head2 TicketCreate()
 
 creates a new ticket
 
@@ -574,7 +571,7 @@ sub TicketCreate {
     return $TicketID;
 }
 
-=item TicketDelete()
+=head2 TicketDelete()
 
 deletes a ticket with articles from storage
 
@@ -701,7 +698,7 @@ sub TicketDelete {
     return 1;
 }
 
-=item TicketIDLookup()
+=head2 TicketIDLookup()
 
 ticket id lookup by ticket number
 
@@ -742,7 +739,7 @@ sub TicketIDLookup {
     return $ID;
 }
 
-=item TicketNumberLookup()
+=head2 TicketNumberLookup()
 
 ticket number lookup by ticket id
 
@@ -783,7 +780,7 @@ sub TicketNumberLookup {
     return $Number;
 }
 
-=item TicketSubjectBuild()
+=head2 TicketSubjectBuild()
 
 rebuild a new ticket subject
 
@@ -897,7 +894,7 @@ sub TicketSubjectBuild {
     }
 }
 
-=item TicketSubjectClean()
+=head2 TicketSubjectClean()
 
 strip/clean up a ticket subject
 
@@ -975,7 +972,7 @@ sub TicketSubjectClean {
     return $Subject;
 }
 
-=item TicketGet()
+=head2 TicketGet()
 
 Get ticket info
 
@@ -1737,7 +1734,7 @@ sub _TicketGetFirstLock {
     return %Data;
 }
 
-=item TicketTitleUpdate()
+=head2 TicketTitleUpdate()
 
 update ticket title
 
@@ -1805,7 +1802,7 @@ sub TicketTitleUpdate {
     return 1;
 }
 
-=item TicketUnlockTimeoutUpdate()
+=head2 TicketUnlockTimeoutUpdate()
 
 set the ticket unlock time to the passed time
 
@@ -1872,7 +1869,7 @@ sub TicketUnlockTimeoutUpdate {
     return 1;
 }
 
-=item TicketQueueID()
+=head2 TicketQueueID()
 
 get ticket queue id
 
@@ -1906,7 +1903,7 @@ sub TicketQueueID {
     return $Ticket{QueueID};
 }
 
-=item TicketMoveList()
+=head2 TicketMoveList()
 
 to get the move queue list for a ticket (depends on workflow, if configured)
 
@@ -1976,7 +1973,7 @@ sub TicketMoveList {
     return %Queues;
 }
 
-=item TicketQueueSet()
+=head2 TicketQueueSet()
 
 to move a ticket (sends notification to agents of selected my queues, if ticket isn't closed)
 
@@ -2115,7 +2112,7 @@ sub TicketQueueSet {
     return 1;
 }
 
-=item TicketMoveQueueList()
+=head2 TicketMoveQueueList()
 
 returns a list of used queue ids / names
 
@@ -2202,7 +2199,7 @@ sub TicketMoveQueueList {
     }
 }
 
-=item TicketTypeList()
+=head2 TicketTypeList()
 
 to get all possible types for a ticket (depends on workflow, if configured)
 
@@ -2260,7 +2257,7 @@ sub TicketTypeList {
     return %Types;
 }
 
-=item TicketTypeSet()
+=head2 TicketTypeSet()
 
 to set a ticket type
 
@@ -2358,7 +2355,7 @@ sub TicketTypeSet {
     return 1;
 }
 
-=item TicketServiceList()
+=head2 TicketServiceList()
 
 to get all possible services for a ticket (depends on workflow, if configured)
 
@@ -2440,7 +2437,7 @@ sub TicketServiceList {
     return %Services;
 }
 
-=item TicketServiceSet()
+=head2 TicketServiceSet()
 
 to set a ticket service
 
@@ -2558,7 +2555,7 @@ sub TicketServiceSet {
     return 1;
 }
 
-=item TicketEscalationPreferences()
+=head2 TicketEscalationPreferences()
 
 get escalation preferences of a ticket (e. g. from SLA or from Queue based settings)
 
@@ -2607,7 +2604,7 @@ sub TicketEscalationPreferences {
     return %Escalation;
 }
 
-=item TicketEscalationDateCalculation()
+=head2 TicketEscalationDateCalculation()
 
 get escalation properties of a ticket
 
@@ -2782,7 +2779,7 @@ sub TicketEscalationDateCalculation {
     return %Data;
 }
 
-=item TicketEscalationIndexBuild()
+=head2 TicketEscalationIndexBuild()
 
 build escalation index of one ticket with current settings (SLA, Queue, Calendar...)
 
@@ -3115,7 +3112,7 @@ sub TicketEscalationIndexBuild {
     return 1;
 }
 
-=item TicketSLAList()
+=head2 TicketSLAList()
 
 to get all possible SLAs for a ticket (depends on workflow, if configured)
 
@@ -3196,7 +3193,7 @@ sub TicketSLAList {
     return %SLAs;
 }
 
-=item TicketSLASet()
+=head2 TicketSLASet()
 
 to set a ticket service level agreement
 
@@ -3306,7 +3303,7 @@ sub TicketSLASet {
     return 1;
 }
 
-=item TicketCustomerSet()
+=head2 TicketCustomerSet()
 
 Set customer data of ticket. Can set 'No' (CustomerID),
 'User' (CustomerUserID), or both.
@@ -3403,7 +3400,7 @@ sub TicketCustomerSet {
     return 1;
 }
 
-=item TicketPermission()
+=head2 TicketPermission()
 
 returns whether or not the agent has permission on a ticket
 
@@ -3511,7 +3508,7 @@ sub TicketPermission {
     return;
 }
 
-=item TicketCustomerPermission()
+=head2 TicketCustomerPermission()
 
 returns whether or not a customer has permission to a ticket
 
@@ -3618,7 +3615,7 @@ sub TicketCustomerPermission {
     return;
 }
 
-=item GetSubscribedUserIDsByQueueID()
+=head2 GetSubscribedUserIDsByQueueID()
 
 returns an array of user ids which selected the given queue id as
 custom queue.
@@ -3692,7 +3689,7 @@ sub GetSubscribedUserIDsByQueueID {
     return @CleanUserIDs;
 }
 
-=item GetSubscribedUserIDsByServiceID()
+=head2 GetSubscribedUserIDsByServiceID()
 
 returns an array of user ids which selected the given service id as
 custom service.
@@ -3757,7 +3754,7 @@ sub GetSubscribedUserIDsByServiceID {
     return @CleanUserIDs;
 }
 
-=item TicketPendingTimeSet()
+=head2 TicketPendingTimeSet()
 
 set ticket pending time:
 
@@ -3945,7 +3942,7 @@ sub TicketPendingTimeSet {
     return 1;
 }
 
-=item TicketLockGet()
+=head2 TicketLockGet()
 
 check if a ticket is locked or not
 
@@ -3981,7 +3978,7 @@ sub TicketLockGet {
     return;
 }
 
-=item TicketLockSet()
+=head2 TicketLockSet()
 
 to lock or unlock a ticket
 
@@ -4131,7 +4128,7 @@ sub TicketLockSet {
     return 1;
 }
 
-=item TicketArchiveFlagSet()
+=head2 TicketArchiveFlagSet()
 
 to set the ticket archive flag
 
@@ -4252,7 +4249,7 @@ sub TicketArchiveFlagSet {
     return 1;
 }
 
-=item TicketStateSet()
+=head2 TicketStateSet()
 
 to set a ticket state
 
@@ -4381,7 +4378,7 @@ sub TicketStateSet {
     return 1;
 }
 
-=item TicketStateList()
+=head2 TicketStateList()
 
 to get the state list for a ticket (depends on workflow, if configured)
 
@@ -4492,7 +4489,7 @@ sub TicketStateList {
     return %States;
 }
 
-=item OwnerCheck()
+=head2 OwnerCheck()
 
 to get the ticket owner
 
@@ -4579,7 +4576,7 @@ sub OwnerCheck {
     return $Param{SearchUserID}, $Param{SearchUser};
 }
 
-=item TicketOwnerSet()
+=head2 TicketOwnerSet()
 
 to set the ticket owner (notification to the new owner will be sent)
 
@@ -4724,7 +4721,7 @@ sub TicketOwnerSet {
     return 1;
 }
 
-=item TicketOwnerList()
+=head2 TicketOwnerList()
 
 returns the owner in the past as array with hash ref of the owner data
 (name, email, ...)
@@ -4804,7 +4801,7 @@ sub TicketOwnerList {
     return @UserInfo;
 }
 
-=item TicketResponsibleSet()
+=head2 TicketResponsibleSet()
 
 to set the ticket responsible (notification to the new responsible will be sent)
 
@@ -4947,7 +4944,7 @@ sub TicketResponsibleSet {
     return 1;
 }
 
-=item TicketResponsibleList()
+=head2 TicketResponsibleList()
 
 returns the responsible in the past as array with hash ref of the owner data
 (name, email, ...)
@@ -5037,7 +5034,7 @@ sub TicketResponsibleList {
     return @UserInfo;
 }
 
-=item TicketInvolvedAgentsList()
+=head2 TicketInvolvedAgentsList()
 
 returns an array with hash ref of agents which have been involved with a ticket.
 It is guaranteed that no agent is returned twice.
@@ -5124,7 +5121,7 @@ sub TicketInvolvedAgentsList {
     return @UserInfo;
 }
 
-=item TicketPrioritySet()
+=head2 TicketPrioritySet()
 
 to set the ticket priority
 
@@ -5228,7 +5225,7 @@ sub TicketPrioritySet {
     return 1;
 }
 
-=item TicketPriorityList()
+=head2 TicketPriorityList()
 
 to get the priority list for a ticket (depends on workflow, if configured)
 
@@ -5283,7 +5280,7 @@ sub TicketPriorityList {
     return %Data;
 }
 
-=item HistoryTicketStatusGet()
+=head2 HistoryTicketStatusGet()
 
 get a hash with ticket id as key and a hash ref (result of HistoryTicketGet)
 of all affected tickets in this time area.
@@ -5389,7 +5386,7 @@ sub HistoryTicketStatusGet {
     return %Ticket;
 }
 
-=item HistoryTicketGet()
+=head2 HistoryTicketGet()
 
 returns a hash of some of the ticket data
 calculated based on ticket history info at the given date.
@@ -5659,7 +5656,7 @@ sub HistoryTicketGet {
     return %Ticket;
 }
 
-=item HistoryTypeLookup()
+=head2 HistoryTypeLookup()
 
 returns the id of the requested history type.
 
@@ -5726,7 +5723,7 @@ sub HistoryTypeLookup {
     return $HistoryTypeID;
 }
 
-=item HistoryAdd()
+=head2 HistoryAdd()
 
 add a history entry to an ticket
 
@@ -5861,7 +5858,7 @@ sub HistoryAdd {
     return 1;
 }
 
-=item HistoryGet()
+=head2 HistoryGet()
 
 get ticket history as array with hashes
 (TicketID, ArticleID, Name, CreateBy, CreateTime, HistoryType, QueueID,
@@ -5936,7 +5933,7 @@ sub HistoryGet {
     return @Lines;
 }
 
-=item HistoryDelete()
+=head2 HistoryDelete()
 
 delete a ticket history (from storage)
 
@@ -5983,7 +5980,7 @@ sub HistoryDelete {
     return 1;
 }
 
-=item TicketAccountedTimeGet()
+=head2 TicketAccountedTimeGet()
 
 returns the accounted time of a ticket.
 
@@ -6021,7 +6018,7 @@ sub TicketAccountedTimeGet {
     return $AccountedTime;
 }
 
-=item TicketAccountTime()
+=head2 TicketAccountTime()
 
 account time to a ticket.
 
@@ -6106,7 +6103,7 @@ sub TicketAccountTime {
     return 1;
 }
 
-=item TicketMerge()
+=head2 TicketMerge()
 
 merge two tickets
 
@@ -6316,7 +6313,7 @@ sub TicketMerge {
     return 1;
 }
 
-=item TicketMergeDynamicFields()
+=head2 TicketMergeDynamicFields()
 
 merge dynamic fields from one ticket into another, that is, copy
 them from the merge ticket to the main ticket if the value is empty
@@ -6406,7 +6403,7 @@ sub TicketMergeDynamicFields {
     return 1;
 }
 
-=item TicketWatchGet()
+=head2 TicketWatchGet()
 
 to get all user ids and additional attributes of an watched ticket
 
@@ -6501,7 +6498,7 @@ sub TicketWatchGet {
     return %Data;
 }
 
-=item TicketWatchSubscribe()
+=head2 TicketWatchSubscribe()
 
 to subscribe a ticket to watch it
 
@@ -6573,7 +6570,7 @@ sub TicketWatchSubscribe {
     return 1;
 }
 
-=item TicketWatchUnsubscribe()
+=head2 TicketWatchUnsubscribe()
 
 to remove a subscribtion of a ticket
 
@@ -6677,7 +6674,7 @@ sub TicketWatchUnsubscribe {
     return 1;
 }
 
-=item TicketFlagSet()
+=head2 TicketFlagSet()
 
 set ticket flags
 
@@ -6757,7 +6754,7 @@ sub TicketFlagSet {
     return 1;
 }
 
-=item TicketFlagDelete()
+=head2 TicketFlagDelete()
 
 delete ticket flag
 
@@ -6870,7 +6867,7 @@ sub TicketFlagDelete {
     return 1;
 }
 
-=item TicketFlagGet()
+=head2 TicketFlagGet()
 
 get ticket flags
 
@@ -6969,7 +6966,7 @@ sub TicketFlagGet {
     return %{$UserTags};
 }
 
-=item TicketArticleStorageSwitch()
+=head2 TicketArticleStorageSwitch()
 
 move article storage from one backend to other backend
 
@@ -7308,7 +7305,7 @@ sub TicketArticleStorageSwitch {
 
 # ProcessManagement functions
 
-=item TicketCheckForProcessType()
+=head2 TicketCheckForProcessType()
 
     checks wether or not the ticket is of a process type.
 
@@ -7345,7 +7342,7 @@ sub TicketCheckForProcessType {
     return 1 if $Ticket{$DynamicFieldName};
 }
 
-=item TicketCalendarGet()
+=head2 TicketCalendarGet()
 
 checks calendar to be used for ticket based on sla and queue
 
@@ -7394,7 +7391,7 @@ sub TicketCalendarGet {
     return '';
 }
 
-=item SearchUnknownTicketCustomers()
+=head2 SearchUnknownTicketCustomers()
 
 search customer users that are not saved in any backend
 
@@ -7602,8 +7599,6 @@ sub StateSet {
 }
 
 1;
-
-=back
 
 =head1 TERMS AND CONDITIONS
 

@@ -30,11 +30,8 @@ A module to parse and encode an email.
 
 =head1 PUBLIC INTERFACE
 
-=over 4
 
-=cut
-
-=item new()
+=head2 new()
 
 create an object. Do not use it directly, instead use:
 
@@ -129,7 +126,7 @@ sub new {
     return $Self;
 }
 
-=item GetPlainEmail()
+=head2 GetPlainEmail()
 
 To get a email as a string back (plain email).
 
@@ -143,7 +140,7 @@ sub GetPlainEmail {
     return $Self->{Email}->as_string();
 }
 
-=item GetPlainOrigEmail()
+=head2 GetPlainOrigEmail()
 
 To get back an original email as a string (plain email).
 
@@ -157,7 +154,7 @@ sub GetPlainOrigEmail {
     return $Self->{OrigEmail};
 }
 
-=item GetParam()
+=head2 GetParam()
 
 To get a header (e. g. Subject, To, ContentType, ...) of an email
 (mime is already done!).
@@ -215,7 +212,7 @@ sub GetParam {
     return $ReturnLine;
 }
 
-=item GetEmailAddress()
+=head2 GetEmailAddress()
 
 To get the senders email address back.
 
@@ -240,7 +237,7 @@ sub GetEmailAddress {
     return $Email;
 }
 
-=item GetRealname()
+=head2 GetRealname()
 
 To get the senders realname back.
 
@@ -272,7 +269,7 @@ sub GetRealname {
     return $Realname;
 }
 
-=item SplitAddressLine()
+=head2 SplitAddressLine()
 
 To get an array of email addresses of an To, Cc or Bcc line back.
 
@@ -295,7 +292,7 @@ sub SplitAddressLine {
     return @GetParam;
 }
 
-=item GetContentType()
+=head2 GetContentType()
 
 Returns the message body (or from the first attachment) "ContentType" header.
 
@@ -313,7 +310,7 @@ sub GetContentType {
     return $Self->GetParam( WHAT => 'Content-Type' ) || 'text/plain';
 }
 
-=item GetCharset()
+=head2 GetCharset()
 
 Returns the message body (or from the first attachment) "charset".
 
@@ -411,7 +408,7 @@ sub GetCharset {
     return 'ISO-8859-1';
 }
 
-=item GetReturnContentType()
+=head2 GetReturnContentType()
 
 Returns the new message body (or from the first attachment) "ContentType" header
 (maybe the message is converted to utf-8).
@@ -440,7 +437,7 @@ sub GetReturnContentType {
     return $ContentType;
 }
 
-=item GetReturnCharset()
+=head2 GetReturnCharset()
 
 Returns the charset of the new message body "Charset"
 (maybe the message is converted to utf-8).
@@ -457,7 +454,7 @@ sub GetReturnCharset {
     return 'utf-8';
 }
 
-=item GetMessageBody()
+=head2 GetMessageBody()
 
 Returns the message body (or from the first attachment) from the email.
 
@@ -580,7 +577,7 @@ sub GetMessageBody {
     return;
 }
 
-=item GetAttachments()
+=head2 GetAttachments()
 
 Returns an array of the email attachments.
 
@@ -834,7 +831,7 @@ sub PartsAttachments {
     return 1;
 }
 
-=item GetReferences()
+=head2 GetReferences()
 
 To get an array of reference ids of the parsed email
 
@@ -973,7 +970,7 @@ sub CheckMessageBody {
 
 =begin Internal:
 
-=item _DecodeString()
+=head2 _DecodeString()
 
 Decode all encoded substrings.
 
@@ -1030,7 +1027,7 @@ sub _DecodeString {
     return $DecodedString;
 }
 
-=item _MailAddressParse()
+=head2 _MailAddressParse()
 
     my @Chunks = $ParserObject->_MailAddressParse(Email => $Email);
 
@@ -1056,8 +1053,6 @@ sub _MailAddressParse {
 }
 
 =end Internal:
-
-=back
 
 =head1 TERMS AND CONDITIONS
 

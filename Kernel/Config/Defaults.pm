@@ -17,8 +17,8 @@ use strict;
 use warnings;
 use utf8;
 
-# Perl 5.10.0 is the required minimum version to use OTRS.
-use 5.010_000;
+# Perl 5.16.0 is the required minimum version to use OTRS.
+use 5.016_000;
 
 # prepend '../Custom', '../Kernel/cpan-lib' and '../' to the module search path @INC
 use File::Basename;
@@ -689,28 +689,28 @@ sub LoadDefaults {
     # agent interface notification module to check the admin user id
     # (don't work with user id 1 notification)
     $Self->{'Frontend::NotifyModule'} = {
-        '100-CloudServicesDisabled' => {
+        '1000-CloudServicesDisabled' => {
           'Group' => 'admin',
           'Module' => 'Kernel::Output::HTML::Notification::AgentCloudServicesDisabled'
         },
-        '100-OTRSBusiness' => {
+        '1100-OTRSBusiness' => {
             'Group' => 'admin',
             'Module' => 'Kernel::Output::HTML::Notification::AgentOTRSBusiness'
         },
-        '200-UID-Check' => {
+        '2000-UID-Check' => {
           'Module' => 'Kernel::Output::HTML::Notification::UIDCheck',
         },
-        '500-OutofOffice-Check' => {
+        '5500-OutofOffice-Check' => {
           'Module' => 'Kernel::Output::HTML::Notification::OutofOfficeCheck',
         },
-        '600-SystemMaintenance-Check' => {
+        '6000-SystemMaintenance-Check' => {
             'Module' => 'Kernel::Output::HTML::Notification::SystemMaintenanceCheck',
         },
-        '700-AgentTimeZone-Check' => {
+        '7000-AgentTimeZone-Check' => {
             'Module' => 'Kernel::Output::HTML::Notification::AgentTimeZoneCheck',
         },
 
-        '800-Daemon-Check' => {
+        '8000-Daemon-Check' => {
           'Module' => 'Kernel::Output::HTML::Notification::DaemonCheck',
         },
     };
@@ -1519,6 +1519,8 @@ via the Preferences button after logging in.
             [ 'UserCountry',      Translatable('Country'),     'country',      1, 0, 'var', '', 0 ],
             [ 'UserComment',      Translatable('Comment'),     'comments',     1, 0, 'var', '', 0 ],
             [ 'ValidID',          Translatable('Valid'),       'valid_id',     0, 1, 'int', '', 0 ],
+            # this is needed, if "SMIME::FetchFromCustomer" is active
+            #[ 'SMIMECertificate', 'SMIMECertificate', 'userSMIMECertificate',      0, 1, 'var', '', 0 ],
 
             # Dynamic field example
 #            [ 'DynamicField_Name_X', undef, 'Name_X', 0, 0, 'dynamic_field', undef, 0, undef, undef, ],
@@ -1883,12 +1885,12 @@ sub Set {
 
 ## nofilter(TidyAll::Plugin::OTRS::Perl::Translatable)
 
-=item Translatable()
-
-this is a no-op to mark a text as translatable in the Perl code.
-We use our own version here instead of importing Language::Translatable to not add a dependency.
-
-=cut
+# =item Translatable()
+#
+# this is a no-op to mark a text as translatable in the Perl code.
+# We use our own version here instead of importing Language::Translatable to not add a dependency.
+#
+# =cut
 
 sub Translatable {
     return shift;
@@ -2134,13 +2136,3 @@ sub new {
 }
 
 1;
-
-=head1 TERMS AND CONDITIONS
-
-This software is part of the OTRS project (L<http://otrs.org/>).
-
-This software comes with ABSOLUTELY NO WARRANTY. For details, see
-the enclosed file COPYING for license information (AGPL). If you
-did not receive this file, see L<http://www.gnu.org/licenses/agpl.txt>.
-
-=cut

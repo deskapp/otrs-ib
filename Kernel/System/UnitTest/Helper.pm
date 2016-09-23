@@ -15,6 +15,9 @@ use warnings;
 
 use File::Path qw(rmtree);
 
+# Load DateTime so that we can override functions for the FixedTimeSet().
+use DateTime;
+
 use Kernel::System::SysConfig;
 
 our @ObjectDependencies = (
@@ -32,11 +35,8 @@ our @ObjectDependencies = (
 
 Kernel::System::UnitTest::Helper - unit test helper functions
 
-=over 4
 
-=cut
-
-=item new()
+=head2 new()
 
 construct a helper object.
 
@@ -99,7 +99,7 @@ sub new {
     return $Self;
 }
 
-=item GetRandomID()
+=head2 GetRandomID()
 
 creates a random ID that can be used in tests as a unique identifier.
 
@@ -116,7 +116,7 @@ sub GetRandomID {
     return 'test' . $Self->GetRandomNumber();
 }
 
-=item GetRandomNumber()
+=head2 GetRandomNumber()
 
 creates a random Number that can be used in tests as a unique identifier.
 
@@ -138,10 +138,10 @@ sub GetRandomNumber {
 
     my $Prefix = $PID . substr time(), -5, 5;
 
-    return $Prefix . $GetRandomNumberPrevious{$Prefix}++ || 0;
+    return $Prefix . sprintf( '%.05d', ( $GetRandomNumberPrevious{$Prefix}++ || 0 ) );
 }
 
-=item TestUserCreate()
+=head2 TestUserCreate()
 
 creates a test user that can be used in tests. It will
 be set to invalid automatically during the destructor. Returns
@@ -157,22 +157,33 @@ the login name of the new user, the password is the same.
 sub TestUserCreate {
     my ( $Self, %Param ) = @_;
 
-    # create test user
-    my $TestUserLogin = $Self->GetRandomID();
-
     # disable email checks to create new user
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
     local $ConfigObject->{CheckEmailAddresses} = 0;
 
-    my $TestUserID = $Kernel::OM->Get('Kernel::System::User')->UserAdd(
-        UserFirstname => $TestUserLogin,
-        UserLastname  => $TestUserLogin,
-        UserLogin     => $TestUserLogin,
-        UserPw        => $TestUserLogin,
-        UserEmail     => $TestUserLogin . '@localunittest.com',
-        ValidID       => 1,
-        ChangeUserID  => 1,
-    ) || die "Could not create test user";
+    # create test user
+    my $TestUserID;
+    my $TestUserLogin;
+    COUNT:
+    for my $Count ( 1 .. 10 ) {
+
+        $TestUserLogin = $Self->GetRandomID();
+
+        $TestUserID = $Kernel::OM->Get('Kernel::System::User')->UserAdd(
+            UserFirstname => $TestUserLogin,
+            UserLastname  => $TestUserLogin,
+            UserLogin     => $TestUserLogin,
+            UserPw        => $TestUserLogin,
+            UserEmail     => $TestUserLogin . '@localunittest.com',
+            ValidID       => 1,
+            ChangeUserID  => 1,
+        );
+
+        last COUNT if $TestUserID;
+    }
+
+    die 'Could not create test user login' if !$TestUserLogin;
+    die 'Could not create test user'       if !$TestUserID;
 
     # Remember UserID of the test user to later set it to invalid
     #   in the destructor.
@@ -220,7 +231,7 @@ sub TestUserCreate {
     return $TestUserLogin;
 }
 
-=item TestCustomerUserCreate()
+=head2 TestCustomerUserCreate()
 
 creates a test customer user that can be used in tests. It will
 be set to invalid automatically during the destructor. Returns
@@ -240,19 +251,28 @@ sub TestCustomerUserCreate {
     local $ConfigObject->{CheckEmailAddresses} = 0;
 
     # create test user
-    my $TestUserLogin = $Self->GetRandomID();
+    my $TestUser;
+    COUNT:
+    for my $Count ( 1 .. 10 ) {
 
-    my $TestUser = $Kernel::OM->Get('Kernel::System::CustomerUser')->CustomerUserAdd(
-        Source         => 'CustomerUser',
-        UserFirstname  => $TestUserLogin,
-        UserLastname   => $TestUserLogin,
-        UserCustomerID => $TestUserLogin,
-        UserLogin      => $TestUserLogin,
-        UserPassword   => $TestUserLogin,
-        UserEmail      => $TestUserLogin . '@localunittest.com',
-        ValidID        => 1,
-        UserID         => 1,
-    ) || die "Could not create test user";
+        my $TestUserLogin = $Self->GetRandomID();
+
+        $TestUser = $Kernel::OM->Get('Kernel::System::CustomerUser')->CustomerUserAdd(
+            Source         => 'CustomerUser',
+            UserFirstname  => $TestUserLogin,
+            UserLastname   => $TestUserLogin,
+            UserCustomerID => $TestUserLogin,
+            UserLogin      => $TestUserLogin,
+            UserPassword   => $TestUserLogin,
+            UserEmail      => $TestUserLogin . '@localunittest.com',
+            ValidID        => 1,
+            UserID         => 1,
+        );
+
+        last COUNT if $TestUser;
+    }
+
+    die 'Could not create test user' if !$TestUser;
 
     # Remember UserID of the test user to later set it to invalid
     #   in the destructor.
@@ -273,7 +293,7 @@ sub TestCustomerUserCreate {
     return $TestUser;
 }
 
-=item BeginWork()
+=head2 BeginWork()
 
     $Helper->BeginWork()
 
@@ -288,7 +308,7 @@ sub BeginWork {
     return $DBObject->{dbh}->begin_work();
 }
 
-=item Rollback()
+=head2 Rollback()
 
     $Helper->Rollback()
 
@@ -307,7 +327,7 @@ sub Rollback {
     return 1;
 }
 
-=item GetTestHTTPHostname()
+=head2 GetTestHTTPHostname()
 
 returns a hostname for HTTP based tests, possibly including the port.
 
@@ -339,9 +359,9 @@ sub GetTestHTTPHostname {
     return $Host;
 }
 
-my $FixedDateTimeObject;
+my $FixedTime;
 
-=item FixedTimeSet()
+=head2 FixedTimeSet()
 
 makes it possible to override the system time as long as this object lives.
 You can pass an optional time parameter that should be used, if not,
@@ -350,9 +370,9 @@ the current system time will be used.
 All calls to methods of Kernel::System::Time and Kernel::System::DateTime will
 use the given time afterwards.
 
-    $HelperObject->FixedTimeSet(366475757); # with Timestamp
-    $HelperObject->FixedTimeSet($DateTimeObject); # with previously created DateTime object
-    $HelperObject->FixedTimeSet(); # set to current date and time
+    $HelperObject->FixedTimeSet(366475757);         # with Timestamp
+    $HelperObject->FixedTimeSet($DateTimeObject);   # with previously created DateTime object
+    $HelperObject->FixedTimeSet();                  # set to current date and time
 
 Returns:
     Timestamp
@@ -362,31 +382,19 @@ Returns:
 sub FixedTimeSet {
     my ( $Self, $TimeToSave ) = @_;
 
-    if ( defined $TimeToSave ) {
-        if ( ref $TimeToSave eq 'Kernel::System::DateTime' ) {
-            $FixedDateTimeObject = $TimeToSave;
-        }
-        else {
-            $FixedDateTimeObject = $Kernel::OM->Create(
-                'Kernel::System::DateTime',
-                ObjectParams => {
-                    Epoch => $TimeToSave,
-                },
-            );
-        }
+    if ( $TimeToSave && ref $TimeToSave eq 'Kernel::System::DateTime' ) {
+        $FixedTime = $TimeToSave->ToEpoch();
     }
     else {
-        $FixedDateTimeObject = $Kernel::OM->Create('Kernel::System::DateTime');
+        $FixedTime = $TimeToSave // CORE::time()
     }
 
-    # This is needed to reload objects that directly use the time functions
+    # This is needed to reload objects that directly use the native time functions
     #   to get a hold of the overrides.
     my @Objects = (
         'Kernel::System::Time',
         'Kernel::System::Cache::FileStorable',
         'Kernel::System::PID',
-        'DateTime',
-        'Kernel::System::DateTime',
     );
 
     for my $Object (@Objects) {
@@ -400,10 +408,10 @@ sub FixedTimeSet {
         }
     }
 
-    return $FixedDateTimeObject->ToEpoch();
+    return $FixedTime;
 }
 
-=item FixedTimeUnset()
+=head2 FixedTimeUnset()
 
 restores the regular system time behaviour.
 
@@ -412,12 +420,11 @@ restores the regular system time behaviour.
 sub FixedTimeUnset {
     my ($Self) = @_;
 
-    undef $FixedDateTimeObject;
-
+    undef $FixedTime;
     return;
 }
 
-=item FixedTimeAddSeconds()
+=head2 FixedTimeAddSeconds()
 
 adds a number of seconds to the fixed system time which was previously
 set by FixedTimeSet(). You can pass a negative value to go back in time.
@@ -427,49 +434,44 @@ set by FixedTimeSet(). You can pass a negative value to go back in time.
 sub FixedTimeAddSeconds {
     my ( $Self, $SecondsToAdd ) = @_;
 
-    my $FixedDateTimeObject = $Self->FixedDateTimeObjectGet();
-    return if !defined $FixedDateTimeObject;
-
-    if ( $SecondsToAdd > 0 ) {
-        $FixedDateTimeObject->Add( Seconds => $SecondsToAdd );
-    }
-    else {
-        $FixedDateTimeObject->Subtract( Seconds => abs $SecondsToAdd );
-    }
-
+    return if !defined $FixedTime;
+    $FixedTime += $SecondsToAdd;
     return;
-}
-
-=item FixedDateTimeObjectGet()
-
-Returns the fixed DateTime object that is currently being used/set.
-
-=cut
-
-sub FixedDateTimeObjectGet {
-    my ($Self) = @_;
-
-    return $FixedDateTimeObject;
 }
 
 # See http://perldoc.perl.org/5.10.0/perlsub.html#Overriding-Built-in-Functions
 BEGIN {
+    no warnings 'redefine';
     *CORE::GLOBAL::time = sub {
-        return defined $FixedDateTimeObject ? $FixedDateTimeObject->ToEpoch() : CORE::time();
+        return defined $FixedTime ? $FixedTime : CORE::time();
     };
     *CORE::GLOBAL::localtime = sub {
         my ($Time) = @_;
         if ( !defined $Time ) {
-            $Time = defined $FixedDateTimeObject ? $FixedDateTimeObject->ToEpoch() : CORE::time();
+            $Time = defined $FixedTime ? $FixedTime : CORE::time();
         }
         return CORE::localtime($Time);
     };
     *CORE::GLOBAL::gmtime = sub {
         my ($Time) = @_;
         if ( !defined $Time ) {
-            $Time = defined $FixedDateTimeObject ? $FixedDateTimeObject->ToEpoch() : CORE::time();
+            $Time = defined $FixedTime ? $FixedTime : CORE::time();
         }
         return CORE::gmtime($Time);
+    };
+
+    # Newer versions of DateTime provide a function _core_time() to override for time simulations.
+    *DateTime::_core_time = sub {    ## no critic
+        return defined $FixedTime ? $FixedTime : CORE::time();
+    };
+
+    # Make sure versions of DateTime also use _core_time() it by overriding now() as well.
+    *DateTime::now = sub {
+        my $Self = shift;
+        return $Self->from_epoch(
+            epoch => $Self->_core_time(),
+            @_
+        );
     };
 }
 
@@ -569,7 +571,7 @@ sub DESTROY {
     }
 }
 
-=item ConfigSettingChange()
+=head2 ConfigSettingChange()
 
 temporarily change a configuration setting system wide to another value,
 both in the current ConfigObject and also in the system configuration on disk.
@@ -644,7 +646,7 @@ EOF
     return 1;
 }
 
-=item ConfigSettingCleanup()
+=head2 ConfigSettingCleanup()
 
 remove all config setting changes from ConfigSettingChange();
 
@@ -666,7 +668,7 @@ sub ConfigSettingCleanup {
     return 1;
 }
 
-=item UseTmpArticleDir()
+=head2 UseTmpArticleDir()
 
 switch the article storage directory to a temporary one to prevent collisions;
 
@@ -699,8 +701,6 @@ sub UseTmpArticleDir {
 }
 
 1;
-
-=back
 
 =head1 TERMS AND CONDITIONS
 

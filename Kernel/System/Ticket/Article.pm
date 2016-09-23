@@ -29,11 +29,8 @@ All article functions.
 
 =head1 PUBLIC INTERFACE
 
-=over 4
 
-=cut
-
-=item ArticleCreate()
+=head2 ArticleCreate()
 
 create an article
 
@@ -556,7 +553,7 @@ sub ArticleCreate {
     return $ArticleID;
 }
 
-=item ArticleGetTicketIDOfMessageID()
+=head2 ArticleGetTicketIDOfMessageID()
 
 get ticket id of given message id
 
@@ -686,7 +683,7 @@ sub ArticleGetTicketIDOfMessageID {
     return $TicketID;
 }
 
-=item ArticleGetContentPath()
+=head2 ArticleGetContentPath()
 
 get article content path
 
@@ -744,7 +741,7 @@ sub ArticleGetContentPath {
     return $Result;
 }
 
-=item ArticleSenderTypeList()
+=head2 ArticleSenderTypeList()
 
 get a article sender type list
 
@@ -781,7 +778,7 @@ sub ArticleSenderTypeList {
 
 }
 
-=item ArticleSenderTypeLookup()
+=head2 ArticleSenderTypeLookup()
 
 article sender lookup
 
@@ -869,7 +866,7 @@ sub ArticleSenderTypeLookup {
     return $Result;
 }
 
-=item ArticleTypeLookup()
+=head2 ArticleTypeLookup()
 
 article type lookup
 
@@ -958,7 +955,7 @@ sub ArticleTypeLookup {
     return $Result;
 }
 
-=item ArticleTypeList()
+=head2 ArticleTypeList()
 
 get a article type list
 
@@ -1010,7 +1007,7 @@ sub ArticleTypeList {
     return @Array;
 }
 
-=item ArticleLastCustomerArticle()
+=head2 ArticleLastCustomerArticle()
 
 get last customer article
 
@@ -1073,7 +1070,7 @@ sub ArticleLastCustomerArticle {
     );
 }
 
-=item ArticleFirstArticle()
+=head2 ArticleFirstArticle()
 
 get first article
 
@@ -1109,7 +1106,7 @@ sub ArticleFirstArticle {
     );
 }
 
-=item ArticleIndex()
+=head2 ArticleIndex()
 
 returns an array with article IDs
 
@@ -1204,7 +1201,7 @@ sub ArticleIndex {
     return @Index;
 }
 
-=item ArticleContentIndex()
+=head2 ArticleContentIndex()
 
 returns an array with hash ref (hash contains result of ArticleGet())
 
@@ -1310,7 +1307,7 @@ sub ArticleContentIndex {
     return @ArticleBox;
 }
 
-=item ArticleGet()
+=head2 ArticleGet()
 
 returns article data
 
@@ -1921,7 +1918,7 @@ sub ArticleGet {
     return @Content;
 }
 
-=item ArticleCount()
+=head2 ArticleCount()
 
 Returns the number of articles for a ticket, possibly filtered by
 ArticleSenderTypeID and ArticleTypeID
@@ -2002,7 +1999,7 @@ sub ArticleCount {
     return $Count;
 }
 
-=item ArticlePage()
+=head2 ArticlePage()
 
 Get the page number of a given article when pagination is active
 
@@ -2097,7 +2094,7 @@ sub _ArticleGetId {
 
 =end Internal:
 
-=item ArticleUpdate()
+=head2 ArticleUpdate()
 
 update an article
 
@@ -2197,7 +2194,7 @@ sub ArticleUpdate {
     return 1;
 }
 
-=item ArticleSend()
+=head2 ArticleSend()
 
 send article via email and create article with attachments
 
@@ -2403,7 +2400,7 @@ sub ArticleSend {
     return $ArticleID;
 }
 
-=item ArticleBounce()
+=head2 ArticleBounce()
 
 bounce an article
 
@@ -2483,7 +2480,7 @@ sub ArticleBounce {
     return 1;
 }
 
-=item SendAutoResponse()
+=head2 SendAutoResponse()
 
 send an auto response to a customer via email
 
@@ -2746,7 +2743,7 @@ sub SendAutoResponse {
     return 1;
 }
 
-=item ArticleFlagSet()
+=head2 ArticleFlagSet()
 
 set article flags
 
@@ -2821,7 +2818,7 @@ sub ArticleFlagSet {
     return 1;
 }
 
-=item ArticleFlagDelete()
+=head2 ArticleFlagDelete()
 
 delete article flag
 
@@ -2910,7 +2907,7 @@ sub ArticleFlagDelete {
     return 1;
 }
 
-=item ArticleFlagGet()
+=head2 ArticleFlagGet()
 
 get article flags
 
@@ -2957,7 +2954,7 @@ sub ArticleFlagGet {
     return %Flag;
 }
 
-=item ArticleFlagsOfTicketGet()
+=head2 ArticleFlagsOfTicketGet()
 
 get all article flags of a ticket
 
@@ -3012,7 +3009,7 @@ sub ArticleFlagsOfTicketGet {
     return %Flag;
 }
 
-=item ArticleAccountedTimeGet()
+=head2 ArticleAccountedTimeGet()
 
 returns the accounted time of a article.
 
@@ -3052,7 +3049,7 @@ sub ArticleAccountedTimeGet {
     return $AccountedTime;
 }
 
-=item ArticleAccountedTimeDelete()
+=head2 ArticleAccountedTimeDelete()
 
 delete accounted time of article
 
@@ -3087,7 +3084,7 @@ sub ArticleAccountedTimeDelete {
 
 # the following is the pod for Kernel/System/Ticket/ArticleStorage*.pm
 
-=item ArticleDelete()
+=head2 ArticleDelete()
 
 delete an article, its plain message, and all attachments
 
@@ -3096,7 +3093,7 @@ delete an article, its plain message, and all attachments
         UserID    => 123,
     );
 
-=item ArticleDeletePlain()
+=head2 ArticleDeletePlain()
 
 delete a plain article
 
@@ -3105,7 +3102,7 @@ delete a plain article
         UserID    => 123,
     );
 
-=item ArticleDeleteAttachment()
+=head2 ArticleDeleteAttachment()
 
 delete all attachments of an article
 
@@ -3114,7 +3111,7 @@ delete all attachments of an article
         UserID    => 123,
     );
 
-=item ArticleWritePlain()
+=head2 ArticleWritePlain()
 
 write a plain email to storage
 
@@ -3124,7 +3121,7 @@ write a plain email to storage
         UserID    => 123,
     );
 
-=item ArticlePlain()
+=head2 ArticlePlain()
 
 get plain article/email
 
@@ -3133,7 +3130,7 @@ get plain article/email
         UserID    => 123,
     );
 
-=item ArticleWriteAttachment()
+=head2 ArticleWriteAttachment()
 
 write an article attachment to storage
 
@@ -3148,7 +3145,7 @@ write an article attachment to storage
         UserID             => 123,
     );
 
-=item ArticleAttachment()
+=head2 ArticleAttachment()
 
 get article attachment (Content, ContentType, Filename and optional ContentID, ContentAlternative)
 
@@ -3171,7 +3168,7 @@ returns:
         Disposition        => 'attachment',
     );
 
-=item ArticleAttachmentIndex()
+=head2 ArticleAttachmentIndex()
 
 get article attachment index as hash
 
@@ -3374,8 +3371,6 @@ sub ArticleAttachmentIndex {
 }
 
 1;
-
-=back
 
 =head1 TERMS AND CONDITIONS
 

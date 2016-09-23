@@ -937,7 +937,7 @@
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="Frontend::NotifyModule###100-OTRSBusiness" Required="0" Valid="1">
+    <ConfigItem Name="Frontend::NotifyModule###1100-OTRSBusiness" Required="0" Valid="1">
         <Description Translatable="1">Defines the module to display a notification in different interfaces on different occasions for OTRS Business Solution™.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Agent::ModuleNotify</SubGroup>
@@ -958,7 +958,7 @@
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="Frontend::NotifyModule###200-UID-Check" Required="1" Valid="1">
+    <ConfigItem Name="Frontend::NotifyModule###2000-UID-Check" Required="1" Valid="1">
         <Description Translatable="1">Defines the module to display a notification in the agent interface, if the system is used by the admin user (normally you shouldn't work as admin).</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Agent::ModuleNotify</SubGroup>
@@ -968,7 +968,7 @@
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="Frontend::NotifyModule###300-ShowAgentOnline" Required="0" Valid="0">
+    <ConfigItem Name="Frontend::NotifyModule###3000-ShowAgentOnline" Required="0" Valid="0">
         <Description Translatable="1">Defines the module that shows all the currently logged in agents in the agent interface.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Agent::ModuleNotify</SubGroup>
@@ -980,7 +980,7 @@
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="Frontend::NotifyModule###400-ShowCustomerOnline" Required="0" Valid="0">
+    <ConfigItem Name="Frontend::NotifyModule###4000-ShowCustomerOnline" Required="0" Valid="0">
         <Description Translatable="1">Defines the module that shows all the currently loged in customers in the agent interface.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Agent::ModuleNotify</SubGroup>
@@ -992,7 +992,7 @@
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="Frontend::NotifyModule###500-OutofOffice-Check" Required="1" Valid="1">
+    <ConfigItem Name="Frontend::NotifyModule###5500-OutofOffice-Check" Required="1" Valid="1">
         <Description Translatable="1">Defines the module to display a notification in the agent interface, if the agent is logged in while having out-of-office active.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Agent::ModuleNotify</SubGroup>
@@ -1002,7 +1002,7 @@
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="Frontend::NotifyModule###600-SystemMaintenance-Check" Required="1" Valid="1">
+    <ConfigItem Name="Frontend::NotifyModule###6000-SystemMaintenance-Check" Required="1" Valid="1">
         <Description Translatable="1">Defines the module to display a notification in the agent interface, if the agent is logged in while having system maintenance active.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Agent::ModuleNotify</SubGroup>
@@ -1012,7 +1012,7 @@
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="Frontend::NotifyModule###700-AgentTimeZone-Check" Required="1" Valid="1">
+    <ConfigItem Name="Frontend::NotifyModule###7000-AgentTimeZone-Check" Required="1" Valid="1">
         <Description Translatable="1">Defines the module to display a notification in the agent interface, if the agent has not yet selected a time zone.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Agent::ModuleNotify</SubGroup>
@@ -1022,7 +1022,7 @@
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="Frontend::NotifyModule###900-Generic" Required="0" Valid="0">
+    <ConfigItem Name="Frontend::NotifyModule###9000-Generic" Required="0" Valid="0">
         <Description Translatable="1">Defines the module that shows a generic notification in the agent interface. Either "Text" - if configured - or the contents of "File" will be displayed.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Agent::ModuleNotify</SubGroup>
@@ -7345,7 +7345,7 @@
             </Option>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="Package::EventModulePost###99-SupportDataSend" Required="0" Valid="1">
+    <ConfigItem Name="Package::EventModulePost###9000-SupportDataSend" Required="0" Valid="1">
         <Description Translatable="1">Package event module file a scheduler task for update registration.</Description>
         <Group>Framework</Group>
         <SubGroup>Core::Package</SubGroup>
@@ -7712,6 +7712,17 @@
         <SubGroup>Crypt::SMIME</SubGroup>
         <Setting>
             <Option SelectedID="1">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="SMIME::FetchFromCustomer" Required="1" Valid="1">
+        <Description Translatable="1">Enables fetch S/MIME from LDAP-CustomerUser support.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Crypt::SMIME</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
                 <Item Key="0" Translatable="1">No</Item>
                 <Item Key="1" Translatable="1">Yes</Item>
             </Option>
@@ -11138,7 +11149,7 @@ via the Preferences button after logging in.
             </Array>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="CustomerCompany::EventModulePost###100-UpdateCustomerUsers" Required="0" Valid="1">
+    <ConfigItem Name="CustomerCompany::EventModulePost###2000-UpdateCustomerUsers" Required="0" Valid="1">
         <Description Translatable="1">Event module that updates customer users after an update of the Customer.</Description>
         <Group>Framework</Group>
         <SubGroup>Core::CustomerCompany</SubGroup>
@@ -11150,7 +11161,7 @@ via the Preferences button after logging in.
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="CustomerCompany::EventModulePost###100-UpdateDynamicFieldObjectName" Required="0" Valid="1">
+    <ConfigItem Name="CustomerCompany::EventModulePost###2100-UpdateDynamicFieldObjectName" Required="0" Valid="1">
         <Description Translatable="1">Event module that updates customer company object name for dynamic fields.</Description>
         <Group>Framework</Group>
         <SubGroup>Core::CustomerCompany</SubGroup>
@@ -11162,7 +11173,7 @@ via the Preferences button after logging in.
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="CustomerUser::EventModulePost###100-UpdateSearchProfiles" Required="0" Valid="1">
+    <ConfigItem Name="CustomerUser::EventModulePost###2100-UpdateSearchProfiles" Required="0" Valid="1">
         <Description Translatable="1">Event module that updates customer user search profiles if login changes.</Description>
         <Group>Framework</Group>
         <SubGroup>Core::CustomerUser</SubGroup>
@@ -11174,7 +11185,7 @@ via the Preferences button after logging in.
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="CustomerUser::EventModulePost###100-UpdateServiceMembership" Required="0" Valid="1">
+    <ConfigItem Name="CustomerUser::EventModulePost###2200-UpdateServiceMembership" Required="0" Valid="1">
         <Description Translatable="1">Event module that updates customer user service membership if login changes.</Description>
         <Group>Framework</Group>
         <SubGroup>Core::CustomerUser</SubGroup>
@@ -11186,7 +11197,7 @@ via the Preferences button after logging in.
             </Hash>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="CustomerUser::EventModulePost###100-UpdateDynamicFieldObjectName" Required="0" Valid="1">
+    <ConfigItem Name="CustomerUser::EventModulePost###2000-UpdateDynamicFieldObjectName" Required="0" Valid="1">
         <Description Translatable="1">Event module that updates customer user object name for dynamic fields.</Description>
         <Group>Framework</Group>
         <SubGroup>Core::CustomerUser</SubGroup>

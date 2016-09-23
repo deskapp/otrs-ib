@@ -237,12 +237,15 @@ sub Run {
     # change
     # ------------------------------------------------------------ #
     elsif ( $Self->{Subaction} eq 'Change' ) {
-        my $User = $ParamObject->GetParam( Param => 'ID' ) || '';
+        my $User         = $ParamObject->GetParam( Param => 'ID' )           || '';
+        my $Notification = $ParamObject->GetParam( Param => 'Notification' ) || '';
 
         # get user data
         my %UserData = $CustomerUserObject->CustomerUserDataGet( User => $User );
 
         my $Output = $NavBar;
+        $Output .= $LayoutObject->Notify( Info => Translatable('Customer updated!') )
+            if ( $Notification && $Notification eq 'Update' );
         $Output .= $Self->_Edit(
             Nav    => $Nav,
             Action => 'Change',
@@ -431,25 +434,20 @@ sub Run {
 
                 # get user data and show screen again
                 if ( !$Note ) {
-                    $Self->_Overview(
-                        Nav    => $Nav,
-                        Search => $Search,
-                    );
-                    my $Output = $NavBar . $Note;
-                    $Output .= $LayoutObject->Notify( Info => Translatable('Customer updated!') );
-                    $Output .= $LayoutObject->Output(
-                        TemplateFile => 'AdminCustomerUser',
-                        Data         => \%Param,
-                    );
 
-                    if ( $Nav eq 'None' ) {
-                        $Output .= $LayoutObject->Footer( Type => 'Small' );
+                    # if the user would like to continue editing the priority, just redirect to the edit screen
+                    if ( $ParamObject->GetParam( Param => 'ContinueAfterSave' ) eq '1' ) {
+                        my $ID = $ParamObject->GetParam( Param => 'ID' ) || '';
+                        return $LayoutObject->Redirect(
+                            OP =>
+                                "Action=$Self->{Action};Subaction=Change;ID=$ID;Search=$Search;Nav=$Nav;Notification=Update"
+                        );
                     }
                     else {
-                        $Output .= $LayoutObject->Footer();
-                    }
 
-                    return $Output;
+                        # otherwise return to overview
+                        return $LayoutObject->Redirect( OP => "Action=$Self->{Action};Notification=Update" );
+                    }
                 }
             }
             else {
@@ -775,7 +773,12 @@ sub Run {
             Nav    => $Nav,
             Search => $Search,
         );
+
+        my $Notification = $ParamObject->GetParam( Param => 'Notification' ) || '';
         my $Output = $NavBar;
+        $Output .= $LayoutObject->Notify( Info => Translatable('Customer user updated!') )
+            if ( $Notification && $Notification eq 'Update' );
+
         $Output .= $LayoutObject->Output(
             TemplateFile => 'AdminCustomerUser',
             Data         => \%Param,

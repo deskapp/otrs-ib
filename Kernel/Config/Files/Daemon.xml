@@ -13,7 +13,7 @@
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="Frontend::NotifyModule###800-Daemon-Check" Required="0" Valid="1">
+    <ConfigItem Name="Frontend::NotifyModule###8000-Daemon-Check" Required="0" Valid="1">
         <Description Translatable="1">Defines the module to display a notification in the agent interface if the OTRS Daemon is not running.</Description>
         <Group>Daemon</Group>
         <SubGroup>Frontend::Agent::ModuleNotify</SubGroup>
@@ -399,6 +399,25 @@
                 <Item Key="MaximumParallelInstances">1</Item>
                 <Item Key="Params">
                     <Array>
+                    </Array>
+                </Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Daemon::SchedulerCronTaskManager::Task###FetchFromCustomer" Required="1" Valid="1">
+        <Description Translatable="1">Fetch SMIME certificates from LDAP if SMIME and SMIME::FetchFromCustomer are active and LDAP is configured.</Description>
+        <Group>Daemon</Group>
+        <SubGroup>Daemon::SchedulerCronTaskManager::Task</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="TaskName">TicketUnlockTimeout</Item>
+                <Item Key="Schedule">02 02 * * *</Item> <!-- default each day at 02:02 AM -->
+                <Item Key="Module">Kernel::System::Console::Command::Maint::SMIME::FetchFromCustomer</Item>
+                <Item Key="Function">Execute</Item>
+                <Item Key="MaximumParallelInstances">1</Item>
+                <Item Key="Params">
+                    <Array>
+                        <Item>--add-all</Item>
                     </Array>
                 </Item>
             </Hash>

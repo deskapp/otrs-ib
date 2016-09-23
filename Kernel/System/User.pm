@@ -37,11 +37,8 @@ All user functions. E. g. to add and updated user and other functions.
 
 =head1 PUBLIC INTERFACE
 
-=over 4
 
-=cut
-
-=item new()
+=head2 new()
 
 create an object. Do not use it directly, instead use:
 
@@ -79,7 +76,7 @@ sub new {
     return $Self;
 }
 
-=item GetUserData()
+=head2 GetUserData()
 
 get user data (UserLogin, UserFirstname, UserLastname, UserEmail, ...)
 
@@ -328,7 +325,7 @@ sub GetUserData {
     return %Data;
 }
 
-=item UserAdd()
+=head2 UserAdd()
 
 to add new users
 
@@ -492,7 +489,7 @@ sub UserAdd {
     return $UserID;
 }
 
-=item UserUpdate()
+=head2 UserUpdate()
 
 to update users
 
@@ -652,7 +649,7 @@ sub UserUpdate {
     return 1;
 }
 
-=item UserSearch()
+=head2 UserSearch()
 
 to search users
 
@@ -780,7 +777,7 @@ sub UserSearch {
     return %Users;
 }
 
-=item SetPassword()
+=head2 SetPassword()
 
 to set users passwords
 
@@ -936,7 +933,7 @@ sub SetPassword {
     return 1;
 }
 
-=item UserLookup()
+=head2 UserLookup()
 
 user login or id lookup
 
@@ -1060,7 +1057,7 @@ sub UserLookup {
     }
 }
 
-=item UserName()
+=head2 UserName()
 
 get user name
 
@@ -1085,7 +1082,7 @@ sub UserName {
     return $User{UserFullname};
 }
 
-=item UserList()
+=head2 UserList()
 
 return a hash with all users
 
@@ -1197,7 +1194,7 @@ sub UserList {
     return %Users;
 }
 
-=item GenerateRandomPassword()
+=head2 GenerateRandomPassword()
 
 generate a random password
 
@@ -1224,7 +1221,7 @@ sub GenerateRandomPassword {
     return $Password;
 }
 
-=item SetPreferences()
+=head2 SetPreferences()
 
 set user preferences
 
@@ -1311,7 +1308,7 @@ sub SetPreferences {
     return $PreferencesObject->SetPreferences(%Param);
 }
 
-=item GetPreferences()
+=head2 GetPreferences()
 
 get user preferences
 
@@ -1334,7 +1331,7 @@ sub GetPreferences {
     return $PreferencesObject->GetPreferences(%Param);
 }
 
-=item SearchPreferences()
+=head2 SearchPreferences()
 
 search in user preferences
 
@@ -1358,7 +1355,7 @@ sub SearchPreferences {
     return $PreferencesObject->SearchPreferences(@_);
 }
 
-=item TokenGenerate()
+=head2 TokenGenerate()
 
 generate a random token
 
@@ -1393,7 +1390,7 @@ sub TokenGenerate {
     return $Token;
 }
 
-=item TokenCheck()
+=head2 TokenCheck()
 
 check password token
 
@@ -1441,7 +1438,7 @@ sub TokenCheck {
 
 =begin Internal:
 
-=item _UserFullname()
+=head2 _UserFullname()
 
 Builds the user fullname based on firstname, lastname and login. The order
 can be configured.
@@ -1521,7 +1518,7 @@ sub _UserFullname {
 
 =cut
 
-=item UserLoginExistsCheck()
+=head2 UserLoginExistsCheck()
 
 return 1 if another user with this login (username) already exists
 
@@ -1558,8 +1555,6 @@ sub UserLoginExistsCheck {
 }
 
 1;
-
-=back
 
 =head1 TERMS AND CONDITIONS
 

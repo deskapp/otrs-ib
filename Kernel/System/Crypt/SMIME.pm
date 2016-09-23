@@ -20,6 +20,8 @@ our @ObjectDependencies = (
     'Kernel::System::FileTemp',
     'Kernel::System::Log',
     'Kernel::System::Main',
+    'Kernel::System::CustomerUser',
+    'Kernel::System::CheckItem',
 );
 
 =head1 NAME
@@ -31,8 +33,6 @@ Kernel::System::Crypt::SMIME - smime crypt backend lib
 This is a sub module of Kernel::System::Crypt and contains all smime functions.
 
 =head1 PUBLIC INTERFACE
-
-=over 4
 
 =cut
 
@@ -57,7 +57,7 @@ sub new {
     return $Self;
 }
 
-=item Check()
+=head2 Check()
 
 check if environment is working
 
@@ -128,7 +128,7 @@ sub Check {
     return;
 }
 
-=item Crypt()
+=head2 Crypt()
 
 crypt a message
 
@@ -250,7 +250,7 @@ sub Crypt {
     return $$CryptedRef;
 }
 
-=item Decrypt()
+=head2 Decrypt()
 
 decrypt a message and returns a hash (Successful, Message, Data)
 
@@ -359,7 +359,7 @@ sub Decrypt {
     );
 }
 
-=item Sign()
+=head2 Sign()
 
 sign a message
 
@@ -468,7 +468,7 @@ sub Sign {
 
 }
 
-=item Verify()
+=head2 Verify()
 
 verify a message with signature and returns a hash (Successful, Message, Signers, SignerCertificate)
 
@@ -491,6 +491,7 @@ returns:
         SignerCertificate => $SignerCertificate,    # the certificate that signs the message
         Content           => $Content,              # the message content
     );
+
 =cut
 
 sub Verify {
@@ -609,7 +610,7 @@ sub Verify {
     return %Return;
 }
 
-=item Search()
+=head2 Search()
 
 search a certifcate or an private key
 
@@ -627,7 +628,7 @@ sub Search {
     return @Result;
 }
 
-=item CertificateSearch()
+=head2 CertificateSearch()
 
 search a local certifcate
 
@@ -641,8 +642,52 @@ sub CertificateSearch {
     my ( $Self, %Param ) = @_;
 
     my $Search = $Param{Search} || '';
-    my @Result;
+
+    # 1 - Get certificate list
     my @CertList = $Self->CertificateList();
+
+    my @Result;
+    if (@CertList) {
+
+        # 2 - For the certs in list get its attributes and add them to @Results
+        @Result = $Self->_CheckCertificateList(
+            CertificateList => \@CertList,
+            Search          => $Search
+        );
+    }
+
+    # 3 - If there are no results already in the system, then check for the certificate in customer data
+    if ( !@Result && $Kernel::OM->Get('Kernel::Config')->Get('SMIME::FetchFromCustomer') ) {
+
+        # Search and add certificates from Customer data if Result from CertList is empty
+        if (
+            $Search &&
+            $Self->FetchFromCustomer(
+                Search => $Search,
+            )
+            )
+        {
+            # 4 - if found, get its details and add them to the @Results
+            @CertList = $Self->CertificateList();
+            if (@CertList) {
+                @Result = $Self->_CheckCertificateList(
+                    CertificateList => \@CertList,
+                    Search          => $Search
+                );
+            }
+        }
+    }
+
+    return @Result;
+}
+
+sub _CheckCertificateList {
+    my ( $Self, %Param ) = @_;
+
+    my @CertList = @{ $Param{CertificateList} };
+    my $Search = $Param{Search} || '';
+
+    my @Result;
 
     for my $Filename (@CertList) {
         my $Certificate = $Self->CertificateGet( Filename => $Filename );
@@ -670,10 +715,237 @@ sub CertificateSearch {
             push @Result, \%Attributes;
         }
     }
+
     return @Result;
 }
 
-=item CertificateAdd()
+=head2 FetchFromCustomer()
+
+add certificates from CustomerUserAttributes to local certificates
+returns an array of filenames of added certificates
+
+    my @Result = $CryptObject->FetchFromCustomer(
+        Search => $SearchEmailAddress,
+    );
+
+Returns:
+
+    @Result = ( '6e620dcc.0', '8096d0a9.0', 'c01cdfa2.0' );
+
+=cut
+
+sub FetchFromCustomer {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    if ( !$Param{Search} ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "Need Search!"
+        );
+        return;
+    }
+
+    # Check LDAP-Users for userSMIMECertificate
+    my $CustomerUserObject = $Kernel::OM->Get('Kernel::System::CustomerUser');
+    my %CustomerUsers;
+    if ( $Param{Search} ) {
+
+        my $ValidEmail = $Kernel::OM->Get('Kernel::System::CheckItem')->CheckEmail(
+            Address => $Param{Search},
+        );
+
+        # If valid email address, only do a PostMasterSearch
+        if ($ValidEmail) {
+            %CustomerUsers = $CustomerUserObject->CustomerSearch(
+                PostMasterSearch => $Param{Search},
+            );
+        }
+    }
+
+    my @CertFileList;
+
+    # Check found CustomerUsers
+    for my $Login ( sort keys %CustomerUsers ) {
+        my %CustomerUser = $CustomerUserObject->CustomerUserDataGet(
+            User => $Login,
+        );
+
+        # Add Certificate if available
+        if ( $CustomerUser{SMIMECertificate} ) {
+
+            # if don't add, maybe in UnitTests
+            return @CertFileList if $Param{DontAdd};
+
+            # Convert certificate to the correct format (pk7, pk12, pem, der)
+            my $Cert = $Self->ConvertCertFormat(
+                String => $CustomerUser{SMIMECertificate},
+            );
+            my %Result = $Self->CertificateAdd(
+                Certificate => $Cert,
+            );
+            if ( $Result{Successful} && $Result{Successful} == 1 ) {
+                push @CertFileList, $Result{Filename};
+            }
+        }
+    }
+
+    return @CertFileList;
+}
+
+=head2 ConvertCertFormat()
+
+convert certificate strings into importable PEM format
+returns count of added certificates
+
+    my $Result = $CryptObject->ConvertCertFormat(
+        String     => $CertificationString,
+        Passphrase => Password for PFX (optional)
+    );
+
+Returns:
+    $Result =
+    "-----BEGIN CERTIFICATE-----
+    MIIEXjCCA0agAwIBAgIJAPIBQyBe/HbpMA0GCSqGSIb3DQEBBQUAMHwxCzAJBgNV
+    ...
+    nj2wbQO4KjM12YLUuvahk5se
+    -----END CERTIFICATE-----
+    ";
+
+=cut
+
+sub ConvertCertFormat {
+    my ( $Self, %Param ) = @_;
+
+    # check needed stuff
+    if ( !$Param{String} ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "Need String!"
+        );
+        return;
+    }
+    my $String     = $Param{String};
+    my $PassPhrase = $Param{Passphrase};
+
+    # PEM (can be read directly)
+    if ( index( $String, "-----BEGIN CERTIFICATE-----" ) != -1 ) {
+        return $String;
+    }
+
+    my $FileTempObject = $Kernel::OM->Get('Kernel::System::FileTemp');
+
+    # create Original CertFile
+    my ( $FileHandle, $TmpCertificate ) = $FileTempObject->TempFile();
+    print $FileHandle $String;
+    close $FileHandle;
+
+    # create empty CertFile
+    my ( $FH, $CertFile ) = $FileTempObject->TempFile(
+        Suffix => '.pem',
+    );
+    close $FH;
+
+    my $LogMessage;
+    my $Options;
+    my $FormatedCert;
+
+    # needs only Filename without path
+    my @FileName = split( '/', $CertFile );
+
+    # P7B
+    if ( index( $String, "-----BEGIN PKCS7-----" ) != -1 ) {
+
+        # Specify the options to convert from p7b to pem.
+        # openssl pkcs7 -print_certs -in certificate.p7b -out certificate.cer
+        $Options = "pkcs7 -in $TmpCertificate -print_certs -out $CertFile";
+
+        # Do the conversion.
+        $LogMessage = $Self->_CleanOutput(qx{$Self->{Cmd} $Options 2>&1});
+
+        # Check if P7B is not converted
+        if ($LogMessage) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "Can't convert (P7B): $LogMessage"
+            );
+            return;
+        }
+
+        # Read converted certificate.
+        my $CertFilePEM = $Kernel::OM->Get('Kernel::System::Main')->FileRead(
+            Directory => $Kernel::OM->Get('Kernel::Config')->Get('Home') . "/var/tmp",
+            Filename  => $FileName[-1],
+        );
+
+        # only need what is between ---- (Not the first lines with subject and issuer)
+        # it has one \n to many
+        return substr( ${$CertFilePEM}, index( ${$CertFilePEM}, '-----BEGIN' ), -1 );
+
+    }
+
+    # DER or PFX
+    else {
+
+        # Since there is no easy way to distinguish between DER or PFX we need to try both.
+        # First try DER.
+        # openssl x509 -inform der -in certificate.cer -out certificate.pem
+        $Options = "x509 -inform der -in $TmpCertificate -out $CertFile";
+        my $LogMessage1 = $Self->_CleanOutput(qx{$Self->{Cmd} $Options 2>&1});
+
+        # Check if DER is not converted
+        if ($LogMessage1) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'info',
+                Message  => "try (PFX) because can't convert (DER): $LogMessage1"
+            );
+
+            # Try PFX.
+            # openssl pkcs12 -in certificate.pfx -out certificate.cer -nodes
+            $Options = "pkcs12 -in $TmpCertificate -out $CertFile -nodes";
+
+            if ( defined $PassPhrase ) {
+                $Options .= " -passin pass:'" . $PassPhrase . "'";
+            }
+            $LogMessage = $Self->_CleanOutput(qx{$Self->{Cmd} $Options 2>&1});
+
+            # Check if PFX if not converted.
+            if ( $LogMessage && index( $LogMessage, "MAC verified OK" ) == -1 ) {
+                $Kernel::OM->Get('Kernel::System::Log')->Log(
+                    Priority => 'error',
+                    Message  => "Can't convert (PFX): -" . $LogMessage . " or (DER): " . $LogMessage1 . "."
+                );
+                return;
+            }
+
+            # PFX was converted.
+            my $CertFilePFX = $Kernel::OM->Get('Kernel::System::Main')->FileRead(
+                Directory => $Kernel::OM->Get('Kernel::Config')->Get('Home') . "/var/tmp",
+                Filename  => $FileName[-1],
+            );
+            my $CertificateString = ${$CertFilePFX};
+
+            # TODO: It might be helpful in future to also handle private keys
+            # only need Certificate (don't check PrivateKey)
+            my $Start = index( $CertificateString, '-----BEGIN CERTIFICATE-----' );
+            $CertificateString = substr( $CertificateString, $Start );
+            my $End = index( $CertificateString, '-----END CERTIFICATE-----' );
+
+            return substr( $CertificateString, 0, $End + 25 ) . "\n";
+        }
+
+        # DER was converted.
+        my $CertFileDER = $Kernel::OM->Get('Kernel::System::Main')->FileRead(
+            Directory => $Kernel::OM->Get('Kernel::Config')->Get('Home') . "/var/tmp",
+            Filename  => $FileName[-1],
+        );
+
+        return ${$CertFileDER};
+    }
+
+}
+
+=head2 CertificateAdd()
 
 add a certificate to local certificates
 returns result message and new certificate filename
@@ -779,7 +1051,7 @@ sub CertificateAdd {
     return %Result;
 }
 
-=item CertificateGet()
+=head2 CertificateGet()
 
 get a local certificate
 
@@ -818,7 +1090,7 @@ sub CertificateGet {
     return $$CertificateRef;
 }
 
-=item CertificateRemove()
+=head2 CertificateRemove()
 
 remove a local certificate
 
@@ -909,7 +1181,7 @@ sub CertificateRemove {
     return %Result;
 }
 
-=item CertificateList()
+=head2 CertificateList()
 
 get list of local certificates filenames
 
@@ -939,7 +1211,7 @@ sub CertificateList {
     return @CertList;
 }
 
-=item CertificateAttributes()
+=head2 CertificateAttributes()
 
 get certificate attributes
 
@@ -1012,7 +1284,7 @@ sub CertificateAttributes {
     return %Attributes;
 }
 
-=item CertificateRead()
+=head2 CertificateRead()
 
 show a local certificate in plain text
 
@@ -1071,7 +1343,7 @@ sub CertificateRead {
     return $Output;
 }
 
-=item PrivateSearch()
+=head2 PrivateSearch()
 
 returns private keys
 
@@ -1117,7 +1389,7 @@ sub PrivateSearch {
     return @Result;
 }
 
-=item PrivateAdd()
+=head2 PrivateAdd()
 
 add private key
 
@@ -1240,7 +1512,7 @@ sub PrivateAdd {
     return %Result;
 }
 
-=item PrivateGet()
+=head2 PrivateGet()
 
 get private key
 
@@ -1296,7 +1568,7 @@ sub PrivateGet {
     return;
 }
 
-=item PrivateRemove()
+=head2 PrivateRemove()
 
 remove private key
 
@@ -1392,7 +1664,7 @@ sub PrivateRemove {
     return %Return;
 }
 
-=item PrivateList()
+=head2 PrivateList()
 
 returns a list of private key hashs
 
@@ -1423,7 +1695,7 @@ sub PrivateList {
 
 }
 
-=item PrivateAttributes()
+=head2 PrivateAttributes()
 
 returns attributes of private key
 
@@ -1501,7 +1773,7 @@ sub PrivateAttributes {
     return %Attributes;
 }
 
-=item SignerCertRelationAdd ()
+=head2 SignerCertRelationAdd ()
 
 add a relation between signer certificate and CA certificate to attach to the signature
 returns 1 if success
@@ -1578,7 +1850,7 @@ sub SignerCertRelationAdd {
     return $Success;
 }
 
-=item SignerCertRelationGet ()
+=head2 SignerCertRelationGet ()
 
 get relation data by ID or by Certificate finger print
 returns data Hash if ID given or Array of all relations if CertFingerprint given
@@ -1684,7 +1956,7 @@ sub SignerCertRelationGet {
     return;
 }
 
-=item SignerCertRelationExists ()
+=head2 SignerCertRelationExists ()
 
 returns the ID if the relation exists
 
@@ -1764,7 +2036,7 @@ sub SignerCertRelationExists {
     return;
 }
 
-=item SignerCertRelationDelete ()
+=head2 SignerCertRelationDelete ()
 
 returns 1 if success
 
@@ -1859,7 +2131,7 @@ sub SignerCertRelationDelete {
     return;
 }
 
-=item CheckCertPath()
+=head2 CheckCertPath()
 
 Checks and fixes the private secret files that do not have an index. (Needed because this
 changed during the migration from OTRS 3.0 to 3.1.)
@@ -2749,8 +3021,6 @@ sub _ReHashCertificates {
 =end Internal:
 
 =cut
-
-=back
 
 =head1 TERMS AND CONDITIONS
 

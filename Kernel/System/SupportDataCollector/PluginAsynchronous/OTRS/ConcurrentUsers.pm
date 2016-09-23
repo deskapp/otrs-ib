@@ -13,6 +13,7 @@ use warnings;
 
 use base qw(Kernel::System::SupportDataCollector::PluginAsynchronous);
 
+use Kernel::Language qw(Translatable);
 use Kernel::System::VariableCheck qw(:all);
 
 our @ObjectDependencies = (
@@ -34,7 +35,7 @@ sub Run {
 
     # the table details data
     $Self->AddResultInformation(
-        Label => 'Concurrent Users Details',
+        Label => Translatable('Concurrent Users Details'),
         Value => $ConcurrentUsers || [],
     );
 
@@ -72,7 +73,7 @@ sub Run {
         }
 
         $Self->AddResultInformation(
-            DisplayPath => 'OTRS/Concurrent Users',
+            DisplayPath => Translatable('OTRS') . '/' . Translatable('Concurrent Users'),
             Identifier  => $Identifier,
             Label       => "Max. $Label",
             Value       => $MaxValue,
@@ -214,17 +215,5 @@ sub RunAsynchronous {
 
     return 1;
 }
-
-=back
-
-=head1 TERMS AND CONDITIONS
-
-This software is part of the OTRS project (L<http://otrs.org/>).
-
-This software comes with ABSOLUTELY NO WARRANTY. For details, see
-the enclosed file COPYING for license information (AGPL). If you
-did not receive this file, see L<http://www.gnu.org/licenses/agpl.txt>.
-
-=cut
 
 1;

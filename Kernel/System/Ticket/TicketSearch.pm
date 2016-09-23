@@ -21,11 +21,8 @@ Kernel::System::Ticket::TicketSearch - ticket search lib
 
 All ticket search functions.
 
-=over 4
 
-=cut
-
-=item TicketSearch()
+=head2 TicketSearch()
 
 To find tickets in your system.
 
@@ -2284,7 +2281,7 @@ sub TicketSearch {
     }
 }
 
-=item SearchStringStopWordsFind()
+=head2 SearchStringStopWordsFind()
 
 Find stop words within given search string.
 
@@ -2382,7 +2379,7 @@ sub SearchStringStopWordsFind {
     return \%StopWordsFound;
 }
 
-=item SearchStringStopWordsUsageWarningActive()
+=head2 SearchStringStopWordsUsageWarningActive()
 
 Checks if warnings for stop words in search strings are active or not.
 
@@ -2411,7 +2408,7 @@ sub SearchStringStopWordsUsageWarningActive {
 
 =cut
 
-=item _InConditionGet()
+=head2 _InConditionGet()
 
 internal function to create an
 
@@ -2482,8 +2479,6 @@ sub _InConditionGet {
 1;
 
 =end Internal:
-
-=back
 
 =head1 TERMS AND CONDITIONS
 

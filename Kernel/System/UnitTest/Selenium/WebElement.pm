@@ -13,7 +13,12 @@ use warnings;
 
 use base qw(Selenium::Remote::WebElement);
 
-=item VerifiedSubmit()
+=head1 NAME
+
+Kernel::System::UnitTest::Selenium::WebElement - Utility functions for Selenium WebElements
+
+
+=head2 VerifiedSubmit()
 
 Submit a form element, and wait for the page to be fully loaded (works only in OTRS)
 
@@ -34,7 +39,7 @@ sub VerifiedSubmit {
     return;
 }
 
-=item VerifiedClick()
+=head2 VerifiedClick()
 
 click an element that causes a page get/reload/submit and wait for the page to be fully loaded
 (works only in OTRS).
@@ -59,8 +64,6 @@ sub VerifiedClick {    ## no critic
 }
 
 1;
-
-=back
 
 =head1 TERMS AND CONDITIONS
 
