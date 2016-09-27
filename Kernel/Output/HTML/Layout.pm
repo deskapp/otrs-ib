@@ -2411,10 +2411,12 @@ sub ReturnValue {
 returns browser output to display/download a attachment
 
     $HTML = $LayoutObject->Attachment(
-        Type        => 'inline',        # optional, default: attachment, possible: inline|attachment
-        Filename    => 'FileName.png',  # optional
-        ContentType => 'image/png',
-        Content     => $Content,
+        Type                => 'inline',        # optional, default: attachment, possible: inline|attachment
+        Filename            => 'FileName.png',  # optional
+        ContentType         => 'image/png',
+        Content             => $Content,
+        LoadExternalContent => 1,               # optional, 0 - don't allow page to load resources from external sites;
+                                                # 1 (default) - allow allow page to load resources from external sites
     );
 
     or for AJAX html snippets
@@ -2477,6 +2479,15 @@ sub Attachment {
 
     if ( !$Kernel::OM->Get('Kernel::Config')->Get('DisableIFrameOriginRestricted') ) {
         $Output .= "X-Frame-Options: SAMEORIGIN\n";
+    }
+
+    # use CSP to disallow external content to be loaded if not explicitly enabled;
+    # don't allow inline scripts but allow inline styles for messages and
+    # blocking info box to look nice; for CSP details see
+    # http://www.html5rocks.com/en/tutorials/security/content-security-policy/
+    # https://www.w3.org/TR/CSP2/#directive-default-src
+    if ( defined $Param{LoadExternalContent} && ( $Param{LoadExternalContent} == 0 ) ) {
+        $Output .= "Content-Security-Policy: default-src 'self'; style-src 'unsafe-inline'\n"; 
     }
 
     if ( $Param{Charset} ) {
@@ -4298,7 +4309,7 @@ but a message will be shown allowing the user to reload the page showing the ext
 
         LoadInlineContent => 0,     # Serve the document including all inline content. WARNING: This might be dangerous.
 
-        LoadExternalImages => 0,    # Load external images? If this is 0, a message will be included if
+        LoadExternalContent => 0,    # Load external images? If this is 0, a message will be included if
                                     # external images were found and removed.
     );
 
@@ -4370,7 +4381,7 @@ sub RichTextDocumentServe {
 
         $Param{Data}->{Content} = $SafetyCheckResult{String};
 
-        if ( !$Param{LoadExternalImages} ) {
+        if ( !$Param{LoadExternalContent} ) {
 
             # Strip out external images, but show a confirmation button to
             #   load them explicitly.
