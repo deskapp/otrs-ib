@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-09-28 Column list validation before saving agent preferences.
  - 2016-09-28 Fixed error Can't locate object method "EventHandler" in NotifyAgentGroupOfCustomQueue and NotifyAgentGroupOfCustomQueue.
  - 2016-09-27 Blocking external content using CSP.
  - 2016-09-21 Fixed bug#[12065](http://bugs.otrs.org/show_bug.cgi?id=12065) - queue and state not mandatory.
