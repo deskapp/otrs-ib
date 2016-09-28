@@ -17,12 +17,11 @@ our @ObjectManagerDisabled = 1;
 
 Kernel::Output::HTML::TicketBulk::Base - ticket bulk module base class
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 Base class for ticket bulk modules.
 
 =head1 PUBLIC INTERFACE
-
 
 =head2 Display()
 

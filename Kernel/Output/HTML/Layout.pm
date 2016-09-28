@@ -40,12 +40,11 @@ our @ObjectDependencies = (
 
 Kernel::Output::HTML::Layout - all generic html functions
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All generic html functions. E. g. to get options fields, template processing, ...
 
 =head1 PUBLIC INTERFACE
-
 
 =head2 new()
 

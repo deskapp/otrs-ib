@@ -38,19 +38,16 @@ our @ObjectDependencies = (
 
 Kernel::System::Ticket::Event::NotificationEvent::Transport::Email - email transport layer
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 Notification event transport layer.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
 create a notification transport object. Do not use it directly, instead use:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new('');
     my $TransportObject = $Kernel::OM->Get('Kernel::System::Ticket::Event::NotificationEvent::Transport::Email');
 
 =cut

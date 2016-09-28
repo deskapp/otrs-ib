@@ -19,7 +19,7 @@ our $ObjectManagerDisabled = 1;
 
 Kernel::GenericInterface::Debugger
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 GenericInterface data debugger interface.
 
@@ -29,7 +29,6 @@ of the process. It will collect the data and write it into the database,
 based on the configured debug level.
 
 =head1 PUBLIC INTERFACE
-
 
 =head2 new()
 

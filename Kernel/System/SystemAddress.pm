@@ -22,19 +22,16 @@ our @ObjectDependencies = (
 
 Kernel::System::SystemAddress - all system address functions
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 Global module to add/edit/update system addresses.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
 create an object
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $SystemAddressObject = $Kernel::OM->Get('Kernel::System::SystemAddress');
 
 =cut

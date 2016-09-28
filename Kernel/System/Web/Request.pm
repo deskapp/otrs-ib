@@ -25,12 +25,11 @@ our @ObjectDependencies = (
 
 Kernel::System::Web::Request - global CGI interface
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All cgi param functions.
 
 =head1 PUBLIC INTERFACE
-
 
 =head2 new()
 
@@ -256,7 +255,7 @@ sub GetUploadAll {
     return if !$Upload;
 
     # get real file name
-    my $UploadFilenameOrig = $Self->GetParam( Param => $Param{Param} ) || 'unkown';
+    my $UploadFilenameOrig = $Self->GetParam( Param => $Param{Param} ) || 'unknown';
 
     my $NewFileName = "$UploadFilenameOrig";    # use "" to get filename of anony. object
     $Kernel::OM->Get('Kernel::System::Encode')->EncodeInput( \$NewFileName );

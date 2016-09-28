@@ -26,17 +26,14 @@ our @ObjectDependencies = (
 
 Kernel::System::Daemon::DaemonModules::SchedulerTaskWorker::GenericInterface - Scheduler daemon task handler module for GenericInterface
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 This task handler executes scheduler tasks delegated by asynchronous invoker configuration
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $TaskHandlerObject = $Kernel::OM-Get('Kernel::System::Daemon::DaemonModules::SchedulerTaskWorker::GenericInterface');
 
 =cut

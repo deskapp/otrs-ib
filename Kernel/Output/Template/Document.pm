@@ -22,7 +22,6 @@ Kernel::Output::Template::Document - Template Toolkit document extension package
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 process()
 
 process this template document. This method is inherited from
@@ -40,6 +39,8 @@ sub process {
 
     return $Self->SUPER::process($Context);
 }
+
+=begin Internal:
 
 =head2 _InstallOTRSExtensions()
 
@@ -352,6 +353,8 @@ sub _PrecalculateBlockHookSubscriptions {
 }
 
 1;
+
+=end Internal:
 
 =head1 TERMS AND CONDITIONS
 

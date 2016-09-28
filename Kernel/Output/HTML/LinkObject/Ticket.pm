@@ -19,6 +19,7 @@ use Kernel::Language qw(Translatable);
 
 our @ObjectDependencies = (
     'Kernel::Config',
+    'Kernel::Language',
     'Kernel::Output::HTML::Layout',
     'Kernel::System::CustomerUser',
     'Kernel::System::DynamicField',
@@ -36,7 +37,7 @@ our @ObjectDependencies = (
 
 Kernel::Output::HTML::LinkObject::Ticket - layout backend module
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All layout functions of link object (ticket).
 
@@ -461,6 +462,9 @@ sub TableCreateComplex {
                             );
                         }
                         $Hash{'Content'} = $CustomerName;
+                    }
+                    elsif ( $Column eq 'State' || $Column eq 'Priority' || $Column eq 'Lock' ) {
+                        $Hash{'Content'} = $Kernel::OM->Get('Kernel::Language')->Translate( $Ticket->{$Column} );
                     }
                     else {
                         $Hash{'Content'} = $Ticket->{$Column};

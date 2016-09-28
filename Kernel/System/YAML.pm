@@ -23,7 +23,7 @@ our @ObjectDependencies = (
 
 Kernel::System::YAML - YAML wrapper functions
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 Functions for YAML serialization / deserialization.
 
@@ -32,8 +32,6 @@ Functions for YAML serialization / deserialization.
 
 create a YAML object. Do not use it directly, instead use:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $YAMLObject = $Kernel::OM->Get('Kernel::System::YAML');
 
 =cut

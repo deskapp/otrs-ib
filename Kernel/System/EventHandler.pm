@@ -20,7 +20,7 @@ our $ObjectManagerDisabled = 1;
 
 Kernel::System::EventHandler - event handler interface
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 Inherit from this class if you want to use events there.
 
@@ -38,7 +38,6 @@ to make sure that also 'Transaction' events will be executed correctly.
 This is only neccessary if you use 'Transaction' events in your class.
 
 =head1 PUBLIC INTERFACE
-
 
 =head2 EventHandlerInit()
 

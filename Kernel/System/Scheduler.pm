@@ -20,19 +20,16 @@ our @ObjectDependencies = (
 
 Kernel::System::Scheduler - Scheduler lib
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 Includes the functions to add a new task to the scheduler daemon.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
 create a scheduler object. Do not use it directly, instead use:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $SchedulerObject = $Kernel::OM->Get('Kernel::System::Scheduler');
 
 =cut

@@ -24,19 +24,16 @@ our @ObjectDependencies = (
 
 Kernel::System::State - state lib
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All ticket state functions.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
 create an object
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $StateObject = $Kernel::OM->Get('Kernel::System::State');
 
 =cut

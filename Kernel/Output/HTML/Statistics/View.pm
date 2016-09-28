@@ -41,7 +41,7 @@ use Kernel::Language qw(Translatable);
 
 Kernel::Output::HTML::Statistics::View - View object for statistics
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 Provides several functions to generate statistics GUI elements.
 
@@ -2280,6 +2280,8 @@ sub _TimeZoneBuildSelection {
     return %TimeZoneBuildSelection;
 }
 
+=begin Internal:
+
 =head2 _ColumnAndRowTranslation()
 
 translate the column and row name if needed
@@ -2290,6 +2292,8 @@ translate the column and row name if needed
         StatRef      => $StatRef,
         ExchangeAxis => 1 | 0,
     );
+
+=end Internal:
 
 =cut
 

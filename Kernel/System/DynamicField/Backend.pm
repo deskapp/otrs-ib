@@ -28,19 +28,16 @@ our @ObjectDependencies = (
 
 Kernel::System::DynamicField::Backend
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 DynamicFields backend interface
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
 create a DynamicField backend object. Do not use it directly, instead use:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $DynamicFieldObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
 
 =cut

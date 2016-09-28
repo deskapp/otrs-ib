@@ -24,19 +24,16 @@ our @ObjectDependencies = (
 
 Kernel::System::Type - type lib
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All type functions.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
 create an object
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $TypeObject = $Kernel::OM->Get('Kernel::System::Type');
 
 =cut

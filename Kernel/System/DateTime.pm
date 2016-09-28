@@ -52,19 +52,16 @@ use overload
 
 Kernel::System::DateTime - Handles date and time calculations.
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 Handles date and time calculations.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
 Creates a DateTime object. Do not use new() directly, instead use the object manager:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
 
     # Create an object with current date and time
     # within time zone set in SysConfig OTRSTimeZone:
@@ -1561,6 +1558,8 @@ sub SystemTimeZoneGet {
     return DateTime::TimeZone->new( name => 'local' )->name();
 }
 
+=begin Internal:
+
 =head2 _ToCPANDateTimeParamNames()
 
 Maps date/time parameter names expected by the methods of this package to the ones
@@ -1926,6 +1925,8 @@ sub _OpNotEquals {
 }
 
 1;
+
+=end Internal:
 
 =head1 TERMS AND CONDITIONS
 

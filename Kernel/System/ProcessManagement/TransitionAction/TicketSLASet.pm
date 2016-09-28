@@ -26,19 +26,16 @@ our @ObjectDependencies = (
 
 Kernel::System::ProcessManagement::TransitionAction::TicketSLASet - A module to set the ticket SLA
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All TicketSLASet functions.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
-create an object. Do not use it directly, instead use:
+Don't use the constructor directly, use the ObjectManager instead:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $TicketSLASetObject = $Kernel::OM->Get('Kernel::System::ProcessManagement::TransitionAction::TicketSLASet');
 
 =cut
@@ -264,6 +261,8 @@ sub Run {
     return $Success;
 }
 
+=begin Internal:
+
 =head2 _CheckSLA()
 
 checks if a SLA is assigned to a Service
@@ -299,6 +298,8 @@ sub _CheckSLA {
 }
 
 1;
+
+=end Internal:
 
 =head1 TERMS AND CONDITIONS
 

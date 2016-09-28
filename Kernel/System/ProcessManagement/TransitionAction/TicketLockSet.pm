@@ -25,19 +25,16 @@ our @ObjectDependencies = (
 
 Kernel::System::ProcessManagement::TransitionAction::TicketLockSet - A module to unlock a ticket
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All TicketLockSet functions.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
-create an object. Do not use it directly, instead use:
+Don't use the constructor directly, use the ObjectManager instead:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $TicketLockSetObject = $Kernel::OM->Get('Kernel::System::ProcessManagement::TransitionAction::TicketLockSet');
 
 =cut

@@ -26,19 +26,16 @@ our @ObjectDependencies = (
 
 Kernel::System::ProcessManagement::TransitionAction::DynamicFieldSet - A module to set a new ticket owner
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All DynamicFieldSet functions.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
-create an object. Do not use it directly, instead use:
+Don't use the constructor directly, use the ObjectManager instead:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $DynamicFieldSetObject = $Kernel::OM->Get('Kernel::System::ProcessManagement::TransitionAction::DynamicFieldSet');
 
 =cut

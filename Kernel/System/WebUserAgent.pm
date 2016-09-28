@@ -28,12 +28,11 @@ our @ObjectDependencies = (
 
 Kernel::System::WebUserAgent - a web user agent lib
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All web user agent functions.
 
 =head1 PUBLIC INTERFACE
-
 
 =head2 new()
 

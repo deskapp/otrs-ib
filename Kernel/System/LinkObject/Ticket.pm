@@ -23,19 +23,16 @@ our @ObjectDependencies = (
 
 Kernel::System::LinkObject::Ticket
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 Ticket backend for the ticket link object.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
-create an object. Do not use it directly, instead use:
+Don't use the constructor directly, use the ObjectManager instead:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $LinkObjectTicketObject = $Kernel::OM->Get('Kernel::System::LinkObject::Ticket');
 
 =cut

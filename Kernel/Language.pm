@@ -31,12 +31,11 @@ our @ObjectDependencies = (
 
 Kernel::Language - global language interface
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All language functions.
 
 =head1 PUBLIC INTERFACE
-
 
 =head2 new()
 

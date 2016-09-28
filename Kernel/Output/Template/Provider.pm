@@ -37,7 +37,6 @@ Kernel::Output::Template::Provider - Template Toolkit custom provider
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 OTRSInit()
 
 performs some post-initialization and creates a bridget between Template::Toolkit
@@ -69,6 +68,8 @@ sub OTRSInit {
     # caching can be disabled for debugging reasons
     $Self->{CachingEnabled} = $Kernel::OM->Get('Kernel::Config')->Get('Frontend::TemplateCache') // 1;
 }
+
+=begin Internal:
 
 =head2 _fetch()
 
@@ -274,6 +275,8 @@ sub _compile {
         : ( $error, Template::Constants::STATUS_ERROR )
 }
 
+=end Internal:
+
 =head2 store()
 
 inherited from Template::Provider. This function override just makes sure that the original
@@ -286,6 +289,8 @@ sub store {
 
     return $Data;    # no-op
 }
+
+=begin Internal:
 
 =head2 _PreProcessTemplateContent()
 
@@ -370,6 +375,8 @@ sub _PreProcessTemplateContent {
     return $Content;
 
 }
+
+=end Internal:
 
 =head2 MigrateDTLtoTT()
 

@@ -24,19 +24,16 @@ our @ObjectDependencies = (
 
 Kernel::System::Group - group and roles lib
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All group and roles functions. E. g. to add groups or to get a member list of a group.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
-create an object. Do not use it directly, instead use:
+Don't use the constructor directly, use the ObjectManager instead:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $GroupObject = $Kernel::OM->Get('Kernel::System::Group');
 
 =cut

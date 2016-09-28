@@ -31,14 +31,10 @@ Kernel::GenericInterface::Provider - handler for incoming webservice requests.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
-create an object
+Don't use the constructor directly, use the ObjectManager instead:
 
-    use Kernel::System::ObjectManager;
-
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $ProviderObject = $Kernel::OM->Get('Kernel::GenericInterface::Provider');
 
 =cut
@@ -360,6 +356,8 @@ sub Run {
     return;
 }
 
+=begin Internal:
+
 =head2 _GenerateErrorResponse()
 
 returns an error message to the client.
@@ -389,6 +387,8 @@ sub _GenerateErrorResponse {
 }
 
 1;
+
+=end Internal:
 
 =head1 TERMS AND CONDITIONS
 

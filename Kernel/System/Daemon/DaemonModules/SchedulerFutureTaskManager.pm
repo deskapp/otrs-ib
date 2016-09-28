@@ -27,12 +27,11 @@ our @ObjectDependencies = (
 
 Kernel::System::Daemon::DaemonModules::SchedulerFutureTaskManager - daemon to manage scheduler future tasks
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 Scheduler future task daemon
 
 =head1 PUBLIC INTERFACE
-
 
 =head2 new()
 

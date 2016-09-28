@@ -25,12 +25,11 @@ our @ObjectDependencies = (
 
 Kernel::System::Web::InterfaceInstaller - the installer web interface
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 the global installer web interface
 
 =head1 PUBLIC INTERFACE
-
 
 =head2 new()
 

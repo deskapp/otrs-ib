@@ -17,12 +17,11 @@ our $ObjectManagerDisabled = 1;
 
 Kernel::Output::HTML::Layout::Datepicker - Datepicker data
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All valid functions.
 
 =head1 PUBLIC INTERFACE
-
 
 =head2 DatepickerGetVacationDays()
 

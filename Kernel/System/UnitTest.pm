@@ -35,20 +35,17 @@ our @ObjectDependencies = (
 
 Kernel::System::UnitTest - global test interface
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 Functions to run existing unit tests, as well as
 functions to define test cases.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
 create unit test object. Do not use it directly, instead use:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $UnitTestObject = $Kernel::OM->Get('Kernel::System::UnitTest');
 
 =cut

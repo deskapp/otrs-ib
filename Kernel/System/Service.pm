@@ -27,19 +27,16 @@ our @ObjectDependencies = (
 
 Kernel::System::Service - service lib
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All service functions.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
 create an object
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $ServiceObject = $Kernel::OM->Get('Kernel::System::Service');
 
 =cut

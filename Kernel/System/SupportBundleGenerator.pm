@@ -29,7 +29,7 @@ our @ObjectDependencies = (
 
 Kernel::System::SupportBundleGenerator - support bundle generator
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All support bundle generator functions.
 
@@ -37,10 +37,8 @@ All support bundle generator functions.
 
 =head2 new()
 
-create an object. Do not use it directly, instead use:
+Don't use the constructor directly, use the ObjectManager instead:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $SupportBundleGeneratorObject = $Kernel::OM->Get('Kernel::System::SupportBundleGenerator');
 
 =cut

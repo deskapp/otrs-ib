@@ -24,19 +24,16 @@ our @ObjectDependencies = (
 
 Kernel::System::Priority - priority lib
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All ticket priority functions.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
 create an object
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $PriorityObject = $Kernel::OM->Get('Kernel::System::Priority');
 
 

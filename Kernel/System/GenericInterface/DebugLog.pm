@@ -23,19 +23,16 @@ our @ObjectDependencies = (
 
 Kernel::System::GenericInterface::DebugLog - log interface for generic interface
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All log functions.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
 create a debug log object. Do not use it directly, instead use:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $DebugLogObject = $Kernel::OM->Get('Kernel::System::GenericInterface::DebugLog');
 
 =cut

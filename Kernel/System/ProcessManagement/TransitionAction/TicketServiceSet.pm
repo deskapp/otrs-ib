@@ -26,19 +26,16 @@ our @ObjectDependencies = (
 
 Kernel::System::ProcessManagement::TransitionAction::TicketServiceSet - A module to set the ticket Service
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All TicketServiceSet functions.
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
-create an object. Do not use it directly, instead use:
+Don't use the constructor directly, use the ObjectManager instead:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $TicketServiceSetObject = $Kernel::OM->Get('Kernel::System::ProcessManagement::TransitionAction::TicketServiceSet');
 
 =cut
@@ -265,6 +262,8 @@ sub Run {
     return $Success;
 }
 
+=begin Internal:
+
 =head2 _CheckService()
 
 checks if a service is assigned to a customer user
@@ -301,6 +300,8 @@ sub _CheckService {
 }
 
 1;
+
+=end Internal:
 
 =head1 TERMS AND CONDITIONS
 

@@ -31,12 +31,11 @@ our $UseSlaveDB = 0;
 
 Kernel::System::DB - global database interface
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All database functions to connect/insert/update/delete/... to a database.
 
 =head1 PUBLIC INTERFACE
-
 
 =head2 new()
 

@@ -28,12 +28,11 @@ our @ObjectDependencies = (
 
 Kernel::System::Daemon::DaemonModules::SchedulerCronTaskManager - daemon to manage scheduler cron tasks
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 Scheduler cron task daemon
 
 =head1 PUBLIC INTERFACE
-
 
 =head2 new()
 

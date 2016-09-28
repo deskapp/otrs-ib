@@ -22,13 +22,12 @@ our $ObjectManagerDisabled = 1;
 
 Kernel::GenericInterface::Operation - GenericInterface Operation interface
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 Operations are called by web service requests from remote
 systems.
 
 =head1 PUBLIC INTERFACE
-
 
 =head2 new()
 

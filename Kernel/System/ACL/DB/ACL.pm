@@ -28,19 +28,16 @@ our @ObjectDependencies = (
 
 Kernel::System::ACL::DB::ACL.pm
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 ACL DB ACL backend
 
 =head1 PUBLIC INTERFACE
 
-
 =head2 new()
 
 create a ACL object. Do not use it directly, instead use:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $ACLObject = $Kernel::OM->Get('Kernel::System::ACL::DB::ACL');
 
 =cut

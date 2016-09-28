@@ -29,12 +29,11 @@ our @ObjectDependencies = (
 
 Kernel::System::Daemon::DaemonModules::SchedulerGenericAgentTaskManager - daemon to manage scheduler generic agent tasks
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 Scheduler generic agent task daemon
 
 =head1 PUBLIC INTERFACE
-
 
 =head2 new()
 
