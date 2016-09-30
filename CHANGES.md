@@ -1,4 +1,5 @@
 #5.0.14 2016-??-??
+ - 2016-09-30 Attachment name validation added.
  - 2016-09-30 Fixed escaping values passed to LDAP filters.
  - 2016-09-28 Fixed bug#[12331](http://bugs.otrs.org/show_bug.cgi?id=12331) - pdf generation runs in to errors on spllited pages because of many columns.
  - 2016-09-28 Column list validation before saving agent preferences.
