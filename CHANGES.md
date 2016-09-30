@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-09-30 Attachment name validation added.
  - 2016-09-30 Fixed escaping values passed to LDAP filters.
  - 2016-09-28 Column list validation before saving agent preferences.
  - 2016-09-28 Fixed error Can't locate object method "EventHandler" in NotifyAgentGroupOfCustomQueue and NotifyAgentGroupOfCustomQueue.
