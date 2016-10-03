@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-10-03 Fixed searching for strings with ! in Sphinx.
  - 2016-09-30 Attachment name validation added.
  - 2016-09-30 Fixed escaping values passed to LDAP filters.
  - 2016-09-28 Column list validation before saving agent preferences.
