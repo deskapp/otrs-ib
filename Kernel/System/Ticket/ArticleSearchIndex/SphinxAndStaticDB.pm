@@ -256,7 +256,7 @@ sub _ArticleIndexQuerySQLExt {
     # disable some sphinx operators (replace with space in search term)
     # to avoid sphinx errors in case it appears in search terms
     # (i.e. e-mail address or path specifications)
-    $Param{Data}->{Fulltext} =~ s/[@\/]/ /g;
+    $Param{Data}->{Fulltext} =~ s/[@\/!]/ /g;
 
     my $PrepareResult = $Self->{SphinxObject}->Prepare(
         SphinxQL => 'SELECT ticket_id FROM index_name WHERE MATCH(?) '
