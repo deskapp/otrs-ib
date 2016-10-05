@@ -238,8 +238,9 @@ sub ArticleDeleteAttachment {
     if ( -e $Path ) {
 
         my @List = $Kernel::OM->Get('Kernel::System::Main')->DirectoryRead(
-            Directory => $Path,
-            Filter    => "*",
+            Directory     => $Path,
+            Filter        => '*',
+            IncludeHidden => 1,
         );
 
         for my $File (@List) {
@@ -628,9 +629,10 @@ sub ArticleAttachmentIndexRaw {
 
     # try fs
     my @List = $MainObject->DirectoryRead(
-        Directory => "$Self->{ArticleDataDir}/$ContentPath/$Param{ArticleID}",
-        Filter    => "*",
-        Silent    => 1,
+        Directory     => "$Self->{ArticleDataDir}/$ContentPath/$Param{ArticleID}",
+        Filter        => '*',
+        IncludeHidden => 1,
+        Silent        => 1,
     );
 
     FILENAME:
@@ -882,9 +884,10 @@ sub ArticleAttachment {
     my $MainObject = $Kernel::OM->Get('Kernel::System::Main');
 
     my @List = $MainObject->DirectoryRead(
-        Directory => "$Self->{ArticleDataDir}/$ContentPath/$Param{ArticleID}",
-        Filter    => "*",
-        Silent    => 1,
+        Directory     => "$Self->{ArticleDataDir}/$ContentPath/$Param{ArticleID}",
+        Filter        => '*',
+        IncludeHidden => 1,
+        Silent        => 1,
     );
 
     if (@List) {

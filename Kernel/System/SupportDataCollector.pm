@@ -124,14 +124,14 @@ sub Collect {
     # Look for all plug-ins in the FS
     my @PluginFiles = $Kernel::OM->Get('Kernel::System::Main')->DirectoryRead(
         Directory => dirname(__FILE__) . "/SupportDataCollector/Plugin",
-        Filter    => "*.pm",
+        Filter    => '*.pm',
         Recursive => 1,
     );
 
     # Look for all asynchronous plug-ins in the FS
     my @PluginAsynchronousFiles = $Kernel::OM->Get('Kernel::System::Main')->DirectoryRead(
         Directory => dirname(__FILE__) . "/SupportDataCollector/PluginAsynchronous",
-        Filter    => "*.pm",
+        Filter    => '*.pm',
         Recursive => 1,
     );
 
@@ -357,7 +357,7 @@ sub CollectAsynchronous {
     # Look for all plug-ins in the FS
     my @PluginFiles = $Kernel::OM->Get('Kernel::System::Main')->DirectoryRead(
         Directory => dirname(__FILE__) . "/SupportDataCollector/PluginAsynchronous",
-        Filter    => "*.pm",
+        Filter    => '*.pm',
         Recursive => 1,
     );
 
@@ -405,7 +405,7 @@ sub CleanupAsynchronous {
     # Look for all plug-ins in the FS
     my @PluginFiles = $Kernel::OM->Get('Kernel::System::Main')->DirectoryRead(
         Directory => dirname(__FILE__) . "/SupportDataCollector/PluginAsynchronous",
-        Filter    => "*.pm",
+        Filter    => '*.pm',
         Recursive => 1,
     );
 
