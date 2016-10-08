@@ -112,7 +112,10 @@ sub Run {
 
         # just return for non-html attachment (e. g. images)
         if ( $Data{ContentType} !~ /text\/html/i ) {
-            return $LayoutObject->Attachment(%Data);
+            return $LayoutObject->Attachment(
+                %Data,
+                Sandbox => 1,
+            );
         }
 
         # unset filename for inline viewing
@@ -148,13 +151,15 @@ sub Run {
         # return html attachment
         return $LayoutObject->Attachment(
             %Data,
-            LoadExternalContent => $LoadExternalContent,  # for blocking external content with CSP also
+            Sandbox => $LoadExternalContent ? 0 : 1,  # for blocking external content with CSP also
         );
-
     }
 
     # download it AttachmentDownloadType is configured
-    return $LayoutObject->Attachment(%Data);
+    return $LayoutObject->Attachment(
+        %Data,
+        Sandbox => 1,
+    );
 }
 
 1;

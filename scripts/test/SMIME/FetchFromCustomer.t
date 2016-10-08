@@ -6,6 +6,7 @@
 # did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
 # --
 
+## no critic (Modules::RequireExplicitPackage)
 use strict;
 use warnings;
 use utf8;
@@ -13,14 +14,6 @@ use utf8;
 use vars (qw($Self));
 use File::Path qw(mkpath rmtree);
 
-use Devel::Peek;
-
-use Kernel::System::Crypt::SMIME;
-use Kernel::System::DB;
-use Kernel::System::CustomerUser;
-use Kernel::System::Console::Command::Maint::SMIME::FetchFromCustomer;
-
-# get needed objects
 my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 my $MainObject   = $Kernel::OM->Get('Kernel::System::Main');
 
@@ -349,14 +342,14 @@ my %CustomerUserConfig = (
         # note: Login, Email and CustomerID are mandatory!
         # if you need additional attributes from AD, just map them here.
         # var, frontend, storage, shown (1=always,2=lite), required, storage-type, http-link, readonly
-        [ 'UserSalutation',   'Title or salutation', 'title',                1, 0, 'var', '', 0 ],
-        [ 'UserFirstname',    'Firstname',           'first_name',           1, 1, 'var', '', 0 ],
-        [ 'UserLastname',     'Lastname',            'last_name',            1, 1, 'var', '', 0 ],
-        [ 'UserLogin',        'Username',            'login',                1, 1, 'var', '', 0 ],
-        [ 'UserPassword',     'Password',            'pw',                   0, 0, 'var', '', 0 ],
-        [ 'UserEmail',        'Email',               'email',                1, 1, 'var', '', 0 ],
-        [ 'UserCustomerID',   'CustomerID',          'customer_id',          0, 1, 'var', '', 0 ],
-        [ 'SMIMECertificate', 'SMIMECertificate',    'userSMIMECertificate', 0, 1, 'var', '', 0 ],
+        [ 'UserSalutation',       'Title or salutation', 'title',                1, 0, 'var', '', 0 ],
+        [ 'UserFirstname',        'Firstname',           'first_name',           1, 1, 'var', '', 0 ],
+        [ 'UserLastname',         'Lastname',            'last_name',            1, 1, 'var', '', 0 ],
+        [ 'UserLogin',            'Username',            'login',                1, 1, 'var', '', 0 ],
+        [ 'UserPassword',         'Password',            'pw',                   0, 0, 'var', '', 0 ],
+        [ 'UserEmail',            'Email',               'email',                1, 1, 'var', '', 0 ],
+        [ 'UserCustomerID',       'CustomerID',          'customer_id',          0, 1, 'var', '', 0 ],
+        [ 'UserSMIMECertificate', 'SMIMECertificate',    'userSMIMECertificate', 0, 1, 'var', '', 0 ],
     ],
 );
 my $Return = $ConfigObject->Set(
@@ -407,14 +400,12 @@ my %List               = $CustomerUserObject->CustomerSearch(
     Valid      => 1,
 );
 
-my $CommandObject = $Kernel::OM->Get('Kernel::System::Console::Command::Maint::SMIME::FetchFromCustomer');
-
 CUSTOMERUSER:
 for my $CustomerUser ( sort keys %List ) {
     my %User = $CustomerUserObject->CustomerUserDataGet(
         User => $CustomerUser,
     );
-    next CUSTOMERUSER if !$User{SMIMECertificate};
+    next CUSTOMERUSER if !$User{UserSMIMECertificate};
 
     # 1st try with CertificateSearch
     # add
@@ -441,17 +432,10 @@ for my $CustomerUser ( sort keys %List ) {
         "$Remove{Message}",
     );
 
-    #2nd try - Console Command
-    my $ExitCode = $CommandObject->Execute();
-
-    $Self->Is(
-        $ExitCode,
-        1,
-        "Maint::SMIME::FetchFromCustomer exit code without arguments.",
+    #2nd try - fetching from customer
+    my @Files = $SMIMEObject->FetchFromCustomer(
+        Search => $User{UserEmail},
     );
-
-    # check & add
-    $ExitCode = $CommandObject->Execute( '--mail', $User{UserEmail}, '--force' );
 
     my @CertificateFilename2nd = $SMIMEObject->CertificateSearch(
         Search  => $User{UserEmail},
@@ -475,9 +459,18 @@ for my $CustomerUser ( sort keys %List ) {
 }
 
 # TODO - second stage
-# creat a real LDAP server to test against
+# create a real LDAP server to test against
 
 $DBObject->Do( SQL => 'Drop table ' . $TableName );
+
+# delete needed test directories
+for my $Directory ( $CertPath, $PrivatePath ) {
+    my $Success = rmtree( [$Directory] );
+    $Self->True(
+        $Success,
+        "Directory deleted - '$Directory'",
+    );
+}
 
 # cleanup is done by RestoreDatabase.
 

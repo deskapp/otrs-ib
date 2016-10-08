@@ -152,6 +152,15 @@
  - 2015-11-27 Improved command Maint::Ticket::InvalidUserCleanup. It can now now both unlock tickets of invalid users and also (optionally) change their state to make sure they will not be overlooked. Thanks to Moritz Lenz @ noris networks.
 
 #5.0.14 2016-??-??
+ - 2016-10-07 Fixed bug#[11073](http://bugs.otrs.org/show_bug.cgi?id=11073) - Default expanded article in queue view (preview mode) should not be an autoreply.
+ - 2016-10-07 Fixed bug#[12343](http://bugs.otrs.org/show_bug.cgi?id=12343) - Cache kept for ViewableLocks.
+ - 2016-10-07 Fixed bug#[12294](http://bugs.otrs.org/show_bug.cgi?id=12294) - modern field breaks when we minimize Free Field widget and the form is still open.
+ - 2016-10-07 Fixed bug#[12208](http://bugs.otrs.org/show_bug.cgi?id=12208) - Print Process Information screen can not be canceled/closed.
+ - 2016-10-06 Improved sandboxing of displayed attachments.
+ - 2016-09-30 Fixed bug#[12341](http://bugs.otrs.org/show_bug.cgi?id=12341) - Wrong <OTRS_TICKET_DynamicField_NameX_Value> in ProcessManagement  Transition Actions.
+ - 2016-09-30 Fixed bug#[666](http://bugs.otrs.org/show_bug.cgi?id=666) - INSERTs into 'ticket_history' fail sometimes.
+ - 2016-09-30 Added warning message for Console commands executed in non UTF-8 terminal.
+ - 2016-09-30 Fixed bug#[12272](http://bugs.otrs.org/show_bug.cgi?id=12272) - Tickets in status "removed" get reopened from Junk Queue.
  - 2016-09-28 Fixed bug#[12331](http://bugs.otrs.org/show_bug.cgi?id=12331) - pdf generation runs in to errors on spllited pages because of many columns.
  - 2016-09-27 Fixed bug#[4640](http://bugs.otrs.org/show_bug.cgi?id=4640) - Wrong variable <OTRS_CUSTOMER_REALNAME> in Auto Responses.
  - 2016-09-27 Fixed bug#[11805](http://bugs.otrs.org/show_bug.cgi?id=11805) - Cancel the Bulk Action always unlocks tickets.

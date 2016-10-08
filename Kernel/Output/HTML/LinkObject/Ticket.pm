@@ -252,7 +252,6 @@ sub TableCreateComplex {
     my %UserColumns = %{$DefaultColumns};
 
     if ( $Preferences{'LinkObject::ComplexTable-Ticket'} ) {
-        my $JSONObject = $Kernel::OM->Get('Kernel::System::JSON');
 
         my $ColumnsEnabled = $JSONObject->Decode(
             Data => $Preferences{'LinkObject::ComplexTable-Ticket'},
@@ -307,7 +306,7 @@ sub TableCreateComplex {
     # Sort
     COLUMN:
     for my $Column ( sort { $SortOrder{$a} <=> $SortOrder{$b} } keys %UserColumns ) {
-        next COLUMN if $Column eq 'TicketNumber';      # Always present, already added.
+        next COLUMN if $Column eq 'TicketNumber';    # Always present, already added.
 
         # if enabled by default
         if ( $UserColumns{$Column} == 2 ) {
@@ -884,7 +883,7 @@ sub SearchOptionList {
 
 =head1 TERMS AND CONDITIONS
 
-This software is part of the OTRS project (http://otrs.org/).
+This software is part of the OTRS project (L<http://otrs.org/>).
 
 This software comes with ABSOLUTELY NO WARRANTY. For details, see
 the enclosed file COPYING for license information (AGPL). If you
