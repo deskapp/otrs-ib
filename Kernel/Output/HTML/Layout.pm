@@ -2487,7 +2487,7 @@ sub Attachment {
         #   as this is a common use case in emails.
         # Also disallow referrer headers to prevent referrer leaks.
         $Output
-            .= "Content-Security-Policy: default-src 'self'; script-src 'none'; object-src 'none'; frame-src 'none'; style-src 'unsafe-inline'; referrer no-referrer;\n";
+            .= "Content-Security-Policy: default-src 'self'; script-src 'none'; object-src 'none'; child-src 'none'; style-src 'unsafe-inline'; referrer no-referrer;\n";
     }
 
     if ( $Param{Charset} ) {
