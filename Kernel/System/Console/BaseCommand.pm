@@ -14,6 +14,7 @@ use warnings;
 use Getopt::Long();
 use Term::ANSIColor();
 use IO::Interactive();
+use Encode::Locale();
 
 our @ObjectDependencies = (
     'Kernel::Config',
@@ -425,6 +426,15 @@ sub Execute {
     if ( !%{ $Self->{_ParsedARGV} // {} } ) {
         print STDERR "\n" . $Self->GetUsageHelp();
         return $Self->ExitCodeError();
+    }
+
+    # Create a $ENCODING_CONSOLE_OUT alias to prevent OTRSCodePolicy complains
+    my $ConsoleEncoding = lc $Encode::Locale::ENCODING_CONSOLE_OUT;    ## no critic
+
+    if ( $ConsoleEncoding ne 'utf-8' ) {
+        $Self->PrintError(
+            "The terminal encoding should be set to 'utf-8', but is '$ConsoleEncoding'. Some characters might not be displayed correctly."
+        );
     }
 
     eval { $Self->PreRun(); };

@@ -72,7 +72,7 @@
         <Group>Framework</Group>
         <SubGroup>Core</SubGroup>
         <Setting>
-            <String Regex="">OTRS 5</String>
+            <String Regex="">OTRS 5s</String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="SystemID" Required="1" Valid="1" ConfigLevel="200">
@@ -588,6 +588,17 @@
     </ConfigItem>
     <ConfigItem Name="DisableIFrameOriginRestricted" Required="0" Valid="1">
         <Description Translatable="1">Disable HTTP header "X-Frame-Options: SAMEORIGIN" to allow OTRS to be included as an IFrame in other websites. Disabling this HTTP header can be a security issue! Only disable it, if you know what you are doing!</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Web</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="DisableContentSecurityPolicy" Required="0" Valid="1">
+        <Description Translatable="1">Disable HTTP header "Content-Security-Policy" to allow loading of external script contents. Disabling this HTTP header can be a security issue! Only disable it, if you know what you are doing!</Description>
         <Group>Framework</Group>
         <SubGroup>Core::Web</SubGroup>
         <Setting>
@@ -3546,6 +3557,17 @@
             </Option>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="SMIME::FetchFromCustomer" Required="1" Valid="1">
+        <Description Translatable="1">Enables fetch S/MIME from CustomerUser backend support.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Crypt::SMIME</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="TLS::VerifyPeer" Required="1" Valid="1">
         <Description Translatable="1">If this option is enabled (default, recommended), then the remote peer TLS certificates are verified against configured CA (see below). When disabled (not recommended for security reasons) peer TLS certificates are not verified. Please note: this option is currently used for mail account IMAPS connections only.</Description>
         <Group>Framework</Group>
@@ -5446,6 +5468,23 @@ via the Preferences button after logging in.
                 <Loader>
                     <CSS>Core.Agent.Admin.OTRSBusiness.css</CSS>
                 </Loader>
+            </FrontendModuleReg>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Frontend::Module###AgentOTRSBusiness" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Frontend::Agent::ModuleRegistration</SubGroup>
+        <Setting>
+            <FrontendModuleReg>
+                <Description>Agent</Description>
+                <Title>OTRS Business Solution™</Title>
+                <NavBarName></NavBarName>
+                <!--
+                <Loader>
+                    <CSS>Core.Agent.Admin.OTRSBusiness.css</CSS>
+                </Loader>
+                -->
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>

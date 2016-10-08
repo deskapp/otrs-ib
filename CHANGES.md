@@ -1,8 +1,19 @@
 #5.0.14 2016-??-??
+ - 2016-10-07 Fixed bug#[12343](http://bugs.otrs.org/show_bug.cgi?id=12343) - Cache kept for ViewableLocks.
+ - 2016-10-07 Fixed bug#[12294](http://bugs.otrs.org/show_bug.cgi?id=12294) - modern field breaks when we minimize Free Field widget and the form is still open.
+ - 2016-10-07 Fixed bug#[12208](http://bugs.otrs.org/show_bug.cgi?id=12208) - Print Process Information screen can not be canceled/closed.
+ - 2016-10-07 Added example process "Application for leave".
+ - 2016-10-07 Added signing and encryption of ticket notifications.
+ - 2016-10-07 Added possibility to filter encrypted emails by decrypting them in a postmaster filter.
+ - 2016-10-07 Added possibility to automatically fetch customer S/MIME certificates from LDAP.
+ - 2016-10-06 Improved sandboxing of displayed attachments.
  - 2016-10-05 Fixed handling hidden files and filter quotation fixes.
  - 2016-10-03 Fixed searching for strings with ! in Sphinx.
  - 2016-09-30 Attachment name validation added.
  - 2016-09-30 Fixed escaping values passed to LDAP filters.
+ - 2016-09-30 Fixed bug#[12341](http://bugs.otrs.org/show_bug.cgi?id=12341) - Wrong <OTRS_TICKET_DynamicField_NameX_Value> in ProcessManagement  Transition Actions.
+ - 2016-09-30 Added warning message for Console commands executed in non UTF-8 terminal.
+ - 2016-09-30 Fixed bug#[12272](http://bugs.otrs.org/show_bug.cgi?id=12272) - Tickets in status "removed" get reopened from Junk Queue.
  - 2016-09-28 Fixed bug#[12331](http://bugs.otrs.org/show_bug.cgi?id=12331) - pdf generation runs in to errors on spllited pages because of many columns.
  - 2016-09-28 Column list validation before saving agent preferences.
  - 2016-09-28 Fixed error Can't locate object method "EventHandler" in NotifyAgentGroupOfCustomQueue and NotifyAgentGroupOfCustomQueue.

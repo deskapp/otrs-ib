@@ -32,6 +32,7 @@ our @ObjectDependencies = (
     'Kernel::System::SystemMaintenance',
     'Kernel::System::Time',
     'Kernel::System::User',
+    'Kernel::System::VideoChat',
     'Kernel::System::Web::Request',
     'Kernel::System::Group',
 );
@@ -1547,6 +1548,12 @@ sub Footer {
         $Param{OTRSBusinessIsInstalled} = $Kernel::OM->Get('Kernel::System::OTRSBusiness')->OTRSBusinessIsInstalled();
     }
 
+    # Check if video chat is enabled.
+    if ( $Kernel::OM->Get('Kernel::System::Main')->Require( 'Kernel::System::VideoChat', Silent => 1 ) ) {
+        $Param{VideoChatEnabled} = $Kernel::OM->Get('Kernel::System::VideoChat')->IsEnabled()
+            || $Kernel::OM->Get('Kernel::System::Web::Request')->GetParam( Param => 'UnitTestMode' ) // 0;
+    }
+
     # create & return output
     return $Self->Output(
         TemplateFile => "Footer$Type",
@@ -2404,12 +2411,12 @@ sub ReturnValue {
 returns browser output to display/download a attachment
 
     $HTML = $LayoutObject->Attachment(
-        Type                => 'inline',        # optional, default: attachment, possible: inline|attachment
-        Filename            => 'FileName.png',  # optional
-        ContentType         => 'image/png',
-        Content             => $Content,
-        LoadExternalContent => 1,               # optional, 0 - don't allow page to load resources from external sites;
-                                                # 1 (default) - allow allow page to load resources from external sites
+        Type        => 'inline',        # optional, default: attachment, possible: inline|attachment
+        Filename    => 'FileName.png',  # optional
+        ContentType => 'image/png',
+        Content     => $Content,
+        Sandbox     => 1,               # optional, default 0; use content security policy to prohibit external
+                                        #   scripts, flash etc.
     );
 
     or for AJAX html snippets
@@ -2474,13 +2481,13 @@ sub Attachment {
         $Output .= "X-Frame-Options: SAMEORIGIN\n";
     }
 
-    # use CSP to disallow external content to be loaded if not explicitly enabled;
-    # don't allow inline scripts but allow inline styles for messages and
-    # blocking info box to look nice; for CSP details see
-    # http://www.html5rocks.com/en/tutorials/security/content-security-policy/
-    # https://www.w3.org/TR/CSP2/#directive-default-src
-    if ( defined $Param{LoadExternalContent} && ( $Param{LoadExternalContent} == 0 ) ) {
-        $Output .= "Content-Security-Policy: default-src 'self'; style-src 'unsafe-inline'\n"; 
+    if ( $Param{Sandbox} && !$Kernel::OM->Get('Kernel::Config')->Get('DisableContentSecurityPolicy') ) {
+
+        # Disallow external and inline scripts, active content, frames, but keep allowing inline styles
+        #   as this is a common use case in emails.
+        # Also disallow referrer headers to prevent referrer leaks.
+        $Output
+            .= "Content-Security-Policy: default-src 'self'; script-src 'none'; object-src 'none'; frame-src 'none'; style-src 'unsafe-inline'; referrer no-referrer;\n";
     }
 
     if ( $Param{Charset} ) {
@@ -3723,6 +3730,12 @@ sub CustomerFooter {
         },
     );
 
+    # Check if video chat is enabled.
+    if ( $Kernel::OM->Get('Kernel::System::Main')->Require( 'Kernel::System::VideoChat', Silent => 1 ) ) {
+        $Param{VideoChatEnabled} = $Kernel::OM->Get('Kernel::System::VideoChat')->IsEnabled()
+            || $Kernel::OM->Get('Kernel::System::Web::Request')->GetParam( Param => 'UnitTestMode' ) // 0;
+    }
+
     # create & return output
     return $Self->Output(
         TemplateFile => "CustomerFooter$Type",
@@ -4004,27 +4017,28 @@ sub CustomerNavigationBar {
             );
         }
 
-        # show open chat requests (if chat engine is active)
-        if ( $ConfigObject->Get('ChatEngine::Active') ) {
+        # Show open chat requests (if chat engine is active).
+        if ( $Kernel::OM->Get('Kernel::System::Main')->Require( 'Kernel::System::Chat', Silent => 1 ) ) {
+            if ( $ConfigObject->Get('ChatEngine::Active') ) {
+                my $ChatObject = $Kernel::OM->Get('Kernel::System::Chat');
+                my $Chats      = $ChatObject->ChatList(
+                    Status        => 'request',
+                    TargetType    => 'Customer',
+                    ChatterID     => $Self->{UserID},
+                    ChatterType   => 'Customer',
+                    ChatterActive => 0,
+                );
 
-            my $ChatObject = $Kernel::OM->Get('Kernel::System::Chat');
-            my $Chats      = $ChatObject->ChatList(
-                Status        => 'request',
-                TargetType    => 'Customer',
-                ChatterID     => $Self->{UserID},
-                ChatterType   => 'Customer',
-                ChatterActive => 0,
-            );
+                my $Count = scalar $Chats;
 
-            my $Count = scalar $Chats;
-
-            $Self->Block(
-                Name => 'ChatRequests',
-                Data => {
-                    Count => $Count,
-                    Class => ($Count) ? '' : 'Hidden',
-                },
-            );
+                $Self->Block(
+                    Name => 'ChatRequests',
+                    Data => {
+                        Count => $Count,
+                        Class => ($Count) ? '' : 'Hidden',
+                    },
+                );
+            }
         }
     }
 
