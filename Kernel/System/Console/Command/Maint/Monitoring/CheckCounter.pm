@@ -42,20 +42,24 @@ sub Configure {
 
     $Self->AdditionalHelp(<<"EOF");
 The <green>$Name</green> prints value of counter specified in --counter argument; list of available counters:
-     1 or Articles                number of all articles in OTRS DB
-     2 or ArticlesValid           number of valid articles in OTRS DB
-     3 or Customers               number of all customer users in OTRS DB
-     4 or CustomerSessions        number of customer user active sessions
-     5 or CustomerSessionsUnique  number of unique customer user active sessions
-     6 or CustomersValid          number of valid customer users in OTRS DB
-     7 or Tickets                 number of all tickets in OTRS DB
-     8 or TicketsUnarchived       number of unarchived tickets in OTRS DB
-     9 or TicketsArchived         number of archived tickets in OTRS DB
-    10 or Users                   number of all users in OTRS DB
-    11 or UserSessions            number of user active sessions
-    12 or UserSessionsUnique      number of unique user active sessions
-    13 or UsersValid              number of valid users in OTRS DB
-    14 or UsersValidWoAdmin       number of valid users in OTRS DB without user with id 1
+     1 or Articles                   number of all articles in OTRS DB
+     2 or ArticlesValid              number of valid articles in OTRS DB
+     3 or Customers                  number of all customer users in OTRS DB
+     4 or CustomerSessions           number of customer user active sessions
+     5 or CustomerSessionsUnique     number of unique customer user active sessions
+     6 or CustomersValid             number of valid customer users in OTRS DB
+     7 or Tickets                    number of all tickets in OTRS DB
+     8 or TicketsUnarchived          number of unarchived tickets in OTRS DB
+     9 or TicketsArchived            number of archived tickets in OTRS DB
+    10 or Users                      number of all users in OTRS DB
+    11 or UserSessions               number of user active sessions
+    12 or UserSessionsUnique         number of unique user active sessions
+    13 or UsersValid                 number of valid users in OTRS DB
+    14 or UsersValidWoAdmin          number of valid users in OTRS DB without user with id 1
+    15 or ArticlesCreatedYesterday   number of articles created yesterday (even if deleted)
+    16 or TicketsCreatedYesterday    number of tickets created yesterday (even if deleted)
+    17 or ArticleAutoIncrement       auto_increment value in article table
+    18 or TicketAutoIncrement        auto_increment value in ticket table
 
 For *Sessions counters you can specify number of idle minutes after session is ignored with <yellow>--session-idle-minutes</yellow> (15 minutes if not specified).
 
@@ -177,6 +181,22 @@ sub Run {
 
     elsif ( $Options{Counter} eq '14' || $Options{Counter} eq 'UsersValidWoAdmin' ) {
         $Query = 'select count(*) from users where valid_id=1 and id>1';
+    }
+
+    elsif ( $Options{Counter} eq '15' || $Options{Counter} eq 'ArticlesCreatedYesterday' ) {
+        $Query = 'select (select ifnull(max(id),0) from article where date(create_time)<=date(date_sub(now(), interval 1 day))) - (select ifnull(max(id),0) from article where date(create_time)<=date(date_sub(now(), interval 2 day)))';
+    }
+
+    elsif ( $Options{Counter} eq '16' || $Options{Counter} eq 'TicketsCreatedYesterday' ) {
+        $Query = 'select (select ifnull(max(id),0) from ticket where date(create_time)<=date(date_sub(now(), interval 1 day))) - (select ifnull(max(id),0) from ticket where date(create_time)<=date(date_sub(now(), interval 2 day)))';
+    }
+
+    elsif ( $Options{Counter} eq '17' || $Options{Counter} eq 'ArticleAutoIncrement' ) {
+        $Query = 'select auto_increment from information_schema.tables where table_schema=database() and table_name=\'article\'';
+    }
+
+    elsif ( $Options{Counter} eq '18' || $Options{Counter} eq 'TicketAutoIncrement' ) {
+        $Query = 'select auto_increment from information_schema.tables where table_schema=database() and table_name=\'ticket\'';
     }
 
     else {
