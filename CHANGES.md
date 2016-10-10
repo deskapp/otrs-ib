@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-10-10 Disabled warnings on internal unicode chacter printing.
  - 2016-10-10 Added new counters to Maint::Monitoring::CheckCounter command.
  - 2016-10-05 Fixed handling hidden files and filter quotation fixes.
  - 2016-10-03 Fixed searching for strings with ! in Sphinx.
