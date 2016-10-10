@@ -1,4 +1,5 @@
 #5.0.10 2016-??-??
+ - 2016-10-10 Added new counters to Maint::Monitoring::CheckCounter command.
  - 2016-05-05 Added otrs.Console.pl Maint::Monitoring::CheckCounter command.
  - 2016-04-29 Fixed bug#[11614](http://bugs.otrs.org/show_bug.cgi?id=11614) - LDAP Auth loses Agent-Group relationships every 2nd login.
  - 2016-04-29 Fixed bug#[12036](http://bugs.otrs.org/show_bug.cgi?id=12036) - Escalation Notification % does not work for short intervals.
