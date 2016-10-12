@@ -1,4 +1,5 @@
 #5.0.10 2016-??-??
+ - 2016-10-10 Fixed undef-empty string comparison in user preferences management.
  - 2016-04-27 Added extended agent properties synchronization from LDAP backend.
  - 2016-04-22 Fixed bug#[12017](http://bugs.otrs.org/show_bug.cgi?id=12017) - Modernized forms do not work as exspected in conjunction with ACLs.
  - 2016-04-22 Fixed bug#[12009](http://bugs.otrs.org/show_bug.cgi?id=12009) - Request-URI Too Large  The requested URL's length exceeds the capacity limit for this server.
