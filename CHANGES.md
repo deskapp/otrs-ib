@@ -1,4 +1,5 @@
 #5.0.14 2016-??-??
+ - 2016-10-10 Fixed undef-empty string comparison in user preferences management.
  - 2016-10-10 Disabled warnings on internal unicode chacter printing.
  - 2016-10-10 Added new counters to Maint::Monitoring::CheckCounter command.
  - 2016-10-07 Fixed bug#[12343](http://bugs.otrs.org/show_bug.cgi?id=12343) - Cache kept for ViewableLocks.
