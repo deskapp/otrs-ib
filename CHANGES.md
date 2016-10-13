@@ -1,4 +1,5 @@
 #5.0.14 2016-??-??
+ - 2016-10-13 Configurable resolver timeout.
  - 2016-10-12 Fixed use of uninitialized value in string eq errors.
  - 2016-10-10 Fixed undef-empty string comparison in user preferences management.
  - 2016-10-10 Disabled warnings on internal unicode chacter printing.
