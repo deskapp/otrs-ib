@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-10-19 Fixed Use of uninitialized value $Param{"To"} in string ne at /opt/otrs//Kernel/Modules/AgentTicketCompose.pm.
  - 2016-10-13 Configurable resolver timeout.
  - 2016-10-12 Fixed use of uninitialized value in string eq errors.
  - 2016-10-10 Fixed undef-empty string comparison in user preferences management.
