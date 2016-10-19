@@ -176,7 +176,7 @@ Core.Agent.Dashboard = (function (TargetNS) {
             if ($(this).find('input').prop('checked')) {
                 $(this).addClass('Checked');
             }
-            $(this).bind('click', function() {
+            $(this).on('click', function() {
                 $(this).toggleClass('Checked', $(this).find('input').prop('checked'));
             });
         });
@@ -475,7 +475,7 @@ Core.Agent.Dashboard = (function (TargetNS) {
             $Container.prev('.StatsSettingsJSON').val(Core.JSON.Stringify(Data));
         }
 
-        $Container.find('select, input').bind('change', function() {
+        $Container.find('select, input').on('change', function() {
             CollectStatsData();
             ValidateTimeSettings();
         });
@@ -495,7 +495,7 @@ Core.Agent.Dashboard = (function (TargetNS) {
         var CustomerUserRefresh;
 
         // Bind event on create chat request button
-        $('a.CreateChatRequest').bind('click', function() {
+        $('a.CreateChatRequest').on('click', function() {
             var $Dialog = $('#DashboardUserOnlineChatStartDialog').clone();
 
             $Dialog.find('input[name=ChatStartUserID]').val($(this).data('user-id'));
@@ -521,14 +521,6 @@ Core.Agent.Dashboard = (function (TargetNS) {
 
             return false;
         });
-
-        if (
-            typeof Core.Agent.Chat !== 'undefined'
-            && typeof Core.Agent.Chat.Toolbar !== 'undefined'
-            )
-        {
-            Core.Agent.Chat.Toolbar.InitVideoChatButtons();
-        }
 
         if (typeof Core.Config.Get('CustomerUserListRefresh') !== 'undefined') {
             CustomerUserRefresh = Core.Config.Get('CustomerUserListRefresh');
@@ -672,15 +664,6 @@ Core.Agent.Dashboard = (function (TargetNS) {
 
             return false;
         });
-
-        // Initialize video chat buttons, if applicable.
-        if (
-            typeof Core.Agent.Chat !== 'undefined'
-            && typeof Core.Agent.Chat.Toolbar !== 'undefined'
-            )
-        {
-            Core.Agent.Chat.Toolbar.InitVideoChatButtons();
-        }
 
         // Initiate refresh event
         Core.Config.Set('RefreshSeconds_' + UserOnline.NameHTML, parseInt(UserOnline.RefreshTime, 10) || 0);

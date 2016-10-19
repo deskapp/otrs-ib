@@ -288,7 +288,7 @@ Core.UI.InputFields = (function (TargetNS) {
             return;
         }
 
-        $SearchObj.removeAttr('readonly', 'readonly');
+        $SearchObj.prop('readonly', false);
         $InputContainerObj.removeClass('AlreadyDisabled');
 
         // Check if there are only empty and disabled options
@@ -314,7 +314,8 @@ Core.UI.InputFields = (function (TargetNS) {
 
             // Enable the field, remove the tooltip and dash string
             $SearchObj
-                .removeAttr('readonly title')
+                .removeAttr('title')
+                .prop('readonly', false)
                 .val('');
         }
     }
@@ -350,7 +351,11 @@ Core.UI.InputFields = (function (TargetNS) {
         // If the dropdown of the field is opened, close it (by calling blur event)
         // TODO: nicer way to find opened select elements
         $('select.Modernize').each(function () {
-            $('#' + Core.App.EscapeSelector($(this).data('modernized'))).filter('[aria-expanded=true]').trigger('blur');
+            var Selector = Core.App.EscapeSelector($(this).data('modernized'));
+            if (!Selector) {
+                return;
+            }
+            $('#' + Selector).filter('[aria-expanded=true]').trigger('blur');
         });
     }
 
