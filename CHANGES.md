@@ -1,4 +1,5 @@
 #5.0.14 2016-??-??
+ - 2016-10-24 Fixed e-mail address validation while sending autoresponses and article creation on send errors.
  - 2016-10-19 Fixed Use of uninitialized value $Param{"To"} in string ne at Kernel/Modules/AgentTicketCompose.pm.
  - 2016-10-18 Fixed bug#[12284](http://bugs.otrs.org/show_bug.cgi?id=12284) - Precious little information regarding SMIME signatures.
  - 2016-10-13 Configurable resolver timeout.
