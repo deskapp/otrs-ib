@@ -1,5 +1,7 @@
 #6.0.0.beta1 2016-??-??
  - 2016-10-24 Fixed e-mail address validation while sending autoresponses and article creation on send errors.
+ - 2016-10-21 Fixed bug#[12285](http://bugs.otrs.org/show_bug.cgi?id=12285) - Invalid customer user still receive admin notification.
+ - 2016-10-20 Simplified the way how fontawesome is being integrated to ease future updates and updated to 4.6.3.
  - 2016-10-19 Fixed Use of uninitialized value $Param{"To"} in string ne at /opt/otrs//Kernel/Modules/AgentTicketCompose.pm.
  - 2016-10-13 Configurable resolver timeout.
  - 2016-10-12 Fixed use of uninitialized value in string eq errors.
@@ -159,6 +161,8 @@
  - 2015-11-27 Improved command Maint::Ticket::InvalidUserCleanup. It can now now both unlock tickets of invalid users and also (optionally) change their state to make sure they will not be overlooked. Thanks to Moritz Lenz @ noris networks.
 
 #5.0.14 2016-??-??
+ - 2016-10-23 Fixed bug#[11766](http://bugs.otrs.org/show_bug.cgi?id=11766) - Ticket unlock via Generic Interface not possible.
+ - 2016-10-21 Fixed bug#[12311](http://bugs.otrs.org/show_bug.cgi?id=12311) - Process names are listed by ID instead of by name.
  - 2016-10-18 Fixed bug#[12284](http://bugs.otrs.org/show_bug.cgi?id=12284) - Precious little information regarding SMIME signatures.
  - 2016-10-09 Fixed bug#[12343](http://bugs.otrs.org/show_bug.cgi?id=12343) - Cache kept for ViewableLocks.
  - 2016-10-09 Fixed bug#[12351](http://bugs.otrs.org/show_bug.cgi?id=12351) - Multiple sort / order parameters for Ticket::Frontend::Agent::Dashboard.
