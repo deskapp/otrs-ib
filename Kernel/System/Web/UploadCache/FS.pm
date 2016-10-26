@@ -249,20 +249,16 @@ sub FormIDGetAllFilesData {
         next FILE if $File =~ /\.Disposition$/;
 
         $Counter++;
-        my $FileSize = -s $File;
+        my $FilesizeRaw = -s $File;
+        my $Filesize;
 
         # human readable file size
-        if ( defined $FileSize ) {
-
-            # remove meta data in files
-            if ( $FileSize > 30 ) {
-                $FileSize = $FileSize - 30
-            }
-
-            $FileSize = $MainObject->HumanReadableDataSize(
-                Size => $FileSize,
+        if ( defined $FilesizeRaw ) {
+            $Filesize = $MainObject->HumanReadableDataSize(
+                Size => $FilesizeRaw,
             );
         }
+
         my $Content = $MainObject->FileRead(
             Location => $File,
             Mode     => 'binmode',                                             # optional - binmode|utf8
@@ -301,7 +297,8 @@ sub FormIDGetAllFilesData {
                 ContentID   => ${$ContentID},
                 ContentType => ${$ContentType},
                 Filename    => $File,
-                Filesize    => $FileSize,
+                FilesizeRaw => $FilesizeRaw,
+                Filesize    => $Filesize,
                 FileID      => $Counter,
                 Disposition => ${$Disposition},
             },
@@ -349,18 +346,13 @@ sub FormIDGetAllFilesMeta {
         next FILE if $File =~ /\.Disposition$/;
 
         $Counter++;
-        my $FileSize = -s $File;
+        my $FilesizeRaw = -s $File;
+        my $Filesize;
 
         # human readable file size
-        if ( defined $FileSize ) {
-
-            # remove meta data in files
-            if ( $FileSize > 30 ) {
-                $FileSize = $FileSize - 30
-            }
-
-            $FileSize = $MainObject->HumanReadableDataSize(
-                Size => $FileSize,
+        if ( defined $FilesizeRaw ) {
+            $Filesize = $MainObject->HumanReadableDataSize(
+                Size => $FilesizeRaw,
             );
         }
 
@@ -395,7 +387,8 @@ sub FormIDGetAllFilesMeta {
                 ContentID   => ${$ContentID},
                 ContentType => ${$ContentType},
                 Filename    => $File,
-                Filesize    => $FileSize,
+                FilesizeRaw => $FilesizeRaw,
+                Filesize    => $Filesize,
                 FileID      => $Counter,
                 Disposition => ${$Disposition},
             },
