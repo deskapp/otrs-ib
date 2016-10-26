@@ -206,23 +206,20 @@ sub FormIDGetAllFilesData {
         next FILE if $File =~ /\.Disposition$/;
 
         $Counter++;
-        my $FileSize = -s $File;
+        my $FilesizeRaw = -s $File;
+        my $Filesize;
 
         # human readable file size
-        if ($FileSize) {
+        if ( defined $FilesizeRaw ) {
 
-            # remove meta data in files
-            if ( $FileSize > 30 ) {
-                $FileSize = $FileSize - 30
+            if ( $FilesizeRaw > 1048576 ) {    # 1024 * 1024
+                $Filesize = sprintf "%.1f MBytes", ( $FilesizeRaw / 1048576 );    # 1024 * 1024
             }
-            if ( $FileSize > 1048576 ) {    # 1024 * 1024
-                $FileSize = sprintf "%.1f MBytes", ( $FileSize / 1048576 );    # 1024 * 1024
-            }
-            elsif ( $FileSize > 1024 ) {
-                $FileSize = sprintf "%.1f KBytes", ( ( $FileSize / 1024 ) );
+            elsif ( $FilesizeRaw > 1024 ) {
+                $Filesize = sprintf "%.1f KBytes", ( ( $FilesizeRaw / 1024 ) );
             }
             else {
-                $FileSize = $FileSize . ' Bytes';
+                $Filesize = $FilesizeRaw . ' Bytes';
             }
         }
         my $Content = $MainObject->FileRead(
@@ -262,7 +259,8 @@ sub FormIDGetAllFilesData {
                 ContentID   => ${$ContentID},
                 ContentType => ${$ContentType},
                 Filename    => $File,
-                Filesize    => $FileSize,
+                FilesizeRaw => $FilesizeRaw,
+                Filesize    => $Filesize,
                 FileID      => $Counter,
                 Disposition => ${$Disposition},
             },
@@ -303,23 +301,20 @@ sub FormIDGetAllFilesMeta {
         next FILE if $File =~ /\.Disposition$/;
 
         $Counter++;
-        my $FileSize = -s $File;
+        my $FilesizeRaw = -s $File;
+        my $Filesize;
 
         # human readable file size
-        if ($FileSize) {
+        if ( defined $FilesizeRaw ) {
 
-            # remove meta data in files
-            if ( $FileSize > 30 ) {
-                $FileSize = $FileSize - 30
+            if ( $FilesizeRaw > 1048576 ) {    # 1024 * 1024
+                $Filesize = sprintf "%.1f MBytes", ( $FilesizeRaw / 1048576 );    # 1024 * 1024
             }
-            if ( $FileSize > 1048576 ) {    # 1024 * 1024
-                $FileSize = sprintf "%.1f MBytes", ( $FileSize / 1048576 );    # 1024 * 1024
-            }
-            elsif ( $FileSize > 1024 ) {
-                $FileSize = sprintf "%.1f KBytes", ( ( $FileSize / 1024 ) );
+            elsif ( $FilesizeRaw > 1024 ) {
+                $Filesize = sprintf "%.1f KBytes", ( ( $FilesizeRaw / 1024 ) );
             }
             else {
-                $FileSize = $FileSize . ' Bytes';
+                $Filesize = $FilesizeRaw . ' Bytes';
             }
         }
 
@@ -353,7 +348,8 @@ sub FormIDGetAllFilesMeta {
                 ContentID   => ${$ContentID},
                 ContentType => ${$ContentType},
                 Filename    => $File,
-                Filesize    => $FileSize,
+                FilesizeRaw => $FilesizeRaw,
+                Filesize    => $Filesize,
                 FileID      => $Counter,
                 Disposition => ${$Disposition},
             },

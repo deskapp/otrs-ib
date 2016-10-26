@@ -1,4 +1,5 @@
 #5.0.14 2016-??-??
+ - 2016-10-26 Size limit for e-mail messages created in OTRS web panels.
  - 2016-10-25 Added notification type handling for NotificationList in NotificationEvent backend.
  - 2016-10-25 Added caching to NotificationEvent backend.
  - 2016-10-23 Fixed bug#[11766](http://bugs.otrs.org/show_bug.cgi?id=11766) - Ticket unlock via Generic Interface not possible.
