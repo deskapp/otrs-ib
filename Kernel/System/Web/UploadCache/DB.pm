@@ -18,6 +18,7 @@ our @ObjectDependencies = (
     'Kernel::System::DB',
     'Kernel::System::Encode',
     'Kernel::System::Log',
+    'Kernel::System::Main',
 );
 
 sub new {
@@ -165,6 +166,9 @@ sub FormIDGetAllFilesData {
         }
     }
 
+    # get main object
+    my $MainObject = $Kernel::OM->Get('Kernel::System::Main');
+
     # get database object
     my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
 
@@ -182,8 +186,9 @@ sub FormIDGetAllFilesData {
         $Counter++;
 
         # human readable file size
+        my $Filesize;
         if ( defined $Row[2] ) {
-            $Row[2] = $Kernel::OM->Get('Kernel::System::Main')->HumanReadableDataSize(
+            $Filesize = $MainObject->HumanReadableDataSize(
                 Size => $Row[2],
             );
         }
@@ -201,7 +206,8 @@ sub FormIDGetAllFilesData {
                 ContentID   => $Row[4],
                 ContentType => $Row[1],
                 Filename    => $Row[0],
-                Filesize    => $Row[2],
+                FilesizeRaw => $Row[2],
+                Filesize    => $Filesize,
                 Disposition => $Row[5],
                 FileID      => $Counter,
             }
@@ -226,6 +232,9 @@ sub FormIDGetAllFilesMeta {
         }
     }
 
+    # get main object
+    my $MainObject = $Kernel::OM->Get('Kernel::System::Main');
+
     # get database object
     my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
 
@@ -242,8 +251,9 @@ sub FormIDGetAllFilesMeta {
         $Counter++;
 
         # human readable file size
+        my $Filesize;
         if ( defined $Row[2] ) {
-            $Row[2] = $Kernel::OM->Get('Kernel::System::Main')->HumanReadableDataSize(
+            $Filesize = $MainObject->HumanReadableDataSize(
                 Size => $Row[2],
             );
         }
@@ -255,7 +265,8 @@ sub FormIDGetAllFilesMeta {
                 ContentID   => $Row[3],
                 ContentType => $Row[1],
                 Filename    => $Row[0],
-                Filesize    => $Row[2],
+                FilesizeRaw => $Row[2],
+                Filesize    => $Filesize,
                 Disposition => $Row[4],
                 FileID      => $Counter,
             }

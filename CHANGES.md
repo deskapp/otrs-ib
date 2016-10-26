@@ -1,4 +1,5 @@
 #5.0.14 2016-??-??
+ - 2016-10-26 Size limit for e-mail messages created in OTRS web panels.
  - 2016-10-25 Added notification type handling for NotificationList in NotificationEvent backend.
  - 2016-10-25 Added caching to NotificationEvent backend.
  - 2016-10-24 Fixed e-mail address validation while sending autoresponses and article creation on send errors.
