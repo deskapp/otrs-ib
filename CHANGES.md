@@ -1,4 +1,5 @@
 #5.0.14 2016-??-??
+ - 2016-10-28 Fixed agent UserFullname update issues on lastname change in LDAP.
  - 2016-10-26 Size limit for e-mail messages created in OTRS web panels.
  - 2016-10-25 Added notification type handling for NotificationList in NotificationEvent backend.
  - 2016-10-25 Added caching to NotificationEvent backend.
