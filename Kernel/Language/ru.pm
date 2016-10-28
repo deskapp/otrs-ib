@@ -35,7 +35,7 @@ sub Data {
     $Self->{DateFormatShort}     = '%D.%M.%Y';
     $Self->{DateInputFormat}     = '%D.%M.%Y';
     $Self->{DateInputFormatLong} = '%D.%M.%Y - %T';
-    $Self->{Completeness}        = 0.978938674375387;
+    $Self->{Completeness}        = 0.977319587628866;
 
     # csv separator
     $Self->{Separator} = ';';
@@ -929,7 +929,7 @@ sub Data {
             'Необходимо для наличия данных о клиенте и подключения к системе через интерфейс клиента',
         'Last Login' => 'Последний вход',
         'Login as' => 'Зайти данным пользователем',
-        'Switch to customer' => 'Переключится на клиента',
+        'Switch to customer' => 'Переключиться на клиента',
         'Add Customer User' => 'Добавить клиента',
         'Edit Customer User' => 'Редактировать клиента',
         'This field is required and needs to be a valid email address.' =>
@@ -2930,8 +2930,8 @@ sub Data {
             'OTRS работает с большим списком браузеров, пожалуйста, обновитесь до одного из них.',
         'Please see the documentation or ask your admin for further information.' =>
             'Обратитесь к документации или спросите своего администратора для получения дополнительной информации.',
-        'Switch to mobile mode' => 'Переключится на мобильный режим',
-        'Switch to desktop mode' => 'Переключится на режим ПК',
+        'Switch to mobile mode' => 'Переключиться на мобильный режим',
+        'Switch to desktop mode' => 'Переключиться на режим ПК',
         'Not available' => 'Не доступно',
         'Clear all' => 'Очистить всё',
         'Clear search' => 'Очистить параметры поиска',
@@ -4003,7 +4003,12 @@ sub Data {
         # Perl Module: Kernel/Output/HTML/TicketOverviewMenu/Sort.pm
         'Order by' => 'Сортировка по',
 
-        # Perl Module: Kernel/System/AuthSession/DB.pm
+        # Perl Module: Kernel/System/AuthSession.pm
+        'You have exceeded the number of concurrent agents - contact sales@otrs.com.' =>
+            '',
+        'Please note that the session limit is almost reached.' => '',
+        'Login rejected! You have exceeded the maximum number of concurrent Agents! Contact sales@otrs.com immediately!' =>
+            '',
         'Session per user limit reached!' => 'Достигнут предел количества сессий на одного пользователя!',
 
         # Perl Module: Kernel/System/Console/Command/Dev/Tools/Config2Docbook.pm
@@ -4251,6 +4256,10 @@ sub Data {
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/PackageList.pm
         'Package List' => 'Список пакетов',
+
+        # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/SpoolMails.pm
+        'Spooled Emails' => '',
+        'There are emails in var/spool that OTRS could not process.' => '',
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/SystemID.pm
         'Your SystemID setting is invalid, it should only contain digits.' =>
@@ -5311,6 +5320,8 @@ Thanks for your help!
             'Задает модуль который показывает уведомление в интерфейсе агента, если агент зашел в систему при включенном режиме "Вне офиса".',
         'Defines the module to display a notification in the agent interface, if the agent is logged in while having system maintenance active.' =>
             'Задает модуль который показывает уведомление в интерфейсе агента, если агент зашел в систему, когда она в состоянии Профилактика/Обслуживание системы.',
+        'Defines the module to display a notification in the agent interface, if the agent session limit prior warning is reached.' =>
+            '',
         'Defines the module to display a notification in the agent interface, if the system is used by the admin user (normally you shouldn\'t work as admin).' =>
             'Задает модуль который показывает уведомление в интерфейсе агента, что вы зашли в систему как администратор (в обычном режиме вы не должны работать под этой учетной записью).',
         'Defines the module to generate code for periodic page reloads.' =>
@@ -6387,6 +6398,8 @@ Thanks for your help!
             'Задает порядок отображения различных атрибутов в личных настройках.',
         'Sets the inactivity time (in seconds) to pass before a session is killed and a user is loged out.' =>
             'Устанавливает время неактивности (в сек) после которого сеанс прекращается и агент будет отключен от системы (loged out).',
+        'Sets the maximum number of active agents within the timespan defined in SessionActiveTime before a prior warning will be visible for the logged in agents.' =>
+            '',
         'Sets the maximum number of active agents within the timespan defined in SessionActiveTime.' =>
             'Задает макс. число активных анкетов в интервале заданном в SessionActiveTime.',
         'Sets the maximum number of active customers within the timespan defined in SessionActiveTime.' =>
@@ -6488,7 +6501,8 @@ Thanks for your help!
             'Задает Тип заявки при изменении приоритета заявки в интерфейсе агента. (Ticket::Type должен быть активирован).',
         'Sets the ticket type in the ticket responsible screen of the agent interface (Ticket::Type needs to be activated).' =>
             'Задает Тип заявки при назначении Ответственного за заявку в интерфейсе агента. (Ticket::Type должен быть активирован).',
-        'Sets the time (in seconds) a user is marked as active.' => 'Задает время (в сек) в течении которого агент считается активным.',
+        'Sets the time (in seconds) a user is marked as active (minimum active time is 300 seconds).' =>
+            '',
         'Sets the timeout (in seconds) for http/ftp downloads.' => 'Задает timeout (в сек) для http/ftp downloads.',
         'Sets the timeout (in seconds) for package downloads. Overwrites "WebUserAgent::Timeout".' =>
             'Задает timeout (в сек) для загрузки пакетов. Перекрывает "WebUserAgent::Timeout".',
