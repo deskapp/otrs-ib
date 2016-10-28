@@ -469,6 +469,7 @@ sub UserAdd {
             next if $key eq 'UserPw';
             next if $key eq 'UserEmail';
             next if $key eq 'UserMobile';
+            next if $key eq 'UserFullname';
 
             $Self->SetPreferences(
                 UserID => $UserID,
@@ -601,6 +602,7 @@ sub UserUpdate {
             next if $key eq 'UserPw';
             next if $key eq 'UserEmail';
             next if $key eq 'UserMobile';
+            next if $key eq 'UserFullname';
 
             $Self->SetPreferences(
                 UserID => $Param{UserID},
