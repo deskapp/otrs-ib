@@ -145,7 +145,7 @@ sub Sync {
     }
 
     # build filter
-    my $Filter = "($Self->{UID}=" . escape_filter_value($Param{User}) . ')';
+    my $Filter = "($Self->{UID}=" . escape_filter_value( $Param{User} ) . ')';
 
     # prepare filter
     if ( $Self->{AlwaysFilter} ) {
@@ -373,7 +373,7 @@ sub Sync {
                 $Filter = "($Self->{AccessAttr}=" . escape_filter_value($UserDN) . ')';
             }
             else {
-                $Filter = "($Self->{AccessAttr}=" . escape_filter_value($Param{User}) . ')';
+                $Filter = "($Self->{AccessAttr}=" . escape_filter_value( $Param{User} ) . ')';
             }
             my $Result = $LDAP->search(
                 base   => $GroupDN,
@@ -448,7 +448,7 @@ sub Sync {
     if ($UserSyncAttributeGroupsDefinition) {
 
         # build filter
-        my $Filter = "($Self->{UID}=" . escape_filter_value($Param{User}) . ')';
+        my $Filter = "($Self->{UID}=" . escape_filter_value( $Param{User} ) . ')';
 
         # perform search
         $Result = $LDAP->search(
@@ -592,7 +592,7 @@ sub Sync {
                 $Filter = "($Self->{AccessAttr}=" . escape_filter_value($UserDN) . ')';
             }
             else {
-                $Filter = "($Self->{AccessAttr}=" . escape_filter_value($Param{User}) . ')';
+                $Filter = "($Self->{AccessAttr}=" . escape_filter_value( $Param{User} ) . ')';
             }
             my $Result = $LDAP->search(
                 base   => $GroupDN,
@@ -655,7 +655,7 @@ sub Sync {
     if ($UserSyncAttributeRolesDefinition) {
 
         # build filter
-        my $Filter = "($Self->{UID}=" . escape_filter_value($Param{User}) . ')';
+        my $Filter = "($Self->{UID}=" . escape_filter_value( $Param{User} ) . ')';
 
         # perform search
         $Result = $LDAP->search(

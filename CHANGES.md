@@ -1,4 +1,15 @@
 #5.0.15 2016-??-??
+ - 2016-11-06 Fixed empty sender name in response, thanks to Pawel Boguslawski.
+ - 2016-11-04 Fixed bug#[12378](https://bugs.otrs.org/show_bug.cgi?id=12378) - TicketNumber in LinkObject sort columns can't change its position.
+ - 2016-11-04 Fixed bug#[12317](https://bugs.otrs.org/show_bug.cgi?id=12317) - DropDown with many values has doubled scrollbar.
+ - 2016-11-04 Fixed bug#[12384](http://bugs.otrs.org/show_bug.cgi?id=12384) - Stats translates ticket type values.
+ - 2016-11-04 Fixed bug#[12316](http://bugs.otrs.org/show_bug.cgi?id=12316) - No tickets found, empty lines in customer user management on () in uid. Thanks to Paweł Bogusławski (PR#1510).
+ - 2016-11-04 Fixed bug#[12397](https://bugs.otrs.org/show_bug.cgi?id=12397) - backup.pl doesn't backup articles in special case. Thanks to Jens Pfeifer.
+ - 2016-11-04 Fixed bug#[12391](http://bugs.otrs.org/show_bug.cgi?id=12391) - Base64 encoded image does not display in article.
+ - 2016-11-04 Fixed bug#[12369](http://bugs.otrs.org/show_bug.cgi?id=12369) - Errors in deleting tickets. Thanks to S7.
+ - 2016-11-04 Fixed bug#[12367](https://bugs.otrs.org/show_bug.cgi?id=12367) - * in CustomerID breaks all CustomerUser.CustomerIDs.
+ - 2016-11-04 Follow-up fix for bug#[9460](https://bugs.otrs.org/show_bug.cgi?id=9460) - Under some circumstances OTRS does not join Tickets to the Customernumber.
+ - 2016-11-02 Fixed bug#[12388](http://bugs.otrs.org/show_bug.cgi?id=12388) - Using obsolete GenericAgent module jobs causes errors in logs. Thanks to Paweł Bogusławski.
  - 2016-10-28 Fixed bug#[12364](https://bugs.otrs.org/show_bug.cgi?id=12364) - Blank lines at top of signature lost when editing.
  - 2016-10-28 Fixed bug#[12349](https://bugs.otrs.org/show_bug.cgi?id=12349) - Module not working properly ArchiveRestore.
  - 2016-10-28 Fixed bug#[12285](http://bugs.otrs.org/show_bug.cgi?id=12285) - Invalid customer user still receive admin notification.

@@ -48,7 +48,7 @@ sub Run {
     if ( !$Self->{TicketID} ) {
         return $LayoutObject->ErrorScreen(
             Message => Translatable('No TicketID is given!'),
-            Comment => Translatable('Please contact the admin.'),
+            Comment => Translatable('Please contact the administrator.'),
         );
     }
 
@@ -783,7 +783,7 @@ sub Run {
                             'Could not perform validation on field %s!',
                             $DynamicFieldConfig->{Label},
                         ),
-                        Comment => Translatable('Please contact the admin.'),
+                        Comment => Translatable('Please contact the administrator.'),
                     );
                 }
 
@@ -921,7 +921,7 @@ sub Run {
         if ( !$ArticleTypeID ) {
             return $LayoutObject->ErrorScreen(
                 Message => Translatable('Can not determine the ArticleType!'),
-                Comment => Translatable('Please contact the admin.'),
+                Comment => Translatable('Please contact the administrator.'),
             );
         }
 
@@ -1235,7 +1235,7 @@ sub Run {
         $Data{OrigFromName} =~ s/<.*>|\(.*\)|\"|;|,//g;
         $Data{OrigFromName} =~ s/( $)|(  $)//g;
 
-        # fallback to OrigFrom if realname part is empty
+        # Fallback to OrigFrom if realname part is empty.
         if ( !$Data{OrigFromName} ) {
             $Data{OrigFromName} = $Data{OrigFrom};
         }
@@ -1990,7 +1990,7 @@ sub _Mask {
     }
 
     # set preselected values for To field
-    if ( $Param{To} && $Param{To} ne '' && !$CustomerCounter ) {
+    if ( defined $Param{To} && $Param{To} ne '' && !$CustomerCounter ) {
         $LayoutObject->Block(
             Name => 'PreFilledTo',
         );

@@ -223,7 +223,7 @@ sub CustomerName {
     }
 
     # build filter
-    my $Filter = "($Self->{CustomerKey}=" . escape_filter_value($Param{UserLogin}) . ')';
+    my $Filter = "($Self->{CustomerKey}=" . escape_filter_value( $Param{UserLogin} ) . ')';
 
     # prepare filter
     if ( $Self->{AlwaysFilter} ) {
@@ -339,9 +339,9 @@ sub CustomerSearch {
 
             if ( $Self->{CustomerUserMap}->{CustomerUserSearchFields} ) {
 
-                # quote LDAP filter value but keep asterisks unenescaped (wildcard)
+                # quote LDAP filter value but keep asterisks unescaped (wildcard)
                 $Part =~ s/\*/encodedasterisk20160930/g;
-                $Part = escape_filter_value($Self->_ConvertTo($Part));
+                $Part = escape_filter_value( $Self->_ConvertTo($Part) );
                 $Part =~ s/encodedasterisk20160930/*/g;
 
                 $Filter .= '(|';
@@ -370,16 +370,16 @@ sub CustomerSearch {
         if ( $Self->{CustomerUserMap}->{CustomerUserPostMasterSearchFields} ) {
             $Filter = '(|';
             for my $Field ( @{ $Self->{CustomerUserMap}->{CustomerUserPostMasterSearchFields} } ) {
-                $Filter .= "($Field=" . escape_filter_value($Param{PostMasterSearch}) . ')';
+                $Filter .= "($Field=" . escape_filter_value( $Param{PostMasterSearch} ) . ')';
             }
             $Filter .= ')';
         }
     }
     elsif ( $Param{UserLogin} ) {
-        $Filter = "($Self->{CustomerKey}=" . escape_filter_value($Param{UserLogin}) . ')';
+        $Filter = "($Self->{CustomerKey}=" . escape_filter_value( $Param{UserLogin} ) . ')';
     }
     elsif ( $Param{CustomerID} ) {
-        $Filter = "($Self->{CustomerID}=" . escape_filter_value($Param{CustomerID}) . ')';
+        $Filter = "($Self->{CustomerID}=" . escape_filter_value( $Param{CustomerID} ) . ')';
     }
 
     # prepare filter
@@ -622,7 +622,7 @@ sub CustomerIDList {
         $SearchFilter =~ s/(\%+)/\%/g;
         $SearchFilter =~ s/(\*+)\*/*/g;
 
-        # quote LDAP filter value but keep asterisks unencoded (wildcard)
+        # quote LDAP filter value but keep asterisks unescaped (wildcard)
         $SearchFilter =~ s/\*/encodedasterisk20160930/g;
         $SearchFilter = escape_filter_value($SearchFilter);
         $SearchFilter =~ s/encodedasterisk20160930/*/g;
@@ -812,7 +812,7 @@ sub CustomerUserDataGet {
     for my $Entry ( @{ $Self->{CustomerUserMap}->{Map} } ) {
         push( @Attributes, $Entry->[2] );
     }
-    my $Filter = "($Self->{CustomerKey}=" . escape_filter_value($Param{User}) . ')';
+    my $Filter = "($Self->{CustomerKey}=" . escape_filter_value( $Param{User} ) . ')';
 
     # prepare filter
     if ( $Self->{AlwaysFilter} ) {
