@@ -1274,7 +1274,7 @@ sub Run {
         $Data{OrigFromName} =~ s/<.*>|\(.*\)|\"|;|,//g;
         $Data{OrigFromName} =~ s/( $)|(  $)//g;
 
-        # fallback to OrigFrom if realname part is empty
+        # Fallback to OrigFrom if realname part is empty.
         if ( !$Data{OrigFromName} ) {
             $Data{OrigFromName} = $Data{OrigFrom};
         }
@@ -2015,7 +2015,7 @@ sub _Mask {
     }
 
     # set preselected values for To field
-    if ( $Param{To} && $Param{To} ne '' && !$CustomerCounter ) {
+    if ( defined $Param{To} && $Param{To} ne '' && !$CustomerCounter ) {
 
         # split To values
         my @EmailAddressesTo = map { $_->address() } ( Mail::Address->parse( $Param{To} ) );

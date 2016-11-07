@@ -198,7 +198,7 @@ sub Auth {
     }
 
     # build filter
-    my $Filter = "($Self->{UID}=" . escape_filter_value($Param{User}) . ')';
+    my $Filter = "($Self->{UID}=" . escape_filter_value( $Param{User} ) . ')';
 
     # prepare filter
     if ( $Self->{AlwaysFilter} ) {
@@ -262,7 +262,7 @@ sub Auth {
             $Filter2 = "($Self->{AccessAttr}=" . escape_filter_value($UserDN) . ')';
         }
         else {
-            $Filter2 = "($Self->{AccessAttr}=" . escape_filter_value($Param{User}) . ')';
+            $Filter2 = "($Self->{AccessAttr}=" . escape_filter_value( $Param{User} ) . ')';
         }
         my $Result2 = $LDAP->search(
             base   => $Self->{GroupDN},
