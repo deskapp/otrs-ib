@@ -1,4 +1,5 @@
 #5.0.14 2016-??-??
+ - 2016-11-08 Fixed quotation in log message.
  - 2016-10-24 Fixed e-mail address validation while sending autoresponses and article creation on send errors.
  - 2016-10-18 Fixed bug#[12284](http://bugs.otrs.org/show_bug.cgi?id=12284) - Precious little information regarding SMIME signatures.
  - 2016-10-09 Fixed bug#[12343](http://bugs.otrs.org/show_bug.cgi?id=12343) - Cache kept for ViewableLocks.
