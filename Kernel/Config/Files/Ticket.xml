@@ -8837,6 +8837,7 @@
                 <Loader>
                     <JavaScript>Core.UI.AllocationList.js</JavaScript>
                     <JavaScript>Core.Agent.TableFilters.js</JavaScript>
+                    <JavaScript>Core.Agent.Overview.js</JavaScript>
                 </Loader>
             </FrontendModuleReg>
         </Setting>
@@ -10343,6 +10344,7 @@
                 <Item>AgentTicketPriority</Item>
                 <Item>AgentTicketProcess</Item>
                 <Item>AgentTicketResponsible</Item>
+                <Item>AgentTicketSearch</Item>
                 <Item>AgentTicketWatcher</Item>
                 <Item>AgentTicketZoom</Item>
                 <Item>AgentLinkObject</Item>

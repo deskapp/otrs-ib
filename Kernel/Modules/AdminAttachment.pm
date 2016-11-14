@@ -221,15 +221,16 @@ sub Run {
         $LayoutObject->ChallengeTokenCheck();
 
         my $ID = $ParamObject->GetParam( Param => 'ID' );
-
         my $Delete = $StdAttachmentObject->StdAttachmentDelete(
             ID => $ID,
         );
-        if ( !$Delete ) {
-            return $LayoutObject->ErrorScreen();
-        }
 
-        return $LayoutObject->Redirect( OP => "Action=$Self->{Action}" );
+        return $LayoutObject->Attachment(
+            ContentType => 'text/html',
+            Content     => ($Delete) ? $ID : 0,
+            Type        => 'inline',
+            NoCache     => 1,
+        );
     }
 
     # ------------------------------------------------------------ #

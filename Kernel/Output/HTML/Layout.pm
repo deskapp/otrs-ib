@@ -485,15 +485,12 @@ sub SetEnv {
 
 =head2 Block()
 
-use a dtl block
+call a block and pass data to it (optional) to generate the block's output.
 
     $LayoutObject->Block(
         Name => 'Row',
         Data => {
-            Time     => $Row[0],
-            Priority => $Row[1],
-            Facility => $Row[2],
-            Message  => $Row[3],
+            Time => ...,
         },
     );
 
@@ -1732,7 +1729,7 @@ sub Ascii2Html {
     else {
         $Kernel::OM->Get('Kernel::System::Log')->Log(
             Priority => 'error',
-            Message  => 'Invalid ref "' . ref $Param{Text} . '" of Text param!',
+            Message  => 'Invalid ref "' . ref( $Param{Text} ) . '" of Text param!',
         );
         return '';
     }
@@ -4531,9 +4528,9 @@ sub RichTextDocumentServe {
     # convert charset
     if ($Charset) {
         $Param{Data}->{Content} = $Kernel::OM->Get('Kernel::System::Encode')->Convert(
-            Text => $Param{Data}->{Content},
-            From => $Charset,
-            To   => 'utf-8',
+            Text  => $Param{Data}->{Content},
+            From  => $Charset,
+            To    => 'utf-8',
             Check => 1,
         );
 
@@ -5555,7 +5552,7 @@ sub SetRichTextParameters {
     if ( ref $Param{Data} ne 'HASH' ) {
         $Kernel::OM->Get('Kernel::System::Log')->Log(
             Priority => 'error',
-            Message  => "Need HashRef in Param Data! Got: '" . ref $Param{Data} . "'!",
+            Message  => "Need HashRef in Param Data! Got: '" . ref( $Param{Data} ) . "'!",
         );
         $Self->FatalError();
     }
@@ -5688,7 +5685,7 @@ sub CustomerSetRichTextParameters {
     if ( ref $Param{Data} ne 'HASH' ) {
         $Kernel::OM->Get('Kernel::System::Log')->Log(
             Priority => 'error',
-            Message  => "Need HashRef in Param Data! Got: '" . ref $Param{Data} . "'!",
+            Message  => "Need HashRef in Param Data! Got: '" . ref( $Param{Data} ) . "'!",
         );
         $Self->FatalError();
     }

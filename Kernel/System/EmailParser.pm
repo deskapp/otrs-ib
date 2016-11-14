@@ -90,8 +90,7 @@ sub new {
             $Param{Email} = \@Content;
         }
 
-        # save copy of unmodified message
-        $Self->{OrigEmail} = join('', @{$Param{Email}});
+        $Self->{OriginalEmail} = join( '', @{ $Param{Email} } );
 
         # create Mail::Internet object
         $Self->{Email} = Mail::Internet->new( $Param{Email} );
@@ -134,21 +133,7 @@ To get a email as a string back (plain email).
 sub GetPlainEmail {
     my $Self = shift;
 
-    return $Self->{Email}->as_string();
-}
-
-=head2 GetPlainOrigEmail()
-
-To get back an original email as a string (plain email).
-
-    my $Email = $ParserObject->GetPlainOrigEmail();
-
-=cut
-
-sub GetPlainOrigEmail {
-    my $Self = shift;
-
-    return $Self->{OrigEmail};
+    return $Self->{OriginalEmail} || $Self->{Email}->as_string();
 }
 
 =head2 GetParam()
