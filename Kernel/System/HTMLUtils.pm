@@ -620,6 +620,9 @@ sub DocumentComplete {
     my $MailCSS = $ConfigObject->Get('Frontend::RichText::MailCSS');
     $MailCSS = ($MailCSS) ? "<style type='text/css'><!--\n" . $MailCSS . "\n--></style>" : '';
 
+    # escape special characters like double-quotes, e.g. used in font names with spaces
+    $DefaultCSS = $Self->ToHTML( String => $DefaultCSS );
+
     # Use the HTML5 doctype because it is compatible with HTML4 and causes the browsers
     #   to render the content in standards mode, which is more safe than quirks mode.
     my $Body = '<!DOCTYPE html><html><head>';
