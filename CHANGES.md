@@ -1,4 +1,5 @@
 #5.0.15 2016-??-??
+ - 2016-11-15 Fixed Error Use of uninitialized value $GetParam{"EmailFrom"} in lc at [...]NewTicket.pm line 172.
  - 2016-11-14 Fixed error argument "" isn't numeric in numeric eq (==) at [...] AdminUserGroup.pm line 153.
  - 2016-11-12 Fixed bug#[10825](https://bugs.otrs.org/show_bug.cgi?id=10825) - <OTRS_CUSTOMER_Body> in Reply-Template, thanks to S7.
  - 2016-11-11 Improved output of customer data in AdminSession.
