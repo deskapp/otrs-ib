@@ -425,6 +425,7 @@ sub CustomerSearch {
 
     # log ldap errors
     if ( $Result->code() ) {
+
         if ( $Result->code() == 4 ) {
 
             # Result code 4 (LDAP_SIZELIMIT_EXCEEDED) is normal if there

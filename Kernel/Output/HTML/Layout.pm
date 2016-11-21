@@ -1626,8 +1626,8 @@ sub Print {
         binmode STDOUT, ':bytes';
     }
 
-    # disable perl warnings in case of printing unicode private chars
-    # see https://rt.perl.org/Public/Bug/Display.html?id=121226
+    # Disable perl warnings in case of printing unicode private chars,
+    #   see https://rt.perl.org/Public/Bug/Display.html?id=121226.
     no warnings 'nonchar';
 
     print ${ $Param{Output} };

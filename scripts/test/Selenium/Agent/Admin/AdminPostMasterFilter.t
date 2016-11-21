@@ -196,9 +196,16 @@ $Selenium->RunTest(
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AdminPostMasterFilter");
 
         # delete test PostMasterFilter with delete button
-        $Selenium->find_element("//a[contains(\@href, \'Subaction=Delete;Name=$PostMasterRandomID' )]")
-            ->VerifiedClick();
+        $Selenium->find_element("//a[contains(\@href, \'Subaction=Delete;Name=$PostMasterRandomID' )]")->click();
 
+        # Accept delete confirmation dialog
+        $Selenium->accept_alert();
+
+        # check overview page
+        $Self->True(
+            index( $Selenium->get_page_source(), $PostMasterRandomID ) == -1,
+            'Postmaster filter is deleted - $PostMasterRandomID'
+        );
     }
 
 );
