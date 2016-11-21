@@ -172,6 +172,16 @@
  - 2015-11-27 Improved command Maint::Ticket::InvalidUserCleanup. It can now now both unlock tickets of invalid users and also (optionally) change their state to make sure they will not be overlooked. Thanks to Moritz Lenz @ noris networks.
 
 #5.0.15 2016-??-??
+ - 2016-11-18 Removed superfluous colons in table heading, thanks to Balázs Úr (PR#1566).
+ - 2016-11-18 Fixed error when importing emails without valid address in From field, thanks to Paweł Bogusławski (PR#1559).
+ - 2016-11-18 Fixed warnings when saving permissions for users and roles, thanks to Paweł Bogusławski (PR#1557).
+ - 2016-10-10 Disabled warnings on internal unicode chacter printing, thanks to Pawel Boguslawski.
+ - 2016-11-18 Fixed bug#[12427](https://bugs.otrs.org/show_bug.cgi?id=12427) - Missing table cell in Customer User Management modal screen.
+ - 2016-11-18 Moved the save buttons into a separate widget for better usability in AdminACL, thanks to urbalazs.
+ - 2016-11-18 Fixed an issue where the group selection in SysConfig would lead to empty results in the content area, thanks to S7
+ - 2016-11-18 Fixed bug#[12438](https://bugs.otrs.org/show_bug.cgi?id=12438) - Race condition in ArticleCreate.
+ - 2016-11-18 Fixed bug#[12353](http://bugs.otrs.org/show_bug.cgi?id=12353) - DynamicField Multiselect default value is not correct on creation. Thanks to S7!
+ - 2016-11-18 Fixed bug#[12418](https://bugs.otrs.org/show_bug.cgi?id=12418) - Blinking mechanism not working.
  - 2016-11-12 Fixed bug#[10825](https://bugs.otrs.org/show_bug.cgi?id=10825) - <OTRS_CUSTOMER_Body> in Reply-Template, thanks to S7.
  - 2016-11-11 Improved output of customer data in AdminSession.
  - 2016-11-11 Fixed bug#[12415](https://bugs.otrs.org/show_bug.cgi?id=12415) - Problems with malformed utf8 chars in emails.

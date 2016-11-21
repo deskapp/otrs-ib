@@ -259,8 +259,12 @@ sub ArticleCreate {
         $Param{MD5} = $Kernel::OM->Get('Kernel::System::Main')->MD5sum( String => $Param{MessageID} );
     }
 
-    # generate unique fingerprint for searching created article in database
-    my $ArticleFingerprint =  rand(999999) . '|' . $Param{MessageID};
+    # Generate unique fingerprint for searching created article in database to prevent race conditions
+    #   (see https://bugs.otrs.org/show_bug.cgi?id=12438).
+    my $RandomString = $Kernel::OM->Get('Kernel::System::Main')->GenerateRandomString(
+        Length => 32,
+    );
+    my $ArticleInsertFingerprint = $$ . '-' . $RandomString . '-' . ($Param{MessageID} // '');
 
     # get database object
     my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
@@ -289,7 +293,7 @@ sub ArticleCreate {
             \$Param{TicketID}, \$Param{ArticleTypeID}, \$Param{SenderTypeID},
             \$Param{From},     \$Param{ReplyTo},       \$Param{To},
             \$Param{Cc},       \$Param{Subject},
-            \$ArticleFingerprint,  # just for next search; will be updated with correct MessageID
+            \$ArticleInsertFingerprint,    # just for next search; will be updated with correct MessageID
             \$Param{MD5},
             \$Param{InReplyTo}, \$Param{References}, \$Param{Body},
             \$Param{ContentType}, \$Self->{ArticleContentPath}, \$ValidID,
@@ -300,7 +304,7 @@ sub ArticleCreate {
     # get article id
     my $ArticleID = $Self->_ArticleGetId(
         TicketID     => $Param{TicketID},
-        MessageID    => $ArticleFingerprint,
+        MessageID    => $ArticleInsertFingerprint,
         From         => $Param{From},
         Subject      => $Param{Subject},
         IncomingTime => $IncomingTime
@@ -315,9 +319,9 @@ sub ArticleCreate {
         return;
     }
 
-    # save correct Message-ID; not critical
+    # Save correct Message-ID now.
     return if !$DBObject->Do(
-        SQL => 'UPDATE article SET a_message_id = ? WHERE id = ?',
+        SQL  => 'UPDATE article SET a_message_id = ? WHERE id = ?',
         Bind => [ \$Param{MessageID}, \$ArticleID ],
     );
 

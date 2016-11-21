@@ -1018,7 +1018,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::NotifyModule###4000-ShowCustomerOnline" Required="0" Valid="0">
-        <Description Translatable="1">Defines the module that shows all the currently loged in customers in the agent interface.</Description>
+        <Description Translatable="1">Defines the module that shows all the currently logged in customers in the agent interface.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Agent::ModuleNotify</SubGroup>
         <Setting>
@@ -1128,7 +1128,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="SessionMaxIdleTime" Required="1" Valid="1">
-        <Description Translatable="1">Sets the inactivity time (in seconds) to pass before a session is killed and a user is loged out.</Description>
+        <Description Translatable="1">Sets the inactivity time (in seconds) to pass before a session is killed and a user is logged out.</Description>
         <Group>Framework</Group>
         <SubGroup>Core::Session</SubGroup>
         <Setting>
@@ -8250,7 +8250,7 @@ You can log in via the following URL:
         </Setting>
     </ConfigItem>
     <ConfigItem Name="CustomerFrontend::NotifyModule###1-ShowAgentOnline" Required="0" Valid="0">
-        <Description Translatable="1">Defines the module that shows the currently loged in agents in the customer interface.</Description>
+        <Description Translatable="1">Defines the module that shows the currently logged in agents in the customer interface.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Customer::ModuleNotify</SubGroup>
         <Setting>
@@ -8262,7 +8262,7 @@ You can log in via the following URL:
         </Setting>
     </ConfigItem>
     <ConfigItem Name="CustomerFrontend::NotifyModule###1-ShowCustomerOnline" Required="0" Valid="0">
-        <Description Translatable="1">Defines the module that shows the currently loged in customers in the customer interface.</Description>
+        <Description Translatable="1">Defines the module that shows the currently logged in customers in the customer interface.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Customer::ModuleNotify</SubGroup>
         <Setting>
@@ -11093,7 +11093,7 @@ via the Preferences button after logging in.
     <ConfigItem Name="Loader::Agent::DefaultSelectedSkin" Required="1" Valid="1">
         <Description Translatable="1">The agent skin's InternalName which should be used in the agent interface. Please check the available skins in Frontend::Agent::Skins.</Description>
         <Group>Framework</Group>
-        <SubGroup>Core::Web</SubGroup>
+        <SubGroup>Frontend::Agent</SubGroup>
         <Setting>
             <String Regex="">default</String>
         </Setting>
@@ -11133,7 +11133,7 @@ via the Preferences button after logging in.
     <ConfigItem Name="Loader::Customer::SelectedSkin::HostBased" Required="0" Valid="0" ConfigLevel="200">
         <Description Translatable="1">It is possible to configure different skins, for example to distinguish between diferent customers, to be used on a per-domain basis within the application. Using a regular expression (regex), you can configure a Key/Content pair to match a domain. The value in "Key" should match the domain, and the value in "Content" should be a valid skin on your system. Please see the example entries for the proper form of the regex.</Description>
         <Group>Framework</Group>
-        <SubGroup>Core::Web</SubGroup>
+        <SubGroup>Frontend::Customer</SubGroup>
         <Setting>
             <Hash>
                 <Item Key="host1\.example\.com">Someskin1</Item>
