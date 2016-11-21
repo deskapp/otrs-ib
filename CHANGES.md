@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2016-11-21 Counters incremented transactionally in database.
  - 2016-11-16 Fixed race condition in ArticleCreate.
  - 2016-11-15 Fixed Error Use of uninitialized value $GetParam{"EmailFrom"} in lc at [...]NewTicket.pm line 172.
  - 2016-11-14 Fixed error argument "" isn't numeric in numeric eq (==) at [...] AdminUserGroup.pm line 153.
