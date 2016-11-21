@@ -99,8 +99,24 @@ CREATE TABLE cloud_service_config (
     CONSTRAINT cloud_service_config_config_md5 UNIQUE (config_md5),
     CONSTRAINT cloud_service_config_name UNIQUE (name)
 );
+-- ----------------------------------------------------------
+--  create table counter
+-- ----------------------------------------------------------
+CREATE TABLE counter (
+    id serial NOT NULL,
+    name VARCHAR (64) NOT NULL,
+    value BIGINT NOT NULL,
+    create_time timestamp(0) NOT NULL,
+    create_by INTEGER NOT NULL,
+    change_time timestamp(0) NOT NULL,
+    change_by INTEGER NOT NULL,
+    PRIMARY KEY(id),
+    CONSTRAINT counter_name UNIQUE (name)
+);
 SET standard_conforming_strings TO ON;
 ALTER TABLE notification_event_message ADD CONSTRAINT FK_notification_event_message_notification_id_id FOREIGN KEY (notification_id) REFERENCES notification_event (id);
 ALTER TABLE cloud_service_config ADD CONSTRAINT FK_cloud_service_config_create_by_id FOREIGN KEY (create_by) REFERENCES users (id);
 ALTER TABLE cloud_service_config ADD CONSTRAINT FK_cloud_service_config_change_by_id FOREIGN KEY (change_by) REFERENCES users (id);
 ALTER TABLE cloud_service_config ADD CONSTRAINT FK_cloud_service_config_valid_id_id FOREIGN KEY (valid_id) REFERENCES valid (id);
+ALTER TABLE counter ADD CONSTRAINT FK_counter_create_by_id FOREIGN KEY (create_by) REFERENCES users (id);
+ALTER TABLE counter ADD CONSTRAINT FK_counter_change_by_id FOREIGN KEY (change_by) REFERENCES users (id);

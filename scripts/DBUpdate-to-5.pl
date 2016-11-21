@@ -137,6 +137,10 @@ Please run it as the 'otrs' user or with the help of su:
             Command => \&_UninstallMergedFeatureAddOns,
         },
         {
+            Message => 'Initializing counters',
+            Command => \&_InitializeCounters,
+        },
+        {
             Message => 'Clean up the cache',
             Command => sub {
                 $Kernel::OM->Get('Kernel::System::Cache')->CleanUp();
@@ -3219,6 +3223,22 @@ sub _FixNotificationTags {
     }
 
     return 1;
+}
+
+=item _InitializeCounters()
+
+OTRS 5 introduces counters in DB.
+
+=cut
+
+sub _InitializeCounters {
+
+    # Initialize TicketNumber counter
+    my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
+    return if !$DBObject->Do(
+        SQL  => "INSERT INTO counter (id, name, value, create_by, create_time, change_by, change_time) "
+            . " VALUES (1, 'TicketNumber', 0, 1, current_timestamp, 1, current_timestamp)"
+    );
 }
 
 1;
