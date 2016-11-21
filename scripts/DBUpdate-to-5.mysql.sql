@@ -99,7 +99,23 @@ CREATE TABLE cloud_service_config (
     UNIQUE INDEX cloud_service_config_name (name)
 );
 CREATE INDEX dynamic_field_value_search_text ON dynamic_field_value (field_id, value_text(150));
+# ----------------------------------------------------------
+#  create table counter
+# ----------------------------------------------------------
+CREATE TABLE counter (
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    name VARCHAR (64) NOT NULL,
+    value BIGINT NOT NULL,
+    create_time DATETIME NOT NULL,
+    create_by INTEGER NOT NULL,
+    change_time DATETIME NOT NULL,
+    change_by INTEGER NOT NULL,
+    PRIMARY KEY(id),
+    UNIQUE INDEX counter_name (name)
+);
 ALTER TABLE notification_event_message ADD CONSTRAINT FK_notification_event_message_notification_id_id FOREIGN KEY (notification_id) REFERENCES notification_event (id);
 ALTER TABLE cloud_service_config ADD CONSTRAINT FK_cloud_service_config_create_by_id FOREIGN KEY (create_by) REFERENCES users (id);
 ALTER TABLE cloud_service_config ADD CONSTRAINT FK_cloud_service_config_change_by_id FOREIGN KEY (change_by) REFERENCES users (id);
 ALTER TABLE cloud_service_config ADD CONSTRAINT FK_cloud_service_config_valid_id_id FOREIGN KEY (valid_id) REFERENCES valid (id);
+ALTER TABLE counter ADD CONSTRAINT FK_counter_create_by_id FOREIGN KEY (create_by) REFERENCES users (id);
+ALTER TABLE counter ADD CONSTRAINT FK_counter_change_by_id FOREIGN KEY (change_by) REFERENCES users (id);

@@ -1454,3 +1454,17 @@ CREATE TABLE cloud_service_config (
     CONSTRAINT cloud_service_config_config_md5 UNIQUE (config_md5),
     CONSTRAINT cloud_service_config_name UNIQUE (name)
 );
+-- ----------------------------------------------------------
+--  create table counter
+-- ----------------------------------------------------------
+CREATE TABLE counter (
+    id serial NOT NULL,
+    name VARCHAR (64) NOT NULL,
+    value BIGINT NOT NULL,
+    create_time timestamp(0) NOT NULL,
+    create_by INTEGER NOT NULL,
+    change_time timestamp(0) NOT NULL,
+    change_by INTEGER NOT NULL,
+    PRIMARY KEY(id),
+    CONSTRAINT counter_name UNIQUE (name)
+);
