@@ -578,31 +578,31 @@ sub _LogFilesSet {
         open STDERR, '>>', "$FileStdErr.log";
     }
 
+    return 1 if $RotationType ne 'otrs';
+
     # remove not needed log files if OTRS rotation is enabled
-    if ( $RotationType eq 'otrs' ) {
-        my $DaysToKeep = $ConfigObject->Get('Daemon::Log::DaysToKeep') || 1;
-        my $DaysToKeepTime = $SystemTime - $DaysToKeep * 24 * 60 * 60;
+    my $DaysToKeep = $ConfigObject->Get('Daemon::Log::DaysToKeep') || 1;
+    my $DaysToKeepTime = $SystemTime - $DaysToKeep * 24 * 60 * 60;
 
-        my @LogFiles = glob "$LogDir/*.log";
+    my @LogFiles = glob "$LogDir/*.log";
 
-        LOGFILE:
-        for my $LogFile (@LogFiles) {
+    LOGFILE:
+    for my $LogFile (@LogFiles) {
 
-            # skip if is not a backup file
-            next LOGFILE if ( $LogFile !~ m{(?: .* /)* $Param{Module} (?: OUT|ERR ) - (\d+) \.log}igmx );
+        # skip if is not a backup file
+        next LOGFILE if ( $LogFile !~ m{(?: .* /)* $Param{Module} (?: OUT|ERR ) - (\d+) \.log}igmx );
 
-            # do not delete files during keep period if they have content
-            next LOGFILE if ( ( $1 > $DaysToKeepTime ) && -s $LogFile );
+        # do not delete files during keep period if they have content
+        next LOGFILE if ( ( $1 > $DaysToKeepTime ) && -s $LogFile );
 
-            # delete file
-            if ( !unlink $LogFile ) {
+        # delete file
+        if ( !unlink $LogFile ) {
 
-                # log old backup file cannot be deleted
-                $Kernel::OM->Get('Kernel::System::Log')->Log(
-                    Priority => 'error',
-                    Message  => "Daemon: $Param{Module} could not delete old log file $LogFile! $!",
-                );
-            }
+           # log old backup file cannot be deleted
+           $Kernel::OM->Get('Kernel::System::Log')->Log(
+               Priority => 'error',
+               Message  => "Daemon: $Param{Module} could not delete old log file $LogFile! $!",
+           );
         }
     }
 
