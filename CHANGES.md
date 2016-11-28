@@ -1,4 +1,13 @@
 #5.0.15 2016-??-??
+ - 2016-11-25 Fixed bug#[12464](http://bugs.otrs.org/show_bug.cgi?id=12464) - Customer History table is still visible even though no selected customer users, thanks to S7.
+ - 2016-11-25 Fixed bug#[12457](http://bugs.otrs.org/show_bug.cgi?id=12457) - text/html Part only E-Mails with HTML Entities are Converted to Incorrect Charset.
+ - 2016-11-25 Fixed bug#[1370](https://bugs.otrs.org/show_bug.cgi?id=1370) - Postmaster filters with 2 match conditions doesnt work.
+ - 2016-11-25 Fixed bug#[12450](http://bugs.otrs.org/show_bug.cgi?id=12450) - Error handling with ???. Thanks to Dorothea Doerffel.
+ - 2016-11-25 Fixed bug#[12461](https://bugs.otrs.org/show_bug.cgi?id=12461) - Chrome can not display attached PDF files since 5.0.14.
+ - 2016-11-22 Fixed bug#[12445](https://bugs.otrs.org/show_bug.cgi?id=12445) - Save and finish button does not "finish" in statistics.
+ - 2016-11-21 Fixed bug#[11986](https://bugs.otrs.org/show_bug.cgi?id=11986) - Follow-up: Correctly migrate the wrong config entry.
+ - 2016-11-21 Fixed bug#[11548](https://bugs.otrs.org/show_bug.cgi?id=11548) - Filtering the greek symbol sigma "Σ".
+ - 2016-11-21 Fixed bug#[12357](https://bugs.otrs.org/show_bug.cgi?id=12357) - CustomerTicketProcess Problem paste or upload image.
  - 2016-11-21 Counters incremented transactionally in database.
  - 2016-11-18 Removed superfluous colons in table heading, thanks to Balázs Úr (PR#1566).
  - 2016-11-18 Fixed error when importing emails without valid address in From field, thanks to Paweł Bogusławski (PR#1559).
