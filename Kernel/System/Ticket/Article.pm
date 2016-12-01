@@ -264,7 +264,7 @@ sub ArticleCreate {
     my $RandomString = $Kernel::OM->Get('Kernel::System::Main')->GenerateRandomString(
         Length => 32,
     );
-    my $ArticleInsertFingerprint = $$ . '-' . $RandomString . '-' . ($Param{MessageID} // '');
+    my $ArticleInsertFingerprint = $$ . '-' . $RandomString . '-' . ( $Param{MessageID} // '' );
 
     # get database object
     my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
@@ -302,13 +302,21 @@ sub ArticleCreate {
     );
 
     # get article id
-    my $ArticleID = $Self->_ArticleGetId(
-        TicketID     => $Param{TicketID},
-        MessageID    => $ArticleInsertFingerprint,
-        From         => $Param{From},
-        Subject      => $Param{Subject},
-        IncomingTime => $IncomingTime
+    return if !$DBObject->Prepare(
+        SQL => 'SELECT id FROM article
+            WHERE ticket_id = ?
+                AND a_message_id = ?
+                AND a_subject = ?
+                AND incoming_time = ?
+            ORDER BY id DESC',
+        Bind  => [ \$Param{TicketID}, \$ArticleInsertFingerprint, \$Param{Subject}, \$IncomingTime ],
+        Limit => 1,
     );
+
+    my $ArticleID;
+    while ( my @Row = $DBObject->FetchrowArray() ) {
+        $ArticleID = $Row[0];
+    }
 
     # return if there is not article created
     if ( !$ArticleID ) {
@@ -464,6 +472,7 @@ sub ArticleCreate {
             TicketID         => $Param{TicketID},
             UserID           => $Param{UserID},
             AutoResponseType => $Param{AutoResponseType},
+            ArticleType      => $Param{ArticleType}
         );
     }
 
@@ -2051,62 +2060,6 @@ sub ArticlePage {
     return ceil( $Count / $Param{RowsPerPage} );
 }
 
-=begin Internal:
-
-=cut
-
-sub _ArticleGetId {
-    my ( $Self, %Param ) = @_;
-
-    # check needed stuff
-    for (qw(TicketID MessageID From Subject IncomingTime)) {
-        if ( !defined $Param{$_} ) {
-            $Kernel::OM->Get('Kernel::System::Log')->Log(
-                Priority => 'error',
-                Message  => "Need $_!"
-            );
-            return;
-        }
-    }
-
-    # sql query
-    my @Bind = ( \$Param{TicketID} );
-    my $SQL  = 'SELECT id FROM article WHERE ticket_id = ? AND ';
-    if ( $Param{MessageID} ) {
-        $SQL .= 'a_message_id = ? AND ';
-        push @Bind, \$Param{MessageID};
-    }
-    if ( $Param{From} ) {
-        $SQL .= 'a_from = ? AND ';
-        push @Bind, \$Param{From};
-    }
-    if ( $Param{Subject} ) {
-        $SQL .= 'a_subject = ? AND ';
-        push @Bind, \$Param{Subject};
-    }
-    $SQL .= ' incoming_time = ? ORDER BY id DESC';
-    push @Bind, \$Param{IncomingTime};
-
-    # get database object
-    my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
-
-    # start query
-    return if !$DBObject->Prepare(
-        SQL   => $SQL,
-        Bind  => \@Bind,
-        Limit => 1,
-    );
-
-    my $ID;
-    while ( my @Row = $DBObject->FetchrowArray() ) {
-        $ID = $Row[0];
-    }
-
-    return $ID;
-}
-
-=end Internal:
-
 =head2 ArticleUpdate()
 
 update an article
@@ -2524,6 +2477,7 @@ send an auto response to a customer via email
             Subject => 'For the message!',
         },
         UserID          => 123,
+        ArticleType     => 'email-internal'  # optional
     );
 
 Events:
@@ -2724,7 +2678,13 @@ sub SendAutoResponse {
             User => $Ticket{CustomerUserID},
         );
 
-        if ( $CustomerUser{UserEmail} && $OrigHeader{From} !~ /\Q$CustomerUser{UserEmail}\E/i ) {
+        $Param{ArticleType} //= '';
+        if (
+            $CustomerUser{UserEmail}
+            && $OrigHeader{From} !~ /\Q$CustomerUser{UserEmail}\E/i
+            && $Param{ArticleType} ne 'email-internal'
+            )
+        {
             $Cc = $CustomerUser{UserEmail};
         }
     }
