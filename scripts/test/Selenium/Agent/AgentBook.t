@@ -81,8 +81,14 @@ $Selenium->RunTest(
         $Selenium->find_element( "#OptionAddressBook", 'css' )->VerifiedClick();
         $Selenium->switch_to_frame( $Selenium->find_element( '.TextOption', 'css' ) );
 
+        $Selenium->WaitFor(
+            JavaScript =>
+                'return typeof(Core) == "object" && typeof(Core.App) == "object" && Core.App.PageLoadComplete'
+        );
+
         # search by $RandomNumber for all test customer users as result
-        $Selenium->execute_script("\$('#Search').val($RandomNumber)");
+        $Selenium->find_element( "#Search", 'css' )->clear();
+        $Selenium->find_element( "#Search", 'css' )->send_keys($RandomNumber);
         $Selenium->find_element( "#Search", 'css' )->VerifiedSubmit();
 
         $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $("#SearchResult").length' );
@@ -123,6 +129,11 @@ $Selenium->RunTest(
             # click 'Address book'
             $Selenium->find_element( "#OptionAddressBook", 'css' )->VerifiedClick();
             $Selenium->switch_to_frame( $Selenium->find_element( '.TextOption', 'css' ) );
+
+            $Selenium->WaitFor(
+                JavaScript =>
+                    'return typeof(Core) == "object" && typeof(Core.App) == "object" && Core.App.PageLoadComplete'
+            );
 
             # fill corresponding field to duplicate customer user
             my $MailCustomer = $Mail . 'Customer';

@@ -6,7 +6,6 @@
 # did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
 # --
 
-
 <div id="Footer" class="ARIARoleContentinfo">
 [% IF Config("AgentFooter") -%]
 [% Config("AgentFooter") %]
@@ -15,6 +14,7 @@
 
 [% InsertTemplate("FooterJS.tt") %]
 
-    </div>
+    </div><!-- end AppWrapper -->
+
 </body>
 </html>

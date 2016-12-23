@@ -202,8 +202,15 @@ $Selenium->RunTest(
 
             $Selenium->find_element("//a[contains(\@href, \'Subaction=Delete;Type=$TestSMIME;Filename=' )]")->click();
 
+            $Selenium->WaitFor( AlertPresent => 1 );
+
             # accept JS delete confirmation dialog
             $Selenium->accept_alert();
+
+            $Selenium->WaitFor(
+                JavaScript =>
+                    'return typeof(Core) == "object" && typeof(Core.App) == "object" && Core.App.PageLoadComplete'
+            );
         }
 
         # delete needed test directories

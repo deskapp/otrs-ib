@@ -177,7 +177,7 @@ Core.UI.RichTextEditor = (function (TargetNS) {
             filebrowserUploadUrl: UploadURL,
             extraPlugins: ExtraPlugins,
             entities: false,
-            skin: 'bootstrapck'
+            skin: 'moono-lisa'
         });
         /*eslint-enable camelcase */
 
