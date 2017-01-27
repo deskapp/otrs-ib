@@ -2566,20 +2566,12 @@ INSERT INTO notification_event_message (notification_id, content_type, language,
 <OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> przydzielił(a) tobie zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>.
 
 Komentarz:
-<OTRS_COMMENT>
+<OTRS_AGENT_BODY>
 
 Zgłoszenie możesz obsłużyć na stronie:
 <OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
 
-<OTRS_CONFIG_NotificationSenderName>
-
-________________________________
-
-Od: <OTRS_CUSTOMER_From>
-Temat: <OTRS_CUSTOMER_SUBJECT>
-
-Fragment otrzymanej wiadomości:
-<OTRS_CUSTOMER_BODY[30]>');
+<OTRS_CONFIG_NotificationSenderName>');
 -- ----------------------------------------------------------
 --  insert into table notification_event_message
 -- ----------------------------------------------------------
@@ -2590,20 +2582,12 @@ INSERT INTO notification_event_message (notification_id, content_type, language,
 <OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> wskazał ciebie jako osobę odpowiedzialną za zgłoszenie <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>.
 
 Komentarz:
-<OTRS_COMMENT>
+<OTRS_AGENT_BODY>
 
 Zgłoszenie znajduje się na stronie:
 <OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
 
-<OTRS_CONFIG_NotificationSenderName>
-
-________________________________
-
-Od: <OTRS_CUSTOMER_From>
-Temat: <OTRS_CUSTOMER_SUBJECT>
-
-Fragment otrzymanej wiadomości:
-<OTRS_CUSTOMER_BODY[30]>');
+<OTRS_CONFIG_NotificationSenderName>');
 -- ----------------------------------------------------------
 --  insert into table notification_event_message
 -- ----------------------------------------------------------
@@ -2614,7 +2598,7 @@ INSERT INTO notification_event_message (notification_id, content_type, language,
 <OTRS_CURRENT_UserFirstname> <OTRS_CURRENT_UserLastname> dodał(a) nową notatkę do zgłoszenia <OTRS_CONFIG_Ticket::Hook><OTRS_TICKET_TicketNumber>.
 
 Treść notatki:
-<OTRS_CUSTOMER_BODY>
+<OTRS_AGENT_BODY>
 
 Zgłoszenie możesz obsłużyć na stronie:
 <OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl?Action=AgentTicketZoom;TicketID=<OTRS_TICKET_TicketID>
