@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -43,6 +43,13 @@ $Selenium->RunTest(
             Valid => 1,
             Key   => 'DashboardBackend###0410-RSS',
             Value => \%RSSConfig,
+        );
+
+        # Avoid SSL errors on old test platforms.
+        $Helper->ConfigSettingChange(
+            Valid => 1,
+            Key   => 'WebUserAgent::DisableSSLVerification',
+            Value => 1,
         );
 
         # create test user and login

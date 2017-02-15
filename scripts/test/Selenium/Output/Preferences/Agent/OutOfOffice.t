@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -50,7 +50,8 @@ $Selenium->RunTest(
         # Change test user time zone preference to -5 hours. Displayed out of office date values
         #   should not be converted to local time zone, see bug#12471.
         $Selenium->execute_script(
-            "\$('#UserTimeZone').val('Pacific/Easter').trigger('redraw.InputField').trigger('change');");
+            "\$('#UserTimeZone').val('Pacific/Easter').trigger('redraw.InputField').trigger('change');"
+        );
         $Selenium->find_element( "#UserTimeZone", 'css' )->VerifiedSubmit();
 
         # Wait until form has loaded, if necessary.
@@ -67,7 +68,7 @@ $Selenium->RunTest(
         for my $FieldGroup (qw(Start End)) {
             for my $FieldType (qw(Year Month Day)) {
                 $Selenium->execute_script(
-                    "\$('#OutOfOffice$FieldGroup$FieldType').val('$Date->{$FieldType}').trigger('change');"
+                    "\$('#OutOfOffice$FieldGroup$FieldType').val($Date->{$FieldType}).trigger('change');"
                 );
             }
         }
@@ -87,8 +88,8 @@ $Selenium->RunTest(
         for my $FieldGroup (qw(Start End)) {
             for my $FieldType (qw(Year Month Day)) {
                 $Self->Is(
-                    $Selenium->find_element( "#OutOfOffice$FieldGroup$FieldType", 'css' )->get_value(),
-                    $Date->{$FieldType},
+                    int $Selenium->find_element( "#OutOfOffice$FieldGroup$FieldType", 'css' )->get_value(),
+                    int $Date->{$FieldType},
                     "Shown OutOfOffice$FieldGroup$FieldType field value"
                 );
             }

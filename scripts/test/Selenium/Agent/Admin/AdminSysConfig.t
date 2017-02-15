@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -48,7 +48,7 @@ $Selenium->RunTest(
             "\$('#SysConfigGroup').val('Ticket').trigger('redraw.InputField').trigger('change');"
         );
 
-        sleep 0.5;    # Wait for reload to kick in
+        sleep 1;    # Wait for reload to kick in
         $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $(".Remove").length' );
 
         # remove selected Ticket sysconfig group

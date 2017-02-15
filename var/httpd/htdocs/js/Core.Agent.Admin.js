@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -30,6 +30,8 @@ Core.Agent.Admin = (function (TargetNS) {
     TargetNS.Init = function () {
 
         var Favourites = Core.Config.Get('Favourites');
+
+        $('.SidebarColumn #Filter').focus();
 
         $('.AddAsFavourite').on('click', function(Event) {
             var $TriggerObj = $(this),

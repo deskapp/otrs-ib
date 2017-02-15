@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -273,11 +273,6 @@ Core.Agent.TicketAction = (function (TargetNS) {
             }
 
             $Widget.find('div.WidgetAction.Toggle > a').trigger('click');
-        });
-
-        // Update owner and responsible fields on queue change.
-        $('#QueueID').on('change', function () {
-            Core.AJAX.FormUpdate($('.Validate'), 'AJAXUpdate', 'QueueID', ['OwnerID', 'ResponsibleID']);
         });
 
     };

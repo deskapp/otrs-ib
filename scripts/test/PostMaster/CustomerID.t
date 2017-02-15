@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -76,19 +76,35 @@ $Self->True(
     "CustomerUser '$CustomerUserLogin' is created",
 );
 
-my $UknownEmailAddress = 'Unknown' . $CustomerUserEmailAddress;
+my $UnknownEmailAddress = 'Unknown' . $CustomerUserEmailAddress;
 
 my @Tests = (
     {
-        EmailAddress => $UknownEmailAddress,
-        Result       => {
-            CustomerUserID => $UknownEmailAddress,
+        EmailAddress => $UnknownEmailAddress,
+        Config       => {
+            'PostMaster::NewTicket::AutoAssignCustomerIDForUnknownCustomers' => 0,
+        },
+        Result => {
+            CustomerUserID => $UnknownEmailAddress,
             CustomerID     => '',
         },
     },
     {
+        EmailAddress => $UnknownEmailAddress,
+        Config       => {
+            'PostMaster::NewTicket::AutoAssignCustomerIDForUnknownCustomers' => 1,
+        },
+        Result => {
+            CustomerUserID => $UnknownEmailAddress,
+            CustomerID     => $UnknownEmailAddress,
+        },
+    },
+    {
         EmailAddress => $CustomerUserEmailAddress,
-        Result       => {
+        Config       => {
+            'PostMaster::NewTicket::AutoAssignCustomerIDForUnknownCustomers' => 0,
+        },
+        Result => {
             CustomerUserID => $CustomerUserLogin,
             CustomerID     => $CustomerID,
         },
@@ -96,6 +112,13 @@ my @Tests = (
 );
 
 for my $Test (@Tests) {
+
+    for my $Setting ( sort keys %{ $Test->{Config} } ) {
+        $ConfigObject->Set(
+            Key   => $Setting,
+            Value => $Test->{Config}->{$Setting}
+        );
+    }
 
     my $Email = "From: $Test->{EmailAddress}\nTo: you\@home.com\nSubject: Test\nContent in Body.\n";
     my @Return;
@@ -123,12 +146,12 @@ for my $Test (@Tests) {
     );
 
     $Self->Is(
-        $Ticket{CustomerID},
+        $Ticket{CustomerID} // '',
         $Test->{Result}->{CustomerID},
         "Ticket customer ID is expected",
     );
     $Self->Is(
-        $Ticket{CustomerUserID},
+        $Ticket{CustomerUserID} // '',
         $Test->{Result}->{CustomerUserID},
         "Ticket customer user ID is expected",
     );

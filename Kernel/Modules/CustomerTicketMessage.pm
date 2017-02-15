@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -441,6 +441,13 @@ sub Run {
             my @ChatMessages = $Kernel::OM->Get('Kernel::System::Chat')->ChatMessageList(
                 ChatID => $GetParam{FromChatID},
             );
+
+            for my $Message (@ChatMessages) {
+                $Message->{MessageText} = $LayoutObject->Ascii2Html(
+                    Text        => $Message->{MessageText},
+                    LinkFeature => 1,
+                );
+            }
         }
 
         # check queue
@@ -1368,6 +1375,14 @@ sub _MaskNew {
         my @ChatMessages = $Kernel::OM->Get('Kernel::System::Chat')->ChatMessageList(
             ChatID => $Param{FromChatID},
         );
+
+        for my $Message (@ChatMessages) {
+            $Message->{MessageText} = $LayoutObject->Ascii2Html(
+                Text        => $Message->{MessageText},
+                LinkFeature => 1,
+            );
+        }
+
         $LayoutObject->Block(
             Name => 'ChatArticlePreview',
             Data => {

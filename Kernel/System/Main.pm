@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -1155,6 +1155,15 @@ sub _Dump {
 
     # data is a ref reference
     if ( ref ${$Data} eq 'REF' ) {
+
+        # start recursion
+        $Self->_Dump( ${$Data} );
+
+        return;
+    }
+
+    # data is a JSON::PP::Boolean
+    if ( ref ${$Data} eq 'JSON::PP::Boolean' ) {
 
         # start recursion
         $Self->_Dump( ${$Data} );

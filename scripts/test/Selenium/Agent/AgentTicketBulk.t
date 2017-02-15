@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -25,7 +25,7 @@ $Selenium->RunTest(
         my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
         # do not check email addresses
-        $Helper->ConfigSettingChange(
+        $ConfigObject->Set(
             Key   => 'CheckEmailAddresses',
             Value => 0,
         );
@@ -193,7 +193,7 @@ $Selenium->RunTest(
                 UserID      => $TestUserID,
             },
             {
-                # ticket locked by another agent
+                # ticket locked by another agent #1
                 TicketTitle => 'TestTicket-Three',
                 Lock        => 'lock',
                 QueueID     => $QueueRawID,
@@ -220,6 +220,14 @@ $Selenium->RunTest(
                 QueueID     => $QueueIDs[1],
                 OwnerID     => 1,
                 UserID      => $TestUserID,
+            },
+            {
+                # ticket locked by another agent #2
+                TicketTitle => 'TestTicket-Seven',
+                Lock        => 'lock',
+                QueueID     => $QueueRawID,
+                OwnerID     => 1,
+                UserID      => 1,
             },
         );
 
@@ -306,6 +314,11 @@ $Selenium->RunTest(
         $Selenium->WaitFor( WindowCount => 1 );
         $Selenium->switch_to_window( $Handles->[0] );
 
+        $Selenium->WaitFor(
+            JavaScript =>
+                'return typeof(Core) == "object" && typeof(Core.App) == "object" && Core.App.PageLoadComplete'
+        );
+
         # check ticket lock
         $Self->Is(
             $TicketObject->TicketLockGet(
@@ -319,6 +332,8 @@ $Selenium->RunTest(
         $Selenium->find_element("//input[\@value='$Tickets[0]->{TicketID}']")->click();
         $Selenium->find_element("//input[\@value='$Tickets[1]->{TicketID}']")->click();
         $Selenium->find_element("//input[\@value='$Tickets[2]->{TicketID}']")->click();
+        $Selenium->find_element("//input[\@value='$Tickets[6]->{TicketID}']")->click();
+
         $Selenium->find_element( "Bulk", 'link_text' )->click();
 
         # switch to bulk window
@@ -327,13 +342,17 @@ $Selenium->RunTest(
         $Selenium->switch_to_window( $Handles->[1] );
 
         # wait until page has loaded, if necessary
-        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $("#StateID").length' );
+        $Selenium->WaitFor(
+            JavaScript =>
+                'return typeof(Core) == "object" && typeof(Core.App) == "object" && Core.App.PageLoadComplete'
+        );
 
         # check data
         my @ExpectedMessages = (
-            $Tickets[0]->{TicketNumber} . ': Ticket selected.',
-            $Tickets[1]->{TicketNumber} . ': Ticket locked.',
-            $Tickets[2]->{TicketNumber} . ': Ticket is locked by another agent and will be ignored!',
+            "The following tickets were ignored because they are locked by another agent or you don't have write access to these tickets: "
+                . $Tickets[2]->{TicketNumber} . ", "
+                . $Tickets[6]->{TicketNumber} . ".",
+            "The following tickets were locked: " . $Tickets[1]->{TicketNumber} . ".",
         );
         for my $ExpectedMessage (@ExpectedMessages) {
             $Self->True(
@@ -502,7 +521,7 @@ $Selenium->RunTest(
         # Delete test created users.
         for my $UserID (@UserIDs) {
             $Success = $DBObject->Do(
-                SQL  => "DELETE FROM user_preferences WHERE user_id",
+                SQL  => "DELETE FROM user_preferences WHERE user_id = ?",
                 Bind => [ \$UserID ],
             );
             $Self->True(

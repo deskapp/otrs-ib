@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -33,6 +33,13 @@ $Selenium->RunTest(
             Valid => 1,
             Key   => 'Ticket::SubjectSize',
             Value => '60',
+        );
+
+        # disable Ticket::ArchiveSystem
+        $Helper->ConfigSettingChange(
+            Valid => 1,
+            Key   => 'Ticket::ArchiveSystem',
+            Value => 0,
         );
 
         # create test user and login
@@ -107,6 +114,13 @@ $Selenium->RunTest(
         );
         $Selenium->accept_alert();
 
+        # enable Ticket::ArchiveSystem
+        $Helper->ConfigSettingChange(
+            Valid => 1,
+            Key   => 'Ticket::ArchiveSystem',
+            Value => 1,
+        );
+
         # search for second created test ticket
         $Selenium->find_element(".//*[\@id='SEARCH::TicketNumber']")->send_keys( $TicketNumbers[1] );
         $Selenium->find_element(".//*[\@id='SEARCH::TicketNumber']")->VerifiedSubmit();
@@ -122,6 +136,9 @@ $Selenium->RunTest(
         $Selenium->close();
         $Selenium->switch_to_window( $Handles->[0] );
 
+        # Wait for reload to kick in.
+        sleep 1;
+
         # refresh agent ticket zoom
         $Selenium->VerifiedRefresh();
 
@@ -129,11 +146,11 @@ $Selenium->RunTest(
         $Self->True(
             index( $Selenium->get_page_source(), 'Child' ) > -1,
             "Child - found",
-        );
+        ) || die;
         $Self->True(
             index( $Selenium->get_page_source(), "T:" . $TicketNumbers[1] ) > -1,
             "TicketNumber $TicketNumbers[1] - found",
-        );
+        ) || die;
 
         # click on child ticket
         $Selenium->find_element("//a[contains(\@href, \'Action=AgentTicketZoom;TicketID=$TicketIDs[1]' )]")
@@ -143,11 +160,11 @@ $Selenium->RunTest(
         $Self->True(
             index( $Selenium->get_page_source(), 'Parent' ) > -1,
             "Parent - found",
-        );
+        ) || die;
         $Self->True(
             index( $Selenium->get_page_source(), "T:" . $TicketNumbers[0] ) > -1,
             "TicketNumber $TicketNumbers[0] - found",
-        );
+        ) || die;
 
         # test ticket title length in complex view for linked tickets, see bug #11511
         # set link object view mode to complex
@@ -179,7 +196,7 @@ $Selenium->RunTest(
         $Self->True(
             index( $Selenium->get_page_source(), $LongTicketTitle ) > -1,
             "$LongTicketTitle - found in AgentTicketZoom complex view mode",
-        );
+        ) || die;
 
         # check for "default" visible columns in the Linked Ticket widget
         $Self->Is(
@@ -402,13 +419,82 @@ $Selenium->RunTest(
         $Self->True(
             index( $Selenium->get_page_source(), "title=\"$LongTicketTitle\"" ) > -1,
             "\"title=$LongTicketTitle\" - found in LinkDelete screen - which is displayed on hover",
-        );
+        ) || die;
 
         # check for short ticket title in LinkDelete screen
         $Self->True(
             index( $Selenium->get_page_source(), $ShortTitle ) > -1,
             "$ShortTitle - found in LinkDelete screen",
+        ) || die;
+
+        # select all links
+        $Selenium->find_element( "#SelectAllLinks0", "css" )->VerifiedClick();
+
+        # make sure it's selected
+        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $("#SelectAllLinks0:checked").length' );
+
+        # click on delete links
+        $Selenium->find_element( ".Primary", "css" )->VerifiedClick();
+
+        # wait until page has loaded, if necessary
+        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $("#SelectAllLinks0").length' );
+
+        my $SuccessArchived = $TicketObject->TicketArchiveFlagSet(
+            ArchiveFlag => 'y',
+            TicketID    => $TicketIDs[1],
+            UserID      => $TestUserID,
         );
+
+        $Self->True(
+            $SuccessArchived,
+            "Check if 2nd ticket is archived successfully."
+        );
+
+        # check if there is "Search archive" drop-down.
+        $Self->True(
+            $Selenium->execute_script(
+                "return \$('#SEARCH\\\\:\\\\:ArchiveID').length"
+            ),
+            'Search archive drop-down present.',
+        );
+
+        # search for 2nd ticket
+        $Selenium->find_element(".//*[\@id='SEARCH::TicketNumber']")->send_keys( $TicketNumbers[1] );
+        $Selenium->find_element(".//*[\@id='SEARCH::TicketNumber']")->VerifiedSubmit();
+
+        # make sure there are no results
+        $Self->False(
+            $Selenium->execute_script(
+                "return \$('#WidgetTicket').length"
+            ),
+            'No result.',
+        );
+
+        # click on the Archive search drop-down
+        $Selenium->execute_script(
+            "\$('#SEARCH\\\\:\\\\:ArchiveID').val('ArchivedTickets').trigger('redraw.InputField').trigger('change');"
+        );
+
+        $Selenium->find_element( "#SubmitSearch", "css" )->VerifiedClick();
+
+        # wait till search is loaded
+        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $("#SelectAllLinks0").length' );
+
+        # link again
+        $Selenium->find_element( "#SelectAllLinks0",  "css" )->click();
+        $Selenium->find_element( "#AddLinks",         "css" )->VerifiedClick();
+        $Selenium->find_element( "#LinkAddCloseLink", "css" )->click();
+
+        # wait till popup is closed
+        $Selenium->WaitFor( WindowCount => 1 );
+
+        # switch to 1st window
+        $Handles = $Selenium->get_window_handles();
+        $Selenium->switch_to_window( $Handles->[0] );
+
+        # make sure they are really linked.
+        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $("#WidgetTicket").length' );
+        $Selenium->find_element( "#WidgetTicket", "css" );
 
         # delete created test tickets
         for my $TicketID (@TicketIDs) {

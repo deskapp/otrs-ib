@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -54,7 +54,7 @@ Core.Agent.Admin = Core.Agent.Admin || {};
                 true,
                 [
                     {
-                        Class: 'CallForAction Primary',
+                        Class: 'Primary',
                         Label: Core.Language.Translate("Confirm"),
                         Function: function() {
                             $('.Dialog .InnerContent .Center').text(Core.Language.Translate("Deleting the template and its data. This may take a while..."));
@@ -72,7 +72,6 @@ Core.Agent.Admin = Core.Agent.Admin || {};
                         }
                     },
                     {
-                        Class: 'CallForAction',
                         Label: Core.Language.Translate("Cancel"),
                         Function: function () {
                             Core.UI.Dialog.CloseDialog($('#DeleteTemplateDialog'));

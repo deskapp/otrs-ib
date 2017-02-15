@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -181,13 +181,11 @@ Core.App = (function (TargetNS) {
     TargetNS.Ready = function (Callback) {
         if ($.isFunction(Callback)) {
             $(document).ready(function () {
-                var Trace;
                 try {
                     Callback();
                 }
                 catch (Error) {
-                    Trace = printStackTrace({e: Error, guess: true}).join('\n');
-                    Core.Exception.HandleFinalError(Error, Trace);
+                    Core.Exception.HandleFinalError(Error);
                 }
             });
         }
@@ -232,14 +230,13 @@ Core.App = (function (TargetNS) {
                     Buttons: [
                         {
                             Label: Core.Language.Translate("Reload page"),
-                            Class: 'CallForAction Primary',
+                            Class: 'Primary',
                             Function: function () {
                                 location.reload();
                             }
                         },
                         {
                             Label: Core.Language.Translate("Close this dialog"),
-                            Class: 'CallForAction',
                             Function: function () {
                                 if ($('#AjaxErrorDialogInner').find('.NoConnection').is(':visible')) {
                                     $('body').addClass('ConnectionErrorDialogClosed');
@@ -302,14 +299,13 @@ Core.App = (function (TargetNS) {
                 Buttons: [
                     {
                         Label: Core.Language.Translate("Reload page"),
-                        Class: 'CallForAction Primary',
+                        Class: 'Primary',
                         Function: function () {
                             location.reload();
                         }
                     },
                     {
                         Label: Core.Language.Translate("Close this dialog"),
-                        Class: 'CallForAction',
                         Function: function () {
                             if ($('#AjaxErrorDialogInner').find('.NoConnection').is(':visible')) {
                                 $('body').addClass('ConnectionErrorDialogClosed');

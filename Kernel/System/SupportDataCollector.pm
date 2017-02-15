@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -193,7 +193,7 @@ sub Collect {
 
     # Cache the result only, if the support data were collected in a web request,
     #   to have all support data in the admin view.
-    if ($ENV{GATEWAY_INTERFACE}) {
+    if ( $ENV{GATEWAY_INTERFACE} ) {
 
         $Kernel::OM->Get('Kernel::System::Cache')->Set(
             Type  => 'SupportDataCollector',

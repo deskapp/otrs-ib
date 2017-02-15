@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -86,10 +86,12 @@ sub GetObjectAttributes {
         $ValidAgent = 1;
     }
 
-    # get user list
+    # Get user list without the out of office message, because of the caching in the statistics
+    #   and not meaningful with a date selection.
     my %UserList = $UserObject->UserList(
-        Type  => 'Long',
-        Valid => $ValidAgent,
+        Type          => 'Long',
+        Valid         => $ValidAgent,
+        NoOutOfOffice => 1,
     );
 
     # get state list
@@ -318,58 +320,6 @@ sub GetObjectAttributes {
             Values           => {
                 TimeStart => 'TicketCloseTimeNewerDate',
                 TimeStop  => 'TicketCloseTimeOlderDate',
-            },
-        },
-        {
-            Name             => Translatable('Escalation'),
-            UseAsXvalue      => 1,
-            UseAsValueSeries => 1,
-            UseAsRestriction => 1,
-            Element          => 'EscalationTime',
-            TimePeriodFormat => 'DateInputFormatLong',        # 'DateInputFormat',
-            Block            => 'Time',
-            Values           => {
-                TimeStart => 'TicketEscalationTimeNewerDate',
-                TimeStop  => 'TicketEscalationTimeOlderDate',
-            },
-        },
-        {
-            Name             => Translatable('Escalation - First Response Time'),
-            UseAsXvalue      => 1,
-            UseAsValueSeries => 1,
-            UseAsRestriction => 1,
-            Element          => 'EscalationResponseTime',
-            TimePeriodFormat => 'DateInputFormatLong',                              # 'DateInputFormat',
-            Block            => 'Time',
-            Values           => {
-                TimeStart => 'TicketEscalationResponseTimeNewerDate',
-                TimeStop  => 'TicketEscalationResponseTimeOlderDate',
-            },
-        },
-        {
-            Name             => Translatable('Escalation - Update Time'),
-            UseAsXvalue      => 1,
-            UseAsValueSeries => 1,
-            UseAsRestriction => 1,
-            Element          => 'EscalationUpdateTime',
-            TimePeriodFormat => 'DateInputFormatLong',                      # 'DateInputFormat',
-            Block            => 'Time',
-            Values           => {
-                TimeStart => 'TicketEscalationUpdateTimeNewerDate',
-                TimeStop  => 'TicketEscalationUpdateTimeOlderDate',
-            },
-        },
-        {
-            Name             => Translatable('Escalation - Solution Time'),
-            UseAsXvalue      => 1,
-            UseAsValueSeries => 1,
-            UseAsRestriction => 1,
-            Element          => 'EscalationSolutionTime',
-            TimePeriodFormat => 'DateInputFormatLong',                        # 'DateInputFormat',
-            Block            => 'Time',
-            Values           => {
-                TimeStart => 'TicketEscalationSolutionTimeNewerDate',
-                TimeStop  => 'TicketEscalationSolutionTimeOlderDate',
             },
         },
     );
@@ -1439,16 +1389,6 @@ sub _AllowedTicketSearchAttributes {
         TicketLastChangeTimeOlderDate
         TicketCloseTimeNewerDate
         TicketCloseTimeOlderDate
-        TicketPendingTimeNewerDate
-        TicketPendingTimeOlderDate
-        TicketEscalationTimeNewerDate
-        TicketEscalationTimeOlderDate
-        TicketEscalationUpdateTimeNewerDate
-        TicketEscalationUpdateTimeOlderDate
-        TicketEscalationResponseTimeNewerDate
-        TicketEscalationResponseTimeOlderDate
-        TicketEscalationSolutionTimeNewerDate
-        TicketEscalationSolutionTimeOlderDate
     );
 
     # loop over the dynamic fields configured
