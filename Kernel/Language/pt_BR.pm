@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # Copyright (C) 2003 Gilberto Cezar de Almeida <gibalmeida at hotmail.com>
 # Copyright (C) 2005 Alterado por Glaucia C. Messina (glauglauu@yahoo.com)
 # Copyright (C) 2007-2010 Fabricio Luiz Machado <soprobr gmail.com>
@@ -29,7 +29,7 @@ sub Data {
     $Self->{DateFormatShort}     = '%D/%M/%Y';
     $Self->{DateInputFormat}     = '%D/%M/%Y';
     $Self->{DateInputFormatLong} = '%D/%M/%Y - %T';
-    $Self->{Completeness}        = 0.692939244663383;
+    $Self->{Completeness}        = 0.689775051124744;
 
     # csv separator
     $Self->{Separator} = ';';
@@ -1921,8 +1921,8 @@ sub Data {
             'Você pode colocar Atividades na área da tela atribuindo esta Atividade ao Processo.',
         'To assign an Activity Dialog to an Activity drop the Activity Dialog element from this sidebar over the Activity placed in the canvas area.' =>
             'Para atribuir uma Janela de Atividade à uma Atividade arraste o elemento de Janela de Atividade desta barra lateral sobre a Atividade colocada na área da tela.',
-        'You can start a connection between to Activities by dropping the Transition element over the Start Activity of the connection. After that you can move the loose end of the arrow to the End Activity.' =>
-            'Você pode iniciar uma ligação entre Atividades arrastando o elemento de Transição sobre o Início da Atividade da conexão. Após isso, você pode mover a ponta solta da seta para o Final da Atividade.',
+        'You can start a connection between two Activities by dropping the Transition element over the Start Activity of the connection. After that you can move the loose end of the arrow to the End Activity.' =>
+            '',
         'Actions can be assigned to a Transition by dropping the Action Element onto the label of a Transition.' =>
             'Ações podem ser atribuidas para Transições arrastando o elemento de Ação sobre a etiqueta da Transição.',
         'Edit Process Information' => 'Editar Informação do Processo',
@@ -2816,8 +2816,10 @@ sub Data {
         'Searches in the attributes From, To, Cc, Subject and the article body, overriding other attributes with the same name.' =>
             'Buscas pelos atributos De, Para, Cc, Assunto e corpo do artigo, sobrescreve outros atributos com o mesmo nome.',
         'CustomerID (complex search)' => 'CustomerID (procura complexa)',
+        '(e. g. 234*)' => '',
         'CustomerID (exact match)' => 'CustomerID (correspondência exata)',
         'Customer User Login (complex search)' => 'Login de Usuário Cliente (busca complexa)',
+        '(e. g. U51*)' => '',
         'Customer User Login (exact match)' => 'Login de Usuário Cliente (correspondência exata)',
         'Attachment Name' => 'Nome do Anexo',
         '(e. g. m*file or myfi*)' => '(ex. meu*rquivo ou meuarq*)',
@@ -2941,6 +2943,12 @@ sub Data {
         'Accept' => 'Aceitar',
         'Decline' => 'Rejeitar',
         'An internal error occurred.' => 'Um erro interno ocorreu',
+        'Connection error' => '',
+        'Reload page' => '',
+        'Your browser was not able to communicate with OTRS properly, there seems to be something wrong with your network connection. You could either try reloading this page manually or wait until your browser has re-established the connection on its own.' =>
+            '',
+        'The connection has been re-established after a temporary connection loss. Due to this, elements on this page could have stopped to work correctly. In order to be able to use all elements correctly again, it is strongly recommended to reload this page.' =>
+            '',
 
         # Template: CustomerLogin
         'JavaScript Not Available' => 'JavaScript não habilitado ou não é suportado.',
@@ -3254,15 +3262,15 @@ sub Data {
         'Result formats' => 'Formatos de Resutaldo',
         'The selected time periods in the statistic are time zone neutral.' =>
             'O período selecionado na estatística é neutro quanto ao fuso horário.',
-        'Create summation row' => 'Criar coluna de somatório',
+        'Create summation row' => 'Criar linha de somatória',
         'Generate an additional row containing sums for all data rows.' =>
             'Gerar uma linha adicional contendo somas para todas as linhas de dados.',
-        'Create summation column' => 'Criar coluna de somatório',
+        'Create summation column' => 'Criar coluna de somatória',
         'Generate an additional column containing sums for all data columns.' =>
             'Gerar uma coluna adicional contendo somas para todas as colunas de dados.',
         'Cache results' => 'Resultado em cache',
-        'Stores statistics result data in a cache to be used in subsequent views with the same configuration.' =>
-            'Armazena em cache os dados de resultados das estatísticas para serem utilizados em visualizações subsequentes com a mesma configuração.',
+        'Stores statistics result data in a cache to be used in subsequent views with the same configuration (requires at least one selected time field).' =>
+            '',
         'Provide the statistic as a widget that agents can activate in their dashboard.' =>
             'Prover a estatística como um componente que agentes podem ativar no painel.',
         'Please note that enabling the dashboard widget will activate caching for this statistic in the dashboard.' =>
@@ -3490,6 +3498,7 @@ sub Data {
         'No such file %s in package!' => 'Arquivo inexistente %s no pacote!',
         'No such file %s in local file system!' => 'Arquivo inexistente %s no sistema de arquivos local!',
         'Can\'t read %s!' => 'Não pôde ser lido %s!',
+        'File is OK' => '',
         'Package has locally modified files.' => 'Pacote possui arquivos locais modificados.',
         'No packages or no new packages found in selected repository.' =>
             '',
@@ -3651,6 +3660,8 @@ sub Data {
         'No preferences for %s!' => '',
         'Can\'t get element data of %s!' => '',
         'Can\'t get filter content data of %s!' => '',
+        'Customer Company Name' => '',
+        'Customer User ID' => '',
 
         # Perl Module: Kernel/Modules/AgentLinkObject.pm
         'Need SourceObject and SourceKey!' => '',
@@ -3699,7 +3710,9 @@ sub Data {
         'You either selected no ticket or only tickets which are locked by other agents.' =>
             '',
         'You need to select at least one ticket.' => '',
-        'Ticket is locked by another agent and will be ignored!' => 'Chamado está bloqueado por outro atendente e será ignorado!',
+        'The following tickets were ignored because they are locked by another agent or you don\'t have write access to these tickets: %s.' =>
+            '',
+        'The following tickets were locked: %s.' => '',
 
         # Perl Module: Kernel/Modules/AgentTicketCompose.pm
         'Can not determine the ArticleType!' => '',
@@ -4037,6 +4050,9 @@ sub Data {
 
         # Perl Module: Kernel/System/Package.pm
         'not installed' => '',
+        'File is not installed!' => '',
+        'File is different!' => '',
+        'Can\'t read file!' => '',
 
         # Perl Module: Kernel/System/ProcessManagement/DB/Process/State.pm
         'Inactive' => 'Inativo',
@@ -4275,6 +4291,9 @@ sub Data {
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/PackageList.pm
         'Package List' => 'Lista de Pacotes',
 
+        # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/SessionConfigSettings.pm
+        'Session Config Settings' => '',
+
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/SpoolMails.pm
         'Spooled Emails' => '',
         'There are emails in var/spool that OTRS could not process.' => '',
@@ -4354,6 +4373,10 @@ sub Data {
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/EnvironmentVariables.pm
         'Environment Variables' => 'Variáveis de ambiente',
+
+        # Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/InternalWebRequest.pm
+        'Support Data Collection' => '',
+        'Support data could not be collected from the web server.' => '',
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/Version.pm
         'Webserver Version' => 'Versão do Servidor WEB',
@@ -4753,7 +4776,9 @@ Thanks for your help!
             '',
         'Controls how to display the ticket history entries as readable values.' =>
             '',
-        'Controls if CutomerID is editable in the agent interface.' => '',
+        'Controls if CustomerID is automatically copied from the sender address for unknown customers.' =>
+            '',
+        'Controls if CustomerID is read-only in the agent interface.' => '',
         'Controls if customers have the ability to sort their tickets.' =>
             'Controla se os clientes têm a capacidade de classificar os seus chamados.',
         'Controls if more than one from entry can be set in the new phone ticket in the agent interface.' =>
@@ -5859,22 +5884,6 @@ Thanks for your help!
             '',
         'If "file" was selected for LogModule, a logfile must be specified. If the file doesn\'t exist, it will be created by the system.' =>
             '',
-        'If a note is added by an agent, sets the state of a ticket in the close ticket screen of the agent interface.' =>
-            '',
-        'If a note is added by an agent, sets the state of a ticket in the ticket bulk screen of the agent interface.' =>
-            '',
-        'If a note is added by an agent, sets the state of a ticket in the ticket free text screen of the agent interface.' =>
-            '',
-        'If a note is added by an agent, sets the state of a ticket in the ticket note screen of the agent interface.' =>
-            '',
-        'If a note is added by an agent, sets the state of a ticket in the ticket responsible screen of the agent interface.' =>
-            '',
-        'If a note is added by an agent, sets the state of the ticket in the ticket owner screen of a zoomed ticket in the agent interface.' =>
-            '',
-        'If a note is added by an agent, sets the state of the ticket in the ticket pending screen of a zoomed ticket in the agent interface.' =>
-            '',
-        'If a note is added by an agent, sets the state of the ticket in the ticket priority screen of a zoomed ticket in the agent interface.' =>
-            '',
         'If active, none of the regular expressions may match the user\'s email address to allow registration.' =>
             '',
         'If active, one of the regular expressions has to match the user\'s email address to allow registration.' =>
@@ -5899,7 +5908,7 @@ Thanks for your help!
             '',
         'If enabled, TicketPhone and TicketEmail will be open in new windows.' =>
             'Se ativo, chamados por fone  e chamados por e-mail serão abertos em uma nova janela.',
-        'If enabled, the OTRS version tag will be removed from the Webinterface, the HTTP headers and the X-Headers of outgoing mails.' =>
+        'If enabled, the OTRS version tag will be removed from the Webinterface, the HTTP headers and the X-Headers of outgoing mails. NOTE: If you change this option, please make sure to delete the cache.' =>
             '',
         'If enabled, the customer can search for tickets in all services (regardless what services are assigned to the customer).' =>
             '',
@@ -5907,7 +5916,9 @@ Thanks for your help!
             'Se habilitado, os diferentes quadros (Painel, Visão de Estados, Visão de Filas) serão automaticamente atualizados após o tempo especificado.',
         'If enabled, the first level of the main menu opens on mouse hover (instead of click only).' =>
             '',
-        'If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty.' =>
+        'If no SendmailNotificationEnvelopeFrom is specified, this setting makes it possible to use the email\'s from address instead of an empty envelope sender (required in certain mail server configurations).' =>
+            '',
+        'If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty (unless SendmailNotificationEnvelopeFrom::FallbackToEmailFrom is set).' =>
             '',
         'If set, this address is used as envelope sender in outgoing messages (not notifications - see below). If no address is specified, the envelope sender is equal to queue e-mail address.' =>
             '',
@@ -6476,6 +6487,22 @@ Thanks for your help!
         'Sets the service in the ticket priority screen of a zoomed ticket in the agent interface (Ticket::Service needs to be activated).' =>
             '',
         'Sets the service in the ticket responsible screen of the agent interface (Ticket::Service needs to be activated).' =>
+            '',
+        'Sets the state of a ticket in the close ticket screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket bulk screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket free text screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket note screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket responsible screen of the agent interface.' =>
+            '',
+        'Sets the state of the ticket in the ticket owner screen of a zoomed ticket in the agent interface.' =>
+            '',
+        'Sets the state of the ticket in the ticket pending screen of a zoomed ticket in the agent interface.' =>
+            '',
+        'Sets the state of the ticket in the ticket priority screen of a zoomed ticket in the agent interface.' =>
             '',
         'Sets the stats hook.' => '',
         'Sets the system time zone (required a system with UTC as system time). Otherwise this is a diff time to the local time.' =>

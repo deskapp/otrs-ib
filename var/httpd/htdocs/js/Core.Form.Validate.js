@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -358,15 +358,15 @@ Core.Form.Validate = (function (TargetNS) {
                 MinuteElement = ClassValue.replace(DateMinuteClassPrefix, '');
             }
         });
-        if (YearElement.length && MonthElement.length && $('#' + YearElement).length && $('#' + MonthElement).length) {
-            DateObject = new Date($('#' + YearElement).val(), $('#' + MonthElement).val() - 1, Value);
-            if (DateObject.getFullYear() === parseInt($('#' + YearElement).val(), 10) &&
-                DateObject.getMonth() + 1 === parseInt($('#' + MonthElement).val(), 10) &&
+        if (YearElement.length && MonthElement.length && $('#' + Core.App.EscapeSelector(YearElement)).length && $('#' + Core.App.EscapeSelector(MonthElement)).length) {
+            DateObject = new Date($('#' + Core.App.EscapeSelector(YearElement)).val(), $('#' + Core.App.EscapeSelector(MonthElement)).val() - 1, Value);
+            if (DateObject.getFullYear() === parseInt($('#' + Core.App.EscapeSelector(YearElement)).val(), 10) &&
+                DateObject.getMonth() + 1 === parseInt($('#' + Core.App.EscapeSelector(MonthElement)).val(), 10) &&
                 DateObject.getDate() === parseInt(Value, 10)) {
 
                 DateCheck = new Date();
                 if (MinuteElement.length && HourElement.length) {
-                    DateObject.setHours($('#' + HourElement).val(), $('#' + MinuteElement).val(), 0, 0);
+                    DateObject.setHours($('#' + Core.App.EscapeSelector(HourElement)).val(), $('#' + Core.App.EscapeSelector(MinuteElement)).val(), 0, 0);
                 }
                 else {
                     DateCheck.setHours(0, 0, 0, 0);
@@ -395,7 +395,8 @@ Core.Form.Validate = (function (TargetNS) {
     }, "");
 
     $.validator.addMethod("Validate_DateInFuture", function (Value, Element) {
-        var $DateSelection = $(Element).parent().find('input[type=checkbox].DateSelection');
+        var $DateSelection = $(Element).parent().find('input[type=checkbox].DateSelection, input[type=radio].DateSelection');
+
         // do not do this check for unchecked date/datetime fields
         // check first if the field exists to regard the check for the pending reminder field
         if ($DateSelection.length && !$DateSelection.prop("checked")) {
@@ -405,7 +406,8 @@ Core.Form.Validate = (function (TargetNS) {
     }, "");
 
     $.validator.addMethod("Validate_DateNotInFuture", function (Value, Element) {
-        var $DateSelection = $(Element).parent().find('input[type=checkbox].DateSelection');
+        var $DateSelection = $(Element).parent().find('input[type=checkbox].DateSelection, input[type=radio].DateSelection');
+
         // do not do this check for unchecked date/datetime fields
         // check first if the field exists to regard the check for the pending reminder field
         if ($DateSelection.length && !$DateSelection.prop("checked")) {

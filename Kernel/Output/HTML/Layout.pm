@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -5040,6 +5040,11 @@ sub _BuildSelectionDataRefCreate {
 
             my @Fragment = split '::', $Row->{Value};
             $Row->{Value} = pop @Fragment;
+
+            # translate the individual tree options
+            if ( $OptionRef->{Translation} ) {
+                $Row->{Value} = $Self->{LanguageObject}->Translate( $Row->{Value} );
+            }
 
             # TODO: Here we are combining Max with HTMLQuote, check below for the REMARK:
             # Max and HTMLQuote needs to be done before spaces insert but after the split of the

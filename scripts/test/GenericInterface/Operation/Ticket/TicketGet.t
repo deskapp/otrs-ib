@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -802,6 +802,9 @@ $Self->True(
     $TicketID5,
     "TicketCreate() successful for Ticket Five ID $TicketID5",
 );
+
+# add ticket id
+push @TicketIDs, $TicketID5;
 
 # get the Ticket entry
 my %TicketEntryFive = $TicketObject->TicketGet(

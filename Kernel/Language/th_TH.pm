@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -24,7 +24,7 @@ sub Data {
     $Self->{DateFormatShort}     = '%D/%M/%Y';
     $Self->{DateInputFormat}     = '%D/%M/%Y';
     $Self->{DateInputFormatLong} = '%D/%M/%Y - %T';
-    $Self->{Completeness}        = 0.843390804597701;
+    $Self->{Completeness}        = 0.839468302658487;
 
     # csv separator
     $Self->{Separator} = ',';
@@ -1919,8 +1919,8 @@ sub Data {
             'คุณสามารถวางกิจกรรมในพื้นที่ผืนผ้าเพื่อกำหนดกิจกรรมนี้ไปยังขั้นตอน',
         'To assign an Activity Dialog to an Activity drop the Activity Dialog element from this sidebar over the Activity placed in the canvas area.' =>
             'เพื่อกำหนดกิจกรรมไดอะล็อกไปยังกิจกรรม วางองค์ประกอบกิจกรรมไดอะล็อกจากแถบด้านข้างนี้เหนือกิจกรรมที่วางอยู่ในพื้นที่ผืนผ้า',
-        'You can start a connection between to Activities by dropping the Transition element over the Start Activity of the connection. After that you can move the loose end of the arrow to the End Activity.' =>
-            'คุณสามารถเริ่มการเชื่อมต่อระหว่างสองกิจกรรมโดยการวางองค์ประกอบการเปลี่ยนผ่านบนจุดเริ่มต้นของกิจกรรมในการเชื่อมต่อ หลังจากนั้นคุณสามารถย้ายปลายลูกศรเพื่อสิ้นสุดกิจกรรม',
+        'You can start a connection between two Activities by dropping the Transition element over the Start Activity of the connection. After that you can move the loose end of the arrow to the End Activity.' =>
+            '',
         'Actions can be assigned to a Transition by dropping the Action Element onto the label of a Transition.' =>
             'การกระทำสามารถกำหนดไปยังการเปลี่ยนผ่านโดยวางองค์ประกอบการกระทำบนฉลากของการเปลี่ยนผ่าน',
         'Edit Process Information' => 'แก้ไขข้อมูลกระบวนการ',
@@ -2815,8 +2815,10 @@ sub Data {
         'Searches in the attributes From, To, Cc, Subject and the article body, overriding other attributes with the same name.' =>
             'การค้นหาในแอตทริบิวต์ จาก ถึง สำเนา เรื่องและเนื้อเรื่องของบทความ การแทนที่คุณลักษณะอื่น ๆ ที่มีชื่อเดียวกัน',
         'CustomerID (complex search)' => '',
+        '(e. g. 234*)' => '',
         'CustomerID (exact match)' => '',
         'Customer User Login (complex search)' => '',
+        '(e. g. U51*)' => '',
         'Customer User Login (exact match)' => '',
         'Attachment Name' => 'ชื่อเอกสารที่แนบมา',
         '(e. g. m*file or myfi*)' => '(เช่น. m*file or myfi*)',
@@ -2940,6 +2942,12 @@ sub Data {
         'Accept' => 'ยอมรับ',
         'Decline' => 'ปฏิเสธ',
         'An internal error occurred.' => 'มีข้อผิดพลาดภายในเกิดขึ้น',
+        'Connection error' => '',
+        'Reload page' => '',
+        'Your browser was not able to communicate with OTRS properly, there seems to be something wrong with your network connection. You could either try reloading this page manually or wait until your browser has re-established the connection on its own.' =>
+            '',
+        'The connection has been re-established after a temporary connection loss. Due to this, elements on this page could have stopped to work correctly. In order to be able to use all elements correctly again, it is strongly recommended to reload this page.' =>
+            '',
 
         # Template: CustomerLogin
         'JavaScript Not Available' => 'ไม่พร้อมใช้งาน JavaScript',
@@ -3260,8 +3268,8 @@ sub Data {
         'Generate an additional column containing sums for all data columns.' =>
             '',
         'Cache results' => 'ผลการแคช',
-        'Stores statistics result data in a cache to be used in subsequent views with the same configuration.' =>
-            'เก็บข้อมูลผลสถิติในแคชเพื่อที่จะใช้ในมุมมองที่ตามมากับการตั้งค่าเดียวกัน',
+        'Stores statistics result data in a cache to be used in subsequent views with the same configuration (requires at least one selected time field).' =>
+            '',
         'Provide the statistic as a widget that agents can activate in their dashboard.' =>
             'จัดเตรียมสถิติเป็นเครื่องมือที่เอเย่นต์สามารถเปิดใช้งานในแดชบอร์ดของพวกเขา',
         'Please note that enabling the dashboard widget will activate caching for this statistic in the dashboard.' =>
@@ -3489,6 +3497,7 @@ sub Data {
         'No such file %s in package!' => 'ไม่มีไฟล์ดังกล่าว% s ในแพคเกจ!',
         'No such file %s in local file system!' => 'ไม่มีไฟล์ดังกล่าว% s ในระบบแฟ้มท้องถิ่น!',
         'Can\'t read %s!' => 'ไม่สามารถอ่าน% s!',
+        'File is OK' => '',
         'Package has locally modified files.' => 'แพคเกจมีการปรับเปลี่ยนไฟล์ภายในเครื่อง',
         'No packages or no new packages found in selected repository.' =>
             'ไม่พบแพคเกจหรือแพคเกจใหม่ในพื้นที่เก็บข้อมูลที่คุณเลือก',
@@ -3650,6 +3659,8 @@ sub Data {
         'No preferences for %s!' => 'ไม่มีการกำหนดลักษณะสำหรับ %s!',
         'Can\'t get element data of %s!' => 'ไม่สามารถรับองค์ประกอบของข้อมูลของ %s!',
         'Can\'t get filter content data of %s!' => 'ไม่สามารถรับข้อมูลกรองเนื้อหา',
+        'Customer Company Name' => '',
+        'Customer User ID' => '',
 
         # Perl Module: Kernel/Modules/AgentLinkObject.pm
         'Need SourceObject and SourceKey!' => 'ต้องการ SourceObject และ SourceKey!',
@@ -3698,7 +3709,9 @@ sub Data {
         'You either selected no ticket or only tickets which are locked by other agents.' =>
             '',
         'You need to select at least one ticket.' => '',
-        'Ticket is locked by another agent and will be ignored!' => 'ตั๋วถูกล็อกโดยเอเย่นต์อื่นและจะถูกละเว้น!',
+        'The following tickets were ignored because they are locked by another agent or you don\'t have write access to these tickets: %s.' =>
+            '',
+        'The following tickets were locked: %s.' => '',
 
         # Perl Module: Kernel/Modules/AgentTicketCompose.pm
         'Can not determine the ArticleType!' => 'ไม่สามารถกำหนดค่า ArticleType!',
@@ -4036,6 +4049,9 @@ sub Data {
 
         # Perl Module: Kernel/System/Package.pm
         'not installed' => 'ไม่ได้ติดตั้ง',
+        'File is not installed!' => '',
+        'File is different!' => '',
+        'Can\'t read file!' => '',
 
         # Perl Module: Kernel/System/ProcessManagement/DB/Process/State.pm
         'Inactive' => 'ไม่ทำงาน',
@@ -4274,6 +4290,9 @@ sub Data {
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/PackageList.pm
         'Package List' => '',
 
+        # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/SessionConfigSettings.pm
+        'Session Config Settings' => '',
+
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/SpoolMails.pm
         'Spooled Emails' => '',
         'There are emails in var/spool that OTRS could not process.' => '',
@@ -4353,6 +4372,10 @@ sub Data {
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/EnvironmentVariables.pm
         'Environment Variables' => '',
+
+        # Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/InternalWebRequest.pm
+        'Support Data Collection' => '',
+        'Support data could not be collected from the web server.' => '',
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/Version.pm
         'Webserver Version' => 'เวอร์ชั่นของ Webserver',
@@ -4763,7 +4786,9 @@ Thanks for your help!
             'กำหนดค่าค่าเริ่มต้นของการตั้งค่า TicketDynamicField "ชื่อ" จะกำหนดฟิลด์แบบไดนามิกที่จะนำมาใช้ "ค่า" เป็นข้อมูลที่จะถูกตั้งค่าและ "กิจกรรม" จะกำหนดตัวกระตุ้นกิจกรรม กรุณาตรวจสอบคู่มือการพัฒนา (http://otrs.github.io/doc/) บท "Ticket Event Module".',
         'Controls how to display the ticket history entries as readable values.' =>
             'ควบคุมวิธีการแสดงรายการประวัติตั๋วเป็นค่าที่สามารถอ่าน',
-        'Controls if CutomerID is editable in the agent interface.' => 'ควบคุมหากCutomerIDสามารถแก้ไขได้ในอินเตอร์เฟสตัวแทน',
+        'Controls if CustomerID is automatically copied from the sender address for unknown customers.' =>
+            '',
+        'Controls if CustomerID is read-only in the agent interface.' => '',
         'Controls if customers have the ability to sort their tickets.' =>
             'ควบคุมหากลูกค้ามีความสามารถในการจัดเรียงตั๋วของพวกเขา',
         'Controls if more than one from entry can be set in the new phone ticket in the agent interface.' =>
@@ -5874,22 +5899,6 @@ Thanks for your help!
             '',
         'If "file" was selected for LogModule, a logfile must be specified. If the file doesn\'t exist, it will be created by the system.' =>
             '',
-        'If a note is added by an agent, sets the state of a ticket in the close ticket screen of the agent interface.' =>
-            '',
-        'If a note is added by an agent, sets the state of a ticket in the ticket bulk screen of the agent interface.' =>
-            '',
-        'If a note is added by an agent, sets the state of a ticket in the ticket free text screen of the agent interface.' =>
-            '',
-        'If a note is added by an agent, sets the state of a ticket in the ticket note screen of the agent interface.' =>
-            '',
-        'If a note is added by an agent, sets the state of a ticket in the ticket responsible screen of the agent interface.' =>
-            '',
-        'If a note is added by an agent, sets the state of the ticket in the ticket owner screen of a zoomed ticket in the agent interface.' =>
-            '',
-        'If a note is added by an agent, sets the state of the ticket in the ticket pending screen of a zoomed ticket in the agent interface.' =>
-            '',
-        'If a note is added by an agent, sets the state of the ticket in the ticket priority screen of a zoomed ticket in the agent interface.' =>
-            '',
         'If active, none of the regular expressions may match the user\'s email address to allow registration.' =>
             '',
         'If active, one of the regular expressions has to match the user\'s email address to allow registration.' =>
@@ -5914,7 +5923,7 @@ Thanks for your help!
             '',
         'If enabled, TicketPhone and TicketEmail will be open in new windows.' =>
             'หากเปิดใช้งาน ตั๋วโทรศัพท์และตั๋วอีเมลจะเปิดในหน้าต่างใหม่',
-        'If enabled, the OTRS version tag will be removed from the Webinterface, the HTTP headers and the X-Headers of outgoing mails.' =>
+        'If enabled, the OTRS version tag will be removed from the Webinterface, the HTTP headers and the X-Headers of outgoing mails. NOTE: If you change this option, please make sure to delete the cache.' =>
             '',
         'If enabled, the customer can search for tickets in all services (regardless what services are assigned to the customer).' =>
             '',
@@ -5922,7 +5931,9 @@ Thanks for your help!
             '',
         'If enabled, the first level of the main menu opens on mouse hover (instead of click only).' =>
             '',
-        'If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty.' =>
+        'If no SendmailNotificationEnvelopeFrom is specified, this setting makes it possible to use the email\'s from address instead of an empty envelope sender (required in certain mail server configurations).' =>
+            '',
+        'If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty (unless SendmailNotificationEnvelopeFrom::FallbackToEmailFrom is set).' =>
             '',
         'If set, this address is used as envelope sender in outgoing messages (not notifications - see below). If no address is specified, the envelope sender is equal to queue e-mail address.' =>
             '',
@@ -6491,6 +6502,22 @@ Thanks for your help!
         'Sets the service in the ticket priority screen of a zoomed ticket in the agent interface (Ticket::Service needs to be activated).' =>
             '',
         'Sets the service in the ticket responsible screen of the agent interface (Ticket::Service needs to be activated).' =>
+            '',
+        'Sets the state of a ticket in the close ticket screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket bulk screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket free text screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket note screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket responsible screen of the agent interface.' =>
+            '',
+        'Sets the state of the ticket in the ticket owner screen of a zoomed ticket in the agent interface.' =>
+            '',
+        'Sets the state of the ticket in the ticket pending screen of a zoomed ticket in the agent interface.' =>
+            '',
+        'Sets the state of the ticket in the ticket priority screen of a zoomed ticket in the agent interface.' =>
             '',
         'Sets the stats hook.' => '',
         'Sets the system time zone (required a system with UTC as system time). Otherwise this is a diff time to the local time.' =>

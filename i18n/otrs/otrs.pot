@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-12-07 16:24+0000\n"
+"POT-Creation-Date: 2017-02-14 14:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6319,7 +6319,7 @@ msgid "To assign an Activity Dialog to an Activity drop the Activity Dialog elem
 msgstr ""
 
 #. Template: AdminProcessManagementProcessEdit
-msgid "You can start a connection between to Activities by dropping the Transition element over the Start Activity of the connection. After that you can move the loose end of the arrow to the End Activity."
+msgid "You can start a connection between two Activities by dropping the Transition element over the Start Activity of the connection. After that you can move the loose end of the arrow to the End Activity."
 msgstr ""
 
 #. Template: AdminProcessManagementProcessEdit
@@ -8907,11 +8907,19 @@ msgid "CustomerID (complex search)"
 msgstr ""
 
 #. Template: AgentTicketSearch
+msgid "(e. g. 234*)"
+msgstr ""
+
+#. Template: AgentTicketSearch
 msgid "CustomerID (exact match)"
 msgstr ""
 
 #. Template: AgentTicketSearch
 msgid "Customer User Login (complex search)"
+msgstr ""
+
+#. Template: AgentTicketSearch
+msgid "(e. g. U51*)"
 msgstr ""
 
 #. Template: AgentTicketSearch
@@ -9308,6 +9316,22 @@ msgstr ""
 
 #. Template: CustomerFooterJS
 msgid "An internal error occurred."
+msgstr ""
+
+#. Template: CustomerFooterJS
+msgid "Connection error"
+msgstr ""
+
+#. Template: CustomerFooterJS
+msgid "Reload page"
+msgstr ""
+
+#. Template: CustomerFooterJS
+msgid "Your browser was not able to communicate with OTRS properly, there seems to be something wrong with your network connection. You could either try reloading this page manually or wait until your browser has re-established the connection on its own."
+msgstr ""
+
+#. Template: CustomerFooterJS
+msgid "The connection has been re-established after a temporary connection loss. Due to this, elements on this page could have stopped to work correctly. In order to be able to use all elements correctly again, it is strongly recommended to reload this page."
 msgstr ""
 
 #. Template: CustomerLogin
@@ -10215,7 +10239,7 @@ msgid "Cache results"
 msgstr ""
 
 #. Template: GeneralSpecificationsWidget
-msgid "Stores statistics result data in a cache to be used in subsequent views with the same configuration."
+msgid "Stores statistics result data in a cache to be used in subsequent views with the same configuration (requires at least one selected time field)."
 msgstr ""
 
 #. Template: GeneralSpecificationsWidget
@@ -10807,6 +10831,10 @@ msgid "Can't read %s!"
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AdminPackageManager.pm
+msgid "File is OK"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AdminPackageManager.pm
 msgid "Package has locally modified files."
 msgstr ""
 
@@ -11254,6 +11282,14 @@ msgstr ""
 msgid "Can't get filter content data of %s!"
 msgstr ""
 
+#. Perl Module: Kernel/Modules/AgentDashboardCommon.pm
+msgid "Customer Company Name"
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AgentDashboardCommon.pm
+msgid "Customer User ID"
+msgstr ""
+
 #. Perl Module: Kernel/Modules/AgentLinkObject.pm
 msgid "Need SourceObject and SourceKey!"
 msgstr ""
@@ -11395,7 +11431,11 @@ msgid "You need to select at least one ticket."
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketBulk.pm
-msgid "Ticket is locked by another agent and will be ignored!"
+msgid "The following tickets were ignored because they are locked by another agent or you don't have write access to these tickets: %s."
+msgstr ""
+
+#. Perl Module: Kernel/Modules/AgentTicketBulk.pm
+msgid "The following tickets were locked: %s."
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketCompose.pm
@@ -12258,6 +12298,18 @@ msgstr ""
 msgid "not installed"
 msgstr ""
 
+#. Perl Module: Kernel/System/Package.pm
+msgid "File is not installed!"
+msgstr ""
+
+#. Perl Module: Kernel/System/Package.pm
+msgid "File is different!"
+msgstr ""
+
+#. Perl Module: Kernel/System/Package.pm
+msgid "Can't read file!"
+msgstr ""
+
 #. Perl Module: Kernel/System/ProcessManagement/DB/Process/State.pm
 msgid "Inactive"
 msgstr ""
@@ -12838,6 +12890,10 @@ msgstr ""
 msgid "Package List"
 msgstr ""
 
+#. Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/SessionConfigSettings.pm
+msgid "Session Config Settings"
+msgstr ""
+
 #. Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/SpoolMails.pm
 msgid "Spooled Emails"
 msgstr ""
@@ -13004,6 +13060,14 @@ msgstr ""
 
 #. Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/EnvironmentVariables.pm
 msgid "Environment Variables"
+msgstr ""
+
+#. Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/InternalWebRequest.pm
+msgid "Support Data Collection"
+msgstr ""
+
+#. Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/InternalWebRequest.pm
+msgid "Support data could not be collected from the web server."
 msgstr ""
 
 #. Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/Version.pm
@@ -14078,7 +14142,11 @@ msgid "Controls how to display the ticket history entries as readable values."
 msgstr ""
 
 #. SysConfig
-msgid "Controls if CutomerID is editable in the agent interface."
+msgid "Controls if CustomerID is automatically copied from the sender address for unknown customers."
+msgstr ""
+
+#. SysConfig
+msgid "Controls if CustomerID is read-only in the agent interface."
 msgstr ""
 
 #. SysConfig
@@ -16642,7 +16710,7 @@ msgid "If \"HTTPBasicAuth\" was selected for Customer::AuthModule, you can speci
 msgstr ""
 
 #. SysConfig
-msgid "If \"HTTPBasicAuth\" was selected for Customer::AuthModule, you can specify to strip leading parts of user names (e. g. for domains like example_domain\\user to user)."
+msgid "If \"HTTPBasicAuth\" was selected for Customer::AuthModule, you can specify to strip leading parts of user names (e. g. for domains like example_domain\\\\user to user)."
 msgstr ""
 
 #. SysConfig
@@ -16726,38 +16794,6 @@ msgid "If \"file\" was selected for LogModule, a logfile must be specified. If t
 msgstr ""
 
 #. SysConfig
-msgid "If a note is added by an agent, sets the state of a ticket in the close ticket screen of the agent interface."
-msgstr ""
-
-#. SysConfig
-msgid "If a note is added by an agent, sets the state of a ticket in the ticket bulk screen of the agent interface."
-msgstr ""
-
-#. SysConfig
-msgid "If a note is added by an agent, sets the state of a ticket in the ticket free text screen of the agent interface."
-msgstr ""
-
-#. SysConfig
-msgid "If a note is added by an agent, sets the state of a ticket in the ticket note screen of the agent interface."
-msgstr ""
-
-#. SysConfig
-msgid "If a note is added by an agent, sets the state of a ticket in the ticket responsible screen of the agent interface."
-msgstr ""
-
-#. SysConfig
-msgid "If a note is added by an agent, sets the state of the ticket in the ticket owner screen of a zoomed ticket in the agent interface."
-msgstr ""
-
-#. SysConfig
-msgid "If a note is added by an agent, sets the state of the ticket in the ticket pending screen of a zoomed ticket in the agent interface."
-msgstr ""
-
-#. SysConfig
-msgid "If a note is added by an agent, sets the state of the ticket in the ticket priority screen of a zoomed ticket in the agent interface."
-msgstr ""
-
-#. SysConfig
 msgid "If active, none of the regular expressions may match the user's email address to allow registration."
 msgstr ""
 
@@ -16810,7 +16846,7 @@ msgid "If enabled, TicketPhone and TicketEmail will be open in new windows."
 msgstr ""
 
 #. SysConfig
-msgid "If enabled, the OTRS version tag will be removed from the Webinterface, the HTTP headers and the X-Headers of outgoing mails."
+msgid "If enabled, the OTRS version tag will be removed from the Webinterface, the HTTP headers and the X-Headers of outgoing mails. NOTE: If you change this option, please make sure to delete the cache."
 msgstr ""
 
 #. SysConfig
@@ -16826,7 +16862,11 @@ msgid "If enabled, the first level of the main menu opens on mouse hover (instea
 msgstr ""
 
 #. SysConfig
-msgid "If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty."
+msgid "If no SendmailNotificationEnvelopeFrom is specified, this setting makes it possible to use the email's from address instead of an empty envelope sender (required in certain mail server configurations)."
+msgstr ""
+
+#. SysConfig
+msgid "If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty (unless SendmailNotificationEnvelopeFrom::FallbackToEmailFrom is set)."
 msgstr ""
 
 #. SysConfig
@@ -18299,6 +18339,38 @@ msgstr ""
 
 #. SysConfig
 msgid "Sets the service in the ticket responsible screen of the agent interface (Ticket::Service needs to be activated)."
+msgstr ""
+
+#. SysConfig
+msgid "Sets the state of a ticket in the close ticket screen of the agent interface."
+msgstr ""
+
+#. SysConfig
+msgid "Sets the state of a ticket in the ticket bulk screen of the agent interface."
+msgstr ""
+
+#. SysConfig
+msgid "Sets the state of a ticket in the ticket free text screen of the agent interface."
+msgstr ""
+
+#. SysConfig
+msgid "Sets the state of a ticket in the ticket note screen of the agent interface."
+msgstr ""
+
+#. SysConfig
+msgid "Sets the state of a ticket in the ticket responsible screen of the agent interface."
+msgstr ""
+
+#. SysConfig
+msgid "Sets the state of the ticket in the ticket owner screen of a zoomed ticket in the agent interface."
+msgstr ""
+
+#. SysConfig
+msgid "Sets the state of the ticket in the ticket pending screen of a zoomed ticket in the agent interface."
+msgstr ""
+
+#. SysConfig
+msgid "Sets the state of the ticket in the ticket priority screen of a zoomed ticket in the agent interface."
 msgstr ""
 
 #. SysConfig

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -120,7 +120,7 @@ $Selenium->RunTest(
         $Selenium->switch_to_window( $Handles->[0] );
 
         # Wait for reload to kick in.
-        sleep 0.5;
+        sleep 1;
         $Selenium->WaitFor(
             JavaScript =>
                 'return typeof(Core) == "object" && typeof(Core.App) == "object" && Core.App.PageLoadComplete'
@@ -152,7 +152,7 @@ $Selenium->RunTest(
         $Selenium->switch_to_window( $Handles->[0] );
 
         # Wait for reload to kick in.
-        sleep 0.5;
+        sleep 1;
         $Selenium->WaitFor(
             JavaScript =>
                 'return typeof(Core) == "object" && typeof(Core.App) == "object" && Core.App.PageLoadComplete'

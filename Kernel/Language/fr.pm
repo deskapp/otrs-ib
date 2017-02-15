@@ -32,7 +32,7 @@ sub Data {
     $Self->{DateFormatShort}     = '%D.%M.%Y';
     $Self->{DateInputFormat}     = '%D.%M.%Y';
     $Self->{DateInputFormatLong} = '%D.%M.%Y - %T';
-    $Self->{Completeness}        = 0.475985221674877;
+    $Self->{Completeness}        = 0.474642126789366;
 
     # csv separator
     $Self->{Separator} = ';';
@@ -829,8 +829,8 @@ sub Data {
         'Edit ACL information' => 'Editer les informations ACL',
         'Stop after match' => 'Stopper après correspondance',
         'Edit ACL structure' => 'Editer la structure ACL',
-        'Save settings' => '',
-        'Save ACL' => '',
+        'Save settings' => 'Sauvegarder les paramètres',
+        'Save ACL' => 'Sauvegarder l\'ACL',
         'Save' => 'Sauver',
         'or' => 'ou',
         'Save and finish' => 'Enregistrer et terminer',
@@ -851,7 +851,7 @@ sub Data {
         'List' => 'Lister',
         'Download file' => 'Télécharger fichier',
         'Delete this attachment' => 'Supprimer pièce jointe',
-        'Do you really want to delete this attachment?' => '',
+        'Do you really want to delete this attachment?' => 'Voulez-vous vraiment supprimer cette pièce jointe ? ',
         'Add Attachment' => 'Ajouter pièce jointe',
         'Edit Attachment' => 'Editer pièce jointe',
 
@@ -1425,7 +1425,7 @@ sub Data {
         'e.g. /opt/otrs/var/certificates/SOAP/CA' => 'par ex. /opt/otrs/var/certificates/SOAP/CA',
         'Sort options' => 'Lister options',
         'Add new first level element' => '',
-        'Element' => '',
+        'Element' => 'Elément',
         'Outbound sort order for xml fields (structure starting below function name wrapper) - see documentation for SOAP transport.' =>
             '',
 
@@ -1507,7 +1507,7 @@ sub Data {
         'Create new groups to handle access permissions for different groups of agent (e. g. purchasing department, support department, sales department, ...). ' =>
             'Créer de nouveux groupes de gestion des permissions d\'accès pour les différents groupes de opérateurs (p. ex. achats, support, ventes,...). ',
         'It\'s useful for ASP solutions. ' => 'C\'est utile pour les solutions ASP',
-        'total' => '',
+        'total' => 'total',
         'Add Group' => 'Ajouter un groupe',
         'Edit Group' => 'Editer Groupe',
 
@@ -1924,7 +1924,7 @@ sub Data {
             '',
         'To assign an Activity Dialog to an Activity drop the Activity Dialog element from this sidebar over the Activity placed in the canvas area.' =>
             '',
-        'You can start a connection between to Activities by dropping the Transition element over the Start Activity of the connection. After that you can move the loose end of the arrow to the End Activity.' =>
+        'You can start a connection between two Activities by dropping the Transition element over the Start Activity of the connection. After that you can move the loose end of the arrow to the End Activity.' =>
             '',
         'Actions can be assigned to a Transition by dropping the Action Element onto the label of a Transition.' =>
             '',
@@ -2819,8 +2819,10 @@ sub Data {
         'Searches in the attributes From, To, Cc, Subject and the article body, overriding other attributes with the same name.' =>
             'Recherche dans les attributs De, Vers, Copie à, Sujet et corps du message, outrepassant les autres filtres sur ces attributs.',
         'CustomerID (complex search)' => '',
+        '(e. g. 234*)' => '',
         'CustomerID (exact match)' => '',
         'Customer User Login (complex search)' => '',
+        '(e. g. U51*)' => '',
         'Customer User Login (exact match)' => '',
         'Attachment Name' => 'Nom de la Pièce Jointe',
         '(e. g. m*file or myfi*)' => '(par exemple : m*fichier ou monfich*)',
@@ -2944,6 +2946,12 @@ sub Data {
         'Accept' => 'Accepter',
         'Decline' => 'Refuser',
         'An internal error occurred.' => '',
+        'Connection error' => '',
+        'Reload page' => '',
+        'Your browser was not able to communicate with OTRS properly, there seems to be something wrong with your network connection. You could either try reloading this page manually or wait until your browser has re-established the connection on its own.' =>
+            '',
+        'The connection has been re-established after a temporary connection loss. Due to this, elements on this page could have stopped to work correctly. In order to be able to use all elements correctly again, it is strongly recommended to reload this page.' =>
+            '',
 
         # Template: CustomerLogin
         'JavaScript Not Available' => 'JavaScript non disponible',
@@ -3264,7 +3272,7 @@ sub Data {
         'Generate an additional column containing sums for all data columns.' =>
             '',
         'Cache results' => '',
-        'Stores statistics result data in a cache to be used in subsequent views with the same configuration.' =>
+        'Stores statistics result data in a cache to be used in subsequent views with the same configuration (requires at least one selected time field).' =>
             '',
         'Provide the statistic as a widget that agents can activate in their dashboard.' =>
             '',
@@ -3493,6 +3501,7 @@ sub Data {
         'No such file %s in package!' => '',
         'No such file %s in local file system!' => '',
         'Can\'t read %s!' => '',
+        'File is OK' => '',
         'Package has locally modified files.' => '',
         'No packages or no new packages found in selected repository.' =>
             '',
@@ -3654,6 +3663,8 @@ sub Data {
         'No preferences for %s!' => '',
         'Can\'t get element data of %s!' => '',
         'Can\'t get filter content data of %s!' => '',
+        'Customer Company Name' => '',
+        'Customer User ID' => '',
 
         # Perl Module: Kernel/Modules/AgentLinkObject.pm
         'Need SourceObject and SourceKey!' => '',
@@ -3702,7 +3713,9 @@ sub Data {
         'You either selected no ticket or only tickets which are locked by other agents.' =>
             '',
         'You need to select at least one ticket.' => '',
-        'Ticket is locked by another agent and will be ignored!' => '',
+        'The following tickets were ignored because they are locked by another agent or you don\'t have write access to these tickets: %s.' =>
+            '',
+        'The following tickets were locked: %s.' => '',
 
         # Perl Module: Kernel/Modules/AgentTicketCompose.pm
         'Can not determine the ArticleType!' => '',
@@ -3808,17 +3821,17 @@ sub Data {
         'Untitled' => '',
         'Customer Name' => '',
         'Invalid Users' => '',
-        'CSV' => '',
-        'Excel' => '',
+        'CSV' => 'CSV',
+        'Excel' => 'Excel',
 
         # Perl Module: Kernel/Modules/AgentTicketService.pm
-        'Feature not enabled!' => '',
+        'Feature not enabled!' => 'Fonctionnalité non activée ! ',
 
         # Perl Module: Kernel/Modules/AgentTicketWatcher.pm
-        'Feature is not active' => '',
+        'Feature is not active' => 'Fonctionnalité inactive',
 
         # Perl Module: Kernel/Modules/AgentTicketZoom.pm
-        'Link Deleted' => '',
+        'Link Deleted' => 'Lien supprimé',
         'Ticket Locked' => 'Ticket verrouillé',
         'Pending Time Set' => '',
         'Dynamic Field Updated' => 'Champ dynamique mis à jour',
@@ -4040,6 +4053,9 @@ sub Data {
 
         # Perl Module: Kernel/System/Package.pm
         'not installed' => '',
+        'File is not installed!' => '',
+        'File is different!' => '',
+        'Can\'t read file!' => '',
 
         # Perl Module: Kernel/System/ProcessManagement/DB/Process/State.pm
         'Inactive' => 'Inactif',
@@ -4278,6 +4294,9 @@ sub Data {
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/PackageList.pm
         'Package List' => 'Liste des paquets',
 
+        # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/SessionConfigSettings.pm
+        'Session Config Settings' => '',
+
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/SpoolMails.pm
         'Spooled Emails' => '',
         'There are emails in var/spool that OTRS could not process.' => '',
@@ -4357,6 +4376,10 @@ sub Data {
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/EnvironmentVariables.pm
         'Environment Variables' => 'Variables d\'Environnement',
+
+        # Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/InternalWebRequest.pm
+        'Support Data Collection' => '',
+        'Support data could not be collected from the web server.' => '',
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/Version.pm
         'Webserver Version' => '',
@@ -4756,7 +4779,9 @@ Thanks for your help!
             '',
         'Controls how to display the ticket history entries as readable values.' =>
             '',
-        'Controls if CutomerID is editable in the agent interface.' => '',
+        'Controls if CustomerID is automatically copied from the sender address for unknown customers.' =>
+            '',
+        'Controls if CustomerID is read-only in the agent interface.' => '',
         'Controls if customers have the ability to sort their tickets.' =>
             'Contrôle si les clients ont la possibilité de classer leurs tickets.',
         'Controls if more than one from entry can be set in the new phone ticket in the agent interface.' =>
@@ -5862,22 +5887,6 @@ Thanks for your help!
             '',
         'If "file" was selected for LogModule, a logfile must be specified. If the file doesn\'t exist, it will be created by the system.' =>
             '',
-        'If a note is added by an agent, sets the state of a ticket in the close ticket screen of the agent interface.' =>
-            'Si une note est ajoutée par un opérateur, définit l\'état d\'un ticket dans l\'écran de fermeture du ticket dans l\'interface opérateur.',
-        'If a note is added by an agent, sets the state of a ticket in the ticket bulk screen of the agent interface.' =>
-            'Si une note est ajoutée par un opérateur, définit l\'état d\'un ticket dans l\'écran de traitement groupé de ticket dans l\'interface opérateur.',
-        'If a note is added by an agent, sets the state of a ticket in the ticket free text screen of the agent interface.' =>
-            'Si une note est ajoutée par un opérateur, définit l\'état d\'un ticket dans l\'écran texte libre du ticket dans l\'interface opérateur.',
-        'If a note is added by an agent, sets the state of a ticket in the ticket note screen of the agent interface.' =>
-            'Si une note est ajoutée par un opérateur, définit l\'état d\'un ticket dans l\'écran de note du ticket dans l\'interface opérateur.',
-        'If a note is added by an agent, sets the state of a ticket in the ticket responsible screen of the agent interface.' =>
-            'Si une note est ajoutée par un opérateur, définit l\'état d\'un ticket dans l\'écran responsable du ticket dans l\'interface opérateur.',
-        'If a note is added by an agent, sets the state of the ticket in the ticket owner screen of a zoomed ticket in the agent interface.' =>
-            'Si une note est ajoutée par un opérateur, définit l\'état d\'un ticket dans l\'écran propriétaire du ticket dans l\'interface opérateur.',
-        'If a note is added by an agent, sets the state of the ticket in the ticket pending screen of a zoomed ticket in the agent interface.' =>
-            'Si une note est ajoutée par un opérateur, définit l\'état d\'un ticket dans l\'écran mise en attente du ticket dans l\'interface opérateur.',
-        'If a note is added by an agent, sets the state of the ticket in the ticket priority screen of a zoomed ticket in the agent interface.' =>
-            'Si une note est ajoutée par un opérateur, définit l\'état d\'un ticket dans l\'écran priorité du ticket dans l\'interface opérateur.',
         'If active, none of the regular expressions may match the user\'s email address to allow registration.' =>
             '',
         'If active, one of the regular expressions has to match the user\'s email address to allow registration.' =>
@@ -5902,7 +5911,7 @@ Thanks for your help!
             '',
         'If enabled, TicketPhone and TicketEmail will be open in new windows.' =>
             '',
-        'If enabled, the OTRS version tag will be removed from the Webinterface, the HTTP headers and the X-Headers of outgoing mails.' =>
+        'If enabled, the OTRS version tag will be removed from the Webinterface, the HTTP headers and the X-Headers of outgoing mails. NOTE: If you change this option, please make sure to delete the cache.' =>
             '',
         'If enabled, the customer can search for tickets in all services (regardless what services are assigned to the customer).' =>
             '',
@@ -5910,7 +5919,9 @@ Thanks for your help!
             'Lorsqu\'activé, les différents apperçus (Tableau de bord, Vue Verrouillé, Vue File) seront automatiquement rafraîchis après le temps spécifié.',
         'If enabled, the first level of the main menu opens on mouse hover (instead of click only).' =>
             '',
-        'If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty.' =>
+        'If no SendmailNotificationEnvelopeFrom is specified, this setting makes it possible to use the email\'s from address instead of an empty envelope sender (required in certain mail server configurations).' =>
+            '',
+        'If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty (unless SendmailNotificationEnvelopeFrom::FallbackToEmailFrom is set).' =>
             '',
         'If set, this address is used as envelope sender in outgoing messages (not notifications - see below). If no address is specified, the envelope sender is equal to queue e-mail address.' =>
             '',
@@ -6479,6 +6490,22 @@ Thanks for your help!
         'Sets the service in the ticket priority screen of a zoomed ticket in the agent interface (Ticket::Service needs to be activated).' =>
             '',
         'Sets the service in the ticket responsible screen of the agent interface (Ticket::Service needs to be activated).' =>
+            '',
+        'Sets the state of a ticket in the close ticket screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket bulk screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket free text screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket note screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket responsible screen of the agent interface.' =>
+            '',
+        'Sets the state of the ticket in the ticket owner screen of a zoomed ticket in the agent interface.' =>
+            '',
+        'Sets the state of the ticket in the ticket pending screen of a zoomed ticket in the agent interface.' =>
+            '',
+        'Sets the state of the ticket in the ticket priority screen of a zoomed ticket in the agent interface.' =>
             '',
         'Sets the stats hook.' => '',
         'Sets the system time zone (required a system with UTC as system time). Otherwise this is a diff time to the local time.' =>

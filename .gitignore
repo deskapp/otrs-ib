@@ -28,6 +28,7 @@ var/log/Daemon/*.log
 var/OPM
 var/Stats
 var/tmp/*
+var/httpd/htdocs/SeleniumScreenshots/
 var/httpd/htdocs/js/thirdparty/jslint
 var/httpd/htdocs/js/js-cache
 var/httpd/htdocs/js/js-cache/*
@@ -137,11 +138,15 @@ Kernel/Output/HTML/Templates/Standard/AgentTicketAttachmentView.tt
 Kernel/Output/HTML/Templates/Standard/AgentVideoChat.tt
 Kernel/Output/HTML/Templates/Standard/CustomerChat.tt
 Kernel/Output/HTML/Templates/Standard/CustomerVideoChat.tt
+Kernel/Output/HTML/Templates/Standard/NotificationEvent/Email/Business.tt
 Kernel/Output/HTML/Templates/Standard/PublicChat.tt
 Kernel/Output/HTML/TicketMenu/AttachmentView.pm
 Kernel/Output/HTML/ToolBar/*Chat*
 Kernel/Output/HTML/ToolBar/NotificationView.pm
 Kernel/Output/PDF/StatisticsReports*
+Kernel/System/Calendar/Event/Transport/NotificationView.pm
+Kernel/System/Calendar/Event/Transport/SMS.pm
+Kernel/System/Calendar/Team.pm
 Kernel/System/*Chat*
 Kernel/System/CloudService/Client/SMS.pm
 Kernel/System/Console/Command/Maint/Chat*
@@ -157,6 +162,8 @@ Kernel/System/Ticket/Event/NotificationEvent/Transport/NotificationView.pm
 Kernel/System/Ticket/Event/NotificationEvent/Transport/SMS.pm
 Kernel/System/Ticket/Event/StoreHistoricalData.pm
 OTRSBusiness.sopm
+scripts/test/Calendar/Event/Transport/NotificationView.t
+scripts/test/Calendar/Team.t
 scripts/test/Chat
 scripts/test/Console/Command/Maint/Chat*
 scripts/test/Console/Command/Maint/NotificationView*
@@ -181,7 +188,7 @@ scripts/test/Selenium/Public/Chat.t
 scripts/test/Selenium/Output/FilterElementPost/SLASelectionDialog.t
 scripts/test/StatsReport.t
 scripts/test/Ticket/Event/NotificationEvent/Transport/NotificationView.t
-scripts/test/VideoChat/
+scripts/test/VideoChat/Signalling.t
 var/cron/cleanupchats.dist
 var/httpd/htdocs/js/*Chat*
 var/httpd/htdocs/js/*TimelineView*
@@ -238,3 +245,9 @@ OTRSBusinessSeleniumTesting.sopm
 # OTRSApointmentCalendar
 Kernel/System/Calendar/
 scripts/test/Calendar/
+
+# OTRSContinuousIntegrationProvisioner (vagrant VMs)
+.cache
+.ssh
+.viminfo
+.bash*

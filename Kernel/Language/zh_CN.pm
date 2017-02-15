@@ -30,7 +30,7 @@ sub Data {
     $Self->{DateFormatShort}     = '%Y.%M.%D';
     $Self->{DateInputFormat}     = '%Y.%M.%D';
     $Self->{DateInputFormatLong} = '%Y.%M.%D - %T';
-    $Self->{Completeness}        = 0.998563218390805;
+    $Self->{Completeness}        = 0.992024539877301;
 
     # csv separator
     $Self->{Separator} = '';
@@ -1922,8 +1922,8 @@ sub Data {
             '可能将活动拖放到画布中，以便为流程分配活动。',
         'To assign an Activity Dialog to an Activity drop the Activity Dialog element from this sidebar over the Activity placed in the canvas area.' =>
             '为了给活动分配活动对话框，需要将左侧的活动对话框拖放到画布中的活动上。',
-        'You can start a connection between to Activities by dropping the Transition element over the Start Activity of the connection. After that you can move the loose end of the arrow to the End Activity.' =>
-            '为了实现活动之间的转换，需要将左侧的转换拖放到画布中并将它放到在开始活动上，然后再将转换箭头拖放到结束活动上。',
+        'You can start a connection between two Activities by dropping the Transition element over the Start Activity of the connection. After that you can move the loose end of the arrow to the End Activity.' =>
+            '',
         'Actions can be assigned to a Transition by dropping the Action Element onto the label of a Transition.' =>
             '为了给转换分配转换动作，需要将左侧转换动作拖放到转换标签上。',
         'Edit Process Information' => '编辑流程信息',
@@ -2817,8 +2817,10 @@ sub Data {
         'Searches in the attributes From, To, Cc, Subject and the article body, overriding other attributes with the same name.' =>
             '只搜索From、To、Cc、主题和信件正文，不管其它属性。',
         'CustomerID (complex search)' => 'CustomerID(复合搜索)',
+        '(e. g. 234*)' => '',
         'CustomerID (exact match)' => 'CustomerID(精确匹配)',
         'Customer User Login (complex search)' => '客户联系人登录名(复合搜索)',
+        '(e. g. U51*)' => '',
         'Customer User Login (exact match)' => '客户联系人登录名(精确匹配)',
         'Attachment Name' => '附件名',
         '(e. g. m*file or myfi*)' => '（例如：m*file或myfi*）',
@@ -2942,6 +2944,12 @@ sub Data {
         'Accept' => '接受',
         'Decline' => '拒绝',
         'An internal error occurred.' => '发生了一个内部错误。',
+        'Connection error' => '',
+        'Reload page' => '',
+        'Your browser was not able to communicate with OTRS properly, there seems to be something wrong with your network connection. You could either try reloading this page manually or wait until your browser has re-established the connection on its own.' =>
+            '',
+        'The connection has been re-established after a temporary connection loss. Due to this, elements on this page could have stopped to work correctly. In order to be able to use all elements correctly again, it is strongly recommended to reload this page.' =>
+            '',
 
         # Template: CustomerLogin
         'JavaScript Not Available' => '没有启用JavaScript',
@@ -3262,8 +3270,8 @@ sub Data {
         'Generate an additional column containing sums for all data columns.' =>
             '生成一个额外的列来包含所有数据列的汇总。',
         'Cache results' => '缓存结果',
-        'Stores statistics result data in a cache to be used in subsequent views with the same configuration.' =>
-            '将统计结果数据保存到缓存中，以在随后同样配置的视图中使用。',
+        'Stores statistics result data in a cache to be used in subsequent views with the same configuration (requires at least one selected time field).' =>
+            '',
         'Provide the statistic as a widget that agents can activate in their dashboard.' =>
             '将该统计变为小部件，以便服务人员能够在仪表板中激活使用。',
         'Please note that enabling the dashboard widget will activate caching for this statistic in the dashboard.' =>
@@ -3491,6 +3499,7 @@ sub Data {
         'No such file %s in package!' => '软件包中没有%s 文件！',
         'No such file %s in local file system!' => '本地文件系统中没有%s 文件！',
         'Can\'t read %s!' => '不能读取%s！',
+        'File is OK' => '',
         'Package has locally modified files.' => '软件包中有本地修改过的文件。',
         'No packages or no new packages found in selected repository.' =>
             '选择的软件仓库中没有软件包或没有新的软件包。',
@@ -3652,6 +3661,8 @@ sub Data {
         'No preferences for %s!' => '没有%s的偏好设置！',
         'Can\'t get element data of %s!' => '不能获得%s 的元素数据！',
         'Can\'t get filter content data of %s!' => '不能获得%s 的过滤器内容数据！',
+        'Customer Company Name' => '',
+        'Customer User ID' => '',
 
         # Perl Module: Kernel/Modules/AgentLinkObject.pm
         'Need SourceObject and SourceKey!' => '需要SourceObject（源对象）和SourceKey（源键）！',
@@ -3700,7 +3711,9 @@ sub Data {
         'You either selected no ticket or only tickets which are locked by other agents.' =>
             '你要么没有选择工单，要么只选择了已被其他服务人员锁定的工单。',
         'You need to select at least one ticket.' => '你需要选择至少一个工单。',
-        'Ticket is locked by another agent and will be ignored!' => '工单已被其他服务人员锁定，将被忽略！',
+        'The following tickets were ignored because they are locked by another agent or you don\'t have write access to these tickets: %s.' =>
+            '',
+        'The following tickets were locked: %s.' => '',
 
         # Perl Module: Kernel/Modules/AgentTicketCompose.pm
         'Can not determine the ArticleType!' => '不能确定信件类型！',
@@ -4038,6 +4051,9 @@ sub Data {
 
         # Perl Module: Kernel/System/Package.pm
         'not installed' => '没有安装',
+        'File is not installed!' => '',
+        'File is different!' => '',
+        'Can\'t read file!' => '',
 
         # Perl Module: Kernel/System/ProcessManagement/DB/Process/State.pm
         'Inactive' => '非活动的',
@@ -4276,6 +4292,9 @@ sub Data {
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/PackageList.pm
         'Package List' => '软件包列表',
 
+        # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/SessionConfigSettings.pm
+        'Session Config Settings' => '',
+
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/SpoolMails.pm
         'Spooled Emails' => '假脱机邮件',
         'There are emails in var/spool that OTRS could not process.' => 'var/spool目录下有一些OTRS无法处理的邮件。',
@@ -4355,6 +4374,10 @@ sub Data {
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/EnvironmentVariables.pm
         'Environment Variables' => '环境变量',
+
+        # Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/InternalWebRequest.pm
+        'Support Data Collection' => '',
+        'Support data could not be collected from the web server.' => '',
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/Version.pm
         'Webserver Version' => 'WEB服务器版本',
@@ -4763,7 +4786,9 @@ Thanks for your help!
             '配置默认的TicketDynamicField（工单动态字段）设置，“Name（名称）”定义要使用的动态字段，“Value（值）”是要设置的数值，“Event（事件）”定义触发的事件。请检查开发手册（http://otrs.github.io/doc/）的“Ticket Event Module（工单事件模块）”章节。',
         'Controls how to display the ticket history entries as readable values.' =>
             '控制如何显示工单历史条目为可读值。',
-        'Controls if CutomerID is editable in the agent interface.' => '控制在服务人员界面中客户ID能否编辑。',
+        'Controls if CustomerID is automatically copied from the sender address for unknown customers.' =>
+            '',
+        'Controls if CustomerID is read-only in the agent interface.' => '',
         'Controls if customers have the ability to sort their tickets.' =>
             '控制客户能否对他们的工单排序。',
         'Controls if more than one from entry can be set in the new phone ticket in the agent interface.' =>
@@ -5869,22 +5894,6 @@ Thanks for your help!
             '如果日志模块选用了“SysLog”，可以指定记录日志的字符集。',
         'If "file" was selected for LogModule, a logfile must be specified. If the file doesn\'t exist, it will be created by the system.' =>
             '如果日志模块选用了“文件”，必须指定日志文件名。如果文件不存在，系统会创建它。',
-        'If a note is added by an agent, sets the state of a ticket in the close ticket screen of the agent interface.' =>
-            '在服务人员界面工单关闭窗口，如果服务人员添加了一个备注，设置工单的状态。',
-        'If a note is added by an agent, sets the state of a ticket in the ticket bulk screen of the agent interface.' =>
-            '在服务人员界面工单批量操作窗口，如果服务人员添加了一个备注，设置工单的状态。',
-        'If a note is added by an agent, sets the state of a ticket in the ticket free text screen of the agent interface.' =>
-            '在服务人员界面工单自定义字段窗口，如果服务人员添加了一个备注，设置工单的状态。',
-        'If a note is added by an agent, sets the state of a ticket in the ticket note screen of the agent interface.' =>
-            '在服务人员界面工单备注窗口，如果服务人员添加了一个备注，设置工单的状态。',
-        'If a note is added by an agent, sets the state of a ticket in the ticket responsible screen of the agent interface.' =>
-            '在服务人员界面工单负责人窗口，如果服务人员添加了一个备注，设置工单的状态。',
-        'If a note is added by an agent, sets the state of the ticket in the ticket owner screen of a zoomed ticket in the agent interface.' =>
-            '在服务人员界面工单所有者窗口，如果服务人员添加了一个备注，设置工单的状态。',
-        'If a note is added by an agent, sets the state of the ticket in the ticket pending screen of a zoomed ticket in the agent interface.' =>
-            '在服务人员界面工单挂起窗口，如果服务人员添加了一个备注，设置工单的状态。',
-        'If a note is added by an agent, sets the state of the ticket in the ticket priority screen of a zoomed ticket in the agent interface.' =>
-            '在服务人员界面工单优先级窗口，如果服务人员添加了一个备注，设置工单的状态。',
         'If active, none of the regular expressions may match the user\'s email address to allow registration.' =>
             '如果激活此选项，没有正则表达式能够匹配允许用户注册的邮件地址。',
         'If active, one of the regular expressions has to match the user\'s email address to allow registration.' =>
@@ -5909,16 +5918,18 @@ Thanks for your help!
             '如果启用了此选项，OTRS将用压缩格式传送所有的JavaScript文件。',
         'If enabled, TicketPhone and TicketEmail will be open in new windows.' =>
             '如果启用了此选项，电话工单和邮件工单将在新窗口中打开。',
-        'If enabled, the OTRS version tag will be removed from the Webinterface, the HTTP headers and the X-Headers of outgoing mails.' =>
-            '如果启用了此选项，OTRS版本标签会从WEB界面、HTTP头和外发邮件的X-Header中移除。',
+        'If enabled, the OTRS version tag will be removed from the Webinterface, the HTTP headers and the X-Headers of outgoing mails. NOTE: If you change this option, please make sure to delete the cache.' =>
+            '',
         'If enabled, the customer can search for tickets in all services (regardless what services are assigned to the customer).' =>
             '如果启用了此选项，客户可以搜索所有服务的工单（不管这个客户分配了什么服务）。',
         'If enabled, the different overviews (Dashboard, LockedView, QueueView) will automatically refresh after the specified time.' =>
             '如果启用了此选项，所有概览视图(仪表板、锁定工单视图、队列视图)将在指定的间隔时间自动刷新。',
         'If enabled, the first level of the main menu opens on mouse hover (instead of click only).' =>
             '如果启用了此选项，在鼠标移动到主菜单位置时打开一级子菜单（而不是需要点击后再打开）。',
-        'If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty.' =>
-            '如果设置了此参数，这个地址将用于外发通知的信件发件人头。如果不指定地址，信件发件人头就为空。',
+        'If no SendmailNotificationEnvelopeFrom is specified, this setting makes it possible to use the email\'s from address instead of an empty envelope sender (required in certain mail server configurations).' =>
+            '',
+        'If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty (unless SendmailNotificationEnvelopeFrom::FallbackToEmailFrom is set).' =>
+            '',
         'If set, this address is used as envelope sender in outgoing messages (not notifications - see below). If no address is specified, the envelope sender is equal to queue e-mail address.' =>
             '如果设置了此参数，这个地址将用于外发消息（不是通知-通知在下面查看）的信件发件人头。如果不指定地址，信件发件人头就为空。',
         'If this option is enabled, then the decrypted data will be stored in the database if they are displayed in AgentTicketZoom.' =>
@@ -6487,6 +6498,22 @@ Thanks for your help!
             '设置服务人员界面工单优先级窗口的服务（需要激活工单::服务）。',
         'Sets the service in the ticket responsible screen of the agent interface (Ticket::Service needs to be activated).' =>
             '设置服务人员界面工单负责人窗口的服务（需要激活工单::服务）。',
+        'Sets the state of a ticket in the close ticket screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket bulk screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket free text screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket note screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket responsible screen of the agent interface.' =>
+            '',
+        'Sets the state of the ticket in the ticket owner screen of a zoomed ticket in the agent interface.' =>
+            '',
+        'Sets the state of the ticket in the ticket pending screen of a zoomed ticket in the agent interface.' =>
+            '',
+        'Sets the state of the ticket in the ticket priority screen of a zoomed ticket in the agent interface.' =>
+            '',
         'Sets the stats hook.' => '设置统计挂钩。',
         'Sets the system time zone (required a system with UTC as system time). Otherwise this is a diff time to the local time.' =>
             '设置系统时区（需要系统采用UTC时间，否则与本地时间会有时间差）。',

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -28,7 +28,7 @@ $Selenium->RunTest(
         my $Language      = 'de';
         my $TestUserLogin = $Helper->TestUserCreate(
             Language => $Language,
-            Groups   => ['admin'],
+            Groups   => [ 'admin', 'users' ],
         ) || die "Did not get test user";
 
         my $TestUserID = $UserObject->UserLookup(
@@ -45,7 +45,9 @@ $Selenium->RunTest(
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AgentTicketPhone");
 
         # Provoke an ajax error caused by unexpected result (404), should show no dialog, but an regular alert.
-        $Selenium->execute_script("Core.AJAX.FunctionCall(Core.Config.Get('CGIHandle') + ':12345', null, function () {});");
+        $Selenium->execute_script(
+            "Core.AJAX.FunctionCall(Core.Config.Get('CGIHandle') + ':12345', null, function () {});"
+        );
 
         $Selenium->WaitFor( AlertPresent => 1 );
 
@@ -54,12 +56,15 @@ $Selenium->RunTest(
 
         # Another alert dialog opens with the detail message.
         $Self->Is(
-            substr($Selenium->get_alert_text(), 0 ,64),
+            substr( $Selenium->get_alert_text(), 0, 64 ),
             'Error during AJAX communication. Status: error, Error: Not Found',
             'Check for opened alert text',
         );
 
         $Selenium->accept_alert();
+
+        # Wait until all AJAX calls finished.
+        $Selenium->WaitFor( JavaScript => "return \$.active == 0" );
 
         # Change the queue to trigger an ajax call.
         $Selenium->execute_script("\$('#Dest').val('2||Raw').trigger('redraw.InputField').trigger('change');");
@@ -69,7 +74,7 @@ $Selenium->RunTest(
 
         # There should be no error dialog yet.
         $Self->Is(
-            $Selenium->execute_script( "return \$('#AjaxErrorDialogInner .NoConnection:visible').length" ),
+            $Selenium->execute_script("return \$('#AjaxErrorDialogInner .NoConnection:visible').length"),
             0,
             "Error dialog not visible yet"
         );
@@ -92,12 +97,11 @@ JAVASCRIPT
         # Wait until all AJAX calls finished.
         $Selenium->WaitFor( JavaScript => "return \$.active == 0" );
 
-
         # Now check if we see a connection error popup.
         $Self->Is(
-            $Selenium->execute_script( "return \$('#AjaxErrorDialogInner .NoConnection:visible').length" ),
+            $Selenium->execute_script("return \$('#AjaxErrorDialogInner .NoConnection:visible').length"),
             1,
-            "Error dialog visible"
+            "Error dialog visible - first try"
         );
 
         # Now act as if the connection had been re-established.
@@ -115,7 +119,7 @@ JAVASCRIPT
 
         # The dialog should show the re-established message now.
         $Self->Is(
-            $Selenium->execute_script( "return \$('#AjaxErrorDialogInner .ConnectionReEstablished:visible').length" ),
+            $Selenium->execute_script("return \$('#AjaxErrorDialogInner .ConnectionReEstablished:visible').length"),
             1,
             "ConnectionReEstablished dialog visible"
         );
@@ -134,9 +138,9 @@ JAVASCRIPT
 
         # Now check if we see a connection error popup.
         $Self->Is(
-            $Selenium->execute_script( "return \$('#AjaxErrorDialogInner .NoConnection:visible').length" ),
+            $Selenium->execute_script("return \$('#AjaxErrorDialogInner .NoConnection:visible').length"),
             1,
-            "Error dialog visible"
+            "Error dialog visible - second try"
         );
 
         # Now we close the dialog manually.
@@ -146,7 +150,7 @@ JAVASCRIPT
 
         # The dialog should be gone.
         $Self->Is(
-            $Selenium->execute_script( "return \$('#AjaxErrorDialogInner .NoConnection:visible').length" ),
+            $Selenium->execute_script("return \$('#AjaxErrorDialogInner .NoConnection:visible').length"),
             0,
             "Error dialog closed"
         );
@@ -160,7 +164,7 @@ JAVASCRIPT
 
         # The dialog should show the re-established message now.
         $Self->Is(
-            $Selenium->execute_script( "return \$('#AjaxErrorDialogInner .ConnectionReEstablished:visible').length" ),
+            $Selenium->execute_script("return \$('#AjaxErrorDialogInner .ConnectionReEstablished:visible').length"),
             1,
             "ConnectionReEstablished dialog visible"
         );
@@ -208,6 +212,9 @@ JAVASCRIPT
                 'return typeof(Core) == "object" && typeof(Core.App) == "object" && Core.App.PageLoadComplete'
         );
 
+        # In some cases, we need a little bit more time to get the page up and running correctly
+        sleep(1);
+
         # Trigger faked ajax request again.
         $Selenium->execute_script($AjaxOverloadJSError);
         $Selenium->execute_script('return $.ajax();');
@@ -217,9 +224,9 @@ JAVASCRIPT
 
         # Now check if we see a connection error popup.
         $Self->Is(
-            $Selenium->execute_script( "return \$('#AjaxErrorDialogInner .NoConnection:visible').length" ),
+            $Selenium->execute_script("return \$('#AjaxErrorDialogInner .NoConnection:visible').length"),
             1,
-            "Error dialog visible"
+            "Error dialog visible -  in popup"
         );
 
         # Now act as if the connection had been re-established.
@@ -231,7 +238,7 @@ JAVASCRIPT
 
         # The dialog should show the re-established message now.
         $Self->Is(
-            $Selenium->execute_script( "return \$('#AjaxErrorDialogInner .ConnectionReEstablished:visible').length" ),
+            $Selenium->execute_script("return \$('#AjaxErrorDialogInner .ConnectionReEstablished:visible').length"),
             1,
             "ConnectionReEstablished dialog visible"
         );

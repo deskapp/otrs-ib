@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -24,7 +24,7 @@ sub Data {
     $Self->{DateFormatShort}     = '%D/%M/%Y';
     $Self->{DateInputFormat}     = '%D/%M/%Y';
     $Self->{DateInputFormatLong} = '%D/%M/%Y - %T';
-    $Self->{Completeness}        = 0.975574712643678;
+    $Self->{Completeness}        = 0.969120654396728;
 
     # csv separator
     $Self->{Separator} = ',';
@@ -1917,8 +1917,8 @@ EMAILADDRESS:info@example.com dari, kepada atau Cc.',
             'Anda dapat menempatkan aktivitas dikanvas untuk menetapkan kegiatan ini kedalam proses.',
         'To assign an Activity Dialog to an Activity drop the Activity Dialog element from this sidebar over the Activity placed in the canvas area.' =>
             'Untuk menetapkan sebuah Kegiatan Dialog, sebuah Kegiatan menjatuhkan elemen Kegiatan Dialog dari sidebar ini lebih tempat kegiatan di daerah kanvas.',
-        'You can start a connection between to Activities by dropping the Transition element over the Start Activity of the connection. After that you can move the loose end of the arrow to the End Activity.' =>
-            'Anda dapat memulai koneksi antara dua Aktivitas dengan menjatuhkan unsur Transisi selama Aktivitas Start terhubung. Setelah itu Anda dapat memindahkan panah ke Kegiatan Akhir.',
+        'You can start a connection between two Activities by dropping the Transition element over the Start Activity of the connection. After that you can move the loose end of the arrow to the End Activity.' =>
+            '',
         'Actions can be assigned to a Transition by dropping the Action Element onto the label of a Transition.' =>
             'Tindakan dapat ditugaskan ke sebuah Transisi dengan menjatuhkan Action Elemen ke label Transisi a.',
         'Edit Process Information' => 'Mengubah proses informasi',
@@ -2813,8 +2813,10 @@ bin/otrs.Daemon.pl status\').',
         'Searches in the attributes From, To, Cc, Subject and the article body, overriding other attributes with the same name.' =>
             'Pencarian di atribut Dari, Untuk, Cc, Subjek dan tubuh artikel, mengesampingkan atribut lainnya dengan nama yang sama.',
         'CustomerID (complex search)' => '',
+        '(e. g. 234*)' => '',
         'CustomerID (exact match)' => '',
         'Customer User Login (complex search)' => '',
+        '(e. g. U51*)' => '',
         'Customer User Login (exact match)' => '',
         'Attachment Name' => 'Lampirkan nama',
         '(e. g. m*file or myfi*)' => '(Contoh: m*file atau myfl*)',
@@ -2938,6 +2940,12 @@ bin/otrs.Daemon.pl status\').',
         'Accept' => 'Menerima',
         'Decline' => 'Menolak',
         'An internal error occurred.' => 'Terjadi kesalahan internal.',
+        'Connection error' => '',
+        'Reload page' => '',
+        'Your browser was not able to communicate with OTRS properly, there seems to be something wrong with your network connection. You could either try reloading this page manually or wait until your browser has re-established the connection on its own.' =>
+            '',
+        'The connection has been re-established after a temporary connection loss. Due to this, elements on this page could have stopped to work correctly. In order to be able to use all elements correctly again, it is strongly recommended to reload this page.' =>
+            '',
 
         # Template: CustomerLogin
         'JavaScript Not Available' => 'JavaScript tidak tersedia',
@@ -3258,8 +3266,8 @@ bin/otrs.Daemon.pl status\').',
         'Generate an additional column containing sums for all data columns.' =>
             'Menghasilkan kolom yang berisi tambahan jumlah untuk semua kolom data.',
         'Cache results' => 'Hasil cache',
-        'Stores statistics result data in a cache to be used in subsequent views with the same configuration.' =>
-            'Statistik yang tersimpan menghasilkan data dalam cache untuk digunakan dalam tampilan berikutnya dengan konfigurasi yang sama.',
+        'Stores statistics result data in a cache to be used in subsequent views with the same configuration (requires at least one selected time field).' =>
+            '',
         'Provide the statistic as a widget that agents can activate in their dashboard.' =>
             'Menyediakan statistik sebagai widget bahwa agen dapat mengaktifkan di dashboard mereka.',
         'Please note that enabling the dashboard widget will activate caching for this statistic in the dashboard.' =>
@@ -3487,6 +3495,7 @@ bin/otrs.Daemon.pl status\').',
         'No such file %s in package!' => 'Tidak ada file seperti %s dalam paket',
         'No such file %s in local file system!' => 'Tidak ada jenis file %s di dalam file sistem lokal!',
         'Can\'t read %s!' => 'Tidak bisa dibaca %s!',
+        'File is OK' => '',
         'Package has locally modified files.' => 'Paket telah diubah secara lokal',
         'No packages or no new packages found in selected repository.' =>
             'Tidak ada paket atau tidak ada paket baru ditemukan dalam repositori yang dipilih.',
@@ -3648,6 +3657,8 @@ bin/otrs.Daemon.pl status\').',
         'No preferences for %s!' => 'Tidak ada preferensi untuk %s!',
         'Can\'t get element data of %s!' => 'Tidak bisa mendapatkan data unsur %s!',
         'Can\'t get filter content data of %s!' => 'Tidak bisa mendapatkan data filter konten dari %s!',
+        'Customer Company Name' => '',
+        'Customer User ID' => '',
 
         # Perl Module: Kernel/Modules/AgentLinkObject.pm
         'Need SourceObject and SourceKey!' => 'Perlu sumber objek dan sumber kunci!',
@@ -3696,7 +3707,9 @@ bin/otrs.Daemon.pl status\').',
         'You either selected no ticket or only tickets which are locked by other agents.' =>
             '',
         'You need to select at least one ticket.' => '',
-        'Ticket is locked by another agent and will be ignored!' => 'Tiket dikunci oleh agen lain dan akan diabaikan!',
+        'The following tickets were ignored because they are locked by another agent or you don\'t have write access to these tickets: %s.' =>
+            '',
+        'The following tickets were locked: %s.' => '',
 
         # Perl Module: Kernel/Modules/AgentTicketCompose.pm
         'Can not determine the ArticleType!' => 'Tidak bisa menentukan ArticleType!',
@@ -4034,6 +4047,9 @@ bin/otrs.Daemon.pl status\').',
 
         # Perl Module: Kernel/System/Package.pm
         'not installed' => 'Tidak diinstall',
+        'File is not installed!' => '',
+        'File is different!' => '',
+        'Can\'t read file!' => '',
 
         # Perl Module: Kernel/System/ProcessManagement/DB/Process/State.pm
         'Inactive' => 'Tidak aktif',
@@ -4272,6 +4288,9 @@ bin/otrs.Daemon.pl status\').',
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/PackageList.pm
         'Package List' => '',
 
+        # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/SessionConfigSettings.pm
+        'Session Config Settings' => '',
+
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/SpoolMails.pm
         'Spooled Emails' => '',
         'There are emails in var/spool that OTRS could not process.' => '',
@@ -4351,6 +4370,10 @@ bin/otrs.Daemon.pl status\').',
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/EnvironmentVariables.pm
         'Environment Variables' => '',
+
+        # Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/InternalWebRequest.pm
+        'Support Data Collection' => '',
+        'Support data could not be collected from the web server.' => '',
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/Webserver/Version.pm
         'Webserver Version' => 'Versi Webserver',
@@ -4497,10 +4520,14 @@ Thanks for your help!
  Your Helpdesk Team
 ' => '
 Pelanggan yang terhormat,
+
 Sayangnya kami tidak bisa mendeteksi number tiket yang sah
 dalam subjek Anda, sehingga email ini tidak dapat processed.
+
 Harap membuat tiket baru melalui panel pelanggan
+
 Terima kasih atas bantuan Anda!
+
 Helpdesk Team Anda
 
 ',
@@ -4758,7 +4785,9 @@ Helpdesk Team Anda
             'Mengkonfigurasi TicketDynamicField pengaturan default. "Nama" mendefinisikan bidang yang dinamis yang harus digunakan, "Value" adalah data yang akan ditetapkan, dan "Event" mendefinisikan acara pemicu. Silakan periksa pengembang user (http://otrs.github.io/doc/), bab "Ticket acara Modul".',
         'Controls how to display the ticket history entries as readable values.' =>
             'Kontrol bagaimana menampilkan entri sejarah tiket sebagai nilai-nilai yang dapat dibaca.',
-        'Controls if CutomerID is editable in the agent interface.' => 'Kontrol jika Pelanggan dapat diedit di antarmuka agen.',
+        'Controls if CustomerID is automatically copied from the sender address for unknown customers.' =>
+            '',
+        'Controls if CustomerID is read-only in the agent interface.' => '',
         'Controls if customers have the ability to sort their tickets.' =>
             'Kontrol jika pelanggan memiliki kemampuan untuk memilah tiket mereka.',
         'Controls if more than one from entry can be set in the new phone ticket in the agent interface.' =>
@@ -5865,22 +5894,6 @@ Helpdesk Team Anda
             'Jika "syslog" dipilih untuk LogModule, yang charset harus digunakan untuk penebangan dapat ditentukan.',
         'If "file" was selected for LogModule, a logfile must be specified. If the file doesn\'t exist, it will be created by the system.' =>
             'Jika "file" dipilih untuk LogModule, file log harus ditentukan. Jika file tidak ada, maka akan dibuat oleh sistem.',
-        'If a note is added by an agent, sets the state of a ticket in the close ticket screen of the agent interface.' =>
-            'Jika catatan ditambahkan oleh agen, menetapkan keadaan tiket di layar tiket penutupan antarmuka agen.',
-        'If a note is added by an agent, sets the state of a ticket in the ticket bulk screen of the agent interface.' =>
-            'Jika catatan ditambahkan oleh agen, menetapkan keadaan tiket di layar massal tiket dari antarmuka agen.',
-        'If a note is added by an agent, sets the state of a ticket in the ticket free text screen of the agent interface.' =>
-            'Jika catatan ditambahkan oleh agen, menetapkan keadaan tiket di tiket layar teks bebas dari antarmuka agen.',
-        'If a note is added by an agent, sets the state of a ticket in the ticket note screen of the agent interface.' =>
-            'Jika catatan ditambahkan oleh agen, menetapkan keadaan tiket di layar catatan tiket dari antarmuka agen.',
-        'If a note is added by an agent, sets the state of a ticket in the ticket responsible screen of the agent interface.' =>
-            'Jika catatan ditambahkan oleh agen, menetapkan keadaan tiket di tiket layar yang bertanggung jawab dari antarmuka agen.',
-        'If a note is added by an agent, sets the state of the ticket in the ticket owner screen of a zoomed ticket in the agent interface.' =>
-            'Jika catatan ditambahkan oleh agen, menetapkan keadaan tiket di layar pemilik tiket dari tiket yang diperbesar di antarmuka agen.',
-        'If a note is added by an agent, sets the state of the ticket in the ticket pending screen of a zoomed ticket in the agent interface.' =>
-            'JIKA Catatan ditambahkan Oleh agen, menetapkan keadaan Tiket di Layar pemilik Tiket Dari Tiket Yang diperbesar di Antarmuka agen.',
-        'If a note is added by an agent, sets the state of the ticket in the ticket priority screen of a zoomed ticket in the agent interface.' =>
-            'Jika catatan ditambahkan oleh agen, menetapkan keadaan tiket di layar prioritas tiket dari tiket yang diperbesar di antarmuka agen.',
         'If active, none of the regular expressions may match the user\'s email address to allow registration.' =>
             'Jika aktif, tidak ada ekspresi reguler dapat mencocokkan alamat email pengguna untuk memungkinkan pendaftaran.',
         'If active, one of the regular expressions has to match the user\'s email address to allow registration.' =>
@@ -5905,16 +5918,18 @@ Helpdesk Team Anda
             'Jika diaktifkan, OTRS akan memberikan semua file JavaScript dalam bentuk minified.',
         'If enabled, TicketPhone and TicketEmail will be open in new windows.' =>
             'Jika diaktifkan, Telepon Tiket dan Ticket Email akan terbuka di jendela baru.',
-        'If enabled, the OTRS version tag will be removed from the Webinterface, the HTTP headers and the X-Headers of outgoing mails.' =>
-            'Jika diaktifkan, tag versi OTRS akan dihapus dari Web Interface, header HTTP dan X-Header mail keluar.',
+        'If enabled, the OTRS version tag will be removed from the Webinterface, the HTTP headers and the X-Headers of outgoing mails. NOTE: If you change this option, please make sure to delete the cache.' =>
+            '',
         'If enabled, the customer can search for tickets in all services (regardless what services are assigned to the customer).' =>
             'Jika diaktifkan, pelanggan dapat mencari tiket di semua layanan (layanan terlepas apa yang ditugaskan kepada pelanggan).',
         'If enabled, the different overviews (Dashboard, LockedView, QueueView) will automatically refresh after the specified time.' =>
             'Jika diaktifkan, ikhtisar yang berbeda (Dashboard, Lockview, QueueView) akan secara otomatis me-refresh setelah waktu yang ditentukan.',
         'If enabled, the first level of the main menu opens on mouse hover (instead of click only).' =>
             'Jika diaktifkan, tingkat pertama dari menu utama terbuka pada mouse hover (bukan klik saja).',
-        'If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty.' =>
-            'Jika diatur, alamat ini digunakan sebagai header pengirim amplop di notifikasi keluar. Jika tidak ada alamat yang ditentukan, header pengirim amplop kosong.',
+        'If no SendmailNotificationEnvelopeFrom is specified, this setting makes it possible to use the email\'s from address instead of an empty envelope sender (required in certain mail server configurations).' =>
+            '',
+        'If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty (unless SendmailNotificationEnvelopeFrom::FallbackToEmailFrom is set).' =>
+            '',
         'If set, this address is used as envelope sender in outgoing messages (not notifications - see below). If no address is specified, the envelope sender is equal to queue e-mail address.' =>
             'Jika diatur, alamat ini digunakan sebagai pengirim amplop di pesan keluar (tidak pemberitahuan - lihat di bawah). Jika tidak ada alamat yang ditentukan, pengirim amplop sama dengan antrian alamat e-mail.',
         'If this option is enabled, then the decrypted data will be stored in the database if they are displayed in AgentTicketZoom.' =>
@@ -6483,6 +6498,22 @@ Helpdesk Team Anda
             'Set layanan di layar prioritas tiket dari tiket yang diperbesar di antarmuka agen (Ticket :: Layanan harus diaktifkan).',
         'Sets the service in the ticket responsible screen of the agent interface (Ticket::Service needs to be activated).' =>
             'Set layanan dalam tiket layar yang bertanggung jawab dari antarmuka agen (Ticket::Layanan harus diaktifkan).',
+        'Sets the state of a ticket in the close ticket screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket bulk screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket free text screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket note screen of the agent interface.' =>
+            '',
+        'Sets the state of a ticket in the ticket responsible screen of the agent interface.' =>
+            '',
+        'Sets the state of the ticket in the ticket owner screen of a zoomed ticket in the agent interface.' =>
+            '',
+        'Sets the state of the ticket in the ticket pending screen of a zoomed ticket in the agent interface.' =>
+            '',
+        'Sets the state of the ticket in the ticket priority screen of a zoomed ticket in the agent interface.' =>
+            '',
         'Sets the stats hook.' => 'Mengatur stats hook',
         'Sets the system time zone (required a system with UTC as system time). Otherwise this is a diff time to the local time.' =>
             'Menetapkan zona waktu sistem (diperlukan suatu sistem dengan UTC sebagai waktu sistem). Sebaliknya ini adalah waktu diff untuk waktu setempat.',

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -75,7 +75,7 @@ $Selenium->RunTest(
         for my $FieldGroup (qw(Start End)) {
             for my $FieldType (qw(Year Month Day)) {
                 $Selenium->execute_script(
-                    "\$('#OutOfOffice$FieldGroup$FieldType').val('$Date{$FieldType}').trigger('change');"
+                    "\$('#OutOfOffice$FieldGroup$FieldType').val($Date{$FieldType}).trigger('change');"
                 );
             }
         }
@@ -95,8 +95,8 @@ $Selenium->RunTest(
         for my $FieldGroup (qw(Start End)) {
             for my $FieldType (qw(Year Month Day)) {
                 $Self->Is(
-                    $Selenium->find_element( "#OutOfOffice$FieldGroup$FieldType", 'css' )->get_value(),
-                    $Date{$FieldType},
+                    int $Selenium->find_element( "#OutOfOffice$FieldGroup$FieldType", 'css' )->get_value(),
+                    int $Date{$FieldType},
                     "Shown OutOfOffice$FieldGroup$FieldType field value"
                 );
             }
