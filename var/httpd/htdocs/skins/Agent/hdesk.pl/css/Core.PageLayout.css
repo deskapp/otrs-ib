@@ -1,0 +1,25 @@
+/**
+ * Core.PageLayout.css mod for hdesk.pl skin
+ *
+ * @project     OTRS (http://www.otrs.org) - Agent Frontend
+ * @copyright   Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+ * @license     AGPL (http://www.gnu.org/licenses/agpl.txt)
+ */
+
+/**
+ * @package     Skin "hdesk.pl"
+ */
+
+@media screen,projection,tv,handheld {
+
+/* 190 */
+
+.LayoutPopup > .Footer {
+    padding: 5px;
+    border-top: 1px solid #eee;
+    text-align: center;
+    min-height: 28px;
+    margin-bottom: 30px;
+}
+
+} /* end @media */
