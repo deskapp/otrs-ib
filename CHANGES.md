@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2017-02-22 Added footer margin in popup windows.
  - 2015-12-11 hdesk.pl skin added (IB#1047726).
  - 2015-17-27 Added possibility to restrict Zoom and Print screens in the customer interface by using ACLs. Thanks to Sanjin Vik @ s7design.
  - 2015-17-27 Improved Generic Agent performance at deleting old execution times. Thanks to Moritz Lenz @ noris networks.
