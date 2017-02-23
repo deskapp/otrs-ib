@@ -1,4 +1,6 @@
 #5.0.6 2016-??-??
+ - 2017-02-23 Fixed CSS tuning for sidebar stuff.
+ - 2017-02-23 CSS tuning for sidebar stuff.
  - 2017-02-22 Added footer margin in popup windows.
  - 2015-12-11 hdesk.pl skin added (IB#1047726).
  - 2015-12-11 Fixed bug#[11667](http://bugs.otrs.org/show_bug.cgi?id=11667) - Can't perform POST on https://cloud.otrs.com/otrs/public.pl: 500 read timeout.
