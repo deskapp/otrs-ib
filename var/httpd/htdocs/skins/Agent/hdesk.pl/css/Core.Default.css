@@ -28,6 +28,16 @@ a:focus {
     color: #093557;
 }
 
+/* 251 */
+.Error {
+    color: #cc0000;
+}
+
+/* 255  */
+.Warning {
+    color: #db5903;
+}
+
 /* 435 */
 .BreadCrumb a:hover {
     border-bottom: 2px solid #276A9D;
