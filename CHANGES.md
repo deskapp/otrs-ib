@@ -1,4 +1,5 @@
 #6.0.0.beta1 2017-??-??
+ - 2017-02-23 HTML table creating and pasting added, paste as plain text added.
  - 2017-02-23 CSS tuning for sidebar stuff.
  - 2017-02-22 Added footer margin in popup windows.
  - 2017-01-20 Added command to list configured queues, thanks to Martin Burggraf.

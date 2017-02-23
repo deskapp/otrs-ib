@@ -5625,11 +5625,11 @@ sub SetRichTextParameters {
     else {
         @Toolbar = [
             [
-                'Bold',          'Italic',       'Underline',      'Strike', '-',    'NumberedList',
+                'Bold',          'Italic',       'Underline', 'Table', 'Strike', '-',    'NumberedList',
                 'BulletedList',  '-',            'Outdent',        'Indent', '-',    'JustifyLeft',
                 'JustifyCenter', 'JustifyRight', 'JustifyBlock',   '-',      'Link', 'Unlink',
                 '-',             'Image',        'HorizontalRule', '-',      'Undo', 'Redo',
-                '-',             'Find',         'SpellCheck'
+                '-',             'Find',         'SpellCheck', 'PasteText'
             ],
             '/',
             [
@@ -5640,13 +5640,13 @@ sub SetRichTextParameters {
         ];
         @ToolbarWithoutImage = [
             [
-                'Bold',          'Italic',       'Underline',    'Strike',
+                'Bold',          'Italic',       'Underline', 'Table', 'Strike',
                 '-',             'NumberedList', 'BulletedList', '-',
                 'Outdent',       'Indent',       '-',            'JustifyLeft',
                 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-',
                 'Link',          'Unlink',       '-',            'HorizontalRule',
                 '-',             'Undo',         'Redo',         '-',
-                'Find',          'SpellCheck'
+                'Find',          'SpellCheck', 'PasteText'
             ],
             '/',
             [
@@ -5760,8 +5760,8 @@ sub CustomerSetRichTextParameters {
                 'Bold',          'Italic',       'Underline',      'Strike', '-',    'NumberedList',
                 'BulletedList',  '-',            'Outdent',        'Indent', '-',    'JustifyLeft',
                 'JustifyCenter', 'JustifyRight', 'JustifyBlock',   '-',      'Link', 'Unlink',
-                '-',             'Image',        'HorizontalRule', '-',      'Undo', 'Redo',
-                '-',             'Find',         'SpellCheck'
+                '-',             'Image',        'HorizontalRule', 'Table', '-',      'Undo', 'Redo',
+                '-',             'Find',         'SpellCheck', 'PasteText'
             ],
             '/',
             [
@@ -5776,9 +5776,9 @@ sub CustomerSetRichTextParameters {
                 '-',             'NumberedList', 'BulletedList', '-',
                 'Outdent',       'Indent',       '-',            'JustifyLeft',
                 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-',
-                'Link',          'Unlink',       '-',            'HorizontalRule',
+                'Link',          'Unlink',       '-',            'HorizontalRule', 'Table',
                 '-',             'Undo',         'Redo',         '-',
-                'Find',          'SpellCheck'
+                'Find',          'SpellCheck', 'PasteText'
             ],
             '/',
             [
