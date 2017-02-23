@@ -1,4 +1,5 @@
 #5.0.6 2016-??-??
+ - 2017-02-23 Fixed CSS tuning for sidebar stuff.
  - 2017-02-23 CSS tuning for sidebar stuff.
  - 2017-02-22 Added footer margin in popup windows.
  - 2015-12-11 hdesk.pl skin added (IB#1047726).
