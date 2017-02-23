@@ -26,8 +26,7 @@
 
     Core.Config.Set('RichText.TextDir', '[% Env("TextDirection") %]');
     Core.Config.Set('RichText.SpellChecker', '[% Env("BrowserSpellCheckerInline") %]');
-    Core.Config.Set('RichText.PreventImagePaste', '[% Config("Frontend::RichText::PreventImagePaste") %]');
-    Core.Config.Set('RichText.EditingAreaCSS', "[% Config("Frontend::RichText::EditingAreaCSS") %] body.cke_editable { [% Config("Frontend::RichText::DefaultCSS") %] }");
+    Core.Config.Set('RichText.EditingAreaCSS', 'body.cke_editable { [% Config("Frontend::RichText::DefaultCSS") %] }');
     Core.Config.Set('RichText.Lang.SplitQuote', '[% Translate('Split Quote') | html %]');
     Core.Config.Set('RichText.Lang.RemoveQuote', '[% Translate('Remove Quote') | html %]');
     Core.Config.Set('RichText.Lang.OpenLink', '[% Translate('Open link') | html %]');
@@ -49,19 +48,17 @@
     }
     else {
         Core.Config.Set('RichText.Toolbar', [
-            ['Bold', 'Italic', 'Underline', 'Strike', '-', 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'Link', 'Unlink', '-', 'Image', 'HorizontalRule', 'Table', '-', 'Undo', 'Redo', '-', 'Find', 'SpellCheck', 'PasteText' ],
+            ['Bold', 'Italic', 'Underline', 'Strike', '-', 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'Link', 'Unlink', '-', 'Image', 'HorizontalRule', '-', 'Undo', 'Redo', '-', 'Find', 'SpellCheck'],
             '/',
             ['Format', 'Font', 'FontSize', '-', 'TextColor', 'BGColor', 'RemoveFormat', '-', 'Source', 'SpecialChar', 'SplitQuote', 'RemoveQuote', '-', 'Maximize']
         ]);
         Core.Config.Set('RichText.ToolbarWithoutImage', [
-            ['Bold', 'Italic', 'Underline', 'Strike', '-', 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'Link', 'Unlink', '-', 'HorizontalRule', 'Table', '-', 'Undo', 'Redo', '-', 'Find', 'SpellCheck', 'PasteText' ],
+            ['Bold', 'Italic', 'Underline', 'Strike', '-', 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'Link', 'Unlink', '-', 'HorizontalRule', '-', 'Undo', 'Redo', '-', 'Find', 'SpellCheck'],
             '/',
             ['Format', 'Font', 'FontSize', '-', 'TextColor', 'BGColor', 'RemoveFormat', '-', 'Source', 'SpecialChar', 'SplitQuote', 'RemoveQuote', '-', 'Maximize']
         ]);
     }
     Core.Config.Set('RichText.PictureUploadAction', "[% Data.RichTextPictureUploadAction | html %]");
-
-    Core.Config.Set('RichText.EnterMode', '[% Config("Frontend::RichText::EnterMode") %]');
 
     Core.UI.RichTextEditor.InitAll();
 //]]></script>
