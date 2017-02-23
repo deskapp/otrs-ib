@@ -22,6 +22,11 @@ ul.Tablelike li.Header {
     text-transform: none;
 }
 
+/* 129 */
+.SidebarColumn > .WidgetSimple > .Content {
+    font-size: 11px;
+}
+
 /* 193 */
 .WidgetNotice {
     background-color: #CBDCEA;
