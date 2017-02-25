@@ -3,6 +3,8 @@
  - 2017-02-23 HTML table creating and pasting added, paste as plain text added.
  - 2017-02-23 CSS tuning for sidebar stuff.
  - 2017-02-22 Added footer margin in popup windows.
+ - 2017-02-17 Fixed bug#[8853](https://bugs.otrs.org/show_bug.cgi?id=8853) - Hardcoded Priority and State in bin/otrs.FillDB.pl.
+ - 2017-02-17 Add support for setting owner and responsible via filter also for follow-ups, thanks to Renée Bäcker.
  - 2017-01-20 Added command to list configured queues, thanks to Martin Burggraf.
  - 2017-01-13 Blinking mechanism for queues is now disabled by default (can be enabled using Ticket::Frontend::AgentTicketQueue###Blink).
  - 2016-12-19 Added the posibility to filter content of the CCI Dashboard Widget.
@@ -183,6 +185,20 @@
  - 2015-11-27 Improved command Maint::Ticket::InvalidUserCleanup. It can now now both unlock tickets of invalid users and also (optionally) change their state to make sure they will not be overlooked. Thanks to Moritz Lenz @ noris networks.
 
 #5.0.17 2017-??-??
+ - 2017-02-24 Fixed bug#[12612](https://bugs.otrs.org/show_bug.cgi?id=12612) - Exchange of the axis and the translations doesn't work in the dashboard statistic widgets.
+ - 2017-02-24 Fixed bug#[12628](https://bugs.otrs.org/show_bug.cgi?id=12628)(PR#1623) - Sorting of columns in Dashboard-Ticket-Widgets is toggling with every refresh of the widget. Thanks to S7!
+ - 2017-02-24 Unified the search from text and textarea dynamic fields (bug#12118).
+ - 2017-02-22 Updated translations, thanks to all translators.
+ - 2017-02-22 Fixed bug#[12596](https://bugs.otrs.org/show_bug.cgi?id=12596)(PR#1625) - AgentTicketQueue articles are not displayed properly. Thanks to S7!
+ - 2017-02-18 Fixed bug#[12443](https://bugs.otrs.org/show_bug.cgi?id=12443) - Activity dialog doesn't check process status before submit.
+ - 2017-02-17 Fixed bug#[12552](https://bugs.otrs.org/show_bug.cgi?id=12552) - Merging Tickets will not move linked objects to target ticket.
+ - 2017-02-17 Fixed bug#[12573](https://bugs.otrs.org/show_bug.cgi?id=12573) - Permissions are not completely translated.
+ - 2017-02-17 Follow-up fix for bug#12487: Statistic with a  '+' in the  CustomerId doesn't work.
+ - 2017-02-17 Fixed bug#[12595](https://bugs.otrs.org/show_bug.cgi?id=12595) - Not able to search for tickets at customer portal with brackets within login name.
+ - 2017-02-17 Fixed bug#[12555](https://bugs.otrs.org/show_bug.cgi?id=12555) - Deleting tickets via GenericAgent does not remove tickets completely (immediately?).
+ - 2017-02-17 Fixed bug#[12564](https://bugs.otrs.org/show_bug.cgi?id=12564) - Values that belong to the checkbox, appear in English in the statistics settings.
+ - 2017-02-17 Fixed bug#[12620](https://bugs.otrs.org/show_bug.cgi?id=12620) - bug with spec file for SLES 11.
+ - 2017-02-16 Fixed bug#[12546](https://bugs.otrs.org/show_bug.cgi?id=12546) - SOAP:1007 SRT: Unsupported xstream found: ("HTTP Code 200  : OK").
  - 2017-02-14 Added the possibility to configure ticket notification recipients by OTRS-tags (replaced with values from current ticket).
  - 2017-02-14 Fixed bug#[12558](https://bugs.otrs.org/show_bug.cgi?id=12558)(PR#1603) - Filtering of "Available Columns" in Allocation List is not working well when columns are changed. Thanks to S7!
  - 2017-02-13 Fixed bug#[12606](https://bugs.otrs.org/show_bug.cgi?id=12606) - In LinkObject module the class names are not translated even if they are translated in the language file.
@@ -6984,7 +7000,7 @@ New style:
  - 2007-01-26 fixed bug in agent- and customer-ticket print feature
 
 #2.1.5 2006-01-25
- - 2007-01-25 fixed ignored ticket responible in phone ticket
+ - 2007-01-25 fixed ignored ticket responsible in phone ticket
  - 2007-01-18 fixed DestinationTime() if calendar feature is used
  - 2007-01-17 fixed not working freetime fields
  - 2007-01-11 fixed not working time selection if time zone feature is used
@@ -7088,7 +7104,7 @@ New style:
  - 2006-10-13 switched to md5 check sum for password in user\_preference table
  - 2006-10-12 fixed #1373 - RH RPM requires sendmail, but works with other MTAs
  - 2006-10-12 fixed double agent notifications on follow up if agent is
-    owner and responible
+    owner and responsible
  - 2006-10-12 fixed bug#[1311](http://bugs.otrs.org/show_bug.cgi?id=1311) - Apostrophes are incorrectly displayed under
     IE 6 & IE7 but correctly displayed under Firefox 1.5.0.6  -=\>
     moved from $Text{} to $JSText{} for text translations in Java Script parts

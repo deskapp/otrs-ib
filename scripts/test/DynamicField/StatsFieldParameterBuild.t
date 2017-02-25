@@ -14,13 +14,12 @@ use vars (qw($Self));
 
 use Kernel::System::VariableCheck qw(:all);
 
-# get dynamic field backend object
 my $DFBackendObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
 
 my $UserID = 1;
 
-# theres is not really needed to add the dynamic fields for this test, we can define a static
-# set of configurations
+# Theres is not really needed to add the dynamic fields for this test, we can define a static
+# set of configurations.
 my %DynamicFieldConfigs = (
     Text => {
         ID            => 123,
@@ -82,7 +81,7 @@ my %DynamicFieldConfigs = (
             DefaultValue       => '',
             Link               => '',
             PossibleNone       => 1,
-            TranslatableValues => '',
+            TranslatableValues => 1,
             PossibleValues     => {
                 1 => 'A',
                 2 => 'B',
@@ -103,7 +102,7 @@ my %DynamicFieldConfigs = (
         Config        => {
             DefaultValue       => '',
             PossibleNone       => 1,
-            TranslatableValues => '',
+            TranslatableValues => 1,
             PossibleValues     => {
                 1 => 'A',
                 2 => 'B',
@@ -158,210 +157,126 @@ my @Tests = (
 
     # text dynamic field
     {
-        Name   => 'Text UTF8 DF',
+        Name   => 'Text DynamicField',
         Config => {
             DynamicFieldConfig => $DynamicFieldConfigs{Text},
-            Value              => 'äëïöüÄËÏÖÜáéíóúÁÉÍÓÚñÑ€исß',
         },
         ExpectedResults => {
-            Equals => 'äëïöüÄËÏÖÜáéíóúÁÉÍÓÚñÑ€исß',
+            Name    => $DynamicFieldConfigs{Text}->{Label},
+            Element => 'DynamicField_' . $DynamicFieldConfigs{Text}->{Name},
+            Block   => 'InputField',
         },
     },
     {
-        Name   => 'Text UTF8 Wildcard DF',
-        Config => {
-            DynamicFieldConfig => $DynamicFieldConfigs{Text},
-            Value              => 'äëïöüÄËÏÖÜáéíóúÁÉÍÓÚñÑ€исß*',
-
-        },
-        ExpectedResults => {
-            Like => 'äëïöüÄËÏÖÜáéíóúÁÉÍÓÚñÑ€исß*',
-        },
-    },
-
-    # textarea dynamic field
-    {
-        Name   => 'TextArea UTF8 DF',
+        Name   => 'TextArea DynamicField',
         Config => {
             DynamicFieldConfig => $DynamicFieldConfigs{TextArea},
-            Value              => 'äëïöüÄËÏÖÜáéíóúÁÉÍÓÚñÑ€исß',
         },
         ExpectedResults => {
-            Equals => 'äëïöüÄËÏÖÜáéíóúÁÉÍÓÚñÑ€исß',
+            Name    => $DynamicFieldConfigs{TextArea}->{Label},
+            Element => 'DynamicField_' . $DynamicFieldConfigs{TextArea}->{Name},
+            Block   => 'InputField',
         },
     },
     {
-        Name   => 'TextArea UTF8 Wildcard DF',
-        Config => {
-            DynamicFieldConfig => $DynamicFieldConfigs{TextArea},
-            Value              => 'äëïöüÄËÏÖÜáéíóúÁÉÍÓÚñÑ€исß*',
-        },
-        ExpectedResults => {
-            Like => 'äëïöüÄËÏÖÜáéíóúÁÉÍÓÚñÑ€исß*',
-        },
-    },
-
-    # checkbox dynamic field
-    {
-        Name   => 'Checkbox 1 DF',
+        Name   => 'Checkbox DynamicField',
         Config => {
             DynamicFieldConfig => $DynamicFieldConfigs{Checkbox},
-            Value              => 1,
         },
         ExpectedResults => {
-            Equals => 1,
+            Values => {
+                '1'  => 'Checked',
+                '-1' => 'Unchecked',
+            },
+            Name               => $DynamicFieldConfigs{Checkbox}->{Label},
+            Element            => 'DynamicField_' . $DynamicFieldConfigs{Checkbox}->{Name},
+            TranslatableValues => 1,
         },
     },
     {
-        Name   => 'Checkbox -1 DF',
-        Config => {
-            DynamicFieldConfig => $DynamicFieldConfigs{Checkbox},
-            Value              => -1,
-        },
-        ExpectedResults => {
-            Equals => 0,
-        },
-    },
-    {
-        Name   => 'Checkbox -1, 1 DF',
-        Config => {
-            DynamicFieldConfig => $DynamicFieldConfigs{Checkbox},
-            Value              => [ -1, 1 ],
-        },
-        ExpectedResults => {
-            Equals => [ 0, 1, ],
-        },
-    },
-
-    # dropdown dynamic field
-    {
-        Name   => 'Dropdown 1 DF',
+        Name   => 'Dropdown DynamicField',
         Config => {
             DynamicFieldConfig => $DynamicFieldConfigs{Dropdown},
-            Value              => 1,
         },
         ExpectedResults => {
-            Equals => 1,
+            Values             => $DynamicFieldConfigs{Dropdown}->{Config}->{PossibleValues},
+            Name               => $DynamicFieldConfigs{Dropdown}->{Label},
+            Element            => 'DynamicField_' . $DynamicFieldConfigs{Dropdown}->{Name},
+            TranslatableValues => $DynamicFieldConfigs{Dropdown}->{Config}->{TranslatableValues},
+            Block              => 'MultiSelectField',
         },
     },
     {
-        Name   => 'Dropdown 1,2 DF',
-        Config => {
-            DynamicFieldConfig => $DynamicFieldConfigs{Dropdown},
-            Value              => [ 1, 2, ],
-        },
-        ExpectedResults => {
-            Equals => [ 1, 2, ],
-        },
-    },
-
-    # multiselect dynamic field
-    {
-        Name   => 'Multiselect 1 DF',
+        Name   => 'Multiselect DynamicField',
         Config => {
             DynamicFieldConfig => $DynamicFieldConfigs{Multiselect},
-            Value              => 1,
         },
         ExpectedResults => {
-            Equals => 1,
+            Values             => $DynamicFieldConfigs{Multiselect}->{Config}->{PossibleValues},
+            Name               => $DynamicFieldConfigs{Multiselect}->{Label},
+            Element            => 'DynamicField_' . $DynamicFieldConfigs{Multiselect}->{Name},
+            TranslatableValues => $DynamicFieldConfigs{Multiselect}->{Config}->{TranslatableValues},
+            Block              => 'MultiSelectField',
         },
     },
     {
-        Name   => 'Multiselect 1,2 DF',
-        Config => {
-            DynamicFieldConfig => $DynamicFieldConfigs{Multiselect},
-            Value              => [ 1, 2, ],
-        },
-        ExpectedResults => {
-            Equals => [ 1, 2, ],
-        },
-    },
-
-    # date dynamic field
-    {
-        Name   => 'Date TimePoint missing Operator',
-        Config => {
-            DynamicFieldConfig => $DynamicFieldConfigs{Date},
-            Value              => '2016-05-01 00:00:00',
-            Operator           => '',
-        },
-        ExpectedResults => {},
-    },
-    {
-        Name   => 'Date TimePoint (SmallerThanEquals) DF',
-        Config => {
-            DynamicFieldConfig => $DynamicFieldConfigs{Date},
-            Value              => '2015-05-01 23:59:59',
-            Operator           => 'SmallerThanEquals',
-        },
-        ExpectedResults => {
-            SmallerThanEquals => '2015-05-01 23:59:59',
-        },
-    },
-    {
-        Name   => 'Date TimePoint (GreaterThanEquals) DF',
-        Config => {
-            DynamicFieldConfig => $DynamicFieldConfigs{Date},
-            Value              => '2015-05-01 00:00:00',
-            Operator           => 'GreaterThanEquals',
-        },
-        ExpectedResults => {
-            GreaterThanEquals => '2015-05-01 00:00:00',
-        },
-    },
-    {
-        Name   => 'Date TimePoint (SmallerThanEquals) with a not allowed hour DF',
-        Config => {
-            DynamicFieldConfig => $DynamicFieldConfigs{Date},
-            Value              => '2015-05-01 01:00:00',
-            Operator           => 'SmallerThanEquals',
-        },
-        ExpectedResults => {
-            SmallerThanEquals => '2015-05-01 23:59:59',
-        },
-    },
-    {
-        Name   => 'Date TimePoint (GreaterThanEquals) with a not allowed hour DF',
-        Config => {
-            DynamicFieldConfig => $DynamicFieldConfigs{Date},
-            Value              => '2015-05-01 10:00:00',
-            Operator           => 'GreaterThanEquals',
-        },
-        ExpectedResults => {
-            GreaterThanEquals => '2015-05-01 00:00:00',
-        },
-    },
-
-    # date time dynamic field
-    {
-        Name   => 'Date TimePoint missing Operator',
+        Name   => 'DateTime DynamicField',
         Config => {
             DynamicFieldConfig => $DynamicFieldConfigs{DateTime},
-            Value              => '2016-05-01 00:00:00',
-            Operator           => '',
-        },
-        ExpectedResults => {},
-    },
-    {
-        Name   => 'Date TimePoint (SmallerThanEquals) DF',
-        Config => {
-            DynamicFieldConfig => $DynamicFieldConfigs{DateTime},
-            Value              => '2015-05-01 20:30:00',
-            Operator           => 'SmallerThanEquals',
         },
         ExpectedResults => {
-            SmallerThanEquals => '2015-05-01 20:30:00',
+            Name             => $DynamicFieldConfigs{DateTime}->{Label},
+            Element          => 'DynamicField_' . $DynamicFieldConfigs{DateTime}->{Name},
+            TimePeriodFormat => 'DateInputFormatLong',
+            Block            => 'Time',
         },
     },
     {
-        Name   => 'Date TimePoint (GreaterThanEquals) DF',
+        Name   => 'Date DynamicField',
         Config => {
-            DynamicFieldConfig => $DynamicFieldConfigs{DateTime},
-            Value              => '2015-05-01 02:15:00',
-            Operator           => 'GreaterThanEquals',
+            DynamicFieldConfig => $DynamicFieldConfigs{Date},
         },
         ExpectedResults => {
-            GreaterThanEquals => '2015-05-01 02:15:00',
+            Name             => $DynamicFieldConfigs{Date}->{Label},
+            Element          => 'DynamicField_' . $DynamicFieldConfigs{Date}->{Name},
+            TimePeriodFormat => 'DateInputFormat',
+            Block            => 'Time',
+        },
+    },
+    {
+        Name   => 'Dropdown DynamicField with PossibleValuesFilter (e.g. from ACL)',
+        Config => {
+            DynamicFieldConfig   => $DynamicFieldConfigs{Dropdown},
+            PossibleValuesFilter => {
+                1 => 'A',
+            },
+        },
+        ExpectedResults => {
+            Values => {
+                1 => 'A',
+            },
+            Name               => $DynamicFieldConfigs{Dropdown}->{Label},
+            Element            => 'DynamicField_' . $DynamicFieldConfigs{Dropdown}->{Name},
+            TranslatableValues => $DynamicFieldConfigs{Dropdown}->{Config}->{TranslatableValues},
+            Block              => 'MultiSelectField',
+        },
+    },
+    {
+        Name   => 'Multiselect DynamicField with PossibleValuesFilter (e.g. from ACL)',
+        Config => {
+            DynamicFieldConfig   => $DynamicFieldConfigs{Multiselect},
+            PossibleValuesFilter => {
+                1 => 'A',
+            },
+        },
+        ExpectedResults => {
+            Values => {
+                1 => 'A',
+            },
+            Name               => $DynamicFieldConfigs{Multiselect}->{Label},
+            Element            => 'DynamicField_' . $DynamicFieldConfigs{Multiselect}->{Name},
+            TranslatableValues => $DynamicFieldConfigs{Multiselect}->{Config}->{TranslatableValues},
+            Block              => 'MultiSelectField',
         },
     },
 );
@@ -369,7 +284,7 @@ my @Tests = (
 # execute tests
 for my $Test (@Tests) {
 
-    my $Result = $DFBackendObject->StatsSearchFieldParameterBuild( %{ $Test->{Config} } );
+    my $Result = $DFBackendObject->StatsFieldParameterBuild( %{ $Test->{Config} } );
 
     $Self->IsDeeply(
         $Result,

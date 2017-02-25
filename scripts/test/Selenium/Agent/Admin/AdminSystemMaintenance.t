@@ -259,11 +259,19 @@ $Selenium->RunTest(
         # click to delete test SystemMaintenance
         $Selenium->find_element("//a[contains(\@href, 'Subaction=Delete;SystemMaintenanceID=$SysMainID')]")->click();
 
+        $Selenium->WaitFor( AlertPresent => 1 );
+
         # accept delete confirmation dialog
-        sleep 1;
+        $Selenium->accept_alert();
+
+        $Selenium->WaitFor(
+            JavaScript =>
+                'return typeof(Core) == "object" && typeof(Core.App) == "object" && Core.App.PageLoadComplete'
+        );
+
         $Self->True(
-            $Selenium->accept_alert(),
-            "Delete - $SysMainComment"
+            index( $Selenium->get_page_source(), $SysMainComment ) == -1,
+            "Deleted - $SysMainComment"
         );
 
         # define test SystemMaintenance scenarios
@@ -272,7 +280,7 @@ $Selenium->RunTest(
                 # now, duration 2 hours
                 StartDate => $TimeObject->SystemTime(),
                 StopDate  => $TimeObject->SystemTime() + 2 * 60 * 60,
-                Comment   => 'test maintenance period #1',
+                Comment   => $SysMainComment . ' maintenance period #1',
                 ValidID   => 1,
                 UserID    => 1,
             },
@@ -280,7 +288,7 @@ $Selenium->RunTest(
                 # 1 day later, duration 2 hours
                 StartDate => $TimeObject->SystemTime() + 24 * 60 * 60,
                 StopDate  => $TimeObject->SystemTime() + 24 * 60 * 60 + 2 * 60 * 60,
-                Comment   => 'test maintenance period #2',
+                Comment   => $SysMainComment . ' maintenance period #2',
                 ValidID   => 1,
                 UserID    => 1,
             },
@@ -288,7 +296,7 @@ $Selenium->RunTest(
                 # 2 days later, duration 2 hours
                 StartDate => $TimeObject->SystemTime() + 2 * 24 * 60 * 60,
                 StopDate  => $TimeObject->SystemTime() + 2 * 24 * 60 * 60 + 2 * 60 * 60,
-                Comment   => 'test maintenance period #3',
+                Comment   => $SysMainComment . ' maintenance period #3',
                 ValidID   => 1,
                 UserID    => 1,
             },
@@ -296,7 +304,7 @@ $Selenium->RunTest(
                 # 3 days later, duration 2 hours
                 StartDate => $TimeObject->SystemTime() + 3 * 24 * 60 * 60,
                 StopDate  => $TimeObject->SystemTime() + 3 * 24 * 60 * 60 + 2 * 60 * 60,
-                Comment   => 'test maintenance period #4',
+                Comment   => $SysMainComment . ' maintenance period #4',
                 ValidID   => 1,
                 UserID    => 1,
             },
@@ -304,7 +312,7 @@ $Selenium->RunTest(
                 # 4 days later, duration 2 hours
                 StartDate => $TimeObject->SystemTime() + 4 * 24 * 60 * 60,
                 StopDate  => $TimeObject->SystemTime() + 4 * 24 * 60 * 60 + 2 * 60 * 60,
-                Comment   => 'test maintenance period #5',
+                Comment   => $SysMainComment . ' maintenance period #5',
                 ValidID   => 1,
                 UserID    => 1,
             },
@@ -312,7 +320,7 @@ $Selenium->RunTest(
                 # 5 days later, duration 2 hours
                 StartDate => $TimeObject->SystemTime() + 5 * 24 * 60 * 60,
                 StopDate  => $TimeObject->SystemTime() + 5 * 24 * 60 * 60 + 2 * 60 * 60,
-                Comment   => 'test maintenance period #6',
+                Comment   => $SysMainComment . ' maintenance period #6',
                 ValidID   => 1,
                 UserID    => 1,
             },
@@ -320,7 +328,7 @@ $Selenium->RunTest(
                 # 6 days later, duration 2 hours
                 StartDate => $TimeObject->SystemTime() + 6 * 24 * 60 * 60,
                 StopDate  => $TimeObject->SystemTime() + 6 * 24 * 60 * 60 + 2 * 60 * 60,
-                Comment   => 'test maintenance period #7',
+                Comment   => $SysMainComment . ' maintenance period #7',
                 ValidID   => 1,
                 UserID    => 1,
             },
@@ -328,7 +336,7 @@ $Selenium->RunTest(
                 # 7 days later, duration 2 hours
                 StartDate => $TimeObject->SystemTime() + 7 * 24 * 60 * 60,
                 StopDate  => $TimeObject->SystemTime() + 7 * 24 * 60 * 60 + 2 * 60 * 60,
-                Comment   => 'test maintenance period #8',
+                Comment   => $SysMainComment . ' maintenance period #8',
                 ValidID   => 1,
                 UserID    => 1,
             },
@@ -336,7 +344,7 @@ $Selenium->RunTest(
                 # 8 days later, duration 2 hours
                 StartDate => $TimeObject->SystemTime() + 8 * 24 * 60 * 60,
                 StopDate  => $TimeObject->SystemTime() + 8 * 24 * 60 * 60 + 2 * 60 * 60,
-                Comment   => 'test maintenance period #9',
+                Comment   => $SysMainComment . ' maintenance period #9',
                 ValidID   => 1,
                 UserID    => 1,
             },
@@ -344,7 +352,7 @@ $Selenium->RunTest(
                 # one week earlier, duration 2 hours
                 StartDate => $TimeObject->SystemTime() - 7 * 24 * 60 * 60,
                 StopDate  => $TimeObject->SystemTime() - 7 * 24 * 60 * 60 + 2 * 60 * 60,
-                Comment   => 'test maintenance period #10',
+                Comment   => $SysMainComment . ' maintenance period #10',
                 ValidID   => 1,
                 UserID    => 1,
             },
@@ -367,6 +375,10 @@ $Selenium->RunTest(
         # navigate to AdminSystemMaintenance screen
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AdminSystemMaintenance");
 
+        # filter by test unique ID
+        $Selenium->find_element( "#FilterSystemMaintenances", 'css' )->send_keys( $SysMainComment . ' maintenance' );
+        sleep 1;
+
         # check created SystemMaintenances
         for my $Test (@Tests) {
             $Self->True(
@@ -382,8 +394,10 @@ $Selenium->RunTest(
             my $Index = $i;
             $Index = ( $Index eq 1 ) ? $Index = 9 : $Index = $Index - 2;
 
+            my $TrIndex = $i - 1;
+
             $Self->Is(
-                $Selenium->execute_script("return \$('tr:nth-child($i) > td:nth-child(3)').text()"),
+                $Selenium->execute_script("return \$('tbody tr:visible:eq($TrIndex) td:eq(2)').text()"),
                 $Tests[$Index]->{Comment},
                 "Found system maintenance with comment '$Tests[$Index]->{Comment}' in line $i."
             );
