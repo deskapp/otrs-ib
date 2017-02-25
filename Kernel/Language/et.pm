@@ -272,7 +272,7 @@ sub Data {
         'Facility' => 'Facility',
         'Time Zone' => 'Ajavöönd',
         'Pending till' => 'Ootel kuni',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
             '',
         'Dispatching by email To: field.' => 'Jaotamine To: päiserea järgi.',
         'Dispatching by selected Queue.' => 'Jaotamine valitud järjekorra järgi.',

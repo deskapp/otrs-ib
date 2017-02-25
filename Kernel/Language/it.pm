@@ -280,8 +280,8 @@ sub Data {
         'Facility' => 'Funzione',
         'Time Zone' => 'Fuso orario',
         'Pending till' => 'In attesa fino a',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Non usare l\'account di superutente per lavorare con OTRS. Crea nuovi operatori e lavora con questi account.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Non usare l\'account di superutente per lavorare con %s. Crea nuovi operatori e lavora con questi account.',
         'Dispatching by email To: field.' => 'Smistamento in base al campo A:.',
         'Dispatching by selected Queue.' => 'Smistamento in base alla coda selezionata.',
         'No entry found!' => 'Nessun elemento trovato!',

@@ -1,4 +1,5 @@
 #5.0.17 2017-??-??
+ - 2017-02-25 Translations update.
  - 2017-02-23 HTML table creating and pasting added, paste as plain text added.
  - 2017-02-23 Fixed CSS tuning for sidebar stuff.
  - 2017-02-23 CSS tuning for sidebar stuff.

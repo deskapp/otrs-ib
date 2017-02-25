@@ -272,7 +272,7 @@ sub Data {
         'Facility' => 'สิ่งอำนวยความสะดวก',
         'Time Zone' => 'โซนเวลา',
         'Pending till' => 'รอดำเนินการจนถึง',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
             'อย่าใช้บัญชี Superuser เพื่อใช้งานOTRS! สร้างเอเย่นต์ใหม่และใช้งานด้วยบัญชีเหล่านี้แทน',
         'Dispatching by email To: field.' => 'ส่งโดยการส่งอีเมล์ไปที่: ฟิลด์',
         'Dispatching by selected Queue.' => 'ส่งโดยคิวที่เลือก',

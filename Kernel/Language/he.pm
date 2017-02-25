@@ -277,7 +277,7 @@ sub Data {
         'Facility' => 'מתקן',
         'Time Zone' => 'אזור זמן',
         'Pending till' => 'ממתין עד',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
             'אל תשתמשו בחשבון משתמש העל עם המערת! צרו סוכנים חדשים ועבדו עם חשבונות אלו במקום זאת',
         'Dispatching by email To: field.' => 'שליחה לפי שדה דוא"ל אל.',
         'Dispatching by selected Queue.' => 'שליחה לפי התור שנבחר.',

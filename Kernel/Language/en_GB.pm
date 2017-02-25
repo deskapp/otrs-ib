@@ -275,8 +275,8 @@ sub Data {
         'Facility' => 'Facility',
         'Time Zone' => 'Time Zone',
         'Pending till' => 'Pending till',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Don\'t use the Superuser account to work with OTRS! Create new agents and work with these accounts instead.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Don\'t use the Superuser account to work with %s! Create new agents and work with these accounts instead.',
         'Dispatching by email To: field.' => 'Dispatching by email To: field.',
         'Dispatching by selected Queue.' => 'Dispatching by selected Queue.',
         'No entry found!' => 'No entry found!',

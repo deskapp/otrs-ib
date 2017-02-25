@@ -273,7 +273,7 @@ sub Data {
         'Facility' => 'Приспособление',
         'Time Zone' => 'Времева зона',
         'Pending till' => 'В очакване до',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
             '',
         'Dispatching by email To: field.' => 'Разпределяне по поле To: от писмото.',
         'Dispatching by selected Queue.' => 'Разпределение по избрана опашка.',

@@ -272,8 +272,8 @@ sub Data {
         'Facility' => 'Priemonė/įranga (Facility)',
         'Time Zone' => 'Laiko zona',
         'Pending till' => 'Laukia sprendimo iki',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Nenaudokite supernaudotojo darbui su OTRS! Vietoje to sukurkite naujus agentus ir dirbkite naudodami juos.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Nenaudokite supernaudotojo darbui su %s! Vietoje to sukurkite naujus agentus ir dirbkite naudodami juos.',
         'Dispatching by email To: field.' => 'Išsiuntinėti pagal el. pašto Kam: laukelį.',
         'Dispatching by selected Queue.' => 'Išsiuntinėti pagal pasirinktą eilę.',
         'No entry found!' => 'Įrašas nerastas!',

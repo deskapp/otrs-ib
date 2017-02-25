@@ -275,8 +275,8 @@ sub Data {
         'Facility' => 'Kituo',
         'Time Zone' => 'Majira ya saa',
         'Pending till' => 'Inasubiri hadi',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Usitumie akaunti ya mtumiaji barabara kufanya kazi na OTRS! Tengeneza mawakala wapya na ufanye kazi na hizo akaunti badala yake.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Usitumie akaunti ya mtumiaji barabara kufanya kazi na %s! Tengeneza mawakala wapya na ufanye kazi na hizo akaunti badala yake.',
         'Dispatching by email To: field.' => 'Tuma kwa barua pepe kwenda: uga.',
         'Dispatching by selected Queue.' => 'Tuma kwa foleni iliyochaguliwa.',
         'No entry found!' => 'Hakuna ingizo lililopatikana!',

@@ -274,7 +274,7 @@ sub Data {
         'Facility' => 'सहूलियत',
         'Time Zone' => 'समय क्षेत्र',
         'Pending till' => 'स्थगित जब तक',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
             '',
         'Dispatching by email To: field.' => 'ईमेल से भेजने के लिए :क्षेत्र',
         'Dispatching by selected Queue.' => 'चयनित श्रेणी से भेजने के लिए।',

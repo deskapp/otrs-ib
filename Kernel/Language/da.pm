@@ -273,7 +273,7 @@ sub Data {
         'Facility' => 'Facilitet',
         'Time Zone' => 'Tidszone',
         'Pending till' => 'Afventer til',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
             'Brug ikke Superuser-kontoen til at arbejde med OTRS! Opret nye agenter og arbejd med disse konti i stedet.',
         'Dispatching by email To: field.' => 'Sendes via mail til: felt.',
         'Dispatching by selected Queue.' => 'Sendes via den valgte kø.',

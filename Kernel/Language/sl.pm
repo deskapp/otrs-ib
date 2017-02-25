@@ -276,8 +276,8 @@ sub Data {
         'Facility' => 'Instalacija',
         'Time Zone' => 'Časovni pas',
         'Pending till' => 'Čakati do',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Ne uporabljajte Superuser računa za delo z OTRS! Ustvarite nove Operaterje in delajte z računi operaterjev.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Ne uporabljajte Superuser računa za delo z %s! Ustvarite nove Operaterje in delajte z računi operaterjev.',
         'Dispatching by email To: field.' => 'Razporejanje po elektronski pošti na: polje.',
         'Dispatching by selected Queue.' => 'Razporejanje po redu velikosti.',
         'No entry found!' => 'Vnos ni najden!',

@@ -272,8 +272,8 @@ sub Data {
         'Facility' => 'Fasilitas',
         'Time Zone' => 'Zona waktu',
         'Pending till' => 'Ditunda hingga',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Jangan gunakan akun Superuser untuk bekerja dengan OTRS! Sebagai gantinya buat agen-agen baru dan gunakan akun-akun tersebut.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Jangan gunakan akun Superuser untuk bekerja dengan %s! Sebagai gantinya buat agen-agen baru dan gunakan akun-akun tersebut.',
         'Dispatching by email To: field.' => 'Pengiriman melalui email Kepada: bidang.',
         'Dispatching by selected Queue.' => 'Pengiriman melalui Antrian yang dipilih.',
         'No entry found!' => 'Tidak ada entri yang di temukan!',

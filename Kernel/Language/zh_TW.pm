@@ -274,7 +274,7 @@ sub Data {
         'Facility' => '設施',
         'Time Zone' => '時區',
         'Pending till' => '掛起至',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
             '不要使用OTRS系統缺省帳號! 請創建新的服務人員帳號。',
         'Dispatching by email To: field.' => '按收件人(To:)分派.',
         'Dispatching by selected Queue.' => '按所選隊列分派.',

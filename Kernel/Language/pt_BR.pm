@@ -277,8 +277,8 @@ sub Data {
         'Facility' => 'Facilidade',
         'Time Zone' => 'Zona horária',
         'Pending till' => 'Pendente até',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Por favor, não trabalhe com a conta de superusuário no OTRS! Crie novos atendentes e trabalhe com eles!',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Por favor, não trabalhe com a conta de superusuário no %s! Crie novos atendentes e trabalhe com eles!',
         'Dispatching by email To: field.' => 'Distribuição de Acordo Com o Campo de E-mail "Para:"',
         'Dispatching by selected Queue.' => 'Distribuição de Acordo Com a Fila Selecionada',
         'No entry found!' => 'Nenhuma entrada encontrada!',

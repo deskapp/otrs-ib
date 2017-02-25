@@ -274,8 +274,8 @@ sub Data {
         'Facility' => 'Funktion',
         'Time Zone' => 'Tidszon',
         'Pending till' => 'Väntande tills',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Använd inte superuserkontot (root) för att arbeta med OTRS! Skapa nya handläggare och arbeta med dom istället.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Använd inte superuserkontot (root) för att arbeta med %s! Skapa nya handläggare och arbeta med dom istället.',
         'Dispatching by email To: field.' => 'Skickar iväg enligt e-postmeddelandets till-fält.',
         'Dispatching by selected Queue.' => 'Skickar iväg enligt vald kö.',
         'No entry found!' => 'Ingen inmatning funnen!',

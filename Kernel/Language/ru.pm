@@ -283,8 +283,8 @@ sub Data {
         'Facility' => 'Объект',
         'Time Zone' => 'Часовой пояс',
         'Pending till' => 'В ожидании еще',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Не используйте учетную запись суперпользователя для работы с OTRS! Создайте новых Агентов и работайте с ними.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Не используйте учетную запись суперпользователя для работы с %s! Создайте новых Агентов и работайте с ними.',
         'Dispatching by email To: field.' => 'Перенаправление по заголовку To: электронного письма',
         'Dispatching by selected Queue.' => 'Перенаправление по выбранной очереди',
         'No entry found!' => 'Запись не найдена',

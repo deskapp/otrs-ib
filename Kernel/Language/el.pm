@@ -274,8 +274,8 @@ sub Data {
         'Facility' => 'Οργανισμός',
         'Time Zone' => 'Ζώνη Ώρας',
         'Pending till' => 'Εκρεμμεί μέχρι',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Μην χρησιμοποιείτε τον λογαριασμό Superuser για να εργαστείτε με το OTRS! Δημιουργήστε νέους Συνεργάτες και εργαστείτε με αυτούς τους λογαριασμούς.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Μην χρησιμοποιείτε τον λογαριασμό Superuser για να εργαστείτε με το %s! Δημιουργήστε νέους Συνεργάτες και εργαστείτε με αυτούς τους λογαριασμούς.',
         'Dispatching by email To: field.' => 'Αποστολή με ηλεκτρονικό ταχυδρομείο προς (πεδίο email To:).',
         'Dispatching by selected Queue.' => 'Αποστολή με την επιλεγμένη ουρά.',
         'No entry found!' => 'Δεν βρεθηκε εγγραφή',

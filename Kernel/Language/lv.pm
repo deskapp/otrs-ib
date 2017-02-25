@@ -271,7 +271,7 @@ sub Data {
         'Facility' => 'Iespēja',
         'Time Zone' => 'Laika josla',
         'Pending till' => 'Neizlemts līdz',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
             '',
         'Dispatching by email To: field.' => 'Pārvietot pēc Kam: lauka pazīmes e-pastā.',
         'Dispatching by selected Queue.' => 'Pārvietot uz norādīto rindu.',

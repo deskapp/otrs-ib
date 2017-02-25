@@ -280,8 +280,8 @@ sub Data {
         'Facility' => 'Innretning',
         'Time Zone' => 'Tidssone',
         'Pending till' => 'Utsatt til',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Ikke bruk Superbruker kontoen til å jobbe med OTRS! Opprett nye Agenter og jobb heller med disse kontoene.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Ikke bruk Superbruker kontoen til å jobbe med %s! Opprett nye Agenter og jobb heller med disse kontoene.',
         'Dispatching by email To: field.' => 'Utsending etter oppføringer i To:-felt.',
         'Dispatching by selected Queue.' => 'Utsending etter valgt kø.',
         'No entry found!' => 'Ingen oppføringer funnet!',

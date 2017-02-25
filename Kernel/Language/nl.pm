@@ -278,7 +278,7 @@ sub Data {
         'Facility' => 'Maatregel',
         'Time Zone' => 'Tijdzone',
         'Pending till' => 'In de wacht tot',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
             'Werk niet met het SuperUser account. Maak andere accounts aan.',
         'Dispatching by email To: field.' => 'Toewijzen gebaseerd op e-mailadres.',
         'Dispatching by selected Queue.' => 'Toewijzen gebaseerd op geselecteerde wachtrij.',
