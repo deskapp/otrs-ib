@@ -3466,8 +3466,8 @@ sub Data {
             'Vous avez l\'Heure de sortie du travail\' activée, voulez-vous la désactiver?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'N\'utilisez pas le compte Superuser pour travailler avec OTRS! Créez de nouveaux agents et travaillez plutôt avec ces agents.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'N\'utilisez pas le compte Superuser pour travailler avec %s! Créez de nouveaux agents et travaillez plutôt avec ces agents.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Les préférences ont bien été mises à jour !',

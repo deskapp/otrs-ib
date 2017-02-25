@@ -3460,8 +3460,8 @@ sub Data {
             'Du har aktivierat automatiskt svar vid frånvaro. Vill du stänga av det?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Använd inte superuserkontot (root) för att arbeta med OTRS! Skapa nya handläggare och arbeta med dom istället.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Använd inte superuserkontot (root) för att arbeta med %s! Skapa nya handläggare och arbeta med dom istället.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Inställningar lagrade!',

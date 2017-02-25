@@ -3458,8 +3458,8 @@ sub Data {
             'Máte nastavenú Neprítomnosť v kancelárii. Chcete toto nastavenie zrušiť ?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Nepoužívajte správcovský prístup na prácu s OTRS, najprv vytvorte agentov a potom pracujte s nimi!',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Nepoužívajte správcovský prístup na prácu s %s, najprv vytvorte agentov a potom pracujte s nimi!',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Predvoľby úspešne aktualizované!',

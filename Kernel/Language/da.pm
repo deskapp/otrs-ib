@@ -3460,8 +3460,8 @@ Opdater venligst dit framework først!',
             'Du har Out of Office aktiveret. Vil du deaktivere det?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Brug ikke Superuser-kontoen til at arbejde med OTRS! Opret nye agenter og arbejd med disse konti i stedet.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Brug ikke Superuser-kontoen til at arbejde med %s! Opret nye agenter og arbejd med disse konti i stedet.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Indstillingerne er opdateret',

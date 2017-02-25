@@ -3465,8 +3465,8 @@ sub Data {
             'Έχετε ενεργοποιήσει τη λειτουργία Εκτός Γραφείου. Θέλετε να την απενεργοποιήσετε;',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Μην χρησιμοποιείτε τον λογαριασμό Superuser για να εργαστείτε με το OTRS! Δημιουργήστε νέους Συνεργάτες και εργαστείτε με αυτούς τους λογαριασμούς.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Μην χρησιμοποιείτε τον λογαριασμό Superuser για να εργαστείτε με το %s! Δημιουργήστε νέους Συνεργάτες και εργαστείτε με αυτούς τους λογαριασμούς.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Οι προτιμήσεις ενημερώθηκαν επιτυχώς!',

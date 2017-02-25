@@ -3458,8 +3458,8 @@ sub Data {
             'Ten activado o servizo «fóra da oficina»; desexa desactivalo?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Non empregue a conta de superusuario con OTRS! No canto diso, cree Axentes novos e traballe con esas contas.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Non empregue a conta de superusuario con %s! No canto diso, cree Axentes novos e traballe con esas contas.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Actualización das preferencias satisfatoria!',

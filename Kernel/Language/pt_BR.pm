@@ -3463,8 +3463,8 @@ sub Data {
             'Você habilitou "Fora do Escritório", gostaria de desabilitar?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Por favor, não trabalhe com a conta de superusuário no OTRS! Crie novos atendentes e trabalhe com eles!',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Por favor, não trabalhe com a conta de superusuário no %s! Crie novos atendentes e trabalhe com eles!',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Preferências atualizadas com sucesso!',

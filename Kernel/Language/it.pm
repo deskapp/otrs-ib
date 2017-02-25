@@ -3466,8 +3466,8 @@ sub Data {
             'Risposta automatica abilitata. Vuoi disabilitarla?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Non usare l\'account di superutente per lavorare con OTRS. Crea nuovi operatori e lavora con questi account.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Non usare l\'account di superutente per lavorare con %s. Crea nuovi operatori e lavora con questi account.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Preferenze modificate con successo!',

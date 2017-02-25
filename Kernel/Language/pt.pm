@@ -3459,8 +3459,8 @@ sub Data {
             'Tem Fora do Escritório activo, deseja desactivar?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Não utilizar a conta de Super utilizador para trabalhar com o OTRS! Em vez disso, crie novos Agentes e trabalhe com essas contas.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Não utilizar a conta de Super utilizador para trabalhar com o %s! Em vez disso, crie novos Agentes e trabalhe com essas contas.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Preferências atualizadas com sucesso!',

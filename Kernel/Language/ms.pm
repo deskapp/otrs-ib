@@ -3457,8 +3457,8 @@ sub Data {
             'Anda membolehkan keluar dari pejabat, adakah anda ingin melumpuhkan ia?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Jangan guna akaun Pengguna Besar untuk kerja dengan OTRS! Cipta ejen baru and kerja dengan akaun tersebut',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Jangan guna akaun Pengguna Besar untuk kerja dengan %s! Cipta ejen baru and kerja dengan akaun tersebut',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Kemaskini pilihan berjaya!',

@@ -3463,8 +3463,8 @@ sub Data {
             'Engedélyezte az Irodán kívül funkciót, szeretné letiltani azt?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Ne használja a rendszergazda fiókot az OTRS-sel! Hozzon létre új ügyintézőket és azokkal a fiókokkal dolgozzon inkább.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Ne használja a rendszergazda fiókot az %s-sel! Hozzon létre új ügyintézőket és azokkal a fiókokkal dolgozzon inkább.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'A beállítások sikeresen frissítve!',

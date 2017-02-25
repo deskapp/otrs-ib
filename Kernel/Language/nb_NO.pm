@@ -3466,8 +3466,8 @@ sub Data {
             'Du har fraværassistenten aktivert, vil du så den av?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Ikke bruk Superbruker kontoen til å jobbe med OTRS! Opprett nye Agenter og jobb heller med disse kontoene.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Ikke bruk Superbruker kontoen til å jobbe med %s! Opprett nye Agenter og jobb heller med disse kontoene.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Innstillinger lagret!',

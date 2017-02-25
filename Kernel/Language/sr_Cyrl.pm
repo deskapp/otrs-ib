@@ -3458,8 +3458,8 @@ sub Data {
             'Активирана је опција "Ван канцеларије", желите ли да је искључите?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Не користите суперкориснички налог за рад са „OTRS”! Направите нове налоге за оператере и користите њих.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Не користите суперкориснички налог за рад са „%s”! Направите нове налоге за оператере и користите њих.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Подешавања су успешно ажурирана!',

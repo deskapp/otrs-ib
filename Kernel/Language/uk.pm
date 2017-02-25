@@ -3458,8 +3458,8 @@ sub Data {
             'У Вас ввімкнено «Не при справах», хочете вимкнути?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Не використовуйте обліковий запис Superuser для роботи з OTRS! Створіть натомість нових агентів і працюйте під цими обліковками.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Не використовуйте обліковий запис Superuser для роботи з %s! Створіть натомість нових агентів і працюйте під цими обліковками.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Налаштуваня успішно оновлені!',

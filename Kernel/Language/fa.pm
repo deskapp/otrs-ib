@@ -3463,7 +3463,7 @@ sub Data {
             '',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
             'برای کار با سیستم از حساب کاربری پیش‌فرض استفاده ننمایید! لطفا یک کارشناس جدید ساخته و با آن کار نمایید.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm

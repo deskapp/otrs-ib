@@ -3462,7 +3462,7 @@ OTRSが443ポートを用いてcloud.otrs.comに接続できることを確認�
             '外出中が有効になっています。無効にしますか？',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
             'OTRSで作業するときにスーパーユーザを使用しないでください。代わりに新しい担当者を作成し、これらのアカウントで作業してください。',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm

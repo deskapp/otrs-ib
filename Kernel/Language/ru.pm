@@ -3469,8 +3469,8 @@ sub Data {
             'Вы включали Отсутствие в офисе, хотите отключить?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Не используйте учетную запись суперпользователя для работы с OTRS! Создайте новых Агентов и работайте с ними.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Не используйте учетную запись суперпользователя для работы с %s! Создайте новых Агентов и работайте с ними.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Настройки успешно обновлены!',

@@ -3465,8 +3465,8 @@ sub Data {
             'Votre indicateur d\'absence est activé, souhaitez-vous le désactivé?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Ne travaillez pas dans OTRS avec votre compte de superutilisateur! Créez plutôt de nouveaux agents et travaillez à partir de ces comptes.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Ne travaillez pas dans %s avec votre compte de superutilisateur! Créez plutôt de nouveaux agents et travaillez à partir de ces comptes.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Les préférences ont bien été mises à jour.',

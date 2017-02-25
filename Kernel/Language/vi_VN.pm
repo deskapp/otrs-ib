@@ -3457,8 +3457,8 @@ sub Data {
             'Bạn đã kích hoạt chế độ Out of Office, bạn có muốn tắt nó không?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Không sử dụng tài khoản cấp cao để làm việc với OTRS.Tạo Điều hành viên mới và làm việc với các tài khoản này để thay thế. ',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Không sử dụng tài khoản cấp cao để làm việc với %s.Tạo Điều hành viên mới và làm việc với các tài khoản này để thay thế. ',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Giao diện đã được cập nhật thành công!',
