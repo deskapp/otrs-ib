@@ -3464,8 +3464,8 @@ sub Data {
             'Aktivirana je opcija "Van kancelarije", želite li da je isključite?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Ne koristite superkorisnički nalog za rad sa „OTRS”! Napravite nove naloge za operatere i koristite njih.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Ne koristite superkorisnički nalog za rad sa „%s”! Napravite nove naloge za operatere i koristite njih.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Podešavanja su uspešno ažurirana!',

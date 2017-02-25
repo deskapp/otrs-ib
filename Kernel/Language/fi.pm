@@ -3460,8 +3460,8 @@ sub Data {
             'Lomavastaajasi on käytössä. Haluatko poistaa sen nyt käytöstä?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Älä käytä pääkäyttäjän tiliä työskennellessäsi OTRS:llä! Luo uusia agentteja ja käytä niitä työskentelyyn.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Älä käytä pääkäyttäjän tiliä työskennellessäsi %s:llä! Luo uusia agentteja ja käytä niitä työskentelyyn.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Asetukset tallennettu onnistuneesti!',

@@ -3463,8 +3463,8 @@ sub Data {
             'Tiene habilitado «Fuera de la oficina», ¿desea inhabilitarlo?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'No use la cuenta de superusuario para trabajar con OTRS. Cree nuevos agentes y trabaje con esas cuentas.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'No use la cuenta de superusuario para trabajar con %s. Cree nuevos agentes y trabaje con esas cuentas.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => '¡Las preferencias se actualizaron satisfactoriamente!',

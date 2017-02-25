@@ -3458,8 +3458,8 @@ sub Data {
             'Ofis dışında modu etkin, devre dışı bırakmak istermisiniz?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Tam yetkili hesapla OTRS\'yi kullanmayın. Onun yerine yeni bir temsilci hesabı oluşturun ve bunu kullanın.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Tam yetkili hesapla %s\'yi kullanmayın. Onun yerine yeni bir temsilci hesabı oluşturun ve bunu kullanın.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Tercihler başarılı bir şekilde güncellendi!',

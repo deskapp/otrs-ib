@@ -3464,7 +3464,7 @@ sub Data {
             '你已设置为不在办公室，是否取消它?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
             '不要使用OTRS系统超级用户帐号! 请创建并使用新的服务人员帐号。',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm

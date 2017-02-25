@@ -3460,8 +3460,8 @@ bin/otrs.Daemon.pl status\').',
             'Anda telah mengaktifkan Diluar kantor, Apakah anda ingin mengnonaktifkannya?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Jangan gunakan akun Superuser untuk bekerja dengan OTRS! Sebagai gantinya buat agen-agen baru dan gunakan akun-akun tersebut.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Jangan gunakan akun Superuser untuk bekerja dengan %s! Sebagai gantinya buat agen-agen baru dan gunakan akun-akun tersebut.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Pilihan telah berhasil diperbarui!',

@@ -3458,7 +3458,7 @@ sub Data {
             'Usted configuró su cuenta como "Fuera de la Oficina", ¿desea deshabilitarlo?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
             'No use la cuenta de super usuario, Cree nuevos Agentes y trabaje con esas cuentas',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm

@@ -3464,7 +3464,7 @@ sub Data {
             'U staat geregistreerd als afwezig. Wilt u dit aanpassen?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
             'Werk niet met het SuperUser account. Maak andere accounts aan.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm

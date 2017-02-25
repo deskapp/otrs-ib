@@ -3465,8 +3465,8 @@ sub Data {
             'Máte nastaveno "Mimo kancelář". Přejete si to vypnout?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Pro běžnou práci v OTRS nepoužívejte Superuživatele. Vytvořte nové Uživatele a pracujte místo toho s nimi.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Pro běžnou práci v %s nepoužívejte Superuživatele. Vytvořte nové Uživatele a pracujte místo toho s nimi.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Nastavení úspěšně aktualizováno!',

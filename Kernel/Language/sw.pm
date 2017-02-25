@@ -3461,8 +3461,8 @@ sub Data {
             'Nje ya ofisi imewezeshwa, ungependa kuikatisha?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Usitumie akaunti ya mtumiaji barabara kufanya kazi na OTRS! Tengeneza mawakala wapya na ufanye kazi na hizo akaunti badala yake.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Usitumie akaunti ya mtumiaji barabara kufanya kazi na %s! Tengeneza mawakala wapya na ufanye kazi na hizo akaunti badala yake.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Mapendeleo yamefanikiwa kusasishwa!',

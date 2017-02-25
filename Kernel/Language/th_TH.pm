@@ -3463,8 +3463,8 @@ sub Data {
             'คุณไม่อยู่ที่สำนักงานที่เปิดใช้งาน คุณต้องการจะปิดการใช้งานหรือไม่?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'อย่าใช้บัญชี Superuser เพื่อใช้งานOTRS! สร้างเอเย่นต์ใหม่และใช้งานด้วยบัญชีเหล่านี้แทน',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'อย่าใช้บัญชี Superuser เพื่อใช้งาน%s! สร้างเอเย่นต์ใหม่และใช้งานด้วยบัญชีเหล่านี้แทน',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'อัพเดตการตั้งค่าเรียบร้อยแล้ว!',

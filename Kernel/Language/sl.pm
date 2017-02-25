@@ -3462,8 +3462,8 @@ sub Data {
             'Vklopljeno imate opcijo Odsotnosti z delovnega mesta, ali želite to opcijo izklopiti?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Ne uporabljajte Superuser računa za delo z OTRS! Ustvarite nove Operaterje in delajte z računi operaterjev.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Ne uporabljajte Superuser računa za delo z %s! Ustvarite nove Operaterje in delajte z računi operaterjev.',
 
         # Perl Module: Kernel/Output/HTML/Preferences/ColumnFilters.pm
         'Preferences updated successfully!' => 'Nastavitve so uspešno posodobljene!',
