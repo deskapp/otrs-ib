@@ -277,7 +277,7 @@ sub Data {
         'Facility' => 'سهولت',
         'Time Zone' => 'منطقه زمانی',
         'Pending till' => 'تا زمانی که',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
             'برای کار با سیستم از حساب کاربری پیش‌فرض استفاده ننمایید! لطفا یک کارشناس جدید ساخته و با آن کار نمایید.',
         'Dispatching by email To: field.' => 'ارسال با پست الکترونیکی به:فیلد',
         'Dispatching by selected Queue.' => 'ارسال بوسیله لیست انتخاب شده',

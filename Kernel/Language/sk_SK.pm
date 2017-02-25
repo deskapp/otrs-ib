@@ -272,8 +272,8 @@ sub Data {
         'Facility' => 'Príslušenstvo',
         'Time Zone' => 'Časové pásmo',
         'Pending till' => 'Odložené do.',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Nepoužívajte správcovský prístup na prácu s OTRS, najprv vytvorte agentov a potom pracujte s nimi!',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Nepoužívajte správcovský prístup na prácu s %s, najprv vytvorte agentov a potom pracujte s nimi!',
         'Dispatching by email To: field.' => 'Posielam emailom =>  prijemca: pole',
         'Dispatching by selected Queue.' => 'Posielam vybraným queue.',
         'No entry found!' => 'Nenájdený žiaden vstup.',

@@ -272,8 +272,8 @@ sub Data {
         'Facility' => 'Tesis',
         'Time Zone' => 'Zaman Dilimi',
         'Pending till' => 'Şu zamana kadar askıda',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Tam yetkili hesapla OTRS\'yi kullanmayın. Onun yerine yeni bir temsilci hesabı oluşturun ve bunu kullanın.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Tam yetkili hesapla %s\'yi kullanmayın. Onun yerine yeni bir temsilci hesabı oluşturun ve bunu kullanın.',
         'Dispatching by email To: field.' => 'Elektronik posta Kime: alanına göre gönderiliyor.',
         'Dispatching by selected Queue.' => 'Seçili Kuyruğa göre gönderiliyor.',
         'No entry found!' => 'Kayıt bulunamadı!',

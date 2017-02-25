@@ -272,8 +272,8 @@ sub Data {
         'Facility' => 'Facilitat',
         'Time Zone' => 'Zona horària',
         'Pending till' => 'Pendent fins a',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'No utilitzi el compte de superusuari per treballar amb OTRS! Crear nous agents i treballar amb aquests comptes en el seu lloc.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'No utilitzi el compte de superusuari per treballar amb %s! Crear nous agents i treballar amb aquests comptes en el seu lloc.',
         'Dispatching by email To: field.' => 'Despatxar pel camp To: del correu',
         'Dispatching by selected Queue.' => 'Despatxar per la cua seleccionada',
         'No entry found!' => 'No es va trobar!',

@@ -271,8 +271,8 @@ sub Data {
         'Facility' => 'Tiện ích',
         'Time Zone' => 'Múi giờ',
         'Pending till' => 'Treo tới khi',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Không sử dụng tài khoản cấp cao để làm việc với OTRS.Tạo Điều hành viên mới và làm việc với các tài khoản này để thay thế. ',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Không sử dụng tài khoản cấp cao để làm việc với %s.Tạo Điều hành viên mới và làm việc với các tài khoản này để thay thế. ',
         'Dispatching by email To: field.' => 'Gửi bằng email tới: trường.',
         'Dispatching by selected Queue.' => 'Gửi bởi hàng đợi đã chọn.',
         'No entry found!' => 'Không tìm thấy mục nào!',

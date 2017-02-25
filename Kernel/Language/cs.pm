@@ -279,8 +279,8 @@ sub Data {
         'Facility' => 'Vybavení',
         'Time Zone' => 'Časové pásmo',
         'Pending till' => 'Čekání na vyřízení do',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Pro běžnou práci v OTRS nepoužívejte Superuživatele. Vytvořte nové Uživatele a pracujte místo toho s nimi.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Pro běžnou práci v %s nepoužívejte Superuživatele. Vytvořte nové Uživatele a pracujte místo toho s nimi.',
         'Dispatching by email To: field.' => 'Přiřadit podle emailu - pole KOMU:.',
         'Dispatching by selected Queue.' => 'Přiřadit do vybrané fronty.',
         'No entry found!' => 'Nebyl nalezen žádný záznam!',

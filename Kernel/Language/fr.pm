@@ -280,8 +280,8 @@ sub Data {
         'Facility' => 'Service',
         'Time Zone' => 'Fuseau horaire',
         'Pending till' => 'En attendant jusqu\'à',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'N\'utilisez pas le compte Superuser pour travailler avec OTRS! Créez de nouveaux agents et travaillez plutôt avec ces agents.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'N\'utilisez pas le compte Superuser pour travailler avec %s! Créez de nouveaux agents et travaillez plutôt avec ces agents.',
         'Dispatching by email To: field.' => 'Répartition par le champ \'À:\' de l\'e-mail',
         'Dispatching by selected Queue.' => 'Répartition selon la file sélectionnée',
         'No entry found!' => 'Aucun résultat n\'a été trouvé !',

@@ -274,8 +274,8 @@ sub Data {
         'Facility' => 'Valmius',
         'Time Zone' => 'Aikavyöhyke',
         'Pending till' => 'Odottaa',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Älä käytä pääkäyttäjän tiliä työskennellessäsi OTRS:llä! Luo uusia agentteja ja käytä niitä työskentelyyn.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Älä käytä pääkäyttäjän tiliä työskennellessäsi %s:llä! Luo uusia agentteja ja käytä niitä työskentelyyn.',
         'Dispatching by email To: field.' => 'Osoittaminen perustuen sähköpostin Vastaanottaja: kenttään.',
         'Dispatching by selected Queue.' => 'Osoittaminen perustuen valittuun jonoon.',
         'No entry found!' => 'Tietoa ei löytynyt!',

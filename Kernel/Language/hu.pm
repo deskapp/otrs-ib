@@ -277,8 +277,8 @@ sub Data {
         'Facility' => 'Képesség',
         'Time Zone' => 'Időzóna',
         'Pending till' => 'Várakozás eddig',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Ne használja a rendszergazda fiókot az OTRS-sel! Hozzon létre új ügyintézőket és azokkal a fiókokkal dolgozzon inkább.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Ne használja a rendszergazda fiókot az %s-sel! Hozzon létre új ügyintézőket és azokkal a fiókokkal dolgozzon inkább.',
         'Dispatching by email To: field.' => 'Szétválogatás az e-mail címzett mezője szerint.',
         'Dispatching by selected Queue.' => 'Szétválogatás a kiválasztott várólista szerint.',
         'No entry found!' => 'Nem található bejegyzés!',

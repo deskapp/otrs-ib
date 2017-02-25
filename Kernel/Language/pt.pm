@@ -273,8 +273,8 @@ sub Data {
         'Facility' => 'Instalação',
         'Time Zone' => 'Fuso horário',
         'Pending till' => 'Pendente até',
-        'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
-            'Não utilizar a conta de Super utilizador para trabalhar com o OTRS! Em vez disso, crie novos Agentes e trabalhe com essas contas.',
+        'Don\'t use the Superuser account to work with %s! Create new Agents and work with these accounts instead.' =>
+            'Não utilizar a conta de Super utilizador para trabalhar com o %s! Em vez disso, crie novos Agentes e trabalhe com essas contas.',
         'Dispatching by email To: field.' => 'Despachado através do campo Para:',
         'Dispatching by selected Queue.' => 'Despachado pela Fila escolhida',
         'No entry found!' => 'Não se encontrou nada!',
