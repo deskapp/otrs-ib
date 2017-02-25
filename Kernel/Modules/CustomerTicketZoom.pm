@@ -1357,7 +1357,9 @@ sub _Mask {
         )
     {
         # get all queues to tickets relations
-        my %QueueChatChannelRelations = $Kernel::OM->Get('Kernel::System::ChatChannel')->ChatChannelQueuesGet();
+        my %QueueChatChannelRelations = $Kernel::OM->Get('Kernel::System::ChatChannel')->ChatChannelQueuesGet(
+            CustomerInterface => 1,
+        );
 
         # if a support chat channel is set for this queue
         if ( $QueueChatChannelRelations{ $Param{QueueID} } ) {

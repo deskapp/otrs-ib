@@ -1054,7 +1054,7 @@ sub Table {
 
 =item Text()
 
-Output a textline
+Output a text line
 
     Return
         $Return{State}
