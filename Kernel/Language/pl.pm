@@ -2697,7 +2697,7 @@ sub Data {
         'Link together' => 'Połącz razem',
         'Link to parent' => 'Połącz z rodzicem',
         'Unlock tickets' => 'Odblokuj zgłoszenia',
-        'Execute Bulk Action' => '',
+        'Execute Bulk Action' => 'Wykonaj operację zbiorczą',
 
         # Template: AgentTicketCompose
         'Compose Answer for %s%s%s' => 'Utwórz odpowiedź do %s%s%s',
