@@ -1,4 +1,5 @@
 #6.0.0.beta1 2017-??-??
+ - 2017-03-10 HTML table handling enhanced (force ckeditor not to drop table formatting).
  - 2017-02-23 HTML table creating and pasting added, paste as plain text added.
  - 2017-01-20 Added command to list configured queues, thanks to Martin Burggraf.
  - 2017-01-13 Blinking mechanism for queues is now disabled by default (can be enabled using Ticket::Frontend::AgentTicketQueue###Blink).
