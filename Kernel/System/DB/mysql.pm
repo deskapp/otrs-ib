@@ -15,6 +15,7 @@ use Encode ();
 
 our @ObjectDependencies = (
     'Kernel::Config',
+    'Kernel::System::Encode',
     'Kernel::System::Log',
     'Kernel::System::Main',
     'Kernel::System::Time',
@@ -93,8 +94,16 @@ sub PreProcessBindData {
 
     my $Size = scalar @{ $BindRef // [] };
 
+    my $EncodeObject = $Kernel::OM->Get('Kernel::System::Encode');
+
     for ( my $I = 0; $I < $Size; $I++ ) {
+
         $Self->_FixMysqlUTF8( \$BindRef->[$I] );
+
+        # DBD::mysql 4.042+ requires data to be octets or the mysql_enable_utf8 flag set, which
+        #   seems to be buggy at least in 4.042, so we encode the data on our own.
+        #   See also https://bugs.otrs.org/show_bug.cgi?id=12677.
+        $EncodeObject->EncodeOutput( \$BindRef->[$I] );
     }
     return;
 }

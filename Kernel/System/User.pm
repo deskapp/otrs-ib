@@ -627,16 +627,11 @@ sub UserUpdate {
         );
     }
 
-    # get cache object
-    my $CacheObject = $Kernel::OM->Get('Kernel::System::Cache');
-
-    # delete cache
-    $CacheObject->CleanUp(
-        Type => $Self->{CacheType},
-    );
+    $Self->_UserCacheClear( UserID => $Param{UserID} );
 
     # TODO Not needed to delete the cache if ValidID or Name was not changed
 
+    my $CacheObject = $Kernel::OM->Get('Kernel::System::Cache');
     my $SystemPermissionConfig = $Kernel::OM->Get('Kernel::Config')->Get('System::Permission') || [];
 
     for my $Type ( @{$SystemPermissionConfig}, 'rw' ) {
@@ -1263,11 +1258,32 @@ sub SetPreferences {
     my $ParamValue = $Param{Value} // '';
     return 1 if $UserValue eq $ParamValue;
 
-    # get config object
-    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+    $Self->_UserCacheClear( UserID => $Param{UserID} );
+
+    # get user preferences config
+    my $GeneratorModule = $Kernel::OM->Get('Kernel::Config')->Get('User::PreferencesModule')
+        || 'Kernel::System::User::Preferences::DB';
+
+    # get generator preferences module
+    my $PreferencesObject = $Kernel::OM->Get($GeneratorModule);
+
+    # set preferences
+    return $PreferencesObject->SetPreferences(%Param);
+}
+
+sub _UserCacheClear {
+    my ( $Self, %Param ) = @_;
+
+    if ( !$Param{UserID} ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "Need UserID!"
+        );
+        return;
+    }
 
     # get configuration for the full name order
-    my $FirstnameLastNameOrder = $ConfigObject->Get('FirstnameLastnameOrder') || 0;
+    my $FirstnameLastNameOrder = $Kernel::OM->Get('Kernel::Config')->Get('FirstnameLastnameOrder') || 0;
 
     # create cachekey
     my $Login = $Self->UserLookup( UserID => $Param{UserID} );
@@ -1288,6 +1304,8 @@ sub SetPreferences {
         'UserList::Long::0::' . $FirstnameLastNameOrder . '::1',
         'UserList::Long::1::' . $FirstnameLastNameOrder . '::0',
         'UserList::Long::1::' . $FirstnameLastNameOrder . '::1',
+        'UserLookup::ID::' . $Login,
+        'UserLookup::Login::' . $Param{UserID},
     );
 
     # get cache object
@@ -1302,15 +1320,7 @@ sub SetPreferences {
         );
     }
 
-    # get user preferences config
-    my $GeneratorModule = $ConfigObject->Get('User::PreferencesModule')
-        || 'Kernel::System::User::Preferences::DB';
-
-    # get generator preferences module
-    my $PreferencesObject = $Kernel::OM->Get($GeneratorModule);
-
-    # set preferences
-    return $PreferencesObject->SetPreferences(%Param);
+    return 1;
 }
 
 =item GetPreferences()
