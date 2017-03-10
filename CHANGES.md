@@ -1,4 +1,5 @@
 #6.0.0.beta1 2016-??-??
+ - 2017-03-10 Allow to hide additional ads using AdsAndExternalReportsEnabled.
  - 2016-06-28 Added parameter AdsAndExternalReportsEnabled to enable ads and reporting bugs over public net.
  - 2016-06-24 Improved TicketSearch() to return error on a search for inexistent dynamic fields instead of ignoring them, thanks to Moritz Lenz.
  - 2016-06-06 Added checks for length of words in search terms when using search index/StaticDB backend.

@@ -97,7 +97,7 @@ SET OTRSBusinessLinkLabel = '<strong><a href="#" class="OTRSBusinessRequired">OT
                         </form>
                     </li>
                 </ul>
-            [% ELSE %]
+            [% ELSIF Config('AdsAndExternalReportsEnabled') %]
                 <p class="FieldExplanation">
                     [% Translate("Do you want to benefit from processes created by experts? Upgrade to %s to be able to import some sophisticated example processes.", OTRSBusinessLinkLabel) %]
                 </p>
