@@ -1,4 +1,5 @@
 #5.0.17 2017-??-??
+ - 2017-03-10 HTML table handling enhanced (force ckeditor not to drop table formatting).
  - 2017-02-23 HTML table creating and pasting added, paste as plain text added.
  - 2017-02-14 Fixed bug#[12558](https://bugs.otrs.org/show_bug.cgi?id=12558)(PR#1603) - Filtering of "Available Columns" in Allocation List is not working well when columns are changed. Thanks to S7!
  - 2017-02-14 Added the possibility to configure ticket notification recipients by OTRS-tags (replaced with values from current ticket).
