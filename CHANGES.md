@@ -1,4 +1,5 @@
 #6.0.0.beta1 2017-??-??
+ - 2017-03-10 Translations update.
  - 2017-02-25 Translations update.
  - 2017-01-20 Added command to list configured queues, thanks to Martin Burggraf.
  - 2017-01-13 Blinking mechanism for queues is now disabled by default (can be enabled using Ticket::Frontend::AgentTicketQueue###Blink).

@@ -72,7 +72,7 @@ sub Data {
         'Delete Invalid ACL' => 'Usuń nieprawidłowy ACL',
         'Match settings' => 'Dopasuj ustawienia',
         'Set up matching criteria for this ACL. Use \'Properties\' to match the current screen or \'PropertiesDatabase\' to match attributes of the current ticket that are in the database.' =>
-            'Ustaw kryteria dla tego ACL. Uzyj \'Własciwości\' by dopasować obecne okno lub \'Właściwości Bazy Danych\' by dopasowac atrybuty obecnego zgłoszenia w bazie danych.',
+            'Ustaw kryteria dla tego ACL. Użyj \'Właściwości\' by dopasować obecne okno lub \'Właściwości Bazy Danych\' by dopasowac atrybuty obecnego zgłoszenia w bazie danych.',
         'Change settings' => 'Zmień ustawienia',
         'Set up what you want to change if the criteria match. Keep in mind that \'Possible\' is a white list, \'PossibleNot\' a black list.' =>
             'Ustaw co chcesz zmienić jeśli kryteria zostaną spełnione. Prosze zapamiętaj, że \'możliwe\' jest białą listą, \'Niemożliwe\' jest czarną listą',
@@ -469,7 +469,8 @@ sub Data {
         'New Dynamic Field Values' => 'Wartości nowego pola dynamicznego',
         'Archive selected tickets' => 'Zarchiwizuj zaznaczone zgłoszenia',
         'Add Note' => 'Dodaj notatkę',
-        'Time units' => 'Raport czasu',
+        'Time units' => 'Jednoski pracy',
+        'Work time' => 'Czas pracy',
         'Execute Ticket Commands' => 'Uruchom polecenie',
         'Send agent/customer notifications on changes' => 'Wyślij powidomienia agentowi/klientowi przy zmianach',
         'CMD' => 'linia poleceń',
@@ -1831,7 +1832,7 @@ sub Data {
         'Open tickets' => 'Otwarte zgłoszenia',
         'Closed tickets' => 'Zamknięte zgłoszenia',
         'All tickets' => 'Wszystkie zgłoszenia',
-        'Archived tickets' => 'Zarchiwizowane zgłoszenia',
+        'Archived tickets' => 'Zgłoszenia zarchiwizowane',
 
         # Template: AgentDashboardCustomerUserList
         'Customer login' => 'Login klienta',
@@ -2253,8 +2254,8 @@ sub Data {
         'Your user name' => 'Twoja nazwa użytkownika',
         'Your password' => 'Twoje hasło',
         'Forgot password?' => 'Zapomniane hasło?',
-        '2 Factor Token' => 'Token weryfikacji dwuetapowej',
-        'Your 2 Factor Token' => 'Twój token weryfikacji dwuetapowej',
+        '2 Factor Token' => 'Kod weryfikacji 2-etapowej',
+        'Your 2 Factor Token' => 'Twój kod weryfikacji 2-etapowej',
         'Log In' => 'Zaloguj się',
         'Not yet registered?' => 'Nie jesteś jeszcze zarejetrowanym użytkownikiem?',
         'Back' => 'Powrót',
@@ -2320,7 +2321,7 @@ sub Data {
         'Expand article' => 'Rozwiń wiadomość',
         'Information' => 'Informacje',
         'Next Steps' => 'Następne kroki',
-        'Reply' => 'Odpowiedź',
+        'Reply' => 'Odpowiedz',
         'Chat Protocol' => '',
 
         # Template: CustomerWarning
@@ -2691,7 +2692,7 @@ sub Data {
         'week(s)' => 'tydzień(tygodnie)',
         'month(s)' => 'miesiąc(-cy)',
         'year(s)' => 'rok(lat)',
-        'Unarchived tickets' => 'Zgłoszenia przywrócone z archiwum',
+        'Unarchived tickets' => 'Zgłoszenia niezarchiwizowane',
         'archive tickets' => '',
         'restore tickets from archive' => '',
         'Need Profile!' => '',
@@ -3276,14 +3277,14 @@ sub Data {
         'Fields with no group' => '',
         'Reply All' => 'Odpowiedz wszystkim',
         'Forward' => 'Prześlij dalej',
-        'Forward article via mail' => 'Prześlij wiadomość dalej przez e-mail',
+        'Forward article via mail' => 'Prześlij tę wiadomość dalej',
         'Bounce Article to a different mail address' => 'Przekaż wiadomość na inny adres e-mail',
         'Bounce' => 'Przekaż',
         'Split this article' => 'Podziel wiadomość',
         'Split' => 'Podziel',
         'Print this article' => 'Wydrukuj tę wiadomość',
-        'View the source for this Article' => '',
-        'Plain Format' => 'Bez formatowania',
+        'View the source for this Article' => 'Wyświetl kod źródłowy tej wiadomości',
+        'Plain Format' => 'Źródło',
         'Mark' => 'Zaznacz',
         'Unmark' => 'Odznacz',
         'Reply to note' => 'Odpowiedz na notatkę',
@@ -3946,7 +3947,7 @@ sub Data {
         'Panic, user authenticated but no user data can be found in OTRS DB!! Perhaps the user is invalid.' =>
             '',
         'Can`t remove SessionID.' => '',
-        'Logout successful.' => '',
+        'Logout successful.' => 'Wylogowanie zakoczończone pomyślnie.',
         'Feature not active!' => 'Funkcja nie aktywna!',
         'Sent password reset instructions. Please check your email.' => 'Instrukcje dotyczące resetowania hasła zostały wysłane. Prosimy o sprawdzenie swojej skrzynki pocztowej.',
         'Invalid Token!' => 'Błędny token!',
@@ -4337,7 +4338,7 @@ Thanks for your help!
 
  Your Helpdesk Team
 ' => '',
-        ' (work units)' => ' pracy',
+        ' (work units)' => ' (jednostki pracy)',
         ' 2 minutes' => ' 2 minuty',
         ' 5 minutes' => ' 5 minut',
         ' 7 minutes' => ' 7 minut',
@@ -4381,8 +4382,8 @@ Thanks for your help!
         'Activates time accounting.' => 'Aktywuje rozliczanie czasu.',
         'ActivityID' => '',
         'Add a note to this ticket' => 'Dodaj notatkę do tego zgłoszenia',
-        'Add an inbound phone call to this ticket' => '',
-        'Add an outbound phone call to this ticket' => '',
+        'Add an inbound phone call to this ticket' => 'Dodaj do tego zgłoszenia informację o przychodzącym połączeniu tel.',
+        'Add an outbound phone call to this ticket' => 'Dodaj do tego zgłoszenia informację o wychodzącym połączeniu tel.',
         'Added email. %s' => 'Dodano e-mail. %s',
         'Added link to ticket "%s".' => 'Dodano łącze do zgłoszenia "%s".',
         'Added note (%s)' => 'Dodano notatkę (%s)',
@@ -4501,7 +4502,7 @@ Thanks for your help!
         'Allows to set a new ticket state in the move ticket screen of the agent interface.' =>
             '',
         'Always show RichText if available' => '',
-        'Answer' => 'Odpowiedź',
+        'Answer' => 'Odpowiedz',
         'Arabic (Saudi Arabia)' => '',
         'Archive state changed: "%s"' => 'Zmiana stanu archiwizacji: "%s"',
         'ArticleTree' => 'Drzewo z artykułami',
@@ -5460,7 +5461,7 @@ Thanks for your help!
         'Dynamic fields shown in the ticket overview screen of the customer interface. Possible settings: 0 = Disabled, 1 = Enabled, 2 = Enabled and required.' =>
             'Dynamiczne pola widoczne w oknie przeglądu zgłoszenia interfejsu agenta. Możliwe ustawienia: 0 = Wyłączony, 1 = Włączony, 2 = Włączony i wymagany.',
         'Dynamic fields shown in the ticket owner screen of the agent interface. Possible settings: 0 = Disabled, 1 = Enabled, 2 = Enabled and required.' =>
-            'Dynamiczne pola widoczne w oknie własciciela zgłoszenia interfejsu agenta. Możliwe ustawienia: 0 = Wyłączony, 1 = Włączony, 2 = Włączony i wymagany.',
+            'Dynamiczne pola widoczne w oknie właściciela zgłoszenia interfejsu agenta. Możliwe ustawienia: 0 = Wyłączony, 1 = Włączony, 2 = Włączony i wymagany.',
         'Dynamic fields shown in the ticket pending screen of the agent interface. Possible settings: 0 = Disabled, 1 = Enabled, 2 = Enabled and required.' =>
             'Dynamiczne pola widoczne w oknie oczekujacego zgłoszenia interfejsu agenta. Możliwe ustawienia: 0 = Wyłączony, 1 = Włączony, 2 = Włączony i wymagany.',
         'Dynamic fields shown in the ticket phone inbound screen of the agent interface. Possible settings: 0 = Disabled, 1 = Enabled, 2 = Enabled and required.' =>
@@ -5920,7 +5921,7 @@ Thanks for your help!
         'Maximum size (in characters) of the customer information table in the ticket zoom view.' =>
             'Maksymalny rozmiar (w znakach) tabeli informacji klienta w przybliżonym widoku zgłoszenia.',
         'Medium' => 'Średnie',
-        'Merge this ticket and all articles into a another ticket' => '',
+        'Merge this ticket and all articles into a another ticket' => 'Scal to zgłoszenie ze wszystkimi jego wiadomościami do innego zgłoszenia',
         'Merged Ticket <OTRS_TICKET> to <OTRS_MERGE_TO_TICKET>.' => '',
         'Miscellaneous' => 'Rożne',
         'Module for To-selection in new ticket screen in the customer interface.' =>
@@ -6083,8 +6084,8 @@ Thanks for your help!
         'Permitted width for compose email windows.' => 'Dozwolona szerokość dla okien tworzowych e-maili.',
         'Permitted width for compose note windows.' => 'Dozwolona szerokość dla okien tworzonych notatek.',
         'Persian' => '',
-        'Phone Call Inbound' => 'Przychodzące połączenie tel.',
-        'Phone Call Outbound' => 'Wychodzące połączenie tel.',
+        'Phone Call Inbound' => 'Tel. przychodzący',
+        'Phone Call Outbound' => 'Tel. wychodzący',
         'Phone Call.' => '',
         'Phone call' => 'Połączenie telefoniczne',
         'Phone-Ticket' => 'Zgłoszenie telefoniczne',
@@ -6205,7 +6206,7 @@ Thanks for your help!
             '',
         'Selects the ticket number generator module. "AutoIncrement" increments the ticket number, the SystemID and the counter are used with SystemID.counter format (e.g. 1010138, 1010139). With "Date" the ticket numbers will be generated by the current date, the SystemID and the counter. The format looks like Year.Month.Day.SystemID.counter (e.g. 200206231010138, 200206231010139). With "DateChecksum"  the counter will be appended as checksum to the string of date and SystemID. The checksum will be rotated on a daily basis. The format looks like Year.Month.Day.SystemID.Counter.CheckSum (e.g. 2002070110101520, 2002070110101535). "Random" generates randomized ticket numbers in the format "SystemID.Random" (e.g. 100057866352, 103745394596).' =>
             '',
-        'Send new outgoing mail from this ticket' => '',
+        'Send new outgoing mail from this ticket' => 'Wyślij nową wiadomość e-mail z tego zgłoszenia',
         'Send notifications to users.' => 'Wyślij powiadomienie do użytkowników',
         'Sender type for new tickets from the customer inteface.' => 'Rodzaj wysyłającego dla nowych zgłoszeń z interfejsu klienta.',
         'Sends agent follow-up notification only to the owner, if a ticket is unlocked (the default is to send the notification to all agents).' =>
@@ -6437,7 +6438,7 @@ Thanks for your help!
         'Show queues even when only locked tickets are in.' => '',
         'Show the current owner in the customer interface.' => 'Pokazuje obecnego właściciela w interfejsie klienta.',
         'Show the current queue in the customer interface.' => 'Pokazuje obecną kolejkę w interfejsie klienta.',
-        'Show the history for this ticket' => '',
+        'Show the history for this ticket' => 'Pokaż historię tego zgłoszenia',
         'Show the ticket history' => 'Pokaż historię zgłoszenia',
         'Shows a count of icons in the ticket zoom, if the article has attachments.' =>
             'Pokazuje licznik ikon w przybliżeniu zgłoszenia, jeśli artykuł zawiera załączniki.',
@@ -6499,7 +6500,7 @@ Thanks for your help!
             'Pokazuje link dostępu do załączników artykułow w przeglądarce html w widoku przyblizonym artykułu w interfejsie agenta.',
         'Shows a link to download article attachments in the zoom view of the article in the agent interface.' =>
             'Pokazuje link do ściągnięcia załączników artykułu w widoku przybliżonym artykułow w interfejsie agenta.',
-        'Shows a link to see a zoomed email ticket in plain text.' => 'Pokazuje link pozwalający na pokazanie poszerzonego podglądu zgłoszenia e-mail bez formatowania tekstu.',
+        'Shows a link to see a zoomed email ticket in plain text.' => 'Pokazuje link pozwalający na podgląd źródła zgłoszenia.',
         'Shows a link to set a ticket as junk in the ticket zoom view of the agent interface. Additional access control to show or not show this link can be done by using Key "Group" and Content like "rw:group1;move_into:group2". To cluster menu items use for Key "ClusterName" and for the Content any name you want to see in the UI. Use "ClusterPriority" to configure the order of a certain cluster within the toolbar.' =>
             '',
         'Shows a list of all the involved agents on this ticket, in the close ticket screen of the agent interface.' =>
