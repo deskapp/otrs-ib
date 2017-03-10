@@ -1,4 +1,5 @@
 #5.0.17 2017-??-??
+ - 2017-03-10 HTML table handling enhanced (force ckeditor not to drop table formatting).
  - 2017-03-10 Allow to hide additional ads using AdsAndExternalReportsEnabled.
  - 2017-03-10 Translations update.
  - 2017-02-25 Translations update.
