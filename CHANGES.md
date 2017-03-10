@@ -1,4 +1,5 @@
 #6.0.0.beta1 2017-??-??
+ - 2017-03-10 Allow to hide additional ads using AdsAndExternalReportsEnabled.
  - 2017-03-10 Translations update.
  - 2017-02-25 Translations update.
  - 2017-02-23 HTML table creating and pasting added, paste as plain text added.
