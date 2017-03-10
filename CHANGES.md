@@ -1,4 +1,5 @@
 #5.0.17 2017-??-??
+ - 2017-03-10 Allow to hide additional ads using AdsAndExternalReportsEnabled.
  - 2017-03-10 Translations update.
  - 2017-02-25 Translations update.
  - 2017-02-24 Fixed bug#[12612](https://bugs.otrs.org/show_bug.cgi?id=12612) - Exchange of the axis and the translations doesn't work in the dashboard statistic widgets.

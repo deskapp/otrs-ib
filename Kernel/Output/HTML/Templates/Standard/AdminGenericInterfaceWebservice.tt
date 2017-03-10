@@ -186,7 +186,7 @@ SET OTRSBusinessLinkLabelWithContractLevel = '<strong><a href="#" class="OTRSBus
                         </form>
                     </li>
                 </ul>
-            [% ELSE %]
+            [% ELSIF Config('AdsAndExternalReportsEnabled') %]
                 <p class="FieldExplanation">
                     [% Translate("Would you like to benefit from web services created by experts? Upgrade to %s to import some sophisticated ready-to-run web services.", OTRSBusinessLinkLabelWithContractLevel) %]
                 </p>
