@@ -43,9 +43,10 @@ sub Run {
     # PostMaster::CheckFollowUpModule###0600-MessageID description in SysConfig
     if ( $Param{GetParam}->{'Message-ID'} ) {
         my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
+        my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
 
         # get ticket id containing article(s) with given message id
-        my $TicketID = $TicketObject->ArticleGetTicketIDOfMessageID(
+        my $TicketID = $ArticleObject->ArticleGetTicketIDOfMessageID(
             MessageID   => $Param{GetParam}->{'Message-ID'},
             MaxAge      => $Param{JobConfig}->{MaxAge},
             MaxArticles => $Param{JobConfig}->{MaxArticles},

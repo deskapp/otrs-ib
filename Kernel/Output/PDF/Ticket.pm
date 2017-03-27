@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2016 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+# Copyright (C) 2016-2017 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # Based on:
 #   Statistics.pm and AgetnTicketPrint.pm by OTRS AG, http://otrs.com/
 # --
@@ -89,12 +89,15 @@ sub GenerateAgentPDF {
     # get ticket object
     my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
 
+    # get article object
+    my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
+
     # get content
     my %Ticket = $TicketObject->TicketGet(
         TicketID => $Param{TicketID},
         UserID   => $Param{UserID},
     );
-    my @ArticleBox = $TicketObject->ArticleContentIndex(
+    my @ArticleBox = $ArticleObject->ArticleContentIndex(
         TicketID                   => $Param{TicketID},
         StripPlainBodyAsAttachment => 1,
         UserID                     => $Param{UserID},
@@ -904,7 +907,8 @@ sub _PDFOutputArticles {
     my %Page = %{ $Param{PageData} };
 
     # get needed objects
-    my $PDFObject    = $Kernel::OM->Get('Kernel::System::PDF');
+    my $PDFObject = $Kernel::OM->Get('Kernel::System::PDF');
+    my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
 
     my @ArticleData  = @{ $Param{ArticleData} };
@@ -939,7 +943,7 @@ sub _PDFOutputArticles {
 
         # show total accounted time if feature is active:
         if ( $ConfigObject->Get('Ticket::Frontend::AccountTime') ) {
-            $Article{'Accounted time'} = $Kernel::OM->Get('Kernel::System::Ticket')->ArticleAccountedTimeGet(
+            $Article{'Accounted time'} = $ArticleObject->ArticleAccountedTimeGet(
                 ArticleID => $Article{ArticleID},
             );
         }

@@ -248,6 +248,8 @@ sub Run {
     }
     elsif ( $Self->{Subaction} eq 'StoreNew' ) {
 
+        my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
+
         my $NextScreen = $Config->{NextScreenAfterNewTicket};
         my %Error;
 
@@ -633,7 +635,7 @@ sub Run {
             UserLogin => $Self->{UserLogin},
         );
         my $From      = "\"$FullName\" <$Self->{UserEmail}>";
-        my $ArticleID = $TicketObject->ArticleCreate(
+        my $ArticleID = $ArticleObject->ArticleCreate(
             TicketID         => $TicketID,
             ArticleType      => $Config->{ArticleType},
             SenderType       => $Config->{SenderType},
@@ -699,7 +701,7 @@ sub Run {
 
                 my $ChatArticleType = 'chat-external';
 
-                $ChatArticleID = $TicketObject->ArticleCreate(
+                $ChatArticleID = $ArticleObject->ArticleCreate(
 
                     #NoAgentNotify => $NoAgentNotify,
                     TicketID    => $TicketID,
@@ -764,7 +766,7 @@ sub Run {
             }
 
             # write existing file to backend
-            $TicketObject->ArticleWriteAttachment(
+            $ArticleObject->ArticleWriteAttachment(
                 %{$Attachment},
                 ArticleID => $ArticleID,
                 UserID    => $ConfigObject->Get('CustomerPanelUserID'),

@@ -18,6 +18,7 @@ use base qw(Kernel::System::Console::BaseCommand);
 our @ObjectDependencies = (
     'Kernel::Config',
     'Kernel::System::Ticket',
+    'Kernel::System::Ticket::Article',
 );
 
 sub Configure {
@@ -72,22 +73,25 @@ sub Run {
     my $Count      = 0;
     my $MicroSleep = $Self->GetOption('micro-sleep');
 
+    my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
+
     TICKETID:
     for my $TicketID (@TicketIDs) {
 
         $Count++;
 
         # get articles
-        my @ArticleIndex = $TicketObject->ArticleIndex(
+        my @ArticleIndex = $ArticleObject->ArticleIndex(
             TicketID => $TicketID,
             UserID   => 1,
         );
 
         for my $ArticleID (@ArticleIndex) {
-            $TicketObject->ArticleIndexBuild(
+            $ArticleObject->ArticleIndexBuild(
                 ArticleID     => $ArticleID,
                 UserID        => 1,
                 MainIndexOnly => $Self->GetOption('main-index-only'),
+
             );
         }
 

@@ -1,6 +1,6 @@
 # --
 # Kernel/System/Ticket/ArticleSearchIndex/SphinxAndStaticDB.pm - article search index backend static with Sphinx support
-# Copyright (C) 2014-2015 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+# Copyright (C) 2014-2017 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # Based on StaticDB.pm by OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
@@ -23,8 +23,11 @@ our @ObjectDependencies = (
     'Kernel::System::Queue',
 );
 
-sub ArticleIndexBackendInit {
-    my ( $Self, %Param ) = @_;
+sub new {
+    my ( $Type, %Param ) = @_;
+
+    my $Self = {};
+    bless( $Self, $Type );
 
     if ( !$Kernel::OM->Get('Kernel::System::Main')->Require('Kernel::System::Ticket::ArticleSearchIndex::StaticDB') ) {
         die "Can't load ticket search index backend module Kernel::System::Ticket::ArticleSearchIndex::StaticDB! $@";
@@ -39,7 +42,7 @@ sub ArticleIndexBackendInit {
         $Self->{UpdateOnly} = $Self->{SphinxObject}->UpdateOnly();
     }
 
-    return $Self->SUPER::ArticleIndexBackendInit(%Param);
+    return $Self->SUPER::new(%Param);
 }
 
 sub ArticleIndexBuild {

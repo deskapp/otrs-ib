@@ -1165,10 +1165,10 @@ sub _Edit {
         HTMLQuote    => 0,
     );
 
-    my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
+    my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
 
     $Param{ArticleTypesStrg} = $LayoutObject->BuildSelection(
-        Data        => { $TicketObject->ArticleTypeList( Result => 'HASH' ), },
+        Data        => { $ArticleObject->ArticleTypeList( Result => 'HASH' ), },
         Name        => 'ArticleTypeID',
         SelectedID  => $Param{Data}->{ArticleTypeID},
         Class       => $ArticleTypeIDClass . ' Modernize W75pc',
@@ -1179,7 +1179,7 @@ sub _Edit {
     );
 
     $Param{ArticleSenderTypesStrg} = $LayoutObject->BuildSelection(
-        Data        => { $TicketObject->ArticleSenderTypeList( Result => 'HASH' ), },
+        Data        => { $ArticleObject->ArticleSenderTypeList( Result => 'HASH' ), },
         Name        => 'ArticleSenderTypeID',
         SelectedID  => $Param{Data}->{ArticleSenderTypeID},
         Class       => $ArticleSenderTypeIDClass . ' Modernize W75pc',

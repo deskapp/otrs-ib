@@ -480,7 +480,8 @@ sub TicketSearch {
 
     my $SQLFrom = ' FROM ticket st ';
 
-    my $ArticleJoinSQL = $Self->_ArticleIndexQuerySQL( Data => \%Param ) || '';
+    my $ArticleJoinSQL
+        = $Kernel::OM->Get('Kernel::System::Ticket::Article')->_ArticleIndexQuerySQL( Data => \%Param ) || '';
 
     # sql, use also article table if needed
     $SQLFrom .= $ArticleJoinSQL;
@@ -1264,14 +1265,16 @@ sub TicketSearch {
         }
     }
 
+    my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
+
     # search article attributes
-    my $ArticleIndexSQLExt = $Self->_ArticleIndexQuerySQLExt( Data => \%Param );
+    my $ArticleIndexSQLExt = $ArticleObject->_ArticleIndexQuerySQLExt( Data => \%Param );
     $SQLExt .= $ArticleIndexSQLExt;
 
     my %CustomerArticleTypes;
     my @CustomerArticleTypeIDs;
     if ( $Param{CustomerUserID} ) {
-        %CustomerArticleTypes = $Self->ArticleTypeList(
+        %CustomerArticleTypes = $ArticleObject->ArticleTypeList(
             Result => 'HASH',
             Type   => 'Customer',
         );
@@ -2200,19 +2203,38 @@ sub TicketSearch {
                 || $SortByArray[$Count] eq 'Responsible'
                 )
             {
-                # include first and last name in select
+                # Include first name, last name and login in select.
                 $SQLSelect
                     .= ', ' . $SortOptions{ $SortByArray[$Count] }
-                    . ", u.first_name, u.last_name ";
+                    . ', u.first_name, u.last_name, u.login ';
 
-                # join the users table on user's id
+                # Join the users table on user's ID.
                 $SQLFrom
                     .= ' JOIN users u '
                     . ' ON ' . $SortOptions{ $SortByArray[$Count] } . ' = u.id ';
 
-                # sort by first and last name
+                my $FirstnameLastNameOrder = $Kernel::OM->Get('Kernel::Config')->Get('FirstnameLastnameOrder') || 0;
                 my $OrderBySuffix = $OrderByArray[$Count] eq 'Up' ? 'ASC' : 'DESC';
-                $SQLExt .= " u.first_name $OrderBySuffix, u.last_name ";
+
+                # Sort by configured first and last name order.
+                if ( $FirstnameLastNameOrder eq '1' || $FirstnameLastNameOrder eq '6' ) {
+                    $SQLExt .= " u.last_name $OrderBySuffix, u.first_name ";
+                }
+                elsif ( $FirstnameLastNameOrder eq '2' ) {
+                    $SQLExt .= " u.first_name $OrderBySuffix, u.last_name $OrderBySuffix, u.login ";
+                }
+                elsif ( $FirstnameLastNameOrder eq '3' || $FirstnameLastNameOrder eq '7' ) {
+                    $SQLExt .= " u.last_name $OrderBySuffix, u.first_name $OrderBySuffix, u.login ";
+                }
+                elsif ( $FirstnameLastNameOrder eq '4' ) {
+                    $SQLExt .= " u.login $OrderBySuffix, u.first_name $OrderBySuffix, u.last_name ";
+                }
+                elsif ( $FirstnameLastNameOrder eq '5' || $FirstnameLastNameOrder eq '8' ) {
+                    $SQLExt .= " u.login $OrderBySuffix, u.last_name $OrderBySuffix, u.first_name ";
+                }
+                else {
+                    $SQLExt .= " u.first_name $OrderBySuffix, u.last_name ";
+                }
             }
             else {
 

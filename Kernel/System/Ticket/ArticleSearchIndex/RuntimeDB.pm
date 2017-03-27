@@ -16,8 +16,13 @@ our @ObjectDependencies = (
     'Kernel::System::Log',
 );
 
-sub ArticleIndexBackendInit {
-    return 1;
+sub new {
+    my ( $Type, %Param ) = @_;
+
+    my $Self = {};
+    bless( $Self, $Type );
+
+    return $Self;
 }
 
 sub ArticleIndexBuild {

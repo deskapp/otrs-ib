@@ -44,6 +44,14 @@ $Selenium->RunTest(
             Value => 0,
         );
 
+        # Override FirstnameLastnameOrder setting to check if it is taken into account
+        #   (see bug#12554 for more information).
+        $Helper->ConfigSettingChange(
+            Valid => 1,
+            Key   => 'FirstnameLastnameOrder',
+            Value => 5,
+        );
+
         # create test user and login
         my $TestUserLogin = $Helper->TestUserCreate(
             Groups => [ 'admin', 'users' ],
@@ -55,9 +63,16 @@ $Selenium->RunTest(
             Password => $TestUserLogin,
         );
 
+        my $UserObject = $Kernel::OM->Get('Kernel::System::User');
+
         # get test user ID
         my $TestUserID = $Kernel::OM->Get('Kernel::System::User')->UserLookup(
             UserLogin => $TestUserLogin,
+        );
+
+        # Get user data.
+        my %TestUser = $UserObject->GetUserData(
+            UserID => $TestUserID,
         );
 
         my $RandomID = $Helper->GetRandomID();
@@ -107,8 +122,9 @@ $Selenium->RunTest(
             "Auto response added for created queue.",
         );
 
-        # get ticket object
-        my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
+        my $TicketObject  = $Kernel::OM->Get('Kernel::System::Ticket');
+        my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
+
         $TicketObject->{SendNoNotification} = 0;
 
         # create test tickets
@@ -144,7 +160,7 @@ $Selenium->RunTest(
         for my $Index (qw(0 1 2)) {
 
             # Add articles to the tickets
-            my $ArticleID1 = $TicketObject->ArticleCreate(
+            my $ArticleID1 = $ArticleObject->ArticleCreate(
                 TicketID         => $TicketIDs[$Index],
                 ArticleType      => 'webrequest',
                 SenderType       => 'customer',
@@ -172,7 +188,7 @@ $Selenium->RunTest(
 
             # only for third ticket add agent article
             if ( $Index > 1 ) {
-                my $ArticleID2 = $TicketObject->ArticleCreate(
+                my $ArticleID2 = $ArticleObject->ArticleCreate(
                     TicketID       => $TicketIDs[$Index],
                     ArticleType    => 'email-external',
                     SenderType     => 'agent',
@@ -196,8 +212,14 @@ $Selenium->RunTest(
         my $ScriptAlias = $Kernel::OM->Get('Kernel::Config')->Get('ScriptAlias');
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AgentTicketQueue;QueueID=$QueueID;View=");
 
-        # switch to medium view
+        # Switch to large view.
         $Selenium->find_element( "a.Large", 'css' )->VerifiedClick();
+
+        # Check if owner name conforms to current FirstnameLastNameOrder setting.
+        $Self->True(
+            index( $Selenium->get_page_source(), $TestUser{UserFullname} ) > -1,
+            "$TestUser{UserFullname} - found on screen"
+        );
 
         # sort by ticket number
         $Selenium->execute_script(

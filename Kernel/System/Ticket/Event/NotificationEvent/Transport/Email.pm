@@ -22,16 +22,17 @@ our @ObjectDependencies = (
     'Kernel::Config',
     'Kernel::Output::HTML::Layout',
     'Kernel::System::CustomerUser',
+    'Kernel::System::Crypt::PGP',
+    'Kernel::System::Crypt::SMIME',
     'Kernel::System::Email',
     'Kernel::System::Log',
     'Kernel::System::Main',
     'Kernel::System::Queue',
     'Kernel::System::SystemAddress',
     'Kernel::System::Ticket',
+    'Kernel::System::Ticket::Article',
     'Kernel::System::User',
     'Kernel::System::Web::Request',
-    'Kernel::System::Crypt::PGP',
-    'Kernel::System::Crypt::SMIME',
 );
 
 =head1 NAME
@@ -205,13 +206,13 @@ sub SendNotification {
     }
     else {
 
-        # get queue object
-        my $QueueObject = $Kernel::OM->Get('Kernel::System::Queue');
+        my $QueueObject   = $Kernel::OM->Get('Kernel::System::Queue');
+        my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
 
         my $QueueID;
 
         # get article
-        my %Article = $TicketObject->ArticleLastCustomerArticle(
+        my %Article = $ArticleObject->ArticleLastCustomerArticle(
             TicketID      => $Param{TicketID},
             DynamicFields => 0,
         );
@@ -249,12 +250,12 @@ sub SendNotification {
         if ( IsArrayRefWithData( $Param{Notification}->{Data}->{NotificationArticleTypeID} ) ) {
 
             # get notification article type
-            $ArticleType = $TicketObject->ArticleTypeLookup(
+            $ArticleType = $ArticleObject->ArticleTypeLookup(
                 ArticleTypeID => $Param{Notification}->{Data}->{NotificationArticleTypeID}->[0],
             );
         }
 
-        my $ArticleID = $TicketObject->ArticleSend(
+        my $ArticleID = $ArticleObject->ArticleSend(
             ArticleType    => $ArticleType,
             SenderType     => 'system',
             TicketID       => $Param{TicketID},
@@ -334,9 +335,10 @@ sub GetTransportRecipients {
 
             # check if we have a specified article type
             if ( $Param{Notification}->{Data}->{NotificationArticleTypeID} ) {
-                $Recipient{NotificationArticleType} = $Kernel::OM->Get('Kernel::System::Ticket')->ArticleTypeLookup(
+                $Recipient{NotificationArticleType}
+                    = $Kernel::OM->Get('Kernel::System::Ticket::Article')->ArticleTypeLookup(
                     ArticleTypeID => $Param{Notification}->{Data}->{NotificationArticleTypeID}->[0]
-                ) || 'email-notification-ext';
+                    ) || 'email-notification-ext';
             }
 
             # check recipients
@@ -390,7 +392,8 @@ sub TransportSettingsDisplayGet {
 
     # Display article types for article creation if notification is sent
     # only use 'email-notification-*'-type articles
-    my %NotificationArticleTypes = $Kernel::OM->Get('Kernel::System::Ticket')->ArticleTypeList( Result => 'HASH' );
+    my %NotificationArticleTypes
+        = $Kernel::OM->Get('Kernel::System::Ticket::Article')->ArticleTypeList( Result => 'HASH' );
     for my $NotifArticleTypeID ( sort keys %NotificationArticleTypes ) {
         if ( $NotificationArticleTypes{$NotifArticleTypeID} !~ /^email-notification-/ ) {
             delete $NotificationArticleTypes{$NotifArticleTypeID};
