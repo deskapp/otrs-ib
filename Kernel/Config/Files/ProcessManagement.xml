@@ -195,7 +195,7 @@
         <SubGroup>Core</SubGroup>
         <ValidateModule>Kernel::System::SysConfig::QueueValidate</ValidateModule>
         <Setting>
-            <String Regex="">Raw</String>
+            <String Regex="">Zgłoszenia</String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Process::DefaultState" Required="1" Valid="1">

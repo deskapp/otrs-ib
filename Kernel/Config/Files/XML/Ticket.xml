@@ -6213,7 +6213,7 @@
         <Navigation>Frontend::Agent::Dashboard::EventsTicketCalendar</Navigation>
         <Value>
             <Array>
-                <Item>Raw</Item>
+                <Item>Zgłoszenia</Item>
             </Array>
         </Value>
     </Setting>
@@ -10491,7 +10491,7 @@
         <Description Translatable="1">Defines the postmaster default queue.</Description>
         <Navigation>Core::PostMaster</Navigation>
         <Value>
-            <Item ValueType="Entity" ValueEntityType="Queue" ValueRegex="">Raw</Item>
+            <Item ValueType="Entity" ValueEntityType="Queue" ValueRegex="">Zgłoszenia</Item>
         </Value>
     </Setting>
     <Setting Name="PostmasterDefaultPriority" Required="1" Valid="1">

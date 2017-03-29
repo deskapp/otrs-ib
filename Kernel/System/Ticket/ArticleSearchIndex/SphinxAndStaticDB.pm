@@ -15,8 +15,6 @@ use warnings;
 
 use Kernel::System::Sphinx;
 
-use vars qw(@ISA);
-
 our @ObjectDependencies = (
     'Kernel::System::Log',
     'Kernel::System::Main',
@@ -24,15 +22,12 @@ our @ObjectDependencies = (
 );
 
 sub new {
-    my ( $Type, %Param ) = @_;
+    my ( $Class, %Param ) = @_;
 
-    my $Self = {};
-    bless( $Self, $Type );
+    $Kernel::OM->Get('Kernel::System::Main')->RequireBaseClass('Kernel::System::Ticket::ArticleSearchIndex::StaticDB')
+        || die 'Could not load Kernel::System::Ticket::ArticleSearchIndex::StaticDB';
 
-    if ( !$Kernel::OM->Get('Kernel::System::Main')->Require('Kernel::System::Ticket::ArticleSearchIndex::StaticDB') ) {
-        die "Can't load ticket search index backend module Kernel::System::Ticket::ArticleSearchIndex::StaticDB! $@";
-    }
-    push @ISA, 'Kernel::System::Ticket::ArticleSearchIndex::StaticDB';
+    my $Self = $Class->SUPER::new(%Param);
 
     $Self->{SphinxObject} = Kernel::System::Sphinx->new(%Param);
 
@@ -42,7 +37,7 @@ sub new {
         $Self->{UpdateOnly} = $Self->{SphinxObject}->UpdateOnly();
     }
 
-    return $Self->SUPER::new(%Param);
+    return $Self;
 }
 
 sub ArticleIndexBuild {
@@ -64,7 +59,7 @@ sub ArticleIndexBuild {
 
     if ($Self->{SphinxObject}) {
 
-        my %Article = $Self->ArticleGet(
+        my %Article = $Kernel::OM->Get('Kernel::System::Ticket::Article')->ArticleGet(
             ArticleID     => $Param{ArticleID},
             UserID        => $Param{UserID},
             DynamicFields => 0,

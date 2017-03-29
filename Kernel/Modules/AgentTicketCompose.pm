@@ -1832,7 +1832,7 @@ sub _Mask {
 
         # default selected article type for internal source articles
         if ( !$Selected{SelectedValue} && $Config->{DefaultArticleTypeInternal} && $Param{SourceArticleTypeID} ) {
-            my $SourceArticleType = $TicketObject->ArticleTypeLookup( ArticleTypeID => $Param{SourceArticleTypeID} );
+            my $SourceArticleType = $ArticleObject->ArticleTypeLookup( ArticleTypeID => $Param{SourceArticleTypeID} );
             if ( $SourceArticleType && $SourceArticleType =~ m{internal} ) {
                 $Selected{SelectedValue} = $Config->{DefaultArticleTypeInternal};
             }

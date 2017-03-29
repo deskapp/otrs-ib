@@ -383,7 +383,7 @@
         <Description Translatable="1">This option defines the process tickets default queue.</Description>
         <Navigation>Core</Navigation>
         <Value>
-            <Item ValueType="Entity" ValueEntityType="Queue" ValueRegex="">Raw</Item>
+            <Item ValueType="Entity" ValueEntityType="Queue" ValueRegex="">Zgłoszenia</Item>
         </Value>
     </Setting>
     <Setting Name="Process::DefaultState" Required="1" Valid="1">
