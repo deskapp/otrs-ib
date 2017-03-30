@@ -7,7 +7,7 @@
             <Item ValueType="Checkbox">0</Item>
         </Value>
     </Setting>
-    <Setting Name="Frontend::NotifyModule###1000-CloudServicesDisabled" Required="1" Valid="1">
+    <Setting Name="Frontend::NotifyModule###1000-CloudServicesDisabled" Required="0" Valid="1">
         <Description Translatable="1">Defines the module to display a notification if cloud services are disabled.</Description>
         <Navigation>Frontend::Agent::ModuleNotify</Navigation>
         <Value>

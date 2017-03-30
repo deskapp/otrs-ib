@@ -3183,6 +3183,12 @@ sub ArticleIndexBuild {
     return $Kernel::OM->Get( $Self->{ArticleSearchIndexModule} )->ArticleIndexBuild(%Param);
 }
 
+sub ArticleIndexUpdateAttr {
+    my ( $Self, %Param ) = @_;
+
+    return $Kernel::OM->Get( $Self->{ArticleSearchIndexModule} )->ArticleIndexUpdateAttr(%Param);
+}
+
 sub ArticleIndexDelete {
     my ( $Self, %Param ) = @_;
 

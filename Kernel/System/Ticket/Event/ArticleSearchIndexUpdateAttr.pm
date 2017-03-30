@@ -45,9 +45,9 @@ sub Run {
         }
     }
 
-    $Kernel::OM->Get('Kernel::System::Ticket')->ArticleIndexUpdateAttr(
+    $Kernel::OM->Get('Kernel::System::Ticket::Article')->ArticleIndexUpdateAttr(
         TicketID => $Param{Data}->{TicketID},
-        UserID    => 1,
+        UserID => 1,
     );
 
     return 1;

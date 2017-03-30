@@ -296,7 +296,7 @@ sub ArticleIndexUpdateAttr {
 
     if ($Self->{SphinxObject}) {
 
-        my %Ticket = $Self->TicketGet(
+        my %Ticket = $Kernel::OM->Get('Kernel::System::Ticket')->TicketGet(
             TicketID      => $Param{TicketID},
             UserID        => $Param{UserID},
             DynamicFields => 0,

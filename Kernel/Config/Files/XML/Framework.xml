@@ -67,6 +67,13 @@
             <Item ValueType="String" ValueRegex="">yourhost.example.com</Item>
         </Value>
     </Setting>
+    <Setting Name="ExtFQDN" Required="0" Valid="0" ConfigLevel="200">
+        <Description Translatable="1">Defines the fully qualified domain name for external IDs generation (i.e. Message-ID, ContentID).</Description>
+        <Navigation>Core</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">yourhost.example.com</Item>
+        </Value>
+    </Setting>
     <Setting Name="SupportDataCollector::HTTPHostname" Required="0" Valid="0" ConfigLevel="200">
         <Description Translatable="1">Defines the HTTP hostname for the support data collection with the public module 'PublicSupportDataCollector' (e.g. used from the OTRS Daemon).</Description>
         <Navigation>Core</Navigation>
@@ -229,6 +236,13 @@
             </Hash>
         </Value>
     </Setting>
+    <Setting Name="OutOfOfficeMessageTemplate" Required="0" Valid="1">
+        <Description Translatable="1">Defines out of office message template. Two string parameters (%s) available: end date and number of days left.</Description>
+        <Navigation>Core</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">*** out of office to %s (%s d left) ***</Item>
+        </Value>
+    </Setting>
     <Setting Name="DefaultTheme" Required="1" Valid="1" ConfigLevel="200">
         <Description Translatable="1">Defines the default front-end (HTML) theme to be used by the agents and customers. If you like, you can add your own theme. Please refer the administrator manual located at http://otrs.github.io/doc/.</Description>
         <Navigation>Core</Navigation>
@@ -253,6 +267,27 @@
             <Item ValueType="String" ValueRegex="">Example Company</Item>
         </Value>
     </Setting>
+    <Setting Name="CustomerLoginMessage" Required="0" Valid="0">
+        <Description Translatable="1">HTML code to be put under login form in customer web interface (i.e. login instructions).</Description>
+        <Navigation>Frontend::Customer</Navigation>
+        <Value>
+            <Item ValueType="Textarea"></Item>
+        </Value>
+    </Setting>
+    <Setting Name="CustomerFooter" Required="0" Valid="1">
+        <Description Translatable="1">HTML footer to be put on every OTRS page in customer web interface.</Description>
+        <Navigation>Frontend::Customer</Navigation>
+        <Value>
+            <Item ValueType="Textarea"><![CDATA[Powered by <a href="http://otrs.org/" title="OTRS" target="_blank">OTRS</a>]]></Item>
+        </Value>
+    </Setting>
+    <Setting Name="CustomerShortcutIcon" Required="0" Valid="0">
+        <Description Translatable="1">The shortcut icon for the customer interface.</Description>
+        <Navigation>Frontend::Customer</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">/otrs-web/skins/Agent/default/img/icons/product.ico</Item>
+        </Value>
+    </Setting>
     <Setting Name="CustomerLogo" Required="0" Valid="0">
         <Description Translatable="1">The logo shown in the header of the customer interface. The URL to the image can be a relative URL to the skin image directory, or a full URL to a remote web server.</Description>
         <Navigation>Frontend::Customer</Navigation>
@@ -264,6 +299,27 @@
                 <Item Key="StyleHeight">50px</Item>
                 <Item Key="StyleWidth">135px</Item>
             </Hash>
+        </Value>
+    </Setting>
+    <Setting Name="AgentLoginMessage" Required="0" Valid="0">
+        <Description Translatable="1">HTML code to be put under login form in agent web interface (i.e. login instructions).</Description>
+        <Navigation>Frontend::Agent</Navigation>
+        <Value>
+            <Item ValueType="Textarea"></Item>
+        </Value>
+    </Setting>
+    <Setting Name="AgentFooter" Required="0" Valid="1">
+        <Description Translatable="1">HTML footer to be put on every OTRS page in agent web interface.</Description>
+        <Navigation>Frontend::Agent</Navigation>
+        <Value>
+            <Item ValueType="Textarea"><![CDATA[Powered by <a href="http://otrs.org/" title="OTRS" target="_blank">OTRS</a>]]></Item>
+        </Value>
+    </Setting>
+    <Setting Name="AgentShortcutIcon" Required="0" Valid="0">
+        <Description Translatable="1">The shortcut icon for the agent interface.</Description>
+        <Navigation>Frontend::Agent</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">/otrs-web/skins/Agent/default/img/icons/product.ico</Item>
         </Value>
     </Setting>
     <Setting Name="AgentLogo" Required="0" Valid="1">
@@ -398,10 +454,24 @@
         </Value>
     </Setting>
     <Setting Name="Frontend::RichText::DefaultCSS" Required="1" Valid="1">
-        <Description Translatable="1">Defines the default CSS used in rich text editors.</Description>
+        <Description Translatable="1">Defines the default CSS used in rich text editors and HTML mail body.</Description>
         <Navigation>Core::Web</Navigation>
         <Value>
             <Item ValueType="String" ValueRegex="">font-family:Geneva,Helvetica,Arial,sans-serif; font-size: 12px;</Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::RichText::EditingAreaCSS" Required="0" Valid="1">
+        <Description Translatable="1">Defines the CSS style to embed in rich text editor. You may put here things like ".cke_editable { line-height: normal; margin: 10px; }" to customize rich text area style.</Description>
+        <Navigation>Core::Web</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex=""></Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::RichText::MailCSS" Required="0" Valid="1">
+        <Description Translatable="1">Defines the CSS style to embed in HTML messages. CSS content defined here will be put in head/style node of HTML e-mails (this allows for example to define anchor colors in HTML e-mails or table header styles which is not possible using DefaultCSS parameter).</Description>
+        <Navigation>Core::Web</Navigation>
+        <Value>
+            <Item ValueType="Textarea"></Item>
         </Value>
     </Setting>
     <Setting Name="Frontend::RichText::EnhancedMode" Required="1" Valid="1">
@@ -416,6 +486,26 @@
         <Navigation>Core::Web</Navigation>
         <Value>
             <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::RichText::EnterMode" Required="1" Valid="1">
+        <Description Translatable="1"><![CDATA[Sets the behavior of the Enter key in rich text editor (enterMode CKEditor parameter). It also determines other behavior rules of the editor, like whether the <br> element is to be used as a paragraph separator when indenting text. The allowed values are the following constants: P (new <p> paragraphs are created), BR (lines are broken with <br> elements). After changing this setting adjust accordingly signatures, salutations, message templates, autoresponses and other templates like Ticket::Frontend::ResponseFormat.]]></Description>
+        <Navigation>Core::Web</Navigation>
+        <Value>
+            <Item ValueType="Select" SelectedID="2">
+                <Item ValueType="Option" Value="1" Translatable="1">P</Item>
+                <Item ValueType="Option" Value="2" Translatable="1">BR</Item>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::RichText::PreventImagePaste" Required="0" Valid="0">
+        <Description Translatable="1">Defines if image pasting into rich text area as data URI should be disabled (data URI allows to embed inline images on AdminEmail messages, signatures and templates using image copy/paste in modern web browsers). Note: signature and template content size must not exceed target column size in database (i.e. 64 kB in MySQL) - too big images will cause signature/template content to be truncated and corrupted.</Description>
+        <Navigation>Core::Web</Navigation>
+        <Value>
+            <Item ValueType="Select" SelectedID="0">
+                <Item ValueType="Option" Value="0" Translatable="1">No</Item>
+                <Item ValueType="Option" Value="1" Translatable="1">Yes</Item>
+            </Item>
         </Value>
     </Setting>
     <Setting Name="DisableIFrameOriginRestricted" Required="0" Valid="1">
@@ -492,6 +582,13 @@
         <Navigation>Core</Navigation>
         <Value>
             <Item ValueType="String" ValueRegex="">ns.example.com</Item>
+        </Value>
+    </Setting>
+    <Setting Name="ResolverTimeout" Required="0" Valid="0">
+        <Description Translatable="1">Sets the timeout (in seconds) for resolver DNS queries (i.e. during checking MX record if CheckMXRecord is enabled to protect against long agent UI responses in case of very slow DNS queries).</Description>
+        <Navigation>Core</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">3</Item>
         </Value>
     </Setting>
     <Setting Name="CheckEmailAddresses" Required="1" Valid="1">
@@ -737,7 +834,7 @@
             </Hash>
         </Value>
     </Setting>
-    <Setting Name="Frontend::NotifyModule###1100-OTRSBusiness" Required="1" Valid="1">
+    <Setting Name="Frontend::NotifyModule###1100-OTRSBusiness" Required="0" Valid="1">
         <Description Translatable="1">Defines the module to display a notification in different interfaces on different occasions for OTRS Business Solution™.</Description>
         <Navigation>Frontend::Agent::ModuleNotify</Navigation>
         <Value>
@@ -747,7 +844,7 @@
             </Hash>
         </Value>
     </Setting>
-    <Setting Name="CustomerFrontend::NotifyModule###1-OTRSBusiness" Required="1" Valid="1">
+    <Setting Name="CustomerFrontend::NotifyModule###1-OTRSBusiness" Required="0" Valid="1">
         <Description Translatable="1">Defines the module to display a notification in different interfaces on different occasions for OTRS Business Solution™.</Description>
         <Navigation>Frontend::Customer::ModuleNotify</Navigation>
         <Value>
@@ -7110,6 +7207,13 @@
             <Item ValueType="Checkbox">0</Item>
         </Value>
     </Setting>
+    <Setting Name="PDF::Creator" Required="0" Valid="1">
+        <Description Translatable="1">Defines the value of Author, Creator and Producer properties in PDF printouts created by OTRS.</Description>
+        <Navigation>Core::PDF</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">OTRS PDF Creator</Item>
+        </Value>
+    </Setting>
     <Setting Name="PDF::LogoFile" Required="1" Valid="1">
         <Description Translatable="1">Specifies the path of the file for the logo in the page header (gif|jpg|png, 700 x 100 pixel).</Description>
         <Navigation>Core::PDF</Navigation>
@@ -7347,6 +7451,23 @@
         <Navigation>Core::Crypt::SMIME</Navigation>
         <Value>
             <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="TLS::VerifyPeer" Required="1" Valid="1">
+        <Description Translatable="1">If this option is enabled (default, recommended), then the remote peer TLS certificates are verified against configured CA (see below). When disabled (not recommended for security reasons) peer TLS certificates are not verified. Please note: this option is currently used for mail account IMAPS connections only.</Description>
+        <Navigation>Crypt::TLS</Navigation>
+        <Value>
+            <Item ValueType="Select" SelectedID="1">
+                <Item ValueType="Option" Value="1" Translatable="1">No</Item>
+                <Item ValueType="Option" Value="2" Translatable="1">Yes</Item>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="TLS::CAPath" Required="1" Valid="1">
+        <Description Translatable="1">Specifies the directory where TLS trusted CA certificates for TLS peer certificate verification are stored. This setting is used if TLS::VerifyPeer is enabled (see above). Please note: this option is currently used for mail account IMAPS connections only.</Description>
+        <Navigation>Crypt::TLS</Navigation>
+        <Value>
+            <Item ValueRegex="" ValueType="Directory">/etc/ssl/certs</Item>
         </Value>
     </Setting>
     <Setting Name="NotificationSenderName" Required="1" Valid="1">
@@ -8017,6 +8138,13 @@ via the Preferences button after logging in.
                 <Item ValueType="Option" Value="sha2">SHA-2</Item>
                 <Item ValueType="Option" Value="bcrypt">bcrypt</Item>
             </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Customer::AuthModule::DB::bcryptCost" Required="0" Valid="0" ConfigLevel="200">
+        <Description Translatable="1">If "bcrypt" was selected for CryptType, use cost specified here for bcrypt hashing. Currently max. supported cost value is 31.</Description>
+        <Navigation>Frontend::Customer::Auth</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="^[0-9]{1,2}$">12</Item>
         </Value>
     </Setting>
     <Setting Name="Customer::AuthModule::DB::Table" Required="1" Valid="1" ConfigLevel="200">
@@ -11095,7 +11223,7 @@ via the Preferences button after logging in.
             <Item ValueType="Checkbox">0</Item>
         </Value>
     </Setting>
-    <Setting Name="DashboardBackend###0000-ProductNotify" Required="0" Valid="1">
+    <Setting Name="DashboardBackend###0000-ProductNotify" Required="0" Valid="0">
         <Description Translatable="1">Defines the parameters for the dashboard backend. "Group" is used to restrict access to the plugin (e. g. Group: admin;group1;group2;). "Default" indicates if the plugin is enabled by default or if the user needs to enable it manually. "CacheTTLLocal" defines the cache expiration period in minutes for the plugin.</Description>
         <Navigation>Frontend::Agent::Dashboard</Navigation>
         <Value>
@@ -11148,7 +11276,7 @@ via the Preferences button after logging in.
             </Hash>
         </Value>
     </Setting>
-    <Setting Name="DashboardBackend###0405-News" Required="0" Valid="1">
+    <Setting Name="DashboardBackend###0405-News" Required="0" Valid="0">
         <Description Translatable="1">Defines the parameters for the dashboard backend. "Limit" defines the number of entries displayed by default. "Group" is used to restrict access to the plugin (e. g. Group: admin;group1;group2;). "Default" indicates if the plugin is enabled by default or if the user needs to enable it manually. "CacheTTL" indicates the cache expiration period in minutes for the plugin.</Description>
         <Navigation>Frontend::Agent::Dashboard</Navigation>
         <Value>
@@ -11479,6 +11607,41 @@ via the Preferences button after logging in.
         <Navigation>Core</Navigation>
         <Value>
             <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="HTTPHeader::XPoweredBy" Required="0" Valid="1">
+        <Description Translatable="1">Defines the value of X-Powered-By header in HTTP responses created by OTRS if Secure::DisableBanner is disabled.</Description>
+        <Navigation>Core</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">OTRS - Open Ticket Request System (http://otrs.org/)</Item>
+        </Value>
+    </Setting>
+    <Setting Name="EmailHeader::XPoweredBy" Required="0" Valid="1">
+        <Description Translatable="1">Defines the value of X-Powered-By header in e-mail messages created by OTRS if Secure::DisableBanner is disabled.</Description>
+        <Navigation>Core</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">OTRS - Open Ticket Request System (http://otrs.org/)</Item>
+        </Value>
+    </Setting>
+    <Setting Name="EmailHeader::XMailer" Required="0" Valid="1">
+        <Description Translatable="1">Defines the value of X-Mailer header in e-mail messages created by OTRS if Secure::DisableBanner is disabled.</Description>
+        <Navigation>Core</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">OTRS Mail Service</Item>
+        </Value>
+    </Setting>
+    <Setting Name="NotificationEmailFooter" Required="0" Valid="1">
+        <Description Translatable="1">HTML footer to be put in every OTRS notification e-mail message.</Description>
+        <Navigation>Core</Navigation>
+        <Value>
+            <Item ValueType="Textarea"><![CDATA[Powered by <a href="http://otrs.org/" title="OTRS" target="_blank">OTRS</a>]]></Item>
+        </Value>
+    </Setting>
+    <Setting Name="NotificationEmailDefaultTemplate" Required="0" Valid="1">
+        <Description Translatable="1">Default template for notification e-mails (see Kernel/Output/HTML/Templates/Standard/NotificationEvent/Email directory for available templates).</Description>
+        <Navigation>Core</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">Default</Item>
         </Value>
     </Setting>
     <Setting Name="Loader::Enabled::CSS" Required="1" Valid="1">
@@ -11944,6 +12107,25 @@ via the Preferences button after logging in.
                 <Item ValueType="Option" Value="2">2</Item>
                 <Item ValueType="Option" Value="3">3</Item>
             </Item>
+        </Value>
+    </Setting>
+    <Setting Name="Cache::Module::Memcached###Servers" Required="0" Valid="0">
+        <Description Translatable="1">Defines the memcached servers.</Description>
+        <Navigation>Core::Cache</Navigation>
+        <Value>
+            <Array>
+                <Item>127.0.0.1:11211</Item>
+            </Array>
+        </Value>
+    </Setting>
+    <Setting Name="Cache::Module::Memcached###Parameters" Required="0" Valid="0">
+        <Description Translatable="1">Defines all the (additional) memcached parameters.</Description>
+        <Navigation>Core::Cache</Navigation>
+        <Value>
+            <Hash>
+                <Item Key="max_size">16777216</Item>
+                <Item Key="utf8">1</Item>
+            </Hash>
         </Value>
     </Setting>
     <Setting Name="AutoComplete::Agent###Default" Required="0" Valid="1">
