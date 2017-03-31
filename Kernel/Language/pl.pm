@@ -515,7 +515,7 @@ sub Data {
         'History' => 'Historia',
         'Zoom' => 'Podgląd',
         'Age' => 'Wiek',
-        'Bounce' => 'Przekaż',
+        'Bounce' => 'Odbij',
         'Forward' => 'Prześlij dalej',
         'From' => 'Od',
         'To' => 'Do',
@@ -539,7 +539,7 @@ sub Data {
         'Services' => 'Usługi',
         'State' => 'Stan',
         'States' => 'Stany',
-        'Status' => 'Stan',
+        'Status' => 'Status',
         'Statuses' => 'Stany',
         'Ticket Type' => 'Typ zgłoszenia',
         'Ticket Types' => 'Typy zgłoszeń',
@@ -587,9 +587,9 @@ sub Data {
         'QueueView' => 'Widok kolejek',
         'Ticket Escalation View' => 'Widok eskalowanych zgłoszeń',
         'Message from' => 'Wiadomość od',
-        'End message' => 'Wiadomość kończąca',
+        'End message' => 'Koniec wiadomości',
         'Forwarded message from' => 'Wiadomość przekazana od',
-        'End forwarded message' => 'Wiadomość kończąca przekazana od',
+        'End forwarded message' => 'Koniec przekazanej wiadomości',
         'Bounce Article to a different mail address' => 'Przekaż wiadomość na inny adres e-mail',
         'Reply to note' => 'Odpowiedz na notatkę',
         'new' => 'nowe',
@@ -1185,9 +1185,8 @@ sub Data {
         'New Dynamic Field Values' => 'Nowe wartości pól dodatkowych',
         'Archive selected tickets' => 'Zarchiwizuj zaznaczone zgłoszenia',
         'Add Note' => 'Dodaj notatkę',
-        'Time units' => 'Jednoski pracy',
-        'Work time' => 'Czas pracy',
-        'Execute Ticket Commands' => 'Uruchom polecenie',
+        'Time units' => 'Czas pracy',
+        'Execute Ticket Commands' => 'Wykonaj polecenia zgłoszenia',
         'Send agent/customer notifications on changes' => 'Wyślij powidomienia agentowi/klientowi przy zmianach',
         'CMD' => 'linia poleceń',
         'This command will be executed. ARG[0] will be the ticket number. ARG[1] the ticket id.' =>
@@ -3463,11 +3462,11 @@ sub Data {
         'Could not get history data for WebserviceHistoryID %s' => '',
 
         # Perl Module: Kernel/Modules/AdminNotificationEvent.pm
-        'Notification updated!' => '',
-        'Notification added!' => '',
+        'Notification updated!' => 'Powiadomienie zaktualizowane!',
+        'Notification added!' => 'Powiadomienie dodane!',
         'There was an error getting data for Notification with ID:%s!' =>
-            '',
-        'Unknown Notification %s!' => 'Nieznane Powiadomienie %s!',
+            'Błąd przy pobieraniu danych powiadomienia z ID:%s!',
+        'Unknown Notification %s!' => 'Nieznane powiadomienie %s!',
         'There was an error creating the Notification' => 'Wystąpił błąd podczas tworzenia powiadomienia',
         'Notifications could not be Imported due to a unknown error, please check OTRS logs for more information' =>
             '',
@@ -4556,7 +4555,7 @@ Thanks for your help!
         '(UserLogin) Firstname Lastname' => '(Login) Imię Nazwisko',
         '(UserLogin) Lastname Firstname' => '(Login) Nazwisko Imię',
         '(UserLogin) Lastname, Firstname' => '(Login) Nazwisko, Imię',
-        '*** out of office until %s (%s d left) ***' => '',
+        '*** out of office until %s (%s d left) ***' => '*** poza biurem do %s (pozostało %s d) ***',
         '100 (Expert)' => '',
         '200 (Advanced)' => '',
         '300 (Beginner)' => '',
@@ -4568,7 +4567,7 @@ Thanks for your help!
         'ACL module that allows closing parent tickets only if all its children are already closed ("State" shows which states are not available for the parent ticket until all child tickets are closed).' =>
             'Moduł ACL pozwala na zamykanie nadrzędnych zgłoszeń, tylko wówczas, gdy wszystkie podrzędne są już zamknięte ("Stan" pokazuje, które stany nie są dostępne dla zgłoszenia nadrzędnego, aż do momentu zamknięcia wszystkich podrzędnych).',
         'Access Control Lists (ACL)' => 'Lista Kontroli dostępu (ACL)',
-        'AccountedTime' => 'Ubiegły czas',
+        'AccountedTime' => 'Zaraportowany czas',
         'Activates a blinking mechanism of the queue that contains the oldest ticket.' =>
             'Aktywuje mechanizm pulsowania kolejki dla najstarszych zgłoszeń.',
         'Activates lost password feature for agents, in the agent interface.' =>
@@ -4836,12 +4835,12 @@ Thanks for your help!
         'Create and manage ticket types.' => 'Zarządzanie listą typów zgłoszeń.',
         'Create and manage web services.' => 'Zarządzanie listą web services.',
         'Create new Ticket.' => 'Utwórz nowe zgłoszenie.',
-        'Create new email ticket and send this out (outbound).' => '',
-        'Create new email ticket.' => '',
-        'Create new phone ticket (inbound).' => '',
-        'Create new phone ticket.' => '',
-        'Create new process ticket.' => '',
-        'Create tickets.' => 'Stwórz zgłoszenia.',
+        'Create new email ticket and send this out (outbound).' => 'Utwórz nowe zgłoszenie e-mail i wyślij je.',
+        'Create new email ticket.' => 'Utwórz nowe zgłoszenie e-mail.',
+        'Create new phone ticket (inbound).' => 'Utwórz nowe zgłoszenie telefoniczne (przychodzące).',
+        'Create new phone ticket.' => 'Utwórz nowe zgłoszenie telefoniczne.',
+        'Create new process ticket.' => 'Utwórz nowe zgłoszenie procesowe.',
+        'Create tickets.' => 'Utwórz zgłoszenia.',
         'Croatian' => '',
         'Custom RSS Feed' => '',
         'Custom text for the page shown to customers that have no tickets yet (if you need those text translated add them to a custom translation module).' =>
@@ -5957,7 +5956,7 @@ Thanks for your help!
         'If this setting is active, local modifications will not be highlighted as errors in the package manager and support data collector.' =>
             '',
         'If you\'re going to be out of office, you may wish to let other users know by setting the exact dates of your absence.' =>
-            '',
+            'W przypadku swojej nieobecności możesz dać znać o tym innym użytkownikom poprzez ustawienie dat nieobecności.',
         'Ignore system sender article types (e. g. auto responses or email notifications) to be flagged as \'Unread Article\' in AgentTicketZoom or expanded automatically in Large view screens.' =>
             '',
         'Include tickets of subqueues per default when selecting a queue.' =>
@@ -6165,7 +6164,7 @@ Thanks for your help!
         'Out Of Office' => 'Poza biurem',
         'Overloads (redefines) existing functions in Kernel::System::Ticket. Used to easily add customizations.' =>
             '',
-        'Overview Escalated Tickets.' => '',
+        'Overview Escalated Tickets.' => 'Przegląd zgłoszeń eskalowanych.',
         'Overview Refresh Time' => 'Czas odświeżania przeglądu',
         'Overview of all escalated tickets.' => '',
         'Overview of all open Tickets.' => 'Przegląd wszystkich otwartych zgłoszeń.',
@@ -6334,10 +6333,10 @@ Thanks for your help!
         'Search.' => 'Szukaj',
         'Second Queue' => 'Druga kolejka',
         'Select after which period ticket overviews should refresh automatically.' =>
-            '',
+            'Ustaw po jakim czasie przeglądy zgłoszeń powinny się automatycznie odświeżyć.',
         'Select how many tickets should be shown in overviews by default.' =>
-            '',
-        'Select the main interface language.' => '',
+            'Ustaw ile zgłoszeń powinno być wyświetlanych domyślnie w przeglądach.',
+        'Select the main interface language.' => 'Wybierz język głównego interfejsu.',
         'Select your frontend Theme.' => 'Wybierz schemat wyglądu systemu.',
         'Select your preferred layout for OTRS.' => '',
         'Selects the cache backend to use.' => 'Wybiera program cache do użycia',
