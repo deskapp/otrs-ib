@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -19,22 +19,17 @@ $Selenium->RunTest(
     sub {
 
         # get needed objects
-        $Kernel::OM->ObjectParamAdd(
-            'Kernel::System::UnitTest::Helper' => {
-                RestoreSystemConfiguration => 1,
-            },
-        );
         my $Helper       = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
         my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
         # do not check email addresses
-        $ConfigObject->Set(
+        $Helper->ConfigSettingChange(
             Key   => 'CheckEmailAddresses',
             Value => 0,
         );
 
         # check to see tickets in plain view
-        $Kernel::OM->Get('Kernel::System::SysConfig')->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'Ticket::Frontend::PlainView',
             Value => 1
@@ -51,8 +46,8 @@ $Selenium->RunTest(
             Password => $TestUserLogin,
         );
 
-        # get ticket object
-        my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
+        my $TicketObject  = $Kernel::OM->Get('Kernel::System::Ticket');
+        my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
 
         # create test ticket
         my $TicketNumber = $TicketObject->TicketCreateNumber();
@@ -76,7 +71,7 @@ $Selenium->RunTest(
         # create test email article
         my $TicketSubject = "test 1";
         my $TicketBody    = "This is the first test.";
-        my $ArticleID     = $TicketObject->ArticleCreate(
+        my $ArticleID     = $ArticleObject->ArticleCreate(
             TicketID       => $TicketID,
             ArticleType    => 'email-external',
             SenderType     => 'customer',
@@ -103,7 +98,7 @@ $Selenium->RunTest(
             Result   => 'SCALAR',
         );
 
-        my $Success = $TicketObject->ArticleWritePlain(
+        my $Success = $ArticleObject->ArticleWritePlain(
             ArticleID => $ArticleID,
             Email     => ${$ContentRef},
             UserID    => 1,
@@ -120,7 +115,7 @@ $Selenium->RunTest(
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AgentTicketZoom;TicketID=$TicketID");
 
         # click to show ticket in plain view
-        $Selenium->find_element("//a[contains(\@href, \'Action=AgentTicketPlain' )]")->click();
+        $Selenium->find_element("//a[contains(\@href, \'Action=AgentTicketPlain' )]")->VerifiedClick();
 
         # switch to plain window
         $Selenium->WaitFor( WindowCount => 2 );

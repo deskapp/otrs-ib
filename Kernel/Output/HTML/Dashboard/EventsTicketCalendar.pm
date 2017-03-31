@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -133,8 +133,11 @@ sub Run {
     my $Limit   = scalar keys %Tickets;
 
     # get needed objects
-    my $TimeObject   = $Kernel::OM->Get('Kernel::System::Time');
-    my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+    my $TimeObject            = $Kernel::OM->Get('Kernel::System::Time');
+    my $LayoutObject          = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+    my $UserObject            = $Kernel::OM->Get('Kernel::System::User');
+    my $CustomerUserObject    = $Kernel::OM->Get('Kernel::System::CustomerUser');
+    my $CustomerCompanyObject = $Kernel::OM->Get('Kernel::System::CustomerCompany');
 
     my $Content;
 
@@ -219,16 +222,7 @@ sub Run {
                 # dates are exactly the same (ESecond is 00 normally)
                 $Data{ESecond}++;
 
-                $LayoutObject->Block(
-                    Name => 'CalendarEvent',
-                    Data => \%Data,
-                );
-
-                if ( $Counter < $Limit ) {
-                    $LayoutObject->Block(
-                        Name => 'CalendarEventComma',
-                    );
-                }
+                push @{ $Self->{EventsTicketCalendar} }, \%Data;
 
                 # add ticket info container
                 $LayoutObject->Block(
@@ -263,10 +257,24 @@ sub Run {
                             next TICKETFIELD;
                         }
 
-                        if ( $Key eq 'CustomerUserID' && $TicketDetail{$Key} ) {
-                            $TicketDetail{$Key} = $Kernel::OM->Get('Kernel::System::CustomerUser')->CustomerName(
-                                UserLogin => $TicketDetail{$Key},
+                        if ( $Key eq 'CustomerName' && $TicketDetail{CustomerUserID} ) {
+                            $TicketDetail{$Key} = $CustomerUserObject->CustomerName(
+                                UserLogin => $TicketDetail{CustomerUserID},
                             );
+                        }
+
+                        if ( $Key eq 'CustomerCompanyName' && $TicketDetail{CustomerID} ) {
+                            my %CustomerCompany = $CustomerCompanyObject->CustomerCompanyGet(
+                                CustomerID => $TicketDetail{CustomerID},
+                            );
+                            $TicketDetail{$Key} = $CustomerCompany{$Key};
+                        }
+
+                        if ( ( $Key eq 'Owner' || $Key eq 'Responsible' ) && $TicketDetail{$Key} ) {
+                            my %UserData = $UserObject->GetUserData(
+                                User => $TicketDetail{$Key},
+                            );
+                            $TicketDetail{$Key} = $UserData{UserFullname};
                         }
 
                         # translate state and priority name
@@ -328,11 +336,6 @@ sub Run {
             }
         }
     }
-    if ( $Counter < $Limit ) {
-        $LayoutObject->Block(
-            Name => 'CalendarEventComma',
-        );
-    }
 
     $LayoutObject->Block(
         Name => 'CalendarDiv',
@@ -342,12 +345,19 @@ sub Run {
             }
     );
 
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'EventsTicketCalendar',
+        Value => $Self->{EventsTicketCalendar},
+    );
+    $LayoutObject->AddJSData(
+        Key   => 'FirstDay',
+        Value => $ConfigObject->Get('CalendarWeekDayStart') || 0,
+    );
+
     $Content .= $LayoutObject->Output(
         TemplateFile => 'DashboardEventsTicketCalendar',
-        Data         => {
-            %{ $Self->{Config} },
-            FirstDay => $Kernel::OM->Get('Kernel::Config')->Get('CalendarWeekDayStart') || 0,
-        },
+        Data         => {},
     );
 
     return $Content;

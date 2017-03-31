@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -18,11 +18,11 @@ use vars (qw($Self));
 my @TestConfigs = (
     {
         Date1 => {
-            String   => '2016-02-28 14:59:00',
+            String   => '2013-02-28 14:59:00',
             TimeZone => 'Europe/Berlin',
         },
         Date2 => {
-            String   => '2018-02-14 14:54:10',
+            String   => '2015-02-15 14:54:10',
             TimeZone => 'Europe/Berlin',
         },
         ExpectedResult => {
@@ -38,11 +38,11 @@ my @TestConfigs = (
     },
     {
         Date1 => {
-            String   => '2016-02-28 14:59:00',
+            String   => '2013-02-28 14:59:00',
             TimeZone => 'UTC',
         },
         Date2 => {
-            String   => '2018-02-14 14:54:10',
+            String   => '2015-02-15 14:54:10',
             TimeZone => 'America/New_York',
         },
         ExpectedResult => {

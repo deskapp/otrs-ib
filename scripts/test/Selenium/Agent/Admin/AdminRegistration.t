@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -48,6 +48,13 @@ $Selenium->RunTest(
         # navigate to AdminRegistration screen
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AdminRegistration");
 
+        # check breadcrumb on Overview screen
+        $Self->Is(
+            $Selenium->execute_script("return \$('.BreadCrumb li:eq(1)').text().trim()"),
+            'System Registration Management',
+            "Breadcrumb text 'System Registration Management' is found on screen"
+        );
+
         # create test cases with different field values
         my @Tests = (
             {
@@ -79,8 +86,17 @@ $Selenium->RunTest(
                 );
             }
             else {
+
+                # wait for message box to show up with the error message
+                $Selenium->WaitFor(
+                    JavaScript =>
+                        'return $("div.MessageBox.Error p").text().match(/Wrong OTRSID or Password/) != null',
+                );
+
                 $Self->True(
-                    index( $Selenium->get_page_source(), 'Wrong OTRSID or Password' ) > -1,
+                    $Selenium->execute_script(
+                        'return $("div.MessageBox.Error p").text().match(/Wrong OTRSID or Password/) != null',
+                    ),
                     $Test->{Name},
                 );
             }
@@ -95,7 +111,7 @@ $Selenium->RunTest(
         for my $Dialog ( sort keys %Dialogs ) {
 
             # click on the linked text
-            $Selenium->find_element( "#$Dialog", 'css' )->click();
+            $Selenium->find_element( "#$Dialog", 'css' )->VerifiedClick();
 
             # check up if corresponding modal dialog exists on the page
             $Self->Is(
@@ -105,7 +121,7 @@ $Selenium->RunTest(
             );
 
             # close the modal dialog
-            $Selenium->find_element( ".Dialog.Modal .fa.fa-times", 'css' )->click();
+            $Selenium->find_element( ".Dialog.Modal .fa.fa-times", 'css' )->VerifiedClick();
         }
 
         # stop daemon

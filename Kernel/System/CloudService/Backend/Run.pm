@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -27,22 +27,16 @@ our @ObjectDependencies = (
 
 Kernel::System::CloudService::Backend::Run - cloud service lib
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All functions for cloud service communication.
 
 =head1 PUBLIC INTERFACE
 
-=over 4
-
-=cut
-
-=item new()
+=head2 new()
 
 create a CloudService object. Do not use it directly, instead use:
 
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $CloudServiceObject = $Kernel::OM->Get('Kernel::System::CloudService::Backend::Run');
 
 =cut
@@ -67,7 +61,7 @@ sub new {
     return $Self;
 }
 
-=item Request()
+=head2 Request()
 
 perform a cloud service communication and return result data
 
@@ -333,19 +327,29 @@ sub Request {
     );
 
     # perform webservice request
-    my %Response = $Kernel::OM->Get('Kernel::System::WebUserAgent')->Request(
-        Type => 'POST',
-        URL  => $Self->{CloudServiceURL},
-        Data => {
-            Action       => 'PublicCloudService',
-            RequestData  => $RequestData,
-            UniqueIDAuth => $UniqueIDAuth,
-            OTRSIDAuth   => $OTRSIDAuth,
-        },
-    );
+    my %Response;
+    TRY:
+    for my $Try ( 1 .. 3 ) {
+
+        %Response = $Kernel::OM->Get('Kernel::System::WebUserAgent')->Request(
+            Type => 'POST',
+            URL  => $Self->{CloudServiceURL},
+            Data => {
+                Action       => 'PublicCloudService',
+                RequestData  => $RequestData,
+                UniqueIDAuth => $UniqueIDAuth,
+                OTRSIDAuth   => $OTRSIDAuth,
+            },
+        );
+
+        last TRY if %Response
+            && $Response{Status} eq '200 OK'
+            && $Response{Content}
+            && ref $Response{Content} eq 'SCALAR';
+    }
 
     # test if the web response was successful
-    if ( $Response{Status} ne '200 OK' ) {
+    if ( !%Response || $Response{Status} ne '200 OK' ) {
         $Kernel::OM->Get('Kernel::System::Log')->Log(
             Priority => 'notice',
             Message  => "PublicCloudService - Can't connect to server - $Response{Status}",
@@ -391,16 +395,13 @@ sub Request {
         );
         return;
     }
-    else {
 
-        # return data from server if defined
-        return $ResponseData->{Results} if defined $ResponseData->{Results};
-    }
-
+    # return data from server if defined
+    return $ResponseData->{Results} if defined $ResponseData->{Results};
     return;
 }
 
-=item OperationResultGet()
+=head2 OperationResultGet()
 
     my $OperationResult = $CloudServiceObject->OperationResultGet(
         CloudService => 'Test',
@@ -542,8 +543,6 @@ sub OperationResultGet {
 }
 
 1;
-
-=back
 
 =head1 TERMS AND CONDITIONS
 

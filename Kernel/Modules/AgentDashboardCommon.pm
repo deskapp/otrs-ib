@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -54,6 +54,7 @@ sub Run {
 
     # Get all configured statistics from the system that should be shown as a dashboard widget
     #   and register them dynamically in the configuration.
+    my @StatsIDs;
     if ( $Self->{Action} eq 'AgentDashboard' ) {
 
         my $StatsHash = $Kernel::OM->Get('Kernel::System::Stats')->StatsListGet(
@@ -96,7 +97,14 @@ sub Run {
                     'Description' => $Description,
                     'Group'       => $StatsPermissionGroups,
                 };
+                push @StatsIDs, $StatID;
             }
+
+            # send data to JS
+            $LayoutObject->AddJSData(
+                Key   => 'DashboardStatsIDs',
+                Value => \@StatsIDs
+            );
         }
     }
 
@@ -463,6 +471,8 @@ sub Run {
         Data => \%ContentBlockData,
     );
 
+    my $GroupObject = $Kernel::OM->Get('Kernel::System::Group');
+
     # get shown backends
     my %Backends;
     BACKEND:
@@ -474,8 +484,12 @@ sub Run {
             my @Groups = split /;/, $Config->{$Name}->{Group};
             GROUP:
             for my $Group (@Groups) {
-                my $Permission = 'UserIsGroupRo[' . $Group . ']';
-                if ( defined $Self->{$Permission} && $Self->{$Permission} eq 'Yes' ) {
+                my $HasPermission = $GroupObject->PermissionCheck(
+                    UserID    => $Self->{UserID},
+                    GroupName => $Group,
+                    Type      => 'ro',
+                );
+                if ($HasPermission) {
                     $PermissionOK = 1;
                     last GROUP;
                 }
@@ -526,6 +540,7 @@ sub Run {
     my $Columns = $Self->{Config}->{DefaultColumns} || $ConfigObject->Get('DefaultOverviewColumns') || {};
 
     # try every backend to load and execute it
+    my @ContainerNames;
     NAME:
     for my $Name (@Order) {
 
@@ -540,6 +555,13 @@ sub Run {
         # NameForm (to support IE, is not working with "-" in form names)
         my $NameForm = $Name;
         $NameForm =~ s{-}{}g;
+
+        my %JSData = (
+            Name     => $Name,
+            NameForm => $NameForm,
+        );
+
+        push @ContainerNames, \%JSData;
 
         # rendering
         $LayoutObject->Block(
@@ -558,6 +580,15 @@ sub Run {
 
             my $NameHTML = $Name;
             $NameHTML =~ s{-}{_}xmsg;
+
+            # send data to JS
+            $LayoutObject->AddJSData(
+                Key   => 'CanRefresh-' . $Name,
+                Value => {
+                    Name     => $Name,
+                    NameHTML => $NameHTML,
+                    }
+            );
 
             $LayoutObject->Block(
                 Name => $Element{Config}->{Block} . 'Refresh',
@@ -636,6 +667,12 @@ sub Run {
         }
     }
 
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'ContainerNames',
+        Value => \@ContainerNames,
+    );
+
     # build main menu
     my $MainMenuConfig = $ConfigObject->Get($MainMenuConfigKey);
     if ( IsHashRefWithData($MainMenuConfig) ) {
@@ -678,17 +715,19 @@ sub Run {
             elsif ( $Column eq 'PendingTime' ) {
                 $TranslatedWord = Translatable('Pending till');
             }
+            elsif ( $Column eq 'CustomerCompanyName' ) {
+                $TranslatedWord = Translatable('Customer Company Name');
+            }
+            elsif ( $Column eq 'CustomerUserID' ) {
+                $TranslatedWord = Translatable('Customer User ID');
+            }
 
-            $LayoutObject->Block(
-                Name => 'ColumnTranslation',
-                Data => {
-                    ColumnName      => $Column,
-                    TranslateString => $TranslatedWord,
-                },
+            # send data to JS
+            $LayoutObject->AddJSData(
+                Key   => 'Column' . $Column,
+                Value => $LayoutObject->{LanguageObject}->Translate($TranslatedWord),
             );
-            $LayoutObject->Block(
-                Name => 'ColumnTranslationSeparator',
-            );
+
         }
     }
 
@@ -709,19 +748,11 @@ sub Run {
 
             $Counter++;
 
-            $LayoutObject->Block(
-                Name => 'ColumnTranslation',
-                Data => {
-                    ColumnName      => 'DynamicField_' . $DynamicField->{Name},
-                    TranslateString => $DynamicField->{Label},
-                },
+            # send data to JS
+            $LayoutObject->AddJSData(
+                Key   => 'ColumnDynamicField_' . $DynamicField->{Name},
+                Value => $LayoutObject->{LanguageObject}->Translate( $DynamicField->{Label} ),
             );
-
-            if ( $Counter < scalar @{$ColumnsDynamicField} ) {
-                $LayoutObject->Block(
-                    Name => 'ColumnTranslationSeparator',
-                );
-            }
         }
     }
 
@@ -747,14 +778,20 @@ sub _Element {
     my $GetColumnFilter       = $Param{GetColumnFilter};
     my $GetColumnFilterSelect = $Param{GetColumnFilterSelect};
 
+    my $GroupObject = $Kernel::OM->Get('Kernel::System::Group');
+
     # check permissions
     if ( $Configs->{$Name}->{Group} ) {
         my $PermissionOK = 0;
         my @Groups = split /;/, $Configs->{$Name}->{Group};
         GROUP:
         for my $Group (@Groups) {
-            my $Permission = 'UserIsGroupRo[' . $Group . ']';
-            if ( defined $Self->{$Permission} && $Self->{$Permission} eq 'Yes' ) {
+            my $HasPermission = $GroupObject->PermissionCheck(
+                UserID    => $Self->{UserID},
+                GroupName => $Group,
+                Type      => 'ro',
+            );
+            if ($HasPermission) {
                 $PermissionOK = 1;
                 last GROUP;
             }

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -19,10 +19,12 @@ our @ObjectDependencies = (
     'Kernel::System::DynamicField',
     'Kernel::System::DynamicField::Backend',
     'Kernel::Config',
+    'Kernel::System::Group',
     'Kernel::System::Log',
     'Kernel::Output::HTML::Layout',
     'Kernel::System::User',
     'Kernel::System::Ticket',
+    'Kernel::System::Ticket::Article',
     'Kernel::System::Main',
     'Kernel::System::Queue'
 );
@@ -58,10 +60,15 @@ sub ActionRow {
             $BulkFeature = 1;
         }
         else {
+            my $GroupObject = $Kernel::OM->Get('Kernel::System::Group');
             GROUP:
             for my $Group (@Groups) {
-                next GROUP if !$LayoutObject->{"UserIsGroup[$Group]"};
-                if ( $LayoutObject->{"UserIsGroup[$Group]"} eq 'Yes' ) {
+                my $HasPermission = $GroupObject->PermissionCheck(
+                    UserID    => $Self->{UserID},
+                    GroupName => $Group,
+                    Type      => 'rw',
+                );
+                if ($HasPermission) {
                     $BulkFeature = 1;
                     last GROUP;
                 }
@@ -159,12 +166,6 @@ sub ActionRow {
         }
     }
 
-    # init for table control
-    $LayoutObject->Block(
-        Name => 'DocumentReadyStart',
-        Data => \%Param,
-    );
-
     my $Output = $LayoutObject->Output(
         TemplateFile => 'AgentTicketOverviewMedium',
         Data         => \%Param,
@@ -208,10 +209,15 @@ sub Run {
             $BulkFeature = 1;
         }
         else {
+            my $GroupObject = $Kernel::OM->Get('Kernel::System::Group');
             GROUP:
             for my $Group (@Groups) {
-                next GROUP if !$LayoutObject->{"UserIsGroup[$Group]"};
-                if ( $LayoutObject->{"UserIsGroup[$Group]"} eq 'Yes' ) {
+                my $HasPermission = $GroupObject->PermissionCheck(
+                    UserID    => $Self->{UserID},
+                    GroupName => $Group,
+                    Type      => 'rw',
+                );
+                if ($HasPermission) {
                     $BulkFeature = 1;
                     last GROUP;
                 }
@@ -266,6 +272,12 @@ sub Run {
                 }
             }
         }
+
+        # send data to JS
+        $LayoutObject->AddJSData(
+            Key   => 'ActionRowTickets',
+            Value => $Self->{ActionRowTickets},
+        );
     }
     else {
         $LayoutObject->Block( Name => 'NoTicketFound' );
@@ -317,7 +329,7 @@ sub _Show {
     my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
 
     # get last customer article
-    my %Article = $TicketObject->ArticleLastCustomerArticle(
+    my %Article = $Kernel::OM->Get('Kernel::System::Ticket::Article')->ArticleLastCustomerArticle(
         TicketID      => $Param{TicketID},
         DynamicFields => 0,
     );
@@ -931,15 +943,22 @@ sub _Show {
         Data => { %Param, %Article },
     );
 
+    my %ActionRowTickets;
+
     # add action items as js
     if ( @ActionItems && !$Param{Config}->{TicketActionsPerTicket} ) {
-        $LayoutObject->Block(
-            Name => 'DocumentReadyActionRowAdd',
-            Data => {
-                TicketID => $Param{TicketID},
-                Data     => \@ActionItems,
-            },
-        );
+
+        # replace TT directives from string with values
+        for my $ActionItem (@ActionItems) {
+            $ActionItem->{Link} = $LayoutObject->Output(
+                Template => $ActionItem->{Link},
+                Data     => {
+                    TicketID => $Article{TicketID},
+                },
+            );
+        }
+
+        $Self->{ActionRowTickets}->{ $Param{TicketID} } = $LayoutObject->JSONEncode( Data => \@ActionItems );
     }
 
     # create & return output

@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -283,6 +283,17 @@ Core.Form.Validate = (function (TargetNS) {
     // If email address should be validated, this function is overwritten in Init method
     $.validator.addMethod("Validate_Email", ValidatorMethodRequired, "");
 
+
+    // Validates e-mail address in a field, but does not return an error if field is empty
+    $.validator.addMethod("Validate_Email_Optional", function (Value, Element) {
+        if (!Value.length) {
+            return true;
+        }
+        else {
+            return $.validator.methods.email.call(this, Value, Element);
+        }
+    }, "");
+
     // Use the maxlength attribute to have a dynamic validation
     // Textarea fields will need JS code to set the maxlength attribute since is not supported by
     // XHTML
@@ -336,7 +347,14 @@ Core.Form.Validate = (function (TargetNS) {
         DateHourClassPrefix = 'Validate_DateHour_',
         DateMinuteClassPrefix = 'Validate_DateMinute_',
         DateAfterBefore,
-        DateCheck;
+        DateCheck,
+        $UsedObj;
+
+        // Skip validation if field is not used (bug#12210)
+        $UsedObj = $(Element).siblings('input.DynamicFieldText[id*="Used"][type="checkbox"]');
+        if ($UsedObj.length > 0 && $UsedObj.is(':checked') === false) {
+            return true;
+        }
 
         RegExYear = new RegExp(DateYearClassPrefix);
         RegExMonth = new RegExp(DateMonthClassPrefix);
@@ -356,15 +374,16 @@ Core.Form.Validate = (function (TargetNS) {
                 MinuteElement = ClassValue.replace(DateMinuteClassPrefix, '');
             }
         });
-        if (YearElement.length && MonthElement.length && $('#' + YearElement).length && $('#' + MonthElement).length) {
-            DateObject = new Date($('#' + YearElement).val(), $('#' + MonthElement).val() - 1, Value);
-            if (DateObject.getFullYear() === parseInt($('#' + YearElement).val(), 10) &&
-                DateObject.getMonth() + 1 === parseInt($('#' + MonthElement).val(), 10) &&
+
+        if (YearElement.length && MonthElement.length && $('#' + Core.App.EscapeSelector(YearElement)).length && $('#' + Core.App.EscapeSelector(MonthElement)).length) {
+            DateObject = new Date($('#' + Core.App.EscapeSelector(YearElement)).val(), $('#' + Core.App.EscapeSelector(MonthElement)).val() - 1, Value);
+            if (DateObject.getFullYear() === parseInt($('#' + Core.App.EscapeSelector(YearElement)).val(), 10) &&
+                DateObject.getMonth() + 1 === parseInt($('#' + Core.App.EscapeSelector(MonthElement)).val(), 10) &&
                 DateObject.getDate() === parseInt(Value, 10)) {
 
                 DateCheck = new Date();
                 if (MinuteElement.length && HourElement.length) {
-                    DateObject.setHours($('#' + HourElement).val(), $('#' + MinuteElement).val(), 0, 0);
+                    DateObject.setHours($('#' + Core.App.EscapeSelector(HourElement)).val(), $('#' + Core.App.EscapeSelector(MinuteElement)).val(), 0, 0);
                 }
                 else {
                     DateCheck.setHours(0, 0, 0, 0);
@@ -444,7 +463,8 @@ Core.Form.Validate = (function (TargetNS) {
     }, "");
 
     $.validator.addMethod("Validate_DateInFuture", function (Value, Element) {
-        var $DateSelection = $(Element).parent().find('input[type=checkbox].DateSelection');
+        var $DateSelection = $(Element).parent().find('input[type=checkbox].DateSelection, input[type=radio].DateSelection');
+
         // do not do this check for unchecked date/datetime fields
         // check first if the field exists to regard the check for the pending reminder field
         if ($DateSelection.length && !$DateSelection.prop("checked")) {
@@ -454,7 +474,8 @@ Core.Form.Validate = (function (TargetNS) {
     }, "");
 
     $.validator.addMethod("Validate_DateNotInFuture", function (Value, Element) {
-        var $DateSelection = $(Element).parent().find('input[type=checkbox].DateSelection');
+        var $DateSelection = $(Element).parent().find('input[type=checkbox].DateSelection, input[type=radio].DateSelection');
+
         // do not do this check for unchecked date/datetime fields
         // check first if the field exists to regard the check for the pending reminder field
         if ($DateSelection.length && !$DateSelection.prop("checked")) {
@@ -575,6 +596,10 @@ Core.Form.Validate = (function (TargetNS) {
 
     $.validator.addClassRules("Validate_Email", {
         Validate_Email: true
+    });
+
+    $.validator.addClassRules("Validate_Email_Optional", {
+        Validate_Email_Optional: true
     });
 
     $.validator.addClassRules("Validate_MaxLength", {
@@ -702,6 +727,29 @@ Core.Form.Validate = (function (TargetNS) {
         /*eslint-enable camelcase */
     });
 
+    $.validator.addMethod("Validate_Regex", ValidatorMethodRegex, "");
+
+    /**
+     * @private
+     * @name ValidatorMethodRegex
+     * @memberof Core.Form.Validate
+     * @function
+     * @returns {Boolean} True, if Value has a length, false otherwise.
+     * @param {String} Value
+     * @param {DOMObject} Element
+     * @description
+     *      Validator method for checking if a value satisfies regex expression.
+     */
+    function ValidatorMethodRegex(Value, Element) {
+        var Regex = $(Element).attr("data-regex");
+
+        if (Value.match(Regex)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * @name Init
      * @memberof Core.Form.Validate
@@ -772,7 +820,7 @@ Core.Form.Validate = (function (TargetNS) {
      * @name ValidateElement
      * @memberof Core.Form.Validate
      * @function
-     * @returns {Boolean} Truem, if element validates, false otherwise.
+     * @returns {Boolean} True, if element validates, false otherwise.
      * @param {jQueryObject} $Element
      * @description
      *      Validate a single element.

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -37,7 +37,7 @@ my @Tests = (
         Name   => 'Single Integer',
         Params => {
             TableColumn => 'test.table',
-            IDRef       => [ 1 ],
+            IDRef       => [1],
         },
         Result => ' AND (  test.table IN (1)  ) ',
     },
@@ -53,7 +53,7 @@ my @Tests = (
         Name   => 'Invalid value',
         Params => {
             TableColumn => 'test.table',
-            IDRef       => [ 1.1 ],
+            IDRef       => [1.1],
         },
         Result => undef,
     },
@@ -74,8 +74,6 @@ for my $Test (@Tests) {
         "$Test->{Name} _InConditionGet()"
     );
 }
-
-
 
 # cleanup is done by RestoreDatabase.
 

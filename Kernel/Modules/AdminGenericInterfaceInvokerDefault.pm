@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -38,6 +38,12 @@ sub Run {
             Message => Translatable('Need WebserviceID!'),
         );
     }
+
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'WebserviceID',
+        Value => $WebserviceID
+    );
 
     my $WebserviceData = $Kernel::OM->Get('Kernel::System::GenericInterface::Webservice')->WebserviceGet(
         ID => $WebserviceID,
@@ -490,13 +496,10 @@ sub _ShowScreen {
     my $Output = $LayoutObject->Header();
     $Output .= $LayoutObject->NavigationBar();
 
-    $LayoutObject->Block(
-        Name => 'Title' . $Param{Mode},
-        Data => \%Param
-    );
-    $LayoutObject->Block(
-        Name => 'Navigation' . $Param{Mode},
-        Data => \%Param
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'Invoker',
+        Value => $Param{Invoker}
     );
 
     my %TemplateData;
@@ -596,6 +599,7 @@ sub _ShowScreen {
     my %InvokerEventLookup;
 
     # create the event triggers table
+    my @Events;
     for my $Event ( @{$InvokerEvents} ) {
 
         # to store the events that are already assigned to this invoker
@@ -619,6 +623,8 @@ sub _ShowScreen {
             }
         }
 
+        push @Events, $Event->{Event};
+
         # paint each event row in event triggers table
         $LayoutObject->Block(
             Name => 'EventRow',
@@ -629,6 +635,12 @@ sub _ShowScreen {
             },
         );
     }
+
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'Events',
+        Value => \@Events
+    );
 
     my @EventTypeList;
 
@@ -863,11 +875,11 @@ sub _DeleteEvent {
     );
 }
 
-=item _InvokerTypeCheck()
-
-checks if a given InvokerType is registered in the system.
-
-=cut
+# =item _InvokerTypeCheck()
+#
+# checks if a given InvokerType is registered in the system.
+#
+# =cut
 
 sub _InvokerTypeCheck {
     my ( $Self, %Param ) = @_;
@@ -880,11 +892,11 @@ sub _InvokerTypeCheck {
     return ref $Invokers->{ $Param{InvokerType} } eq 'HASH' ? 1 : 0;
 }
 
-=item _MappingTypeCheck()
-
-checks if a given MappingType is registered in the system.
-
-=cut
+# =item _MappingTypeCheck()
+#
+# checks if a given MappingType is registered in the system.
+#
+# =cut
 
 sub _MappingTypeCheck {
     my ( $Self, %Param ) = @_;

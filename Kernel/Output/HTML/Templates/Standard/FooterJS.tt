@@ -1,13 +1,17 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
 # did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
 # --
+## nofilter(TidyAll::Plugin::OTRS::TT::ScriptUsage)
 
-[% SET OTRSBusinessLabel = '<strong>OTRS Business Solution</strong>™' %]
+<script type="text/javascript">//<![CDATA[
+    "use strict";
 
+    var CKEDITOR_BASEPATH = '[% Config("Frontend::RichTextPath") %]';
+//]]></script>
 [% RenderBlockStart("CommonJS") %]
 <script type="text/javascript" src="[% Config("Frontend::JavaScriptPath") %][% Data.JSDirectory %][% Data.Filename %]"></script>
 [% RenderBlockEnd("CommonJS") %]
@@ -31,45 +35,6 @@ Core.App.Ready(function () {
     Core.Init.ExecuteInit('APP_GLOBAL_EARLY');
     Core.Init.ExecuteInit('APP_GLOBAL');
     Core.Init.ExecuteInit('APP_GLOBAL_LATE');
-
-[% InsertTemplate("Datepicker.tt") %]
-
-[% IF !Data.OTRSBusinessIsInstalled %]
-    $('body').on('click', 'a.OTRSBusinessRequired', function() {
-        Core.UI.Dialog.ShowContentDialog(
-            '<div class="OTRSBusinessRequiredDialog">' + [% Translate('This feature is part of the %s.  Please contact us at %s for an upgrade.', OTRSBusinessLabel, 'sales@otrs.com') | JSON %] + '<a class="Hidden" href="http://www.otrs.com/solutions/" target="_blank"><span></span></a></div>',
-            '',
-            '240px',
-            'Center',
-            true,
-            [
-               {
-                   Label: [% Translate('Close') | JSON %],
-                   Class: 'Primary',
-                   Function: function () {
-                       Core.UI.Dialog.CloseDialog($('.OTRSBusinessRequiredDialog'));
-                   }
-               },
-               {
-                   Label: [% Translate('Find out more about the %s', 'OTRS Business Solution™') | JSON %],
-                   Class: 'Primary',
-                   Function: function () {
-                       $('.OTRSBusinessRequiredDialog').find('a span').trigger('click');
-                   }
-               }
-            ]
-        );
-        return false;
-    });
-[% END %]
-
-[% RenderBlockStart("NewTicketInNewWindow") %]
-    $('#nav-Tickets-Newphoneticket a').attr('target', '_blank');
-    $('#nav-Tickets-Newemailticket a').attr('target', '_blank');
-    $('.PhoneTicket a').attr('target', '_blank');
-    $('.EmailTicket a').attr('target', '_blank');
-    $('.ProcessTicket a').attr('target', '_blank');
-[% RenderBlockEnd("NewTicketInNewWindow") %]
 
 });
 //]]></script>
@@ -96,30 +61,31 @@ Core.App.Ready(function () {
 });
 //]]></script>
 
+<div id="AjaxErrorDialog">
+    <div id="AjaxErrorDialogInner">
+        <div class="NoConnection">
+            <span class="Icon">
+                <i class="fa fa-bolt"></i>
+            </span>
+            <p>
+                [% Translate("Your browser was not able to communicate with OTRS properly, there seems to be something wrong with your network connection. You could either try reloading this page manually or wait until your browser has re-established the connection on its own.") %]
+            </p>
+        </div>
+        <div class="ConnectionReEstablished" style="display:none;">
+            <span class="Icon">
+                <i class="fa fa-check"></i>
+            </span>
+            <p>
+                [% Translate("The connection has been re-established after a temporary connection loss. Due to this, elements on this page could have stopped to work correctly. In order to be able to use all elements correctly again, it is strongly recommended to reload this page.") %]
+            </p>
+        </div>
+    </div>
+</div>
+
 <div id="ResponsiveFooter">
     <div class="Visible-ScreenXL"></div>
     <div class="Visible-ScreenL"></div>
     <div class="Visible-ScreenM"></div>
     <div class="Visible-ScreenS"></div>
     <div class="Visible-ScreenXS"></div>
-</div>
-
-<div class="MetaFloater Hidden">
-    <a href="#" class="Scale" title="[% Translate('Scale preview content') | html %]" style="display: none;">
-        <i class="fa fa-search-plus"></i>
-    </a>
-    <a href="#" class="Open" target="_blank" title="[% Translate('Open URL in new tab') | html %]" style="display: none;">
-        <i class="fa fa-external-link"></i>
-    </a>
-    <a href="#" class="Close" title="[% Translate('Close preview') | html %]">
-        <i class="fa fa-times"></i>
-    </a>
-    <i class="fa fa-spinner fa-spin"></i>
-    <div class="NoPreview">
-        <i class="fa fa-warning"></i>
-        [% Translate("A preview of this website can't be provided because it didn't allow to be embedded.") | html %]
-    </div>
-    <div class="Content" style="display: none;">
-        <iframe sandbox="allow-scripts allow-forms"></iframe>
-    </div>
 </div>

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -41,7 +41,7 @@ sub Run {
         if ( !defined $Self->{$Needed} ) {
             return $LayoutObject->ErrorScreen(
                 Message => $LayoutObject->{LanguageObject}->Translate( '%s is needed!', $Needed ),
-                Comment => Translatable('Please contact your administrator'),
+                Comment => Translatable('Please contact the administrator.'),
             );
         }
     }
@@ -158,9 +158,10 @@ sub Run {
     # show screen
     # ------------------------------------------------------------ #
     if ( !$Self->{Subaction} ) {
+        my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
 
         # check if plain article exists
-        if ( !$TicketObject->ArticlePlain( ArticleID => $Self->{ArticleID} ) ) {
+        if ( !$ArticleObject->ArticlePlain( ArticleID => $Self->{ArticleID} ) ) {
             return $LayoutObject->ErrorScreen(
                 Message => $LayoutObject->{LanguageObject}->Translate(
                     'Plain article not found for article %s!',
@@ -170,7 +171,7 @@ sub Run {
         }
 
         # get article data
-        my %Article = $TicketObject->ArticleGet(
+        my %Article = $ArticleObject->ArticleGet(
             ArticleID     => $Self->{ArticleID},
             DynamicFields => 0,
         );
@@ -277,8 +278,8 @@ $Param{Signature}";
             $Param{RichTextHeight} = $Config->{RichTextHeight} || 0;
             $Param{RichTextWidth}  = $Config->{RichTextWidth}  || 0;
 
-            $LayoutObject->Block(
-                Name => 'RichText',
+            # set up rich text editor
+            $LayoutObject->SetRichTextParameters(
                 Data => \%Param,
             );
         }
@@ -405,8 +406,9 @@ $Param{Signature}";
                 $Param{RichTextHeight} = $Config->{RichTextHeight} || 0;
                 $Param{RichTextWidth}  = $Config->{RichTextWidth}  || 0;
 
-                $LayoutObject->Block(
-                    Name => 'RichText',
+                # set up rich text editor
+                $LayoutObject->SetRichTextParameters(
+                    Data => \%Param,
                 );
             }
 
@@ -441,7 +443,9 @@ $Param{Signature}";
             return $Output;
         }
 
-        my $Bounce = $TicketObject->ArticleBounce(
+        my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
+
+        my $Bounce = $ArticleObject->ArticleBounce(
             TicketID    => $Self->{TicketID},
             ArticleID   => $Self->{ArticleID},
             UserID      => $Self->{UserID},
@@ -454,7 +458,7 @@ $Param{Signature}";
         if ( !$Bounce ) {
             return $LayoutObject->ErrorScreen(
                 Message => Translatable('Can\'t bounce email!'),
-                Comment => Translatable('Please contact the admin.'),
+                Comment => Translatable('Please contact the administrator.'),
             );
         }
 
@@ -477,7 +481,7 @@ $Param{Signature}";
             $Param{Body} =~ s/(&lt;|<)OTRS_BOUNCE_TO(&gt;|>)/$Param{BounceTo}/g;
 
             # send
-            my $ArticleID = $TicketObject->ArticleSend(
+            my $ArticleID = $ArticleObject->ArticleSend(
                 ArticleType    => 'email-external',
                 SenderType     => 'agent',
                 TicketID       => $Self->{TicketID},
@@ -497,7 +501,7 @@ $Param{Signature}";
             if ( !$ArticleID ) {
                 return $LayoutObject->ErrorScreen(
                     Message => Translatable('Can\'t send email!'),
-                    Comment => Translatable('Please contact the admin.'),
+                    Comment => Translatable('Please contact the administrator.'),
                 );
             }
         }
@@ -538,7 +542,7 @@ $Param{Signature}";
     }
     return $LayoutObject->ErrorScreen(
         Message => Translatable('Wrong Subaction!'),
-        Comment => Translatable('Please contact your administrator'),
+        Comment => Translatable('Please contact the administrator.'),
     );
 }
 

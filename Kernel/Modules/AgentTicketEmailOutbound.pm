@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -94,7 +94,8 @@ sub Run {
         DYNAMICFIELD:
         for my $DynamicFieldItem ( sort keys %DynamicFieldValues ) {
             next DYNAMICFIELD if !$DynamicFieldItem;
-            next DYNAMICFIELD if !$DynamicFieldValues{$DynamicFieldItem};
+            next DYNAMICFIELD if !defined $DynamicFieldValues{$DynamicFieldItem};
+            next DYNAMICFIELD if !length $DynamicFieldValues{$DynamicFieldItem};
 
             $DynamicFieldACLParameters{ 'DynamicField_' . $DynamicFieldItem } = $DynamicFieldValues{$DynamicFieldItem};
         }
@@ -248,7 +249,7 @@ sub Run {
             }
 
             # get first article of the ticket
-            my %Article = $TicketObject->ArticleFirstArticle(
+            my %Article = $Kernel::OM->Get('Kernel::System::Ticket::Article')->ArticleFirstArticle(
                 TicketID      => $Self->{TicketID},
                 DynamicFields => 0,
             );
@@ -350,8 +351,9 @@ sub Form {
         );
     }
 
-    # get ticket object
-    my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
+    # get needed objects
+    my $TicketObject  = $Kernel::OM->Get('Kernel::System::Ticket');
+    my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
 
     # get ticket data
     my %Ticket = $TicketObject->TicketGet(
@@ -456,7 +458,7 @@ sub Form {
     # get last customer article or selected article
     my %Data;
     if ( $GetParam{ArticleID} ) {
-        %Data = $TicketObject->ArticleGet(
+        %Data = $ArticleObject->ArticleGet(
             ArticleID     => $GetParam{ArticleID},
             DynamicFields => 1,
         );
@@ -471,7 +473,7 @@ sub Form {
         }
     }
     else {
-        %Data = $TicketObject->ArticleLastCustomerArticle(
+        %Data = $ArticleObject->ArticleLastCustomerArticle(
             TicketID      => $Self->{TicketID},
             DynamicFields => 1,
         );
@@ -588,8 +590,15 @@ sub Form {
             );
 
             # get params
-            for my $Param ( $Object->Option( %Data, %GetParam, Config => $Jobs{$Job} ) ) {
-                $GetParam{$Param} = $ParamObject->GetParam( Param => $Param );
+            PARAMETER:
+            for my $Parameter ( $Object->Option( %GetParam, Config => $Jobs{$Job} ) ) {
+
+                if ( $Jobs{$Job}->{ParamType} && $Jobs{$Job}->{ParamType} ne 'Single' ) {
+                    @{ $GetParam{$Parameter} } = $ParamObject->GetArray( Param => $Parameter );
+                    next PARAMETER;
+                }
+
+                $GetParam{$Parameter} = $ParamObject->GetParam( Param => $Parameter );
             }
 
             # run module
@@ -781,7 +790,8 @@ sub SendEmail {
     DYNAMICFIELD:
     for my $DynamicFieldItem ( sort keys %DynamicFieldValues ) {
         next DYNAMICFIELD if !$DynamicFieldItem;
-        next DYNAMICFIELD if !$DynamicFieldValues{$DynamicFieldItem};
+        next DYNAMICFIELD if !defined $DynamicFieldValues{$DynamicFieldItem};
+        next DYNAMICFIELD if !length $DynamicFieldValues{$DynamicFieldItem};
 
         $DynamicFieldACLParameters{ 'DynamicField_' . $DynamicFieldItem } = $DynamicFieldValues{$DynamicFieldItem};
     }
@@ -848,6 +858,50 @@ sub SendEmail {
         DynamicFields => 1,
     );
 
+    # If is an action about attachments
+    my $IsUpload = 0;
+
+    # attachment delete
+    my @AttachmentIDs = map {
+        my ($ID) = $_ =~ m{ \A AttachmentDelete (\d+) \z }xms;
+        $ID ? $ID : ();
+    } $ParamObject->GetParamNames();
+
+    # get upload cache object
+    my $UploadCacheObject = $Kernel::OM->Get('Kernel::System::Web::UploadCache');
+
+    COUNT:
+    for my $Count ( reverse sort @AttachmentIDs ) {
+        my $Delete = $ParamObject->GetParam( Param => "AttachmentDelete$Count" );
+        next COUNT if !$Delete;
+        %Error = ();
+        $Error{AttachmentDelete} = 1;
+        $UploadCacheObject->FormIDRemoveFile(
+            FormID => $GetParam{FormID},
+            FileID => $Count,
+        );
+        $IsUpload = 1;
+    }
+
+    # attachment upload
+    if ( $ParamObject->GetParam( Param => 'AttachmentUpload' ) ) {
+        $IsUpload                = 1;
+        %Error                   = ();
+        $Error{AttachmentUpload} = 1;
+        my %UploadStuff = $ParamObject->GetUploadAll(
+            Param => 'FileUpload',
+        );
+        $UploadCacheObject->FormIDAddFile(
+            FormID => $GetParam{FormID},
+            %UploadStuff,
+        );
+    }
+
+    # get all attachments meta data
+    my @Attachments = $UploadCacheObject->FormIDGetAllFilesMeta(
+        FormID => $GetParam{FormID},
+    );
+
     # create HTML strings for all dynamic fields
     my %DynamicFieldHTML;
 
@@ -898,27 +952,33 @@ sub SendEmail {
             }
         }
 
-        my $ValidationResult = $DynamicFieldBackendObject->EditFieldValueValidate(
-            DynamicFieldConfig   => $DynamicFieldConfig,
-            PossibleValuesFilter => $PossibleValuesFilter,
-            ParamObject          => $ParamObject,
-            Mandatory =>
-                $Config->{DynamicField}->{ $DynamicFieldConfig->{Name} } == 2,
-        );
+        my $ValidationResult;
 
-        if ( !IsHashRefWithData($ValidationResult) ) {
+        # do not validate on attachment upload
+        if ( !$IsUpload ) {
 
-            return $LayoutObject->ErrorScreen(
-                Message =>
-                    $LayoutObject->{LanguageObject}
-                    ->Translate( 'Could not perform validation on field %s!', $DynamicFieldConfig->{Label} ),
-                Comment => Translatable('Please contact the admin.'),
+            $ValidationResult = $DynamicFieldBackendObject->EditFieldValueValidate(
+                DynamicFieldConfig   => $DynamicFieldConfig,
+                PossibleValuesFilter => $PossibleValuesFilter,
+                ParamObject          => $ParamObject,
+                Mandatory =>
+                    $Config->{DynamicField}->{ $DynamicFieldConfig->{Name} } == 2,
             );
-        }
 
-        # propagate validation error to the Error variable to be detected by the frontend
-        if ( $ValidationResult->{ServerError} ) {
-            $Error{ $DynamicFieldConfig->{Name} } = ' ServerError';
+            if ( !IsHashRefWithData($ValidationResult) ) {
+
+                return $LayoutObject->ErrorScreen(
+                    Message =>
+                        $LayoutObject->{LanguageObject}
+                        ->Translate( 'Could not perform validation on field %s!', $DynamicFieldConfig->{Label} ),
+                    Comment => Translatable('Please contact the administrator.'),
+                );
+            }
+
+            # propagate validation error to the Error variable to be detected by the frontend
+            if ( $ValidationResult->{ServerError} ) {
+                $Error{ $DynamicFieldConfig->{Name} } = ' ServerError';
+            }
         }
 
         # get field HTML
@@ -988,18 +1048,50 @@ sub SendEmail {
                 Debug => $Self->{Debug},
             );
 
+            my $Multiple;
+
             # get params
-            for my $Param ( $Object->Option( %GetParam, Config => $Jobs{$Job} ) ) {
-                $GetParam{$Param} = $ParamObject->GetParam( Param => $Param );
+            PARAMETER:
+            for my $Parameter ( $Object->Option( %GetParam, Config => $Jobs{$Job} ) ) {
+                if ( $Jobs{$Job}->{ParamType} && $Jobs{$Job}->{ParamType} ne 'Single' ) {
+                    @{ $GetParam{$Parameter} } = $ParamObject->GetArray( Param => $Parameter );
+                    $Multiple = 1;
+                    next PARAMETER;
+                }
+
+                $GetParam{$Parameter} = $ParamObject->GetParam( Param => $Parameter );
             }
 
             # run module
-            $Object->Run( %GetParam, Config => $Jobs{$Job} );
+            $Object->Run(
+                %GetParam,
+                StoreNew => 1,
+                Config   => $Jobs{$Job}
+            );
+
+            # get options that have been removed from the selection
+            # and add them back to the selection so that the submit
+            # will contain options that were hidden from the agent
+            my $Key = $Object->Option( %GetParam, Config => $Jobs{$Job} );
+
+            if ( $Object->can('GetOptionsToRemoveAJAX') ) {
+                my @RemovedOptions = $Object->GetOptionsToRemoveAJAX(%GetParam);
+                if (@RemovedOptions) {
+                    if ($Multiple) {
+                        for my $RemovedOption (@RemovedOptions) {
+                            push @{ $GetParam{$Key} }, $RemovedOption;
+                        }
+                    }
+                    else {
+                        $GetParam{$Key} = shift @RemovedOptions;
+                    }
+                }
+            }
 
             # ticket params
             %ArticleParam = (
                 %ArticleParam,
-                $Object->ArticleOption( %GetParam, Config => $Jobs{$Job} ),
+                $Object->ArticleOption( %GetParam, %ArticleParam, Config => $Jobs{$Job} ),
             );
 
             # get errors
@@ -1009,45 +1101,6 @@ sub SendEmail {
             );
         }
     }
-
-    # attachment delete
-    my @AttachmentIDs = map {
-        my ($ID) = $_ =~ m{ \A AttachmentDelete (\d+) \z }xms;
-        $ID ? $ID : ();
-    } $ParamObject->GetParamNames();
-
-    # get upload cache object
-    my $UploadCacheObject = $Kernel::OM->Get('Kernel::System::Web::UploadCache');
-
-    COUNT:
-    for my $Count ( reverse sort @AttachmentIDs ) {
-        my $Delete = $ParamObject->GetParam( Param => "AttachmentDelete$Count" );
-        next COUNT if !$Delete;
-        %Error = ();
-        $Error{AttachmentDelete} = 1;
-        $UploadCacheObject->FormIDRemoveFile(
-            FormID => $GetParam{FormID},
-            FileID => $Count,
-        );
-    }
-
-    # attachment upload
-    if ( $ParamObject->GetParam( Param => 'AttachmentUpload' ) ) {
-        %Error = ();
-        $Error{AttachmentUpload} = 1;
-        my %UploadStuff = $ParamObject->GetUploadAll(
-            Param => 'FileUpload',
-        );
-        $UploadCacheObject->FormIDAddFile(
-            FormID => $GetParam{FormID},
-            %UploadStuff,
-        );
-    }
-
-    # get all attachments meta data
-    my @Attachments = $UploadCacheObject->FormIDGetAllFilesMeta(
-        FormID => $GetParam{FormID},
-    );
 
     # check if there is an error
     if (%Error) {
@@ -1147,7 +1200,7 @@ sub SendEmail {
     # get article type ID param
     my $ArticleTypeID = $ParamObject->GetParam( Param => 'ArticleTypeID' );
 
-    my $ArticleID = $TicketObject->ArticleSend(
+    my $ArticleID = $Kernel::OM->Get('Kernel::System::Ticket::Article')->ArticleSend(
         ArticleTypeID  => $ArticleTypeID,
         SenderType     => 'agent',
         TicketID       => $Self->{TicketID},
@@ -1175,7 +1228,7 @@ sub SendEmail {
     if ( !$ArticleID ) {
 
         return $LayoutObject->ErrorScreen(
-            Comment => Translatable('Please contact the admin.'),
+            Comment => Translatable('Please contact the administrator.'),
         );
     }
 
@@ -1290,24 +1343,50 @@ sub AjaxUpdate {
                 Debug => $Self->{Debug},
             );
 
+            my $Multiple;
+
             # get params
+            PARAMETER:
             for my $Parameter ( $Object->Option( %GetParam, Config => $Jobs{$Job} ) ) {
+                if ( $Jobs{$Job}->{ParamType} && $Jobs{$Job}->{ParamType} ne 'Single' ) {
+                    @{ $GetParam{$Parameter} } = $ParamObject->GetArray( Param => $Parameter );
+                    $Multiple = 1;
+                    next PARAMETER;
+                }
+
                 $GetParam{$Parameter} = $ParamObject->GetParam( Param => $Parameter );
             }
 
             # run module
             my %Data = $Object->Data( %GetParam, Config => $Jobs{$Job} );
 
+            # get AJAX param values
+            if ( $Object->can('GetParamAJAX') ) {
+                %GetParam = ( %GetParam, $Object->GetParamAJAX(%GetParam) )
+            }
+
+            # get options that have to be removed from the selection visible
+            # to the agent. These options will be added again on submit.
+            if ( $Object->can('GetOptionsToRemoveAJAX') ) {
+                my @OptionsToRemove = $Object->GetOptionsToRemoveAJAX(%GetParam);
+
+                for my $OptionToRemove (@OptionsToRemove) {
+                    delete $Data{$OptionToRemove};
+                }
+            }
+
             my $Key = $Object->Option( %GetParam, Config => $Jobs{$Job} );
             if ($Key) {
                 push(
                     @ExtendedData,
                     {
-                        Name        => $Key,
-                        Data        => \%Data,
-                        SelectedID  => $GetParam{$Key},
-                        Translation => 1,
-                        Max         => 100,
+                        Name         => $Key,
+                        Data         => \%Data,
+                        SelectedID   => $GetParam{$Key},
+                        Translation  => 1,
+                        PossibleNone => 1,
+                        Multiple     => $Multiple,
+                        Max          => 100,
                     }
                 );
             }
@@ -1349,7 +1428,8 @@ sub AjaxUpdate {
     DYNAMICFIELD:
     for my $DynamicFieldItem ( sort keys %DynamicFieldValues ) {
         next DYNAMICFIELD if !$DynamicFieldItem;
-        next DYNAMICFIELD if !$DynamicFieldValues{$DynamicFieldItem};
+        next DYNAMICFIELD if !defined $DynamicFieldValues{$DynamicFieldItem};
+        next DYNAMICFIELD if !length $DynamicFieldValues{$DynamicFieldItem};
 
         $DynamicFieldACLParameters{ 'DynamicField_' . $DynamicFieldItem } = $DynamicFieldValues{$DynamicFieldItem};
     }
@@ -1467,13 +1547,6 @@ sub _Mask {
         OnlyDynamicFields => 1
     );
 
-    # create a string with the quoted dynamic field names separated by commas
-    if ( IsArrayRefWithData($DynamicFieldNames) ) {
-        for my $Field ( @{$DynamicFieldNames} ) {
-            $Param{DynamicFieldNamesStrg} .= ", '" . $Field . "'";
-        }
-    }
-
     # get config object
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
@@ -1502,8 +1575,11 @@ sub _Mask {
     my %ArticleTypes;
     my @ArticleTypesPossible = @{ $Config->{ArticleTypes} };
     for my $ArticleType (@ArticleTypesPossible) {
-        $ArticleTypes{ $Kernel::OM->Get('Kernel::System::Ticket')->ArticleTypeLookup( ArticleType => $ArticleType ) }
-            = $ArticleType;
+        $ArticleTypes{
+            $Kernel::OM->Get('Kernel::System::Ticket::Article')->ArticleTypeLookup(
+                ArticleType => $ArticleType,
+                )
+        } = $ArticleType;
     }
 
     # get article type ID param
@@ -1525,11 +1601,6 @@ sub _Mask {
             Class         => 'Modernize',
         );
     }
-
-    # build customer search autocomplete field
-    $LayoutObject->Block(
-        Name => 'CustomerSearchAutoComplete',
-    );
 
     # prepare errors!
     if ( $Param{Errors} ) {
@@ -1772,24 +1843,13 @@ sub _Mask {
         );
     }
 
-    # show address book
-    if ( $LayoutObject->{BrowserJavaScriptSupport} ) {
-
-        # check if need to call Options block
-        if ( !$ShownOptionsBlock ) {
-            $LayoutObject->Block(
-                Name => 'TicketOptions',
-                Data => {},
-            );
-
-            # set flag to "true" in order to prevent calling the Options block again
-            $ShownOptionsBlock = 1;
-        }
-
-        $LayoutObject->Block(
-            Name => 'AddressBook',
-            Data => {},
-        );
+    # Show the customer user address book if the module is registered and java script support is available.
+    if (
+        $ConfigObject->Get('Frontend::Module')->{AgentCustomerUserAddressBook}
+        && $LayoutObject->{BrowserJavaScriptSupport}
+        )
+    {
+        $Param{OptionCustomerUserAddressBook} = 1;
     }
 
     # build text template string
@@ -1851,11 +1911,16 @@ sub _Mask {
         $Param{RichTextHeight} = $Config->{RichTextHeight} || 0;
         $Param{RichTextWidth}  = $Config->{RichTextWidth}  || 0;
 
-        $LayoutObject->Block(
-            Name => 'RichText',
+        # set up rich text editor
+        $LayoutObject->SetRichTextParameters(
             Data => \%Param,
         );
     }
+
+    $LayoutObject->AddJSData(
+        Key   => 'DynamicFieldNames',
+        Value => $DynamicFieldNames,
+    );
 
     # create & return output
     return $LayoutObject->Output(

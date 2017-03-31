@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -18,17 +18,11 @@ $Selenium->RunTest(
     sub {
 
         # get needed objects
-        my $SysConfigObject = $Kernel::OM->Get('Kernel::System::SysConfig');
-        my $GroupObject     = $Kernel::OM->Get('Kernel::System::Group');
-        my $DBObject        = $Kernel::OM->Get('Kernel::System::DB');
-        my $TicketObject    = $Kernel::OM->Get('Kernel::System::Ticket');
+        my $GroupObject  = $Kernel::OM->Get('Kernel::System::Group');
+        my $DBObject     = $Kernel::OM->Get('Kernel::System::DB');
+        my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
 
         # get helper object
-        $Kernel::OM->ObjectParamAdd(
-            'Kernel::System::UnitTest::Helper' => {
-                RestoreSystemConfiguration => 1,
-            },
-        );
         my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 
         # get needed variables
@@ -51,12 +45,9 @@ $Selenium->RunTest(
         );
 
         # get original config for menu module 'Close'
-        my %MenuModuleCloseSysConfig = $SysConfigObject->ConfigItemGet(
+        my %MenuModuleCloseSysConfig = $Kernel::OM->Get('Kernel::System::SysConfig')->SettingGet(
             Name => 'Ticket::Frontend::MenuModule###450-Close',
         );
-
-        %MenuModuleCloseSysConfig = map { $_->{Key} => $_->{Content} }
-            grep { defined $_->{Key} } @{ $MenuModuleCloseSysConfig{Setting}->[1]->{Hash}->[1]->{Item} };
 
         # create ticket
         my $TicketID = $TicketObject->TicketCreate(
@@ -125,17 +116,14 @@ $Selenium->RunTest(
         for my $Test (@Tests) {
 
             # update config
-            $SysConfigObject->ConfigItemUpdate(
+            $Helper->ConfigSettingChange(
                 Valid => 1,
                 Key   => 'Ticket::Frontend::MenuModule###450-Close',
                 Value => {
-                    %MenuModuleCloseSysConfig,
+                    %{ $MenuModuleCloseSysConfig{EffectiveValue} },
                     Group => 'rw:' . $Test->{Group},
                 },
             );
-
-            # let mod_perl / Apache2::Reload pick up the changed configuration
-            sleep 1;
 
             # navigate to AgentTicketZoom screen of created test ticket
             $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AgentTicketZoom;TicketID=$TicketID");

@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -145,7 +145,7 @@ Core.Agent = (function (TargetNS) {
             .filter(function () {
                 return $('ul', this).length;
             })
-            .bind('mouseenter', function () {
+            .on('mouseenter', function () {
                 var $Element = $(this);
 
                 // clear close timeout on mouseenter, even if OpenMainMenuOnHover is not enabled
@@ -170,7 +170,7 @@ Core.Agent = (function (TargetNS) {
                     });
                 }
             })
-            .bind('mouseleave', function () {
+            .on('mouseleave', function () {
 
                 var $Element = $(this);
 
@@ -194,7 +194,7 @@ Core.Agent = (function (TargetNS) {
                     });
                 }
             })
-            .bind('click', function (Event) {
+            .on('click', function (Event) {
 
                 var $Element = $(this),
                     $Target = $(Event.target);
@@ -219,7 +219,7 @@ Core.Agent = (function (TargetNS) {
                 // That means that a subnavigation in mobile mode is still collapsed/expanded,
                 // although the link to the new page is clicked
                 // we force the redirect with this workaround
-                if ($Target.closest('ul').attr('id') !== 'Navigation') {
+                if (navigator && navigator.userAgent && navigator.userAgent.match(/Windows Phone/i) && $Target.closest('ul').attr('id') !== 'Navigation') {
                     window.location.href = $Target.closest('a').attr('href');
                     Event.stopPropagation();
                     Event.preventDefault();
@@ -292,10 +292,10 @@ Core.Agent = (function (TargetNS) {
                             });
 
                             // save the new order to the users preferences
-                            TargetNS.PreferencesUpdate('UserNavBarItemsOrder', Core.JSON.Stringify(Items));
-
-                            $('#Navigation').after('<i class="fa fa-check"></i>').next('.fa-check').css('left', $('#Navigation').outerWidth() + 10).delay(200).fadeIn(function() {
-                                $(this).delay(1500).fadeOut();
+                            TargetNS.PreferencesUpdate('UserNavBarItemsOrder', Core.JSON.Stringify(Items), function() {
+                                $('#Navigation').after('<i class="fa fa-check"></i>').next('.fa-check').css('left', $('#Navigation').outerWidth() + 10).delay(200).fadeIn(function() {
+                                    $(this).delay(1500).fadeOut();
+                                });
                             });
 
                             // make sure to re-size the nav container to its initial height after
@@ -329,7 +329,7 @@ Core.Agent = (function (TargetNS) {
          * Register event for global search
          *
          */
-        $('#GlobalSearchNav, #GlobalSearchNavResponsive').bind('click', function () {
+        $('#GlobalSearchNav, #GlobalSearchNavResponsive').on('click', function () {
             var SearchFrontend = Core.Config.Get('SearchFrontend');
             if (SearchFrontend) {
                 try {
@@ -383,7 +383,7 @@ Core.Agent = (function (TargetNS) {
                 .find('.NavigationBarNavigate' + Direction)
                 .delay(Delay)
                 .fadeIn()
-                .bind('click', function() {
+                .on('click', function() {
                     if (Direction === 'Right') {
 
                         // calculate new scroll position
@@ -436,6 +436,23 @@ Core.Agent = (function (TargetNS) {
                 });
         }
 
+    }
+
+    /**
+     * @private
+     * @name InitSubmitAndContinue
+     * @memberof Core.Agent
+     * @function
+     * @description
+     *      This function initializes the SubmitAndContinue button.
+     */
+    function InitSubmitAndContinue() {
+
+        // bind event on click for #SubmitAndContinue button
+        $('#SubmitAndContinue').on('click', function() {
+            $('#ContinueAfterSave').val(1);
+            $('#Submit').click();
+        });
     }
 
     /**
@@ -553,10 +570,16 @@ Core.Agent = (function (TargetNS) {
                 .addClass('IsResized');
         }
 
+        // we have to do an exact calculation here (with floating point numbers),
+        // otherwise the results will be different across browsers.
         $('#Navigation > li').each(function() {
-            NavigationBarWidth += parseInt($(this).outerWidth(true), 10);
+            NavigationBarWidth += $(this)[0].getBoundingClientRect().width
+                + parseInt($(this).css('margin-left'), 10)
+                + parseInt($(this).css('margin-right'), 10)
+                + parseInt($(this).css('border-left-width'), 10)
+                + parseInt($(this).css('border-right-width'), 10);
         });
-        $('#Navigation').css('width', (NavigationBarWidth + 3) + 'px');
+        $('#Navigation').css('width', NavigationBarWidth);
 
         if (NavigationBarWidth > $('#NavigationContainer').outerWidth()) {
             NavigationBarShowSlideButton('Right', parseInt($('#NavigationContainer').outerWidth(true) - NavigationBarWidth, 10));
@@ -616,7 +639,7 @@ Core.Agent = (function (TargetNS) {
         if (!TargetNS.SupportedBrowser) {
             alert(Core.Language.Translate('The browser you are using is too old.')
                 + ' '
-                + Core.Language.Translate('OTRS runs with a huge lists of browsers, please upgrade to one of these.')
+                + Core.Language.Translate('This software runs with a huge lists of browsers, please upgrade to one of these.')
                 + ' '
                 + Core.Language.Translate('Please see the documentation or ask your admin for further information.'));
         }
@@ -624,6 +647,21 @@ Core.Agent = (function (TargetNS) {
         Core.App.Responsive.CheckIfTouchDevice();
 
         InitNavigation();
+
+        InitSubmitAndContinue();
+
+        // Initialize pagination
+        TargetNS.InitPagination();
+
+        // Initialize OTRSBusinessRequired dialog
+        if (!parseInt(Core.Config.Get('OTRSBusinessIsInstalled'), 10)) {
+            InitOTRSBusinessRequiredDialog();
+        }
+
+        // Initialize ticket in new window
+        if (parseInt(Core.Config.Get('NewTicketInNewWindow'), 10)) {
+            InitTicketInNewWindow();
+        }
     };
 
     /**
@@ -633,10 +671,11 @@ Core.Agent = (function (TargetNS) {
      * @returns {Boolean} returns true.
      * @param {jQueryObject} Key - The name of the setting.
      * @param {jQueryObject} Value - The value of the setting.
+     * @param {Function} SuccessCallback - Callback function to be executed on AJAX success (optional).
      * @description
      *      This function sets session and preferences setting at runtime.
      */
-    TargetNS.PreferencesUpdate = function (Key, Value) {
+    TargetNS.PreferencesUpdate = function (Key, Value, SuccessCallback) {
         var URL = Core.Config.Get('Baselink'),
             Data = {
                 Action: 'AgentPreferences',
@@ -644,8 +683,12 @@ Core.Agent = (function (TargetNS) {
                 Key: Key,
                 Value: Value
             };
-        // We need no callback here, but the called function needs one, so we send an "empty" function
-        Core.AJAX.FunctionCall(URL, Data, $.noop);
+
+        if (!$.isFunction(SuccessCallback)) {
+            SuccessCallback = $.noop;
+        }
+
+        Core.AJAX.FunctionCall(URL, Data, SuccessCallback);
         return true;
     };
 
@@ -661,6 +704,116 @@ Core.Agent = (function (TargetNS) {
             location.reload();
         }
     };
+
+    /**
+     * @name InitPagination
+     * @memberof Core.Agent
+     * @function
+     * @description
+     *      This function initialize Pagination
+     */
+    TargetNS.InitPagination = function () {
+        var WidgetContainers = Core.Config.Get('ContainerNames');
+
+        // Initializes pagination event function on widgets that have pagination
+        if (typeof WidgetContainers !== 'undefined') {
+            $.each(WidgetContainers, function (Index, Value) {
+                if (typeof Core.Config.Get('PaginationData' + Value.NameForm) !== 'undefined') {
+                    PaginationEvent(Value);
+
+                    // Subscribe to ContentUpdate event to initiate pagination event on updated widget
+                    Core.App.Subscribe('Event.AJAX.ContentUpdate.Callback', function($WidgetElement) {
+                        if (typeof $WidgetElement !== 'undefined' && $WidgetElement.search(Value.NameForm) !== parseInt('-1', 10)) {
+                            PaginationEvent(Value);
+                        }
+                    });
+                }
+            });
+        }
+    };
+
+    /**
+     * @private
+     * @name PaginationEvent
+     * @memberof Core.Agent
+     * @function
+     * @param {Object} Params - Hash with container name
+     * @description
+     *      Initializes widget pagination events
+     */
+    function PaginationEvent (Params) {
+        var ServerData = Core.Config.Get('PaginationData' + Params.NameForm),
+            Pagination, PaginationData, $Container;
+
+        if (typeof ServerData !== 'undefined') {
+            $('.Pagination' + Params.NameForm).off('click.PaginationAJAX' + Params.NameForm).on('click.PaginationAJAX' + Params.NameForm, function () {
+                Pagination = Core.Data.Get($(this), 'pagination-pagenumber');
+                PaginationData = ServerData[Pagination];
+                $Container = $(this).parents('.WidgetSimple');
+                $Container.addClass('Loading');
+                Core.AJAX.ContentUpdate($('#' + PaginationData.AjaxReplace), PaginationData.Baselink, function () {
+                    $Container.removeClass('Loading');
+                });
+                return false;
+            });
+        }
+    }
+
+    /**
+     * @private
+     * @name InitOTRSBusinessRequiredDialog
+     * @memberof Core.Agent
+     * @function
+     * @description
+     *      Initialize OTRSBusinessRequired dialog on click
+     */
+    function InitOTRSBusinessRequiredDialog () {
+        var OTRSBusinessLabel = '<strong>OTRS Business Solution</strong>™';
+
+        $('body').on('click', 'a.OTRSBusinessRequired', function() {
+            Core.UI.Dialog.ShowContentDialog(
+                '<div class="OTRSBusinessRequiredDialog">' + Core.Language.Translate('This feature is part of the %s.  Please contact us at %s for an upgrade.', OTRSBusinessLabel, 'sales@otrs.com') + '<a class="Hidden" href="http://www.otrs.com/solutions/" target="_blank"><span></span></a></div>',
+                '',
+                '240px',
+                'Center',
+                true,
+                [
+                   {
+                       Label: Core.Language.Translate('Close dialog'),
+                       Class: 'Primary',
+                       Function: function () {
+                           Core.UI.Dialog.CloseDialog($('.OTRSBusinessRequiredDialog'));
+                       }
+                   },
+                   {
+                       Label: Core.Language.Translate('Find out more about the %s', 'OTRS Business Solution™'),
+                       Class: 'Primary',
+                       Function: function () {
+                           $('.OTRSBusinessRequiredDialog').find('a span').trigger('click');
+                       }
+                   }
+                ]
+            );
+            return false;
+        });
+    }
+
+    /**
+     * @private
+     * @name InitTicketInNewWindow
+     * @memberof Core.Agent
+     * @function
+     * @description
+     *      Initializes ticket in new window
+     */
+    function InitTicketInNewWindow () {
+        $('#nav-Tickets-Newphoneticket a').attr('target', '_blank');
+        $('#nav-Tickets-Newemailticket a').attr('target', '_blank');
+        $('#nav-Tickets-Newprocessticket a').attr('target', '_blank');
+        $('.PhoneTicket a').attr('target', '_blank');
+        $('.EmailTicket a').attr('target', '_blank');
+        $('.ProcessTicket a').attr('target', '_blank');
+    }
 
     Core.Init.RegisterNamespace(TargetNS, 'APP_GLOBAL_EARLY');
 

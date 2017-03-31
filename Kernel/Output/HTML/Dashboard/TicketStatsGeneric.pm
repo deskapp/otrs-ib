@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -63,10 +63,17 @@ sub Run {
     );
 
     if ( ref $Cache ) {
+
+        # send data to JS
+        $LayoutObject->AddJSData(
+            Key   => 'DashboardTicketStats',
+            Value => $Cache,
+        );
+
         return $LayoutObject->Output(
-            TemplateFile   => 'AgentDashboardTicketStats',
-            Data           => $Cache,
-            KeepScriptTags => $Param{AJAX},
+            TemplateFile => 'AgentDashboardTicketStats',
+            Data         => $Cache,
+            AJAX         => $Param{AJAX},
         );
     }
 
@@ -183,14 +190,10 @@ sub Run {
         [ $ClosedText,  reverse @TicketsClosed ],
     );
 
-    my $ChartDataJSON = $LayoutObject->JSONEncode(
-        Data => \@ChartData,
-    );
-
     my %Data = (
         %{ $Self->{Config} },
         Key       => int rand 99999,
-        ChartData => $ChartDataJSON,
+        ChartData => \@ChartData,
     );
 
     if ( $Self->{Config}->{CacheTTLLocal} ) {
@@ -202,10 +205,16 @@ sub Run {
         );
     }
 
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'DashboardTicketStats',
+        Value => \%Data
+    );
+
     my $Content = $LayoutObject->Output(
-        TemplateFile   => 'AgentDashboardTicketStats',
-        Data           => \%Data,
-        KeepScriptTags => $Param{AJAX},
+        TemplateFile => 'AgentDashboardTicketStats',
+        Data         => \%Data,
+        AJAX         => $Param{AJAX},
     );
 
     return $Content;

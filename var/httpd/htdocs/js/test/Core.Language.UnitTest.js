@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -29,13 +29,13 @@ Core.Language = (function (Namespace) {
 
         QUnit.module('Core.Language');
 
-        QUnit.test('Translations', function(){
+        QUnit.test('Translations', function(Assert){
             Core.Language.Load(LanguageMetaData, TranslationData);
-            equal(Core.Language.Translate('yes'), 'ja');
-            equal(Core.Language.Translate('no'), 'nein');
-            equal(Core.Language.Translate('This is %s', 'OTRS'), 'Das ist OTRS');
-            equal(Core.Language.Translate('This is %s', 'yes'), 'Das ist yes');
-            equal(Core.Language.Translate('Complex %s with %s arguments', 'Text', 'vielen'), 'Komplexer Text mit vielen Argumenten');
+            Assert.equal(Core.Language.Translate('yes'), 'ja');
+            Assert.equal(Core.Language.Translate('no'), 'nein');
+            Assert.equal(Core.Language.Translate('This is %s', 'OTRS'), 'Das ist OTRS');
+            Assert.equal(Core.Language.Translate('This is %s', 'yes'), 'Das ist yes');
+            Assert.equal(Core.Language.Translate('Complex %s with %s arguments', 'Text', 'vielen'), 'Komplexer Text mit vielen Argumenten');
         });
     };
 

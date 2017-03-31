@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -213,7 +213,7 @@ Core.UI.Popup = (function (TargetNS) {
      *      Register the pop-up event for a window.
      */
     TargetNS.RegisterPopupEvent = function () {
-        $(window).bind('Popup', function (Event, Type, Param) {
+        $(window).on('Popup', function (Event, Type, Param) {
             if (Type && typeof Type !== 'undefined') {
                 if (Type === 'Reload') {
                     window.location.reload();
@@ -242,7 +242,7 @@ Core.UI.Popup = (function (TargetNS) {
             return;
         }
 
-        $(window).unbind('beforeunload.Popup');
+        $(window).off('beforeunload.Popup');
         Core.App.UnbindWindowUnloadEvent('Popup');
         $(window).trigger('Popup', [Type, Param]);
     };
@@ -333,7 +333,15 @@ Core.UI.Popup = (function (TargetNS) {
                 ParentWindow = GetWindowParentObject();
             }
 
+            // if the window has a name, it's most probably the popup itself, see bug#12185.
+            // This can happen if the parent window gets reloaded while the popup window tries
+            // to register itself to it. When there is no parent, GetWindowParentObject() will return
+            // the current window which is the popup itself. This leads to a situation where the popup window
+            // registers itself as popup in its own namespace, which will then lead to a confirmation
+            // message asking the user if they really want to navigate away from the current page when trying
+            // to close the popup by either submitting a form, closing it manually or using a close link.
             if (ParentWindow &&
+                !ParentWindow.name &&
                 ParentWindow.Core &&
                 ParentWindow.Core.UI &&
                 ParentWindow.Core.UI.Popup
@@ -678,7 +686,29 @@ Core.UI.Popup = (function (TargetNS) {
      */
     TargetNS.Init = function () {
 
-        $(window).bind('beforeunload.Popup', function () {
+        var PopupURL,
+            PopupClose = Core.Config.Get('PopupClose');
+
+        if (PopupClose === 'LoadParentURLAndClose') {
+            PopupURL = Core.Config.Get('PopupURL');
+            if (TargetNS.CurrentIsPopupWindow()) {
+                TargetNS.ExecuteInParentWindow(function(WindowObject) {
+                    WindowObject.Core.UI.Popup.FirePopupEvent('URL', { URL: Core.Config.Get('Baselink') + PopupURL });
+                });
+                TargetNS.ClosePopup();
+            }
+            else {
+                window.location.href = Core.Config.Get('Baselink') + PopupURL;
+            }
+        }
+        else if (PopupClose === 'ReloadParentAndClose') {
+            TargetNS.ExecuteInParentWindow(function(WindowObject) {
+                WindowObject.Core.UI.Popup.FirePopupEvent('Reload');
+            });
+            TargetNS.ClosePopup();
+        }
+
+        $(window).on('beforeunload.Popup', function () {
             return Core.UI.Popup.CheckPopupsOnUnload();
         });
         Core.App.BindWindowUnloadEvent('Popup', Core.UI.Popup.ClosePopupsOnUnload);
@@ -687,10 +717,10 @@ Core.UI.Popup = (function (TargetNS) {
         // if this window is a popup itself, register another function
         if (CurrentIsPopupWindow()) {
             Core.UI.Popup.InitRegisterPopupAtParentWindow();
-            $('.CancelClosePopup').bind('click', function () {
+            $('.CancelClosePopup').on('click', function () {
                 TargetNS.ClosePopup();
             });
-            $('.UndoClosePopup').bind('click', function () {
+            $('.UndoClosePopup').on('click', function () {
                 var RedirectURL = $(this).attr('href'),
                     ParentWindow = GetWindowParentObject();
                 ParentWindow.Core.UI.Popup.FirePopupEvent('URL', { URL: RedirectURL });

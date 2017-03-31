@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -533,7 +533,7 @@ Core.Agent.Admin.ACL = (function (TargetNS) {
      */
     TargetNS.InitACLEdit = function () {
 
-        $('#ACLDelete').bind('click.ACLDelete', function (Event) {
+        $('#ACLDelete').on('click.ACLDelete', function (Event) {
             ShowDeleteACLConfirmationDialog($(Event.target).closest('a'));
             Event.stopPropagation();
             return false;
@@ -822,12 +822,12 @@ Core.Agent.Admin.ACL = (function (TargetNS) {
             TargetNS.AddItem($(this));
         });
 
-        $('#SubmitAndContinue').bind('click', function() {
+        $('#SubmitAndContinue').on('click', function() {
             $('#ContinueAfterSave').val(1);
             $('#Submit').click();
         });
 
-        $('#Submit, #SubmitAndContinue').bind('click', function() {
+        $('#Submit, #SubmitAndContinue').on('click', function() {
 
             // collect data from the input areas
             TargetNS.ConfigMatch = TargetNS.CollectACLData($('#ACLMatch'));

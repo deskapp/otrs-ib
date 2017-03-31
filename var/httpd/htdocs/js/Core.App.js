@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -19,16 +19,6 @@ var Core = Core || {};
  *      This namespace contains main app functionalities.
  */
 Core.App = (function (TargetNS) {
-    /**
-     * @private
-     * @name Namespaces
-     * @memberof Core.App
-     * @member {Object}
-     * @description
-     *      Contains all registered JS namespaces,
-     *      organized in initialization blocks.
-     */
-    var Namespaces = {};
 
     if (!Core.Debug.CheckDependency('Core.App', 'Core.Exception', 'Core.Exception')) {
         return false;
@@ -140,7 +130,7 @@ Core.App = (function (TargetNS) {
             });
             return AppropriateBrowser;
         }
-        alert('Error: Browser Check failed!');
+        alert(Core.Language.Translate('Error: Browser Check failed!'));
     };
 
     /**
@@ -191,19 +181,145 @@ Core.App = (function (TargetNS) {
     TargetNS.Ready = function (Callback) {
         if ($.isFunction(Callback)) {
             $(document).ready(function () {
-                var Trace;
                 try {
                     Callback();
                 }
                 catch (Error) {
-                    Trace = printStackTrace({e: Error, guess: true}).join('\n');
-                    Core.Exception.HandleFinalError(Error, Trace);
+                    Core.Exception.HandleFinalError(Error);
                 }
             });
         }
         else {
             Core.Exception.ShowError('No function parameter given in Core.App.Ready', 'TypeError');
         }
+
+        TargetNS.Subscribe('Core.App.AjaxErrorResolved', function() {
+
+            var $DialogObj = $('#AjaxErrorDialog');
+
+            window.clearInterval(TargetNS.AjaxConnectionCheckInterval);
+            delete TargetNS.AjaxConnectionCheckInterval;
+
+            $('body').removeClass('ConnectionErrorDialogClosed');
+
+            if (!$('body').hasClass('ConnectionErrorDetected')) {
+                return false;
+            }
+
+            $('body').removeClass('ConnectionErrorDetected');
+
+            // if there is already a dialog, we just exchange the content
+            if ($('#AjaxErrorDialogInner').is(':visible')) {
+
+                $('#AjaxErrorDialogInner').find('.NoConnection').hide();
+                $('#AjaxErrorDialogInner').find('.ConnectionReEstablished').show().delay(1000).find('.Icon').addClass('Green');
+            }
+            else {
+
+                $DialogObj.find('.NoConnection').hide();
+                $DialogObj.find('.ConnectionReEstablished').show().find('.Icon').addClass('Green');
+
+                Core.UI.Dialog.ShowDialog({
+                    HTML : $DialogObj,
+                    Title : Core.Language.Translate("Connection error"),
+                    Modal : true,
+                    CloseOnClickOutside : false,
+                    CloseOnEscape : false,
+                    PositionTop: '100px',
+                    PositionLeft: 'Center',
+                    Buttons: [
+                        {
+                            Label: Core.Language.Translate("Reload page"),
+                            Class: 'Primary',
+                            Function: function () {
+                                location.reload();
+                            }
+                        },
+                        {
+                            Label: Core.Language.Translate("Close this dialog"),
+                            Function: function () {
+                                if ($('#AjaxErrorDialogInner').find('.NoConnection').is(':visible')) {
+                                    $('body').addClass('ConnectionErrorDialogClosed');
+                                }
+                                Core.UI.Dialog.CloseDialog($('#AjaxErrorDialogInner'));
+                            }
+                        }
+                    ],
+                    AllowAutoGrow: true
+                });
+
+                // the only possibility to close the dialog should be the button
+                $('#AjaxErrorDialogInner').closest('.Dialog').find('.Close').remove();
+            }
+        });
+
+        // check for ajax errors and show overlay in case there is one
+        TargetNS.Subscribe('Core.App.AjaxError', function() {
+
+            var $DialogObj = $('#AjaxErrorDialog');
+
+            // set a body class to remember that we detected the error
+            $('body').addClass('ConnectionErrorDetected');
+
+            // if the dialog has been closed manually, don't show it again
+            if ($('body').hasClass('ConnectionErrorDialogClosed')) {
+                return false;
+            }
+
+            // only show one dialog at a time
+            if ($('#AjaxErrorDialogInner').find('.NoConnection').is(':visible')) {
+                return false;
+            }
+
+            // do ajax calls on a regular basis to see whether the connection has been re-established
+            if (!TargetNS.AjaxConnectionCheckInterval) {
+                TargetNS.AjaxConnectionCheckInterval = window.setInterval(function(){
+                    Core.AJAX.FunctionCall(Core.Config.Get('CGIHandle'), null, function () {
+                        TargetNS.Publish('Core.App.AjaxErrorResolved');
+                    }, 'html');
+                }, 5000);
+            }
+
+            // if a connection warning dialog is open but shows the "connection re-established"
+            // notice, show the warning again. This could happen if the connection had been lost
+            // but also re-established and the dialog informing about it is still there
+            if ($('#AjaxErrorDialogInner').find('.ConnectionReEstablished').is(':visible')) {
+                $('#AjaxErrorDialogInner').find('.ConnectionReEstablished').hide().prev('.NoConnection').show();
+                return false;
+            }
+
+            Core.UI.Dialog.ShowDialog({
+                HTML : $DialogObj,
+                Title : Core.Language.Translate("Connection error"),
+                Modal : true,
+                CloseOnClickOutside : false,
+                CloseOnEscape : false,
+                PositionTop: '100px',
+                PositionLeft: 'Center',
+                Buttons: [
+                    {
+                        Label: Core.Language.Translate("Reload page"),
+                        Class: 'Primary',
+                        Function: function () {
+                            location.reload();
+                        }
+                    },
+                    {
+                        Label: Core.Language.Translate("Close this dialog"),
+                        Function: function () {
+                            if ($('#AjaxErrorDialogInner').find('.NoConnection').is(':visible')) {
+                                $('body').addClass('ConnectionErrorDialogClosed');
+                            }
+                            Core.UI.Dialog.CloseDialog($('#AjaxErrorDialogInner'));
+                        }
+                    }
+                ],
+                AllowAutoGrow: true
+            });
+
+            // the only possibility to close the dialog should be the button
+            $('#AjaxErrorDialogInner').closest('.Dialog').find('.Close').remove();
+        });
     };
 
     /**
@@ -248,16 +364,17 @@ Core.App = (function (TargetNS) {
      * @returns {String} The escaped string.
      * @param {String} StringToEscape - The string which is supposed to be escaped.
      * @description
-     *      Escapes the special HTML characters ( < > & ) in supplied string to their
+     *      Escapes the special HTML characters ( < > & ") in supplied string to their
      *      corresponding entities.
      */
     TargetNS.EscapeHTML = function (StringToEscape) {
         var HTMLEntities = {
             '&': '&amp;',
             '<': '&lt;',
-            '>': '&gt;'
+            '>': '&gt;',
+            '"': '&quot;'
         };
-        return StringToEscape.replace(/[&<>]/g, function(Entity) {
+        return StringToEscape.replace(/[&<>"]/g, function(Entity) {
             return HTMLEntities[Entity] || Entity;
         });
     };
@@ -302,63 +419,65 @@ Core.App = (function (TargetNS) {
     };
 
     /**
-     * @name RegisterNamespace
-     * @memberof Core.App
-     * @function
-     * @param {Object} NewNamespace - The new namespace to register
-     * @param {String} InitializationBlock - The name of the initialization block in which the namespace should be registered
-     * @description
-     *      Register a new JavaScript namespace for the OTRS app.
-     *      Parameters define, when the init function of the registered namespace
-     *      should be executed.
-     */
-    TargetNS.RegisterNamespace = function (NewNamespace, InitializationBlock) {
-        // all three parameters must be defined
-        if (typeof NewNamespace === 'undefined' || typeof InitializationBlock === 'undefined') {
-            return;
-        }
-
-        // if initialization block does not exist (yet), create it
-        if (typeof Namespaces[InitializationBlock] === 'undefined') {
-            Namespaces[InitializationBlock] = [];
-        }
-
-        // register namespace
-        Namespaces[InitializationBlock].push({Namespace: NewNamespace});
-    };
-
-    /**
      * @name Init
      * @memberof Core.App
      * @function
-     * @param {String} InitializationBlock - The block of registered namespaces that should be initialized
      * @description
-     *      Initialize the OTRS app. Call all init function of all
-     *      previously registered JS namespaces.
-     *      Parameter defines, which initialization block should be executed.
+     *      This function initializes the special functions.
      */
-    TargetNS.Init = function (InitializationBlock) {
-        // initialization block must be defined
-        if (typeof InitializationBlock === 'undefined') {
-            return;
+    TargetNS.Init = function () {
+        var RefreshSeconds = parseInt(Core.Config.Get('Refresh'), 10) || 0;
+
+        if (RefreshSeconds !== 0) {
+            window.setInterval(function() {
+
+                // If there are any open overlay dialogs, don't refresh
+                if ($('.Dialog:visible').length) {
+                    return;
+                }
+
+                // If there are open child popup windows, don't refresh
+                if (Core && Core.UI && Core.UI.Popup && Core.UI.Popup.HasOpenPopups()) {
+                    return;
+                }
+                // Now we can reload
+                window.location.reload();
+            }, RefreshSeconds * 1000);
         }
 
-        // initialization block must exist
-        if (typeof Namespaces[InitializationBlock] === 'undefined') {
-            return;
-        }
+        // Initialize return to previous page function.
+        TargetNS.ReturnToPreviousPage();
+    };
 
-        // initialization block must contain namespaces
-        if (Namespaces[InitializationBlock].length < 1) {
-            return;
-        }
+    /**
+     * @name ReturnToPreviousPage
+     * @memberof Core.App
+     * @function
+     * @description
+     *      This function bind on click event to return on previous page.
+     */
+    TargetNS.ReturnToPreviousPage = function () {
 
-        $.each(Namespaces[InitializationBlock], function () {
-            if ($.isFunction(this.Namespace.Init)) {
-                this.Namespace.Init();
+        $('.ReturnToPreviousPage').on('click', function () {
+
+            // Check if an older history entry is available
+            if (history.length > 1) {
+            history.back();
+            return false;
             }
+
+            // If we're in a popup window, close it
+            if (Core.UI.Popup.CurrentIsPopupWindow()) {
+                Core.UI.Popup.ClosePopup();
+                return false;
+            }
+
+            // Normal window, no history: no action possible
+            return false;
         });
     };
+
+    Core.Init.RegisterNamespace(TargetNS, 'APP_MODULE');
 
     return TargetNS;
 }(Core.App || {}));

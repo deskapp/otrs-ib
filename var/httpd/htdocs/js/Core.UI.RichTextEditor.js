@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -45,18 +45,19 @@ Core.UI.RichTextEditor = (function (TargetNS) {
      * @memberof Core.UI.RichTextEditor
      * @function
      * @returns {jQueryObject} FormID element.
+     * @param {jQueryObject} $EditorArea - The jQuery object of the element that has become a rich text editor.
      * @description
      *      Check in the window which hidden element has a name same to 'FormID' and return it like a JQuery object.
      */
-    function CheckFormID() {
+    function CheckFormID($EditorArea) {
         if (typeof $FormID === 'undefined') {
-            $FormID = $('input:hidden[name=FormID]');
+            $FormID = $EditorArea.closest('form').find('input:hidden[name=FormID]');
         }
         return $FormID;
     }
 
     /**
-     * @name Init
+     * @name InitEditor
      * @memberof Core.UI.RichTextEditor
      * @function
      * @returns {Boolean} Returns false on error.
@@ -64,11 +65,15 @@ Core.UI.RichTextEditor = (function (TargetNS) {
      * @description
      *      This function initializes the application and executes the needed functions.
      */
-    TargetNS.Init = function ($EditorArea) {
+    TargetNS.InitEditor = function ($EditorArea) {
         var EditorID = '',
             Editor,
             UserLanguage,
             UploadURL = '';
+
+        if (typeof CKEDITOR === 'undefined') {
+            return false;
+        }
 
         if (isJQueryObject($EditorArea) && $EditorArea.hasClass('HasCKEInstance')) {
             return false;
@@ -117,12 +122,13 @@ Core.UI.RichTextEditor = (function (TargetNS) {
         UserLanguage = Core.Config.Get('UserLanguage').replace(/_/, "-");
 
         // build URL for image upload
-        if (CheckFormID().length) {
+        if (CheckFormID($EditorArea).length) {
+
             UploadURL = Core.Config.Get('Baselink')
                     + 'Action='
                     + Core.Config.Get('RichText.PictureUploadAction', 'PictureUpload')
                     + '&FormID='
-                    + CheckFormID().val()
+                    + CheckFormID($EditorArea).val()
                     + '&' + Core.Config.Get('SessionName')
                     + '=' + Core.Config.Get('SessionID');
         }
@@ -136,7 +142,7 @@ Core.UI.RichTextEditor = (function (TargetNS) {
             width: Core.Config.Get('RichText.Width', 620),
             resize_minWidth: Core.Config.Get('RichText.Width', 620),
             height: Core.Config.Get('RichText.Height', 320),
-            removePlugins: CheckFormID().length ? '' : 'image2,uploadimage',
+            removePlugins: CheckFormID($EditorArea).length ? '' : 'image2,uploadimage',
             forcePasteAsPlainText: false,
             format_tags: 'p;h1;h2;h3;h4;h5;h6;pre',
             fontSize_sizes: '8px;10px;12px;16px;18px;20px;22px;24px;26px;28px;30px;',
@@ -145,12 +151,12 @@ Core.UI.RichTextEditor = (function (TargetNS) {
             shiftEnterMode: CKEDITOR.ENTER_BR,
             contentsLangDirection: Core.Config.Get('RichText.TextDir', 'ltr'),
             disableNativeSpellChecker: false,
-            toolbar: CheckFormID().length ? Core.Config.Get('RichText.Toolbar') : Core.Config.Get('RichText.ToolbarWithoutImage'),
+            toolbar: CheckFormID($EditorArea).length ? Core.Config.Get('RichText.Toolbar') : Core.Config.Get('RichText.ToolbarWithoutImage'),
             filebrowserBrowseUrl: '',
             filebrowserUploadUrl: UploadURL,
             extraPlugins: Core.Config.Get('RichText.SpellChecker') ? 'aspell,splitquote,preventimagepaste' : 'splitquote,preventimagepaste',
             entities: false,
-            skin: 'bootstrapck'
+            skin: 'moono-lisa'
         });
         /*eslint-enable camelcase */
 
@@ -213,16 +219,35 @@ Core.UI.RichTextEditor = (function (TargetNS) {
     };
 
     /**
-     * @name InitAll
+     * @name InitAllEditors
      * @memberof Core.UI.RichTextEditor
      * @function
      * @description
      *      This function initializes as a rich text editor every textarea element that containing the RichText class.
      */
-    TargetNS.InitAll = function () {
+    TargetNS.InitAllEditors = function () {
+        if (typeof CKEDITOR === 'undefined') {
+            return;
+        }
+
         $('textarea.RichText').each(function () {
-            TargetNS.Init($(this));
+            TargetNS.InitEditor($(this));
         });
+    };
+
+    /**
+     * @name Init
+     * @memberof Core.UI.RichTextEditor
+     * @function
+     * @description
+     *      This function initializes JS functionality.
+     */
+    TargetNS.Init = function () {
+        if (typeof CKEDITOR === 'undefined') {
+            return;
+        }
+
+        TargetNS.InitAllEditors();
     };
 
     /**
@@ -321,6 +346,8 @@ Core.UI.RichTextEditor = (function (TargetNS) {
             $EditorArea.focus();
         }
     };
+
+    Core.Init.RegisterNamespace(TargetNS, 'APP_MODULE');
 
     return TargetNS;
 }(Core.UI.RichTextEditor || {}));

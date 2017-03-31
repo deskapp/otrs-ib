@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -26,6 +26,8 @@ $Selenium->RunTest(
         # get needed variables
         my $Home = $ConfigObject->Get('Home');
         my %Attachments;
+        my $Count;
+        my $IsLinkedBreadcrumbText;
 
         # create test user and login
         my $TestUserLogin = $Helper->TestUserCreate(
@@ -49,11 +51,35 @@ $Selenium->RunTest(
         $Selenium->find_element( "table thead tr th", 'css' );
         $Selenium->find_element( "table tbody tr td", 'css' );
 
+        # check breadcrumb on Overview screen
+        $Self->True(
+            $Selenium->find_element( '.BreadCrumb', 'css' ),
+            "Breadcrumb is found on Overview screen.",
+        );
+
         # create test standard attachments
         for my $File (qw(xls txt doc png pdf)) {
 
             # click 'add new attachment' link
             $Selenium->find_element("//a[contains(\@href, \'Action=AdminAttachment;Subaction=Add' )]")->VerifiedClick();
+
+            # check breadcrumb on Add screen
+            $Count = 1;
+            for my $BreadcrumbText ( 'Attachment Management', 'Add Attachment' ) {
+                $Self->Is(
+                    $Selenium->execute_script("return \$('.BreadCrumb li:eq($Count)').text().trim()"),
+                    $BreadcrumbText,
+                    "Breadcrumb text '$BreadcrumbText' is found on screen"
+                );
+
+                $Count++;
+            }
+
+            # check form action
+            $Self->True(
+                $Selenium->find_element( '#Submit', 'css' ),
+                "Submit is found on Add screen.",
+            );
 
             # file checks
             my $Location = $Home . "/scripts/test/sample/StdAttachment/StdAttachment-Test1.$File";
@@ -66,7 +92,7 @@ $Selenium->RunTest(
             $Selenium->find_element( "#FileUpload", 'css' )->send_keys($Location);
             $Selenium->find_element( "#Name",       'css' )->VerifiedSubmit();
 
-            # check if standard attachment show on AdminAttacnment screen
+            # check if standard attachment show on AdminAttachment screen
             $Self->True(
                 index( $Selenium->get_page_source(), $AttachmentName ) > -1,
                 "Attachment $AttachmentName is found on page",
@@ -77,6 +103,26 @@ $Selenium->RunTest(
 
             # go to new standard attachment again and edit
             $Selenium->find_element( $AttachmentName, 'link_text' )->VerifiedClick();
+
+            # check breadcrumb on Edit screen
+            $Count = 1;
+            for my $BreadcrumbText ( 'Attachment Management', 'Edit Attachment: ' . $AttachmentName ) {
+                $Self->Is(
+                    $Selenium->execute_script("return \$('.BreadCrumb li:eq($Count)').text().trim()"),
+                    $BreadcrumbText,
+                    "Breadcrumb text '$BreadcrumbText' is found on screen"
+                );
+
+                $Count++;
+            }
+
+            # check form actions
+            for my $Action (qw(Submit SubmitAndContinue)) {
+                $Self->True(
+                    $Selenium->find_element( "#$Action", 'css' ),
+                    "$Action is found on Edit screen.",
+                );
+            }
 
             $Selenium->execute_script("\$('#ValidID').val('2').trigger('redraw.InputField').trigger('change');");
             $Selenium->find_element( "#Comment", 'css' )->send_keys('Selenium test attachment');
@@ -207,29 +253,29 @@ $Selenium->RunTest(
         $Selenium->find_element( "#FilterAttachments", 'css' )->send_keys("\N{U+E007}");
         sleep 1;
 
-        my $ConfirmJS = <<"JAVASCRIPT";
-(function () {
-    window.confirm = function() {
-        return true;
-    };
-}());
-JAVASCRIPT
-
         for my $File ( sort keys %Attachments ) {
 
-            # check delete button
-            my $ID = $AttachmentObject->StdAttachmentLookup(
-                StdAttachment => $Attachments{$File},
+            $Selenium->execute_script(
+                "\$('tbody tr:contains($Attachments{$File}) td .TrashCan').trigger('click')"
             );
 
-            $Selenium->execute_script($ConfirmJS);
-            $Selenium->find_element("//a[contains(\@href, \'Subaction=Delete;ID=$ID' )]")->VerifiedClick();
+            $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $(".Dialog:visible").length === 1;' );
 
-            # check overview page
+            # verify delete dialog message
+            my $DeleteMessage = "Do you really want to delete this attachment?";
             $Self->True(
-                index( $Selenium->get_page_source(), $Attachments{$File} ) == -1,
-                "Attachment $Attachments{$File} is deleted"
+                index( $Selenium->get_page_source(), $DeleteMessage ) > -1,
+                "Delete message is found",
             );
+
+            # confirm delete action
+            $Selenium->find_element( "#DialogButton1", 'css' )->VerifiedClick();
+
+            # if deleting was successful, the entry should have disappeared
+            $Selenium->WaitFor( JavaScript => "return \$('tbody tr:contains($Attachments{$File})').length === 0;" );
+
+            # also, the dialog should be gone
+            $Selenium->WaitFor( JavaScript => 'return $(".Dialog:visible").length === 0;' );
         }
     }
 );

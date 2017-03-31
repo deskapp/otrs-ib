@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -20,28 +20,28 @@ my $Selenium = $Kernel::OM->Get('Kernel::System::UnitTest::Selenium');
 $Selenium->RunTest(
     sub {
 
-        # get needed objects
-        $Kernel::OM->ObjectParamAdd(
-            'Kernel::System::UnitTest::Helper' => {
-                RestoreSystemConfiguration => 1,
-            },
-        );
-
-        my $Helper          = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
-        my $ConfigObject    = $Kernel::OM->Get('Kernel::Config');
-        my $SysConfigObject = $Kernel::OM->Get('Kernel::System::SysConfig');
+        # get helper object
+        my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 
         # enable meta floaters for AgentTicketZoom
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'Ticket::Frontend::ZoomCollectMeta',
             Value => 1
         );
 
-        # set a filter to valid which has floater preview enabled
-        $SysConfigObject->ConfigItemValidityUpdate(
-            Name  => 'Ticket::Frontend::ZoomCollectMetaFilters###CVE-Mitre',
+        my $SysConfigObject = $Kernel::OM->Get('Kernel::System::SysConfig');
+
+        my $SettingName = 'Ticket::Frontend::ZoomCollectMetaFilters###CVE-Mitre';
+
+        my %Setting = $SysConfigObject->SettingGet(
+            Name => $SettingName,
+        );
+
+        $Helper->ConfigSettingChange(
             Valid => 1,
+            Key   => $SettingName,
+            Value => $Setting{EffectiveValue},
         );
 
         my $Language      = 'de';
@@ -55,11 +55,8 @@ $Selenium->RunTest(
             UserLogin => $TestUserLogin,
         );
 
-        # get ticket object
-        my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
-
         # create test ticket
-        my $TicketID = $TicketObject->TicketCreate(
+        my $TicketID = $Kernel::OM->Get('Kernel::System::Ticket')->TicketCreate(
             Title        => 'Selenium Ticket',
             Queue        => 'Raw',
             Lock         => 'unlock',
@@ -75,9 +72,11 @@ $Selenium->RunTest(
             "TicketCreate - ID $TicketID",
         );
 
+        my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
+
         my @ArticleIDs;
 
-        my $ArticleIDPlain = $TicketObject->ArticleCreate(
+        my $ArticleIDPlain = $ArticleObject->ArticleCreate(
             TicketID    => $TicketID,
             ArticleType => 'note-internal',
             SenderType  => 'agent',
@@ -98,7 +97,7 @@ $Selenium->RunTest(
 
         push @ArticleIDs, $ArticleIDPlain;
 
-        my $ArticleIDHTML = $TicketObject->ArticleCreate(
+        my $ArticleIDHTML = $ArticleObject->ArticleCreate(
             TicketID    => $TicketID,
             ArticleType => 'note-internal',
             SenderType  => 'agent',
@@ -138,12 +137,11 @@ $Selenium->RunTest(
             $Selenium->find_element( ".ArticleMeta", "css" );
 
             # hover one of the meta elements
-            $Selenium->execute_script("\$('.ArticleMeta').first().find('a:first-child').first().mouseenter();");
+            $Selenium->execute_script("\$('.ArticleMeta').first().find('li:first-child a:first-child').mouseenter();");
 
             # wait for the floater to be fully visible
             $Selenium->WaitFor(
-                JavaScript =>
-                    "return typeof(\$) === 'function' && parseInt(\$('.MetaFloater:visible').css('opacity'), 10) == 1"
+                JavaScript => "return parseInt(\$('div.MetaFloater:visible').css('opacity'), 10) == 1"
             );
 
             # see if we have a floater visible now
@@ -154,19 +152,13 @@ $Selenium->RunTest(
             );
 
             # wait for the close button to fade in
-            $Selenium->WaitFor(
-                JavaScript =>
-                    "return typeof(\$) === 'function' && \$('.MetaFloater:visible a.Close:visible').length == 1"
-            );
+            $Selenium->WaitFor( JavaScript => "return \$('.MetaFloater:visible a.Close:visible').length === 1" );
 
             # close the floater again
             $Selenium->execute_script("\$('.MetaFloater a.Close').click();");
 
             # wait until the floater is gone
-            $Selenium->WaitFor(
-                JavaScript =>
-                    "return typeof(\$) === 'function' && parseInt(\$('.MetaFloater:visible').length, 10) == 1"
-            );
+            $Selenium->WaitFor( JavaScript => "return \$('.MetaFloater:visible').length === 0" );
         }
     }
 );

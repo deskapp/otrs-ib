@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -18,16 +18,12 @@ my $Selenium = $Kernel::OM->Get('Kernel::System::UnitTest::Selenium');
 $Selenium->RunTest(
     sub {
 
-        # get needed objects
-        $Kernel::OM->ObjectParamAdd(
-            'Kernel::System::UnitTest::Helper' => {
-                RestoreSystemConfiguration => 1,
-            },
-        );
+        # get helper object
+        my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 
-        my $Helper        = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+        # create test user
         my $TestUserLogin = $Helper->TestUserCreate(
-            Groups   => [ 'admin', 'users' ],
+            Groups => [ 'admin', 'users' ],
         ) || die "Did not get test user";
 
         # get test user ID
@@ -41,10 +37,24 @@ $Selenium->RunTest(
             Password => $TestUserLogin,
         );
 
+        my $ScriptAlias = $Kernel::OM->Get('Kernel::Config')->Get('ScriptAlias');
+
+        $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AgentDashboard");
+
+        # wait for the drag & drop initialization to be completed
+        $Selenium->WaitFor(
+            JavaScript =>
+                "return typeof(\$) === 'function' && \$('#nav-Admin.CanDrag').length"
+        );
+
         # try to drag the admin item to the front of the nav bar
         $Selenium->DragAndDrop(
-            Element => 'li#nav-Admin',
-            Target  => 'ul#Navigation',
+            Element      => 'li#nav-Admin',
+            Target       => 'ul#Navigation',
+            TargetOffset => {
+                X => 0,
+                Y => 0,
+                }
         );
 
         # wait for the success arrow to show up
@@ -55,7 +65,6 @@ $Selenium->RunTest(
 
         # now reload the page and see if the new position of the admin item has been re-stored correctly
         # (should be the first element in the list now)
-        my $ScriptAlias = $Kernel::OM->Get('Kernel::Config')->Get('ScriptAlias');
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AgentDashboard");
 
         # wait for the navigation bar to be visible

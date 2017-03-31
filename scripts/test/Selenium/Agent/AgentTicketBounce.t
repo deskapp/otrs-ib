@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -19,42 +19,36 @@ $Selenium->RunTest(
     sub {
 
         # get needed objects
-        $Kernel::OM->ObjectParamAdd(
-            'Kernel::System::UnitTest::Helper' => {
-                RestoreSystemConfiguration => 1,
-            },
-        );
-        my $Helper          = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
-        my $ConfigObject    = $Kernel::OM->Get('Kernel::Config');
-        my $SysConfigObject = $Kernel::OM->Get('Kernel::System::SysConfig');
+        my $Helper       = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+        my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
         # disable check email addresses
-        $ConfigObject->Set(
+        $Helper->ConfigSettingChange(
             Key   => 'CheckEmailAddresses',
             Value => 0,
         );
 
         # do not check RichText
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'Frontend::RichText',
             Value => 0
         );
 
         # do not check service and type
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'Ticket::Service',
             Value => 0
         );
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'Ticket::Type',
             Value => 0
         );
 
-        # get ticket object
-        my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
+        my $TicketObject  = $Kernel::OM->Get('Kernel::System::Ticket');
+        my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
 
         # create test ticket
         my $TicketID = $TicketObject->TicketCreate(
@@ -74,7 +68,7 @@ $Selenium->RunTest(
         );
 
         # create test email article
-        my $ArticleID = $TicketObject->ArticleCreate(
+        my $ArticleID = $ArticleObject->ArticleCreate(
             TicketID       => $TicketID,
             ArticleType    => 'email-external',
             SenderType     => 'customer',
@@ -91,7 +85,7 @@ $Selenium->RunTest(
             "ArticleCreate - ID $ArticleID",
         );
 
-        my $Success = $TicketObject->ArticleWritePlain(
+        my $Success = $ArticleObject->ArticleWritePlain(
             ArticleID => $ArticleID,
             Email     => 'Test Email string',
             UserID    => 1,
@@ -119,7 +113,7 @@ $Selenium->RunTest(
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AgentTicketZoom;TicketID=$TicketID");
 
         # click to bounce ticket
-        $Selenium->find_element("//a[contains(\@href, 'Action=AgentTicketBounce') ]")->click();
+        $Selenium->find_element("//a[contains(\@href, 'Action=AgentTicketBounce') ]")->VerifiedClick();
 
         # switch to bounce window
         $Selenium->WaitFor( WindowCount => 2 );
@@ -136,6 +130,35 @@ $Selenium->RunTest(
             $Element->is_enabled();
             $Element->is_displayed();
         }
+
+        # check JS functionality
+        # click on checkbox - unchecked state
+        $Selenium->execute_script("\$('#InformSender').prop('checked', true)");
+        $Selenium->find_element( "#InformSender", 'css' )->VerifiedClick();
+
+        # check up if labels does not have class Mandatory
+        for my $Label (qw(To Subject RichText)) {
+            $Self->Is(
+                $Selenium->execute_script("return \$('label[for=$Label]').hasClass('Mandatory')"),
+                0,
+                "Label '$Label' has not class 'Mandatory'",
+            );
+        }
+
+        # click on checkbox - checked state
+        $Selenium->find_element( "#InformSender", 'css' )->VerifiedClick();
+
+        # check up if labels have class Mandatory
+        for my $Label (qw(To Subject RichText)) {
+            $Self->Is(
+                $Selenium->execute_script("return \$('label[for=$Label]').hasClass('Mandatory')"),
+                1,
+                "Label '$Label' has class 'Mandatory'",
+            );
+        }
+
+        # set on initial unchecked state of checkbox
+        $Selenium->find_element( "#InformSender", 'css' )->VerifiedClick();
 
         # bounce ticket to another test email
         $Selenium->find_element( "#BounceTo", 'css' )->send_keys("test\@localhost.com");

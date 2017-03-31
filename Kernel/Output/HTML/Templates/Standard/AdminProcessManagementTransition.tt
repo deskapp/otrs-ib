@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -72,6 +72,12 @@
                     </div>
                     <div class="Content LayoutGrid">
                         <fieldset class="TableLike FixedLabel" id="PresentConditionsContainer">
+                        <div class="SpacingBottom">
+                            <p>
+                                [% Translate("Conditions can only operate on non-empty fields.") | html %]
+                            </p>
+                        </div>
+                        <div class="Clear"></div>
                             <label for="OverallConditionLinking">[% Translate("Type of Linking between Conditions") | html %]:</label>
                             <div class="Field">
                                 [% Data.OverallConditionLinking %]
@@ -283,8 +289,3 @@
         <button class="Primary CallForAction" id="Submit" title="[% Translate("Save") | html %]" type="submit" value="[% Translate("Save") | html %]"><span>[% Translate("Save") | html %]</span></button>
     </div>
 </div>
-[% WRAPPER JSOnDocumentComplete %]
-<script type="text/javascript">//<![CDATA[
-Core.Agent.Admin.ProcessManagement.InitTransitionEdit();
-//]]></script>
-[% END %]

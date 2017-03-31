@@ -1,11 +1,12 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
 # did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
 # --
 
+## no critic (Modules::RequireExplicitPackage)
 use strict;
 use warnings;
 use utf8;
@@ -26,7 +27,8 @@ my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
 # get helper object
 $Kernel::OM->ObjectParamAdd(
     'Kernel::System::UnitTest::Helper' => {
-        RestoreDatabase => 1,
+        RestoreDatabase  => 1,
+        UseTmpArticleDir => 1,
     },
 );
 my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
@@ -54,9 +56,12 @@ $Self->True(
     "TicketCreate()",
 );
 
-my $ArticleID = $TicketObject->ArticleCreate(
+my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
+
+my $ArticleID = $ArticleObject->ArticleCreate(
     TicketID       => $TicketID,
     ArticleType    => 'email-external',
+    MessageID      => 'message-id-email-external',
     SenderType     => 'customer',
     From           => "Customer <$CustomerAddress>",
     To             => "Agent <$AgentAddress>",
@@ -74,9 +79,10 @@ $Self->True(
     "ArticleCreate()",
 );
 
-$ArticleID = $TicketObject->ArticleCreate(
+$ArticleID = $ArticleObject->ArticleCreate(
     TicketID       => $TicketID,
     ArticleType    => 'email-internal',
+    MessageID      => 'message-id-email-internal',
     SenderType     => 'agent',
     From           => "Agent <$AgentAddress>",
     To             => "Provider <$InternalAddress>",
@@ -94,10 +100,11 @@ $Self->True(
     "ArticleCreate()",
 );
 
-# Accidential internal forward to the customer to test that customer replies are still external.
-$ArticleID = $TicketObject->ArticleCreate(
+# Accidental internal forward to the customer to test that customer replies are still external.
+$ArticleID = $ArticleObject->ArticleCreate(
     TicketID       => $TicketID,
     ArticleType    => 'email-internal',
+    MessageID      => 'message-id-email-internal-customer',
     SenderType     => 'agent',
     From           => "Agent <$AgentAddress>",
     To             => "Customer <$CustomerAddress>",
@@ -225,18 +232,38 @@ Some Content in Body",
             SenderType  => 'customer',
         },
     },
+
+    # response from an unknown address, but in response to the internal article (References)
+    {
+        Name  => 'Response to internal mail from unknown sender',
+        Email => "From: Somebody <unknown\@address.com>
+To: Agent <$AgentAddress>
+References: <message-id-email-internal>
+Subject: $Subject
+
+Some Content in Body",
+        Check => {
+            ArticleType => 'email-internal',
+            SenderType  => 'customer',
+        },
+        JobConfig => {
+            ArticleType => 'email-internal',
+            Module      => 'Kernel::System::PostMaster::Filter::FollowUpArticleTypeCheck',
+            SenderType  => 'customer',
+        },
+    },
 );
 
 my $RunTest = sub {
     my $Test = shift;
 
     $ConfigObject->Set(
-        Key   => 'PostMaster::PostFilterModule',
+        Key   => 'PostMaster::PreCreateFilterModule',
         Value => {},
     );
 
     $ConfigObject->Set(
-        Key   => 'PostMaster::PostFilterModule',
+        Key   => 'PostMaster::PreCreateFilterModule',
         Value => {
             '000-FollowUpArticleTypeCheck' => {
                 %{ $Test->{JobConfig} }
@@ -245,7 +272,7 @@ my $RunTest = sub {
     );
 
     # Get current state of articles
-    my @ArticleBoxOriginal = $TicketObject->ArticleGet(
+    my @ArticleBoxOriginal = $ArticleObject->ArticleGet(
         TicketID => $TicketID,
     );
 
@@ -269,7 +296,7 @@ my $RunTest = sub {
     );
 
     # Get state of old articles after update
-    my @ArticleBoxUpdate = $TicketObject->ArticleGet(
+    my @ArticleBoxUpdate = $ArticleObject->ArticleGet(
         TicketID => $TicketID,
         Limit    => scalar @ArticleBoxOriginal,
     );
@@ -281,7 +308,7 @@ my $RunTest = sub {
         "$Test->{Name} - old articles unchanged"
     );
 
-    my @Article = $TicketObject->ArticleGet(
+    my @Article = $ArticleObject->ArticleGet(
         TicketID => $Return[1],
         Order    => 'DESC',
         Limit    => 1,

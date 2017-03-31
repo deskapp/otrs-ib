@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -19,19 +19,12 @@ $Selenium->RunTest(
     sub {
 
         # get helper object
-        $Kernel::OM->ObjectParamAdd(
-            'Kernel::System::UnitTest::Helper' => {
-                RestoreSystemConfiguration => 1,
-            },
-        );
         my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 
-        $Kernel::OM->Get('Kernel::Config')->Set(
+        $Helper->ConfigSettingChange(
             Key   => 'CheckEmailAddresses',
             Value => 0,
         );
-
-        my $SysConfigObject = $Kernel::OM->Get('Kernel::System::SysConfig');
 
         # enable CustomerUserGenericTicket sysconfig
         my @CustomerSysConfig = ( '1-GoogleMaps', '2-Google', '2-LinkedIn', '3-XING' );
@@ -40,24 +33,18 @@ $Selenium->RunTest(
 
             # get default sysconfig
             my $SysConfigName  = 'Frontend::CustomerUser::Item###' . $SysConfigChange;
-            my %CustomerConfig = $SysConfigObject->ConfigItemGet(
+            my %CustomerConfig = $Kernel::OM->Get('Kernel::System::SysConfig')->SettingGet(
                 Name    => $SysConfigName,
                 Default => 1,
             );
 
             # get default link text for each CustomerUserGenericTicket module
-            for my $DefaultText ( $CustomerConfig{Setting}->[1]->{Hash}->[1]->{Item}->[7]->{Content} ) {
-                push @CustomerUserGenericText, $DefaultText;
-            }
+            push @CustomerUserGenericText, $CustomerConfig{EffectiveValue}->{Text};
 
-            # set CustomerUserGenericTicket modules to valid
-            %CustomerConfig = map { $_->{Key} => $_->{Content} }
-                grep { defined $_->{Key} } @{ $CustomerConfig{Setting}->[1]->{Hash}->[1]->{Item} };
-
-            $SysConfigObject->ConfigItemUpdate(
+            $Helper->ConfigSettingChange(
                 Valid => 1,
                 Key   => $SysConfigName,
-                Value => \%CustomerConfig,
+                Value => $CustomerConfig{EffectiveValue},
             );
         }
 
@@ -121,6 +108,12 @@ $Selenium->RunTest(
         # go to zoom view of created test ticket
         my $ScriptAlias = $Kernel::OM->Get('Kernel::Config')->Get('ScriptAlias');
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AgentTicketZoom;TicketID=$TicketID");
+
+        # Wait until customer info widget has loaded, if necessary.
+        $Selenium->WaitFor(
+            JavaScript =>
+                'return typeof($) === "function" && $(".WidgetIsLoading").length === 0;',
+        );
 
         # check for CustomerUserGeneric link text
         for my $TestText (@CustomerUserGenericText) {

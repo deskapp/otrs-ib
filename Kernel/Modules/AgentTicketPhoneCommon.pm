@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -445,20 +445,25 @@ sub Run {
         my $TimeObject  = $Kernel::OM->Get('Kernel::System::Time');
 
         # check if date is valid
-        my %StateData = $StateObject->StateGet( ID => $GetParam{NextStateID} );
-        if ( $StateData{TypeName} =~ /^pending/i ) {
-            if ( !$TimeObject->Date2SystemTime( %GetParam, Second => 0 ) ) {
-                if ( $IsUpload == 0 ) {
-                    $Error{'DateInvalid'} = ' ServerError';
+        my %StateData;
+        $GetParam{NextStateID} ||= '';
+        if ( $GetParam{NextStateID} ) {
+            %StateData = $StateObject->StateGet( ID => $GetParam{NextStateID} );
+
+            if ( $StateData{TypeName} =~ /^pending/i ) {
+                if ( !$TimeObject->Date2SystemTime( %GetParam, Second => 0 ) ) {
+                    if ( $IsUpload == 0 ) {
+                        $Error{'DateInvalid'} = ' ServerError';
+                    }
                 }
-            }
-            if (
-                $TimeObject->Date2SystemTime( %GetParam, Second => 0 )
-                < $TimeObject->SystemTime()
-                )
-            {
-                if ( $IsUpload == 0 ) {
-                    $Error{'DateInvalid'} = ' ServerError';
+                if (
+                    $TimeObject->Date2SystemTime( %GetParam, Second => 0 )
+                    < $TimeObject->SystemTime()
+                    )
+                {
+                    if ( $IsUpload == 0 ) {
+                        $Error{'DateInvalid'} = ' ServerError';
+                    }
                 }
             }
         }
@@ -530,7 +535,7 @@ sub Run {
                         Message =>
                             $LayoutObject->{LanguageObject}
                             ->Translate( 'Could not perform validation on field %s!', $DynamicFieldConfig->{Label} ),
-                        Comment => Translatable('Please contact the admin.'),
+                        Comment => Translatable('Please contact the administrator.'),
                     );
                 }
 
@@ -620,6 +625,8 @@ sub Run {
         }
         else {
 
+            my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
+
             # get pre loaded attachment
             my @AttachmentData = $UploadCacheObject->FormIDGetAllFilesData(
                 FormID => $Self->{FormID},
@@ -692,7 +699,7 @@ sub Run {
                 }
                 else {
                     # Use customer data as From, if possible
-                    my %LastCustomerArticle = $TicketObject->ArticleLastCustomerArticle(
+                    my %LastCustomerArticle = $ArticleObject->ArticleLastCustomerArticle(
                         TicketID      => $Self->{TicketID},
                         DynamicFields => 0,
                     );
@@ -709,7 +716,7 @@ sub Run {
                 );
             }
 
-            my $ArticleID = $TicketObject->ArticleCreate(
+            my $ArticleID = $ArticleObject->ArticleCreate(
                 TicketID       => $Self->{TicketID},
                 ArticleType    => $Config->{ArticleType},
                 SenderType     => $Config->{SenderType},
@@ -741,7 +748,7 @@ sub Run {
 
             # write attachments
             for my $Attachment (@AttachmentData) {
-                $TicketObject->ArticleWriteAttachment(
+                $ArticleObject->ArticleWriteAttachment(
                     %{$Attachment},
                     ArticleID => $ArticleID,
                     UserID    => $Self->{UserID},
@@ -772,15 +779,16 @@ sub Run {
             }
 
             # set state
-            $TicketObject->TicketStateSet(
-                TicketID  => $Self->{TicketID},
-                ArticleID => $ArticleID,
-                StateID   => $GetParam{NextStateID},
-                UserID    => $Self->{UserID},
-            );
+            if ( $StateData{ID} ) {
+                $TicketObject->TicketStateSet(
+                    TicketID  => $Self->{TicketID},
+                    ArticleID => $ArticleID,
+                    StateID   => $StateData{ID},
+                    UserID    => $Self->{UserID},
+                );
+            }
 
             # should i set an unlock? yes if the ticket is closed
-            my %StateData = $StateObject->StateGet( ID => $GetParam{NextStateID} );
             if ( $StateData{TypeName} =~ /^close/i ) {
 
                 # set lock
@@ -948,11 +956,12 @@ sub Run {
         my $JSON = $LayoutObject->BuildSelectionJSON(
             [
                 {
-                    Name        => 'NextStateID',
-                    Data        => $NextStates,
-                    SelectedID  => $GetParam{NextStateID},
-                    Translation => 1,
-                    Max         => 100,
+                    Name         => 'NextStateID',
+                    Data         => $NextStates,
+                    SelectedID   => $GetParam{NextStateID},
+                    Translation  => 1,
+                    PossibleNone => 1,
+                    Max          => 100,
                 },
                 @DynamicFieldAJAX,
                 @TemplateAJAX,
@@ -967,7 +976,7 @@ sub Run {
     }
     return $LayoutObject->ErrorScreen(
         Message => Translatable('No Subaction!'),
-        Comment => Translatable('Please contact your administrator'),
+        Comment => Translatable('Please contact the administrator.'),
     );
 }
 
@@ -1071,19 +1080,18 @@ sub _MaskPhone {
         OnlyDynamicFields => 1
     );
 
-    # create a string with the quoted dynamic field names separated by commas
-    if ( IsArrayRefWithData($DynamicFieldNames) ) {
-        for my $Field ( @{$DynamicFieldNames} ) {
-            $Param{DynamicFieldNamesStrg} .= ", '" . $Field . "'";
-        }
-    }
-
     # get needed objects
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
     # get config of frontend module
     my $Config = $ConfigObject->Get("Ticket::Frontend::$Self->{Action}");
+
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'DynamicFieldNames',
+        Value => $DynamicFieldNames,
+    );
 
     # build next states string
     my %Selected;
@@ -1093,21 +1101,23 @@ sub _MaskPhone {
     elsif ( $Config->{State} ) {
         $Selected{SelectedValue} = $Config->{State};
     }
-    else {
-        $Param{NextStates}->{''} = '-';
-    }
     $Param{NextStatesStrg} = $LayoutObject->BuildSelection(
-        Data => $Param{NextStates},
-        Name => 'NextStateID',
+        Data         => $Param{NextStates},
+        Name         => 'NextStateID',
+        Class        => 'Modernize',
+        Translation  => 1,
+        PossibleNone => 1,
         %Selected,
-        Class => 'Modernize',
     );
 
     # customer info string
     if ( $ConfigObject->Get('Ticket::Frontend::CustomerInfoCompose') ) {
         $Param{CustomerTable} = $LayoutObject->AgentCustomerViewTable(
-            Data => $Param{CustomerData},
-            Max  => $ConfigObject->Get('Ticket::Frontend::CustomerInfoComposeMaxSize'),
+            Data => {
+                %{ $Param{CustomerData} },
+                TicketID => $Self->{TicketID},
+            },
+            Max => $ConfigObject->Get('Ticket::Frontend::CustomerInfoComposeMaxSize'),
         );
         $LayoutObject->Block(
             Name => 'CustomerTable',
@@ -1270,8 +1280,8 @@ sub _MaskPhone {
         $Param{RichTextHeight} = $Config->{RichTextHeight} || 0;
         $Param{RichTextWidth}  = $Config->{RichTextWidth}  || 0;
 
-        $LayoutObject->Block(
-            Name => 'RichText',
+        # set up rich text editor
+        $LayoutObject->SetRichTextParameters(
             Data => \%Param,
         );
     }

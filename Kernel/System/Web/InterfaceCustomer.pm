@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -13,7 +13,7 @@ use warnings;
 
 use Kernel::System::DateTime qw(:all);
 use Kernel::System::Email;
-use Kernel::System::VariableCheck qw(IsArrayRefWithData);
+use Kernel::System::VariableCheck qw(IsArrayRefWithData IsHashRefWithData);
 use Kernel::Language qw(Translatable);
 
 our @ObjectDependencies = (
@@ -24,6 +24,7 @@ our @ObjectDependencies = (
     'Kernel::System::CustomerGroup',
     'Kernel::System::CustomerUser',
     'Kernel::System::DB',
+    'Kernel::System::Group',
     'Kernel::System::Log',
     'Kernel::System::Main',
     'Kernel::System::Scheduler',
@@ -36,17 +37,13 @@ our @ObjectDependencies = (
 
 Kernel::System::Web::InterfaceCustomer - the customer web interface
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
-the global customer web interface (incl. auth, session, ...)
+the global customer web interface (authentication, session handling, ...)
 
 =head1 PUBLIC INTERFACE
 
-=over 4
-
-=cut
-
-=item new()
+=head2 new()
 
 create customer web interface object
 
@@ -93,7 +90,7 @@ sub new {
     return $Self;
 }
 
-=item Run()
+=head2 Run()
 
 execute the object
 
@@ -168,14 +165,14 @@ sub Run {
         my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
         if ( !$DBCanConnect ) {
             $LayoutObject->CustomerFatalError(
-                Comment => Translatable('Please contact your administrator'),
+                Comment => Translatable('Please contact the administrator.'),
             );
             return;
         }
         if ( $ParamObject->Error() ) {
             $LayoutObject->CustomerFatalError(
                 Message => $ParamObject->Error(),
-                Comment => Translatable('Please contact your administrator'),
+                Comment => Translatable('Please contact the administrator.'),
             );
             return;
         }
@@ -317,29 +314,12 @@ sub Run {
                 Output => \$LayoutObject->CustomerLogin(
                     Title   => 'Panic!',
                     Message => Translatable(
-                        'Authentication succeeded, but no customer record is found in the customer backend. Please contact your administrator.'
+                        'Authentication succeeded, but no customer record is found in the customer backend. Please contact the administrator.'
                     ),
                     %Param,
                 ),
             );
             return;
-        }
-
-        # get groups rw/ro
-        for my $Type (qw(rw ro)) {
-            my %GroupData = $Kernel::OM->Get('Kernel::System::CustomerGroup')->GroupMemberList(
-                Result => 'HASH',
-                Type   => $Type,
-                UserID => $UserData{UserID},
-            );
-            for ( sort keys %GroupData ) {
-                if ( $Type eq 'rw' ) {
-                    $UserData{"UserIsGroup[$GroupData{$_}]"} = 'Yes';
-                }
-                else {
-                    $UserData{"UserIsGroupRo[$GroupData{$_}]"} = 'Yes';
-                }
-            }
         }
 
         # create new session id
@@ -514,7 +494,7 @@ sub Run {
         # remove session id
         if ( !$SessionObject->RemoveSessionID( SessionID => $Param{SessionID} ) ) {
             $LayoutObject->CustomerFatalError(
-                Comment => Translatable('Please contact your administrator')
+                Comment => Translatable('Please contact the administrator.')
             );
             return;
         }
@@ -632,7 +612,7 @@ sub Run {
             );
             if ( !$Sent ) {
                 $LayoutObject->FatalError(
-                    Comment => Translatable('Please contact your administrator'),
+                    Comment => Translatable('Please contact the administrator.'),
                 );
                 return;
             }
@@ -678,7 +658,7 @@ sub Run {
             $LayoutObject->Print(
                 Output => \$LayoutObject->CustomerLogin(
                     Title   => 'Login',
-                    Message => Translatable('Reset password unsuccessful. Please contact your administrator'),
+                    Message => Translatable('Reset password unsuccessful. Please contact the administrator.'),
                     User    => $User,
                 ),
             );
@@ -702,7 +682,7 @@ sub Run {
         );
         if ( !$Sent ) {
             $LayoutObject->CustomerFatalError(
-                Comment => Translatable('Please contact your administrator')
+                Comment => Translatable('Please contact the administrator.')
             );
             return;
         }
@@ -762,7 +742,13 @@ sub Run {
         # get user data
         my %UserData = $UserObject->CustomerUserDataGet( User => $GetParams{UserLogin} );
         if ( $UserData{UserID} || !$GetParams{UserLogin} ) {
-            $LayoutObject->Block( Name => 'SignupError' );
+
+            # send data to JS
+            $LayoutObject->AddJSData(
+                Key   => 'SignupError',
+                Value => 1,
+            );
+
             $LayoutObject->Print(
                 Output => \$LayoutObject->CustomerLogin(
                     Title => 'Login',
@@ -819,7 +805,13 @@ sub Run {
         }
 
         if ( ( @Whitelist && !$WhitelistMatched ) || ( @Blacklist && $BlacklistMatched ) ) {
-            $LayoutObject->Block( Name => 'SignupError' );
+
+            # send data to JS
+            $LayoutObject->AddJSData(
+                Key   => 'SignupError',
+                Value => 1,
+            );
+
             $LayoutObject->Print(
                 Output => \$LayoutObject->CustomerLogin(
                     Title => 'Login',
@@ -846,7 +838,13 @@ sub Run {
             UserID  => $ConfigObject->Get('CustomerPanelUserID'),
         );
         if ( !$Add ) {
-            $LayoutObject->Block( Name => 'SignupError' );
+
+            # send data to JS
+            $LayoutObject->AddJSData(
+                Key   => 'SignupError',
+                Value => 1,
+            );
+
             $LayoutObject->Print(
                 Output => \$LayoutObject->CustomerLogin(
                     Title         => 'Login',
@@ -1062,13 +1060,19 @@ sub Run {
                     "Module Kernel::Modules::$Param{Action} not registered in Kernel/Config.pm!",
             );
             $LayoutObject->CustomerFatalError(
-                Comment => Translatable('Please contact your administrator'),
+                Comment => Translatable('Please contact the administrator.'),
             );
             return;
         }
 
         # module permission check for action
-        if ( !$ModuleReg->{GroupRo} && !$ModuleReg->{Group} ) {
+        if (
+            ref $ModuleReg->{GroupRo} eq 'ARRAY'
+            && !scalar @{ $ModuleReg->{GroupRo} }
+            && ref $ModuleReg->{Group} eq 'ARRAY'
+            && !scalar @{ $ModuleReg->{Group} }
+            )
+        {
             $Param{AccessRo} = 1;
             $Param{AccessRw} = 1;
         }
@@ -1088,33 +1092,46 @@ sub Run {
                     Message  => 'No Permission to use this frontend action module!'
                 );
                 $LayoutObject->CustomerFatalError(
-                    Comment => Translatable('Please contact your administrator'),
+                    Comment => Translatable('Please contact the administrator.'),
                 );
                 return;
             }
 
         }
 
+        my $NavigationConfig = $ConfigObject->Get('CustomerFrontend::Navigation')->{ $Param{Action} };
+
         # module permission check for submenu item
-        if ( IsArrayRefWithData( $ModuleReg->{NavBar} ) ) {
+        if ( IsHashRefWithData($NavigationConfig) ) {
             LINKCHECK:
-            for my $ModuleReg ( @{ $ModuleReg->{NavBar} } ) {
+            for my $Key ( %{$NavigationConfig} ) {
+                next LINKCHECK if $Key !~ m/^\d+$/i;
                 next LINKCHECK if $Param{RequestedURL} !~ m/Subaction/i;
-                if ( $ModuleReg->{Link} =~ m/Subaction=/i && $ModuleReg->{Link} !~ m/$Param{Subaction}/i ) {
+                if (
+                    $NavigationConfig->{$Key}->{Link} =~ m/Subaction=/i
+                    && $NavigationConfig->{$Key}->{Link} !~ m/$Param{Subaction}/i
+                    )
+                {
                     next LINKCHECK;
                 }
                 $Param{AccessRo} = 0;
                 $Param{AccessRw} = 0;
 
                 # module permission check for submenu item
-                if ( !$ModuleReg->{GroupRo} && !$ModuleReg->{Group} ) {
+                if (
+                    ref $NavigationConfig->{$Key}->{GroupRo} eq 'ARRAY'
+                    && !scalar @{ $NavigationConfig->{$Key}->{GroupRo} }
+                    && ref $NavigationConfig->{$Key}->{Group} eq 'ARRAY'
+                    && !scalar @{ $NavigationConfig->{$Key}->{Group} }
+                    )
+                {
                     $Param{AccessRo} = 1;
                     $Param{AccessRw} = 1;
                 }
                 else {
 
                     ( $Param{AccessRo}, $Param{AccessRw} ) = $Self->_CheckModulePermission(
-                        ModuleReg => $ModuleReg,
+                        ModuleReg => $NavigationConfig->{$Key},
                         %UserData,
                     );
 
@@ -1127,7 +1144,7 @@ sub Run {
                             Message  => 'No Permission to use this frontend subaction module!'
                         );
                         $LayoutObject->CustomerFatalError(
-                            Comment => Translatable('Please contact your administrator')
+                            Comment => Translatable('Please contact the administrator.')
                         );
                         return;
                     }
@@ -1148,7 +1165,11 @@ sub Run {
         my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
 
         # update last request time
-        if ( !$ParamObject->IsAJAXRequest() ) {
+        if (
+            !$ParamObject->IsAJAXRequest()
+            || $Param{Action} eq 'CustomerVideoChat'
+            )
+        {
             $SessionObject->UpdateSessionID(
                 SessionID => $Param{SessionID},
                 Key       => 'UserLastRequest',
@@ -1264,14 +1285,14 @@ sub Run {
     );
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
     $LayoutObject->CustomerFatalError(
-        Comment => Translatable('Please contact your administrator'),
+        Comment => Translatable('Please contact the administrator.'),
     );
     return;
 }
 
 =begin Internal:
 
-=item _CheckModulePermission()
+=head2 _CheckModulePermission()
 
 module permission check
 
@@ -1293,21 +1314,31 @@ sub _CheckModulePermission {
         my $AccessOk = 0;
         my $Group    = $Param{ModuleReg}->{$Permission};
 
-        my $Key = "UserIs$Permission";
         next PERMISSION if !$Group;
+
+        my $GroupObject = $Kernel::OM->Get('Kernel::System::CustomerGroup');
+
         if ( IsArrayRefWithData($Group) ) {
             GROUP:
             for my $Item ( @{$Group} ) {
                 next GROUP if !$Item;
-                next GROUP if !$Param{ $Key . "[$Item]" };
-                next GROUP if $Param{ $Key . "[$Item]" } ne 'Yes';
+                next GROUP if !$GroupObject->PermissionCheck(
+                    UserID    => $Param{UserID},
+                    GroupName => $Item,
+                    Type      => $Permission eq 'GroupRo' ? 'ro' : 'rw',
+                );
+
                 $AccessOk = 1;
                 last GROUP;
             }
         }
         else {
-            if ( $Param{ $Key . "[$Group]" } && $Param{ $Key . "[$Group]" } eq 'Yes' )
-            {
+            my $HasPermission = $GroupObject->PermissionCheck(
+                UserID    => $Param{UserID},
+                GroupName => $Group,
+                Type      => $Permission eq 'GroupRo' ? 'ro' : 'rw',
+            );
+            if ($HasPermission) {
                 $AccessOk = 1;
             }
         }
@@ -1342,8 +1373,6 @@ sub DESTROY {
 }
 
 1;
-
-=back
 
 =head1 TERMS AND CONDITIONS
 

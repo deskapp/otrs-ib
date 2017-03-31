@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -194,7 +194,7 @@ $Selenium->RunTest(
         );
 
         # click to 'Save' and verify client side validation for missing fields
-        $Selenium->find_element("//button[\@value='Save and continue']")->click();
+        $Selenium->find_element("//button[\@value='Save and continue']")->VerifiedClick();
         for my $ValidationField (qw( Host User X509CertFile X509KeyFile)) {
             $Self->Is(
                 $Selenium->execute_script(

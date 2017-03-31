@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -134,9 +134,11 @@ sub Run {
         $StripPlainBodyAsAttachment = 2;
     }
 
+    my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
+
     # get all articles of this ticket
-    my @CustomerArticleTypes = $TicketObject->ArticleTypeList( Type => 'Customer' );
-    my @ArticleBox = $TicketObject->ArticleContentIndex(
+    my @CustomerArticleTypes = $ArticleObject->ArticleTypeList( Type => 'Customer' );
+    my @ArticleBox = $ArticleObject->ArticleContentIndex(
         TicketID                   => $Self->{TicketID},
         ArticleType                => \@CustomerArticleTypes,
         StripPlainBodyAsAttachment => $StripPlainBodyAsAttachment,
@@ -399,6 +401,12 @@ sub Run {
                     ChatID => $GetParam{FromChatID},
                 );
                 if (@ChatMessages) {
+                    for my $Message (@ChatMessages) {
+                        $Message->{MessageText} = $LayoutObject->Ascii2Html(
+                            Text        => $Message->{MessageText},
+                            LinkFeature => 1,
+                        );
+                    }
                     $GetParam{ChatMessages} = \@ChatMessages;
                 }
             }
@@ -507,7 +515,7 @@ sub Run {
                     $Output .= $LayoutObject->CustomerError(
                         Message => $LayoutObject->{LanguageObject}
                             ->Translate( 'Could not perform validation on field %s!', $DynamicFieldConfig->{Label} ),
-                        Comment => Translatable('Please contact your administrator'),
+                        Comment => Translatable('Please contact the administrator.'),
                     );
                     $Output .= $LayoutObject->CustomerFooter();
                     return $Output;
@@ -636,7 +644,7 @@ sub Run {
             );
         }
 
-        my $ArticleID = $TicketObject->ArticleCreate(
+        my $ArticleID = $ArticleObject->ArticleCreate(
             TicketID    => $Self->{TicketID},
             ArticleType => $Config->{ArticleType},
             SenderType  => $Config->{SenderType},
@@ -702,7 +710,7 @@ sub Run {
             }
 
             # write existing file to backend
-            $TicketObject->ArticleWriteAttachment(
+            $ArticleObject->ArticleWriteAttachment(
                 %{$Attachment},
                 ArticleID => $ArticleID,
                 UserID    => $ConfigObject->Get('CustomerPanelUserID'),
@@ -754,13 +762,20 @@ sub Run {
             my $ChatArticleID;
 
             if (@ChatMessageList) {
+                for my $Message (@ChatMessageList) {
+                    $Message->{MessageText} = $LayoutObject->Ascii2Html(
+                        Text        => $Message->{MessageText},
+                        LinkFeature => 1,
+                    );
+                }
+
                 my $JSONBody = $Kernel::OM->Get('Kernel::System::JSON')->Encode(
                     Data => \@ChatMessageList,
                 );
 
                 my $ChatArticleType = 'chat-external';
 
-                $ChatArticleID = $TicketObject->ArticleCreate(
+                $ChatArticleID = $ArticleObject->ArticleCreate(
                     TicketID       => $Self->{TicketID},
                     ArticleType    => $ChatArticleType,
                     SenderType     => $Config->{SenderType},
@@ -935,8 +950,10 @@ sub _Mask {
     my $ParamObject       = $Kernel::OM->Get('Kernel::System::Web::Request');
     my $UploadCacheObject = $Kernel::OM->Get('Kernel::System::Web::UploadCache');
 
-    my %AclAction       = %{ $Param{AclAction} };
-    my %AclActionLookup = reverse %AclAction;
+    my %AclActionLookup;
+    if ( $Param{AclAction} ) {
+        %AclActionLookup = reverse %{ $Param{AclAction} };
+    }
 
     $Param{FormID} = $Self->{FormID};
 
@@ -1353,7 +1370,9 @@ sub _Mask {
         )
     {
         # get all queues to tickets relations
-        my %QueueChatChannelRelations = $Kernel::OM->Get('Kernel::System::ChatChannel')->ChatChannelQueuesGet();
+        my %QueueChatChannelRelations = $Kernel::OM->Get('Kernel::System::ChatChannel')->ChatChannelQueuesGet(
+            CustomerInterface => 1,
+        );
 
         # if a support chat channel is set for this queue
         if ( $QueueChatChannelRelations{ $Param{QueueID} } ) {
@@ -1799,12 +1818,11 @@ sub _Mask {
             OnlyDynamicFields => 1,
         );
 
-        # create a string with the quoted dynamic field names separated by commas
-        if ( IsArrayRefWithData($DynamicFieldNames) ) {
-            for my $Field ( @{$DynamicFieldNames} ) {
-                $Param{DynamicFieldNamesStrg} .= ", '" . $Field . "'";
-            }
-        }
+        # send data to JS
+        $LayoutObject->AddJSData(
+            Key   => 'DynamicFieldNames',
+            Value => $DynamicFieldNames,
+        );
 
         # check subject
         if ( !$Param{Subject} ) {
@@ -1822,8 +1840,8 @@ sub _Mask {
             $Param{RichTextHeight} = $Config->{RichTextHeight} || 0;
             $Param{RichTextWidth}  = $Config->{RichTextWidth}  || 0;
 
-            $LayoutObject->Block(
-                Name => 'RichText',
+            # set up customer rich text editor
+            $LayoutObject->CustomerSetRichTextParameters(
                 Data => \%Param,
             );
         }

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -41,13 +41,11 @@ use Kernel::Language qw(Translatable);
 
 Kernel::Output::HTML::Statistics::View - View object for statistics
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 Provides several functions to generate statistics GUI elements.
 
 =head1 PUBLIC INTERFACE
-
-=over 4
 
 =cut
 
@@ -61,7 +59,7 @@ sub new {
     return $Self;
 }
 
-=item StatsParamsWidget()
+=head2 StatsParamsWidget()
 
 generate HTML for statistics run widget.
 
@@ -207,8 +205,8 @@ sub StatsParamsWidget {
     if ( $ConfigObject->Get('Stats::ExchangeAxis') ) {
         my $ExchangeAxis = $LayoutObject->BuildSelection(
             Data => {
-                1 => 'Yes',
-                0 => 'No'
+                1 => Translatable('Yes'),
+                0 => Translatable('No')
             },
             Name       => 'ExchangeAxis',
             SelectedID => $LocalGetParam->( Param => 'ExchangeAxis' ) // 0,
@@ -543,7 +541,14 @@ sub StatsParamsWidget {
                                 Name => 'TimeScale',
                                 Data => {
                                     %BlockData,
-                                    Use => $Use,
+                                },
+                            );
+
+                            # send data to JS
+                            $LayoutObject->AddJSData(
+                                Key   => 'StatsParamData',
+                                Value => {
+                                    %BlockData
                                 },
                             );
                         }
@@ -562,12 +567,12 @@ sub StatsParamsWidget {
         }
     }
     my %YesNo = (
-        0 => 'No',
-        1 => 'Yes'
+        0 => Translatable('No'),
+        1 => Translatable('Yes')
     );
     my %ValidInvalid = (
-        0 => 'invalid',
-        1 => 'valid'
+        0 => Translatable('invalid'),
+        1 => Translatable('valid')
     );
     $Stat->{SumRowValue}                = $YesNo{ $Stat->{SumRow} };
     $Stat->{SumColValue}                = $YesNo{ $Stat->{SumCol} };
@@ -579,13 +584,22 @@ sub StatsParamsWidget {
         $Stat->{$Field} = $Kernel::OM->Get('Kernel::System::User')->UserName( UserID => $Stat->{$Field} );
     }
 
+    if ( $Param{AJAX} ) {
+
+        # send data to JS
+        $LayoutObject->AddJSData(
+            Key   => 'StatsWidgetAJAX',
+            Value => $Param{AJAX}
+        );
+    }
+
     $Output .= $LayoutObject->Output(
         TemplateFile => 'Statistics/StatsParamsWidget',
         Data         => {
             %{$Stat},
             AJAX => $Param{AJAX},
         },
-        KeepScriptTags => $Param{AJAX},
+        AJAX => $Param{AJAX},
     );
     return $Output;
 }
@@ -614,15 +628,40 @@ sub GeneralSpecificationsWidget {
         $Stat->{Valid}      = 1;
     }
 
+    # Check if a time field is selected in the current statistic configuration, because
+    #   only in this case the caching can be activated in the general statistic settings.
+    my $TimeFieldSelected;
+
+    USE:
+    for my $Use (qw(UseAsXvalue UseAsValueSeries UseAsRestriction)) {
+
+        for my $ObjectAttribute ( @{ $Stat->{$Use} } ) {
+
+            if ( $ObjectAttribute->{Selected} && $ObjectAttribute->{Block} eq 'Time' ) {
+                $TimeFieldSelected = 1;
+                last USE;
+            }
+        }
+    }
+
     my %Frontend;
 
-    # create selectboxes 'Cache', 'SumRow', 'SumCol', and 'Valid'
+    my %YesNo = (
+        0 => Translatable('No'),
+        1 => Translatable('Yes')
+    );
+
+    # Create selectboxes for 'Cache', 'SumRow', 'SumCol', and 'Valid'.
     for my $Key (qw(Cache ShowAsDashboardWidget SumRow SumCol)) {
+
+        my %SelectionData = %YesNo;
+
+        if ( $Key eq 'Cache' && !$TimeFieldSelected ) {
+            delete $SelectionData{1};
+        }
+
         $Frontend{ 'Select' . $Key } = $LayoutObject->BuildSelection(
-            Data => {
-                0 => 'No',
-                1 => 'Yes'
-            },
+            Data       => \%SelectionData,
             SelectedID => $GetParam{$Key} // $Stat->{$Key} || 0,
             Name       => $Key,
             Class      => 'Modernize',
@@ -633,7 +672,7 @@ sub GeneralSpecificationsWidget {
     if ( !$Stat->{ObjectBehaviours}->{ProvidesDashboardWidget} ) {
         $Frontend{'SelectShowAsDashboardWidget'} = $LayoutObject->BuildSelection(
             Data => {
-                0 => 'No (not supported)',
+                0 => Translatable('No (not supported)'),
             },
             SelectedID => 0,
             Name       => 'ShowAsDashboardWidget',
@@ -643,8 +682,8 @@ sub GeneralSpecificationsWidget {
 
     $Frontend{SelectValid} = $LayoutObject->BuildSelection(
         Data => {
-            0 => 'invalid',
-            1 => 'valid',
+            0 => Translatable('invalid'),
+            1 => Translatable('valid'),
         },
         SelectedID => $GetParam{Valid} // $Stat->{Valid},
         Name       => 'Valid',
@@ -796,9 +835,8 @@ sub XAxisWidget {
 
     my $Stat = $Param{Stat};
 
+    # get needed objects
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
-
-    #my $ParamObject  = $Kernel::OM->Get('Kernel::System::Web::Request');
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
     # if only one value is available select this value
@@ -806,6 +844,8 @@ sub XAxisWidget {
         $Stat->{UseAsXvalue}[0]{Selected} = 1;
         $Stat->{UseAsXvalue}[0]{Fixed}    = 1;
     }
+
+    my @XAxisElements;
 
     for my $ObjectAttribute ( @{ $Stat->{UseAsXvalue} } ) {
         my %BlockData;
@@ -873,12 +913,21 @@ sub XAxisWidget {
             $Block = 'MultiSelectField';
         }
 
+        # store data, which will be sent to JS
+        push @XAxisElements, $BlockData{Element} if $BlockData{Checked};
+
         # show the input element
         $LayoutObject->Block(
             Name => $Block,
             Data => \%BlockData,
         );
     }
+
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'XAxisElements',
+        Value => \@XAxisElements,
+    );
 
     my $Output .= $LayoutObject->Output(
         TemplateFile => 'Statistics/XAxisWidget',
@@ -894,10 +943,11 @@ sub YAxisWidget {
 
     my $Stat = $Param{Stat};
 
+    # get needed objects
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
-
-    #my $ParamObject  = $Kernel::OM->Get('Kernel::System::Web::Request');
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
+    my @YAxisElements;
 
     OBJECTATTRIBUTE:
     for my $ObjectAttribute ( @{ $Stat->{UseAsValueSeries} } ) {
@@ -969,12 +1019,21 @@ sub YAxisWidget {
             $Block = 'MultiSelectField';
         }
 
+        # store data, which will be sent to JS
+        push @YAxisElements, $BlockData{Element} if $BlockData{Checked};
+
         # show the input element
         $LayoutObject->Block(
             Name => $Block,
             Data => \%BlockData,
         );
     }
+
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'YAxisElements',
+        Value => \@YAxisElements,
+    );
 
     my $Output .= $LayoutObject->Output(
         TemplateFile => 'Statistics/YAxisWidget',
@@ -990,10 +1049,11 @@ sub RestrictionsWidget {
 
     my $Stat = $Param{Stat};
 
+    # get needed objects
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
-
-    #my $ParamObject  = $Kernel::OM->Get('Kernel::System::Web::Request');
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
+    my @RestrictionElements;
 
     for my $ObjectAttribute ( @{ $Stat->{UseAsRestriction} } ) {
         my %BlockData;
@@ -1066,12 +1126,21 @@ sub RestrictionsWidget {
             %BlockData = ( %BlockData, %TimeData );
         }
 
+        # store data, which will be sent to JS
+        push @RestrictionElements, $BlockData{Element} if $BlockData{Checked};
+
         # show the input element
         $LayoutObject->Block(
             Name => $ObjectAttribute->{Block},
             Data => \%BlockData,
         );
     }
+
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'RestrictionElements',
+        Value => \@RestrictionElements,
+    );
 
     my $Output .= $LayoutObject->Output(
         TemplateFile => 'Statistics/RestrictionsWidget',
@@ -1106,6 +1175,12 @@ sub PreviewWidget {
             UserID   => $Param{UserID},
         );
     }
+
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'PreviewResult',
+        Value => $Frontend{PreviewResult},
+    );
 
     my $Output .= $LayoutObject->Output(
         TemplateFile => 'Statistics/PreviewWidget',
@@ -1154,6 +1229,11 @@ sub StatsParamsGet {
     # get the time zone param
     if ( length $LocalGetParam->( Param => 'TimeZone' ) ) {
         $GetParam{TimeZone} = $LocalGetParam->( Param => 'TimeZone' ) // $Stat->{TimeZone};
+    }
+
+    # get ExchangeAxis param
+    if ( length $LocalGetParam->( Param => 'ExchangeAxis' ) ) {
+        $GetParam{ExchangeAxis} = $LocalGetParam->( Param => 'ExchangeAxis' ) // $Stat->{ExchangeAxis};
     }
 
     #
@@ -1380,13 +1460,10 @@ sub StatsParamsGet {
 
         # check if the timeperiod is too big or the time scale too small
         if (
-            $GetParam{UseAsXvalue}[0]{Block} eq 'Time'
+            ( $GetParam{UseAsXvalue}[0]{Block} && $GetParam{UseAsXvalue}[0]{Block} eq 'Time' )
             && (
                 !$GetParam{UseAsValueSeries}[0]
-                || (
-                    $GetParam{UseAsValueSeries}[0]
-                    && $GetParam{UseAsValueSeries}[0]{Block} ne 'Time'
-                )
+                || ( $GetParam{UseAsValueSeries}[0] && $GetParam{UseAsValueSeries}[0]{Block} ne 'Time' )
             )
             )
         {
@@ -1441,23 +1518,10 @@ sub StatsResultRender {
     my $Title         = $TitleArrayRef->[0];
     my $HeadArrayRef  = shift @StatArray;
 
-    # if array = empty
-    if ( !@StatArray ) {
-        push @StatArray, [ ' ', 0 ];
-    }
-
     # Generate Filename
     my $Filename = $Kernel::OM->Get('Kernel::System::Stats')->StringAndTimestamp2Filename(
         String   => $Stat->{Title} . ' Created',
         TimeZone => $Param{TimeZone},
-    );
-
-    # Translate the column and row description
-    $Self->_ColumnAndRowTranslation(
-        StatArrayRef => \@StatArray,
-        HeadArrayRef => $HeadArrayRef,
-        StatRef      => $Stat,
-        ExchangeAxis => $Param{ExchangeAxis},
     );
 
     # get CSV object
@@ -1465,19 +1529,33 @@ sub StatsResultRender {
 
     # generate D3 output
     if ( $Param{Format} =~ m{^D3} ) {
+
+        # if array = empty
+        if ( !@StatArray ) {
+            push @StatArray, [ ' ', 0 ];
+        }
+
         my $Output = $LayoutObject->Header(
             Value => $Title,
             Type  => 'Small',
         );
-        $Output .= $LayoutObject->Output(
-            Data => {
-                %{$Stat},
+
+        # send data to JS
+        $LayoutObject->AddJSData(
+            Key   => 'D3Data',
+            Value => {
                 RawData => [
                     [$Title],
                     $HeadArrayRef,
                     @StatArray,
                 ],
-                %Param,
+                Format => $Param{Format},
+                }
+        );
+
+        $Output .= $LayoutObject->Output(
+            Data => {
+                %{$Stat},
             },
             TemplateFile => 'Statistics/StatsResultRender/D3',
         );
@@ -1547,7 +1625,7 @@ sub StatsResultRender {
     }
 }
 
-=item StatsConfigurationValidate()
+=head2 StatsConfigurationValidate()
 
     my $StatCorrectlyConfigured = $StatsViewObject->StatsConfigurationValidate(
         StatData => \%StatData,
@@ -2216,187 +2294,6 @@ sub _TimeZoneBuildSelection {
     return %TimeZoneBuildSelection;
 }
 
-=item _ColumnAndRowTranslation()
-
-translate the column and row name if needed
-
-    $StatsViewObject->_ColumnAndRowTranslation(
-        StatArrayRef => $StatArrayRef,
-        HeadArrayRef => $HeadArrayRef,
-        StatRef      => $StatRef,
-        ExchangeAxis => 1 | 0,
-    );
-
-=cut
-
-sub _ColumnAndRowTranslation {
-    my ( $Self, %Param ) = @_;
-
-    # check if need params are available
-    for my $NeededParam (qw(StatArrayRef HeadArrayRef StatRef)) {
-        if ( !$Param{$NeededParam} ) {
-            $Kernel::OM->Get('Kernel::System::Log')->Log(
-                Priority => "error",
-                Message  => "_ColumnAndRowTranslation: Need $NeededParam!"
-            );
-        }
-    }
-
-    # get config object
-    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
-
-    # create language object
-    $Kernel::OM->ObjectParamAdd(
-        'Kernel::Language' => {
-            UserLanguage => $Param{UserLanguage} || $ConfigObject->Get('DefaultLanguage') || 'en',
-            }
-    );
-    my $LanguageObject = $Kernel::OM->Get('Kernel::Language');
-
-    # find out, if the column or row names should be translated
-    my %Translation;
-    my %Sort;
-
-    for my $Use (qw( UseAsXvalue UseAsValueSeries )) {
-        if (
-            $Param{StatRef}->{StatType} eq 'dynamic'
-            && $Param{StatRef}->{$Use}
-            && ref( $Param{StatRef}->{$Use} ) eq 'ARRAY'
-            )
-        {
-            my @Array = @{ $Param{StatRef}->{$Use} };
-
-            ELEMENT:
-            for my $Element (@Array) {
-                next ELEMENT if !$Element->{SelectedValues};
-
-                if ( $Element->{Translation} && $Element->{Block} eq 'Time' ) {
-                    $Translation{$Use} = 'Time';
-                }
-                elsif ( $Element->{Translation} ) {
-                    $Translation{$Use} = 'Common';
-                }
-                else {
-                    $Translation{$Use} = '';
-                }
-
-                if (
-                    $Element->{Translation}
-                    && $Element->{Block} ne 'Time'
-                    && !$Element->{SortIndividual}
-                    )
-                {
-                    $Sort{$Use} = 1;
-                }
-                last ELEMENT;
-            }
-        }
-    }
-
-    # check if the axis are changed
-    if ( $Param{ExchangeAxis} ) {
-        my $UseAsXvalueOld = $Translation{UseAsXvalue};
-        $Translation{UseAsXvalue}      = $Translation{UseAsValueSeries};
-        $Translation{UseAsValueSeries} = $UseAsXvalueOld;
-
-        my $SortUseAsXvalueOld = $Sort{UseAsXvalue};
-        $Sort{UseAsXvalue}      = $Sort{UseAsValueSeries};
-        $Sort{UseAsValueSeries} = $SortUseAsXvalueOld;
-    }
-
-    # translate the headline
-    $Param{HeadArrayRef}->[0] = $LanguageObject->Translate( $Param{HeadArrayRef}->[0] );
-
-    if ( $Translation{UseAsXvalue} && $Translation{UseAsXvalue} ne 'Time' ) {
-        for my $Word ( @{ $Param{HeadArrayRef} } ) {
-            $Word = $LanguageObject->Translate($Word);
-        }
-    }
-
-    # sort the headline
-    if ( $Sort{UseAsXvalue} ) {
-        my @HeadOld = @{ $Param{HeadArrayRef} };
-        shift @HeadOld;    # because the first value is no sortable column name
-
-        # special handling if the sumfunction is used
-        my $SumColRef;
-        if ( $Param{StatRef}->{SumRow} ) {
-            $SumColRef = pop @HeadOld;
-        }
-
-        # sort
-        my @SortedHead = sort { $a cmp $b } @HeadOld;
-
-        # special handling if the sumfunction is used
-        if ( $Param{StatRef}->{SumCol} ) {
-            push @SortedHead, $SumColRef;
-            push @HeadOld,    $SumColRef;
-        }
-
-        # add the row names to the new StatArray
-        my @StatArrayNew;
-        for my $Row ( @{ $Param{StatArrayRef} } ) {
-            push @StatArrayNew, [ $Row->[0] ];
-        }
-
-        # sort the values
-        for my $ColumnName (@SortedHead) {
-            my $Counter = 0;
-            COLUMNNAMEOLD:
-            for my $ColumnNameOld (@HeadOld) {
-                $Counter++;
-                next COLUMNNAMEOLD if $ColumnNameOld ne $ColumnName;
-
-                for my $RowLine ( 0 .. $#StatArrayNew ) {
-                    push @{ $StatArrayNew[$RowLine] }, $Param{StatArrayRef}->[$RowLine]->[$Counter];
-                }
-                last COLUMNNAMEOLD;
-            }
-        }
-
-        # bring the data back to the references
-        unshift @SortedHead, $Param{HeadArrayRef}->[0];
-        @{ $Param{HeadArrayRef} } = @SortedHead;
-        @{ $Param{StatArrayRef} } = @StatArrayNew;
-    }
-
-    # translate the row description
-    if ( $Translation{UseAsValueSeries} && $Translation{UseAsValueSeries} ne 'Time' ) {
-
-        # translate
-        for my $Word ( @{ $Param{StatArrayRef} } ) {
-            $Word->[0] = $LanguageObject->Translate( $Word->[0] );
-        }
-    }
-
-    # sort the row description
-    if ( $Sort{UseAsValueSeries} ) {
-
-        # special handling if the sumfunction is used
-        my $SumRowArrayRef;
-        if ( $Param{StatRef}->{SumRow} ) {
-            $SumRowArrayRef = pop @{ $Param{StatArrayRef} };
-        }
-
-        # sort
-        my $DisableDefaultResultSort = grep {
-            $_->{DisableDefaultResultSort}
-                && $_->{DisableDefaultResultSort} == 1
-        } @{ $Param{StatRef}->{UseAsXvalue} };
-
-        if ( !$DisableDefaultResultSort ) {
-            @{ $Param{StatArrayRef} } = sort { $a->[0] cmp $b->[0] } @{ $Param{StatArrayRef} };
-        }
-
-        # special handling if the sumfunction is used
-        if ( $Param{StatRef}->{SumRow} ) {
-            push @{ $Param{StatArrayRef} }, $SumRowArrayRef;
-        }
-    }
-
-    return 1;
-}
-
 # ATTENTION: this function delivers only approximations!!!
 sub _TimeInSeconds {
     my ( $Self, %Param ) = @_;
@@ -2448,7 +2345,9 @@ sub _StopWordErrorCheck {
     my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
 
     if ( !%Param ) {
-        $LayoutObject->FatalError( Message => "Got no values to check." );
+        $LayoutObject->FatalError(
+            Message => Translatable('Got no values to check.'),
+        );
     }
 
     my %StopWordsServerErrors;
@@ -2509,8 +2408,6 @@ sub _StopWordFieldsGet {
 }
 
 1;
-
-=back
 
 =head1 TERMS AND CONDITIONS
 

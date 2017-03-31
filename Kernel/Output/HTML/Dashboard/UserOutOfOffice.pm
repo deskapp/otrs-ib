@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -188,15 +188,15 @@ sub Run {
 
         my $LinkPage = 'Subaction=Element;Name=' . $Self->{Name} . ';';
         my %PageNav  = $LayoutObject->PageNavBar(
-            StartHit       => $Self->{StartHit},
-            PageShown      => $Self->{PageShown},
-            AllHits        => $Total || 1,
-            Action         => 'Action=' . $LayoutObject->{Action},
-            Link           => $LinkPage,
-            WindowSize     => 5,
-            AJAXReplace    => 'Dashboard' . $Self->{Name},
-            IDPrefix       => 'Dashboard' . $Self->{Name},
-            KeepScriptTags => $Param{AJAX},
+            StartHit    => $Self->{StartHit},
+            PageShown   => $Self->{PageShown},
+            AllHits     => $Total || 1,
+            Action      => 'Action=' . $LayoutObject->{Action},
+            Link        => $LinkPage,
+            WindowSize  => 5,
+            AJAXReplace => 'Dashboard' . $Self->{Name},
+            IDPrefix    => 'Dashboard' . $Self->{Name},
+            AJAX        => $Param{AJAX},
         );
 
         $LayoutObject->Block(
@@ -237,7 +237,7 @@ sub Run {
             %{ $Self->{Config} },
             Name => $Self->{Name},
         },
-        KeepScriptTags => $Param{AJAX},
+        AJAX => $Param{AJAX},
     );
 
     return $Content;

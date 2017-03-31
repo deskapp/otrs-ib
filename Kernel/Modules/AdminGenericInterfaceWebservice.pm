@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -482,10 +482,15 @@ sub Run {
 
         my $ImportedConfig;
 
+        my $Home = $Kernel::OM->Get('Kernel::Config')->Get('Home');
+
+        my $MainObject = $Kernel::OM->Get('Kernel::System::Main');
+
         # get web service name
         my $WebserviceName;
-
         my $ExampleWebServiceFilename = $ParamObject->GetParam( Param => 'ExampleWebService' ) || '';
+        my $FileWithoutExtension;
+
         if ($ExampleWebServiceFilename) {
             $ExampleWebServiceFilename =~ s{/+|\.{2,}}{}smx;    # remove slashes and ..
 
@@ -495,7 +500,52 @@ sub Run {
                 );
             }
 
-            my $Home    = $Kernel::OM->Get('Kernel::Config')->Get('Home');
+            # extract file name
+            $ExampleWebServiceFilename =~ m{(.*?)\.yml$}smx;
+            $FileWithoutExtension = $1;
+
+            # Run _pre.pm if available.
+            if ( -e "$Home/var/webservices/examples/" . $FileWithoutExtension . "_pre.pm" ) {
+
+                my $BackendName = 'var::webservices::examples::' . $FileWithoutExtension . '_pre';
+
+                my $Loaded = $MainObject->Require(
+                    $BackendName,
+                );
+
+                if ( !$Loaded ) {
+                    return $LayoutObject->ErrorScreen(
+                        Message => "Could not load $BackendName.",
+                    );
+
+                }
+
+                my $BackendPre = $Kernel::OM->Get(
+                    $BackendName,
+                );
+
+                if ( $BackendPre->can('DependencyCheck') ) {
+                    my %Result = $BackendPre->DependencyCheck();
+                    if ( !$Result{Success} && $Result{ErrorMessage} ) {
+
+                        return $Self->_ShowEdit(
+                            DependencyErrorMessage => $Result{ErrorMessage},
+                            %Param,
+                            Action => 'Add',
+                        );
+                    }
+                }
+
+                my %Status = $BackendPre->Run();
+                if ( !$Status{Success} ) {
+
+                    # show the error screen
+                    return $LayoutObject->ErrorScreen(
+                        Message => $Status{Error},
+                    );
+                }
+            }
+
             my $Content = $Kernel::OM->Get('Kernel::System::Main')->FileRead(
                 Location => "$Home/var/webservices/examples/$ExampleWebServiceFilename",
                 Mode     => 'utf8',
@@ -606,6 +656,33 @@ sub Run {
             UserID  => $Self->{UserID},
         );
 
+        if (
+            $FileWithoutExtension
+            && -e "$Home/var/webservices/examples/" . $FileWithoutExtension . "_post.pm"
+            )
+        {
+            my $BackendName = 'var::webservices::examples::' . $FileWithoutExtension . '_post';
+
+            my $Loaded = $MainObject->Require(
+                $BackendName,
+            );
+
+            if ($Loaded) {
+                my $BackendPost = $Kernel::OM->Get(
+                    $BackendName,
+                );
+
+                my %Status = $BackendPost->Run();
+                if ( !$Status{Success} ) {
+
+                    # show the error screen
+                    return $LayoutObject->ErrorScreen(
+                        Message => $Status{Error},
+                    );
+                }
+            }
+        }
+
         # define notification
         my $Notify = $LayoutObject->{LanguageObject}->Translate(
             'Web service "%s" created!',
@@ -678,14 +755,7 @@ sub _ShowOverview {
         Name => 'Main',
         Data => \%Param,
     );
-    $LayoutObject->Block(
-        Name => 'WebservicePathElement',
-        Data => {
-            Name => 'Web Services',
-            Link => 'Action=AdminGenericInterfaceWebservice',
-            Nav  => '',
-        },
-    );
+
     $LayoutObject->Block( Name => 'ActionList' );
     $LayoutObject->Block( Name => 'ActionAdd' );
     $LayoutObject->Block( Name => 'OverviewHeader' );
@@ -786,6 +856,14 @@ sub _ShowEdit {
     my $Output = $LayoutObject->Header();
     $Output .= $LayoutObject->NavigationBar();
 
+    if ( $Param{DependencyErrorMessage} ) {
+        $Output .= $LayoutObject->Notify(
+            Priority => 'Notice',
+            Data     => $Param{DependencyErrorMessage},
+
+        );
+    }
+
     # show notifications if any
     if ( $Param{Notify} ) {
         $Output .= $LayoutObject->Notify(
@@ -799,26 +877,7 @@ sub _ShowEdit {
         Data => \%Param,
     );
 
-    $LayoutObject->Block(
-        Name => 'WebservicePathElement',
-        Data => {
-            Name => 'Web Services',
-            Link => 'Action=AdminGenericInterfaceWebservice',
-            Nav  => '',
-        },
-    );
-    if ( $Param{Action} eq 'Change' && $WebserviceData->{Name} ) {
-        $LayoutObject->Block(
-            Name => 'WebservicePathElementNoLink',
-            Data => {
-                Name => $WebserviceData->{Name},
-                Link => 'Action=AdminGenericInterfaceWebservice;Subaction=' . $Param{Action}
-                    . ';WebserviceID=' . $Param{WebserviceID},
-                Nav => '',
-            },
-        );
-    }
-    elsif ( $Param{Action} eq 'Add' ) {
+    if ( $Param{Action} eq 'Add' ) {
 
         my @ExampleWebServices = $Kernel::OM->Get('Kernel::System::Main')->DirectoryRead(
             Directory => $Kernel::OM->Get('Kernel::Config')->Get('Home') . '/var/webservices/examples',
@@ -848,19 +907,12 @@ sub _ShowEdit {
                 Class        => 'Modernize Validate_Required',
             );
         }
+
+        # Enable Example web services
         $LayoutObject->Block(
             Name => 'ExampleWebServices',
             Data => {
                 %Frontend,
-            },
-        );
-
-        $LayoutObject->Block(
-            Name => 'WebservicePathElementNoLink',
-            Data => {
-                Name => 'New Web service',
-                Link => 'Action=AdminGenericInterfaceWebservice;Subaction=' . $Param{Action},
-                Nav  => '',
             },
         );
     }
@@ -1103,6 +1155,7 @@ sub _ShowEdit {
         else {
 
             # output operation and invoker tables
+            my %JSData;
             for my $ActionName (
                 sort keys %{ $CommTypeConfig{$CommunicationType}->{ActionsConfig} }
                 )
@@ -1127,6 +1180,8 @@ sub _ShowEdit {
                     $NoControllerFound = 1;
                     $ControllerClass   = 'Error';
                 }
+
+                $JSData{ $ActionData{Name} } = $ActionData{ActionType};
 
                 $LayoutObject->Block(
                     Name => 'DetailsActionsRow',
@@ -1156,6 +1211,12 @@ sub _ShowEdit {
                     );
                 }
             }
+
+            # send data to JS
+            $LayoutObject->AddJSData(
+                Key   => 'JSData',
+                Value => \%JSData
+            );
         }
 
         if ($NoControllerFound) {
@@ -1186,27 +1247,14 @@ sub _OutputGIConfig {
 
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
 
-    # parse the transport config as JSON structure
-    my $TransportConfig = $LayoutObject->JSONEncode(
-        Data => $Param{GITransports},
-    );
+    # send data to JS
+    $LayoutObject->AddJSData(
+        Key   => 'Webservice',
+        Value => {
+            Transport => $Param{GITransports},
+            Operation => $Param{GIOperations},
+            Invoker   => $Param{GIInvokers},
 
-    # parse the operation config as JSON structure
-    my $OpertaionConfig = $LayoutObject->JSONEncode(
-        Data => $Param{GIOperations},
-    );
-
-    # parse the operation config as JSON structure
-    my $InvokerConfig = $LayoutObject->JSONEncode(
-        Data => $Param{GIInvokers},
-    );
-
-    $LayoutObject->Block(
-        Name => 'ConfigSet',
-        Data => {
-            TransportConfig => $TransportConfig,
-            OperationConfig => $OpertaionConfig,
-            InvokerConfig   => $InvokerConfig,
         },
     );
 

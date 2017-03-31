@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -281,9 +281,22 @@ sub Run {
             );
 
             if ($JobAddResult) {
-                return $LayoutObject->Redirect(
-                    OP => "Action=$Self->{Action}",
-                );
+
+                # if the user would like to continue editing the generic agent job, just redirect to the edit screen
+                if (
+                    defined $ParamObject->GetParam( Param => 'ContinueAfterSave' )
+                    && ( $ParamObject->GetParam( Param => 'ContinueAfterSave' ) eq '1' )
+                    )
+                {
+                    my $Profile = $Self->{Profile} || '';
+                    return $LayoutObject->Redirect( OP => "Action=$Self->{Action};Subaction=Update;Profile=$Profile" );
+                }
+                else {
+
+                    # otherwise return to overview
+                    return $LayoutObject->Redirect( OP => "Action=$Self->{Action}" );
+                }
+
             }
             else {
                 $Errors{ProfileInvalid}    = 'ServerError';
@@ -413,7 +426,8 @@ sub _MaskUpdate {
             Name => $Self->{Profile},
         );
     }
-    $JobData{Profile} = $Self->{Profile};
+    $JobData{Profile}   = $Self->{Profile};
+    $JobData{Subaction} = $Self->{Subaction};
 
     # get config object
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
@@ -478,13 +492,13 @@ sub _MaskUpdate {
     );
     $JobData{ScheduleDaysList} = $LayoutObject->BuildSelection(
         Data => {
-            1 => 'Mon',
-            2 => 'Tue',
-            3 => 'Wed',
-            4 => 'Thu',
-            5 => 'Fri',
-            6 => 'Sat',
-            0 => 'Sun',
+            1 => Translatable('Mon'),
+            2 => Translatable('Tue'),
+            3 => Translatable('Wed'),
+            4 => Translatable('Thu'),
+            5 => Translatable('Fri'),
+            6 => Translatable('Sat'),
+            0 => Translatable('Sun'),
         },
         Sort       => 'NumericKey',
         Name       => 'ScheduleDays',
@@ -527,23 +541,23 @@ sub _MaskUpdate {
         Data => [
             {
                 Key   => 60,
-                Value => 'minute(s)',
+                Value => Translatable('minute(s)'),
             },
             {
                 Key   => 3600,
-                Value => 'hour(s)',
+                Value => Translatable('hour(s)'),
             },
             {
                 Key   => 86400,
-                Value => 'day(s)',
+                Value => Translatable('day(s)'),
             },
             {
                 Key   => 2592000,
-                Value => 'month(s)',
+                Value => Translatable('month(s)'),
             },
             {
                 Key   => 31536000,
-                Value => 'year(s)',
+                Value => Translatable('year(s)'),
             },
 
         ],
@@ -752,8 +766,8 @@ sub _MaskUpdate {
     # Because of this case we changed 1=>'Yes' to 1=>'No'
     $JobData{SendNoNotificationOption} = $LayoutObject->BuildSelection(
         Data => {
-            '1' => 'No',
-            '0' => 'Yes'
+            '1' => Translatable('No'),
+            '0' => Translatable('Yes'),
         },
         Name       => 'NewSendNoNotification',
         SelectedID => $JobData{NewSendNoNotification} || 0,
@@ -947,8 +961,8 @@ sub _MaskUpdate {
 
         $JobData{'NewArchiveFlagStrg'} = $LayoutObject->BuildSelection(
             Data => {
-                y => Translatable('archive tickets'),
-                n => Translatable('restore tickets from archive'),
+                'y' => Translatable('archive tickets'),
+                'n' => Translatable('restore tickets from archive'),
             },
             Name         => 'NewArchiveFlag',
             PossibleNone => 1,
@@ -1230,6 +1244,8 @@ sub _MaskRun {
         );
     }
     $JobData{Profile} = $Self->{Profile};
+    $Param{Subaction} = $Self->{Subaction};
+    $Param{Profile}   = $Self->{Profile};
 
     # dynamic fields search parameters for ticket search
     my %DynamicFieldSearchParameters;
@@ -1279,9 +1295,18 @@ sub _MaskRun {
         }
     }
 
+    # remove residual dynamic field data from job definition
+    # they are passed through dedicated variable anyway
+    PARAM_NAME:
+    for my $ParamName ( sort keys %JobData ) {
+        next PARAM_NAME if !( $ParamName =~ /^DynamicField_/ );
+        delete $JobData{$ParamName};
+    }
+
     # get needed objects
-    my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
-    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+    my $TicketObject  = $Kernel::OM->Get('Kernel::System::Ticket');
+    my $ArticleObject = $Kernel::OM->Get('Kernel::System::Ticket::Article');
+    my $ConfigObject  = $Kernel::OM->Get('Kernel::Config');
 
     # perform ticket search
     my $GenericAgentTicketSearch = $ConfigObject->Get("Ticket::GenericAgentTicketSearch") || {};
@@ -1340,7 +1365,7 @@ sub _MaskRun {
         for my $TicketID (@TicketIDs) {
 
             # get first article data
-            my %Data = $TicketObject->ArticleFirstArticle(
+            my %Data = $ArticleObject->ArticleFirstArticle(
                 TicketID      => $TicketID,
                 DynamicFields => 0,
             );

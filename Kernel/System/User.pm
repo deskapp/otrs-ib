@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -31,22 +31,16 @@ our @ObjectDependencies = (
 
 Kernel::System::User - user lib
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 All user functions. E. g. to add and updated user and other functions.
 
 =head1 PUBLIC INTERFACE
 
-=over 4
+=head2 new()
 
-=cut
+Don't use the constructor directly, use the ObjectManager instead:
 
-=item new()
-
-create an object. Do not use it directly, instead use:
-
-    use Kernel::System::ObjectManager;
-    local $Kernel::OM = Kernel::System::ObjectManager->new();
     my $UserObject = $Kernel::OM->Get('Kernel::System::User');
 
 =cut
@@ -79,7 +73,7 @@ sub new {
     return $Self;
 }
 
-=item GetUserData()
+=head2 GetUserData()
 
 get user data (UserLogin, UserFirstname, UserLastname, UserEmail, ...)
 
@@ -328,7 +322,7 @@ sub GetUserData {
     return %Data;
 }
 
-=item UserAdd()
+=head2 UserAdd()
 
 to add new users
 
@@ -390,6 +384,10 @@ sub UserAdd {
     # get database object
     my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
 
+    # Don't store the user's password in plaintext initially. It will be stored in a
+    #   hashed version later with SetPassword().
+    my $RandomPassword = $Self->GenerateRandomPassword();
+
     # sql
     return if !$DBObject->Do(
         SQL => "INSERT INTO $Self->{UserTable} "
@@ -400,7 +398,7 @@ sub UserAdd {
             . " (?, ?, ?, ?, ?, ?, current_timestamp, ?, current_timestamp, ?)",
         Bind => [
             \$Param{UserTitle}, \$Param{UserFirstname}, \$Param{UserLastname},
-            \$Param{UserLogin}, \$Param{UserPw},        \$Param{ValidID},
+            \$Param{UserLogin}, \$RandomPassword, \$Param{ValidID},
             \$Param{ChangeUserID}, \$Param{ChangeUserID},
         ],
     );
@@ -464,7 +462,7 @@ sub UserAdd {
     return $UserID;
 }
 
-=item UserUpdate()
+=head2 UserUpdate()
 
 to update users
 
@@ -573,16 +571,11 @@ sub UserUpdate {
         );
     }
 
-    # get cache object
-    my $CacheObject = $Kernel::OM->Get('Kernel::System::Cache');
-
-    # delete cache
-    $CacheObject->CleanUp(
-        Type => $Self->{CacheType},
-    );
+    $Self->_UserCacheClear( UserID => $Param{UserID} );
 
     # TODO Not needed to delete the cache if ValidID or Name was not changed
 
+    my $CacheObject = $Kernel::OM->Get('Kernel::System::Cache');
     my $SystemPermissionConfig = $Kernel::OM->Get('Kernel::Config')->Get('System::Permission') || [];
 
     for my $Type ( @{$SystemPermissionConfig}, 'rw' ) {
@@ -600,7 +593,7 @@ sub UserUpdate {
     return 1;
 }
 
-=item UserSearch()
+=head2 UserSearch()
 
 to search users
 
@@ -721,7 +714,7 @@ sub UserSearch {
     return %Users;
 }
 
-=item SetPassword()
+=head2 SetPassword()
 
 to set users passwords
 
@@ -869,7 +862,7 @@ sub SetPassword {
     return 1;
 }
 
-=item UserLookup()
+=head2 UserLookup()
 
 user login or id lookup
 
@@ -993,12 +986,12 @@ sub UserLookup {
     }
 }
 
-=item UserName()
+=head2 UserName()
 
 get user name
 
     my $Name = $UserObject->UserName(
-        UserLogin => 'some-login',
+        User => 'some-login',
     );
 
     or
@@ -1018,7 +1011,7 @@ sub UserName {
     return $User{UserFullname};
 }
 
-=item UserList()
+=head2 UserList()
 
 return a hash with all users
 
@@ -1130,7 +1123,7 @@ sub UserList {
     return %Users;
 }
 
-=item GenerateRandomPassword()
+=head2 GenerateRandomPassword()
 
 generate a random password
 
@@ -1157,7 +1150,7 @@ sub GenerateRandomPassword {
     return $Password;
 }
 
-=item SetPreferences()
+=head2 SetPreferences()
 
 set user preferences
 
@@ -1195,11 +1188,32 @@ sub SetPreferences {
         && defined $Param{Value}
         && $User{ $Param{Key} } eq $Param{Value};
 
-    # get config object
-    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+    $Self->_UserCacheClear( UserID => $Param{UserID} );
+
+    # get user preferences config
+    my $GeneratorModule = $Kernel::OM->Get('Kernel::Config')->Get('User::PreferencesModule')
+        || 'Kernel::System::User::Preferences::DB';
+
+    # get generator preferences module
+    my $PreferencesObject = $Kernel::OM->Get($GeneratorModule);
+
+    # set preferences
+    return $PreferencesObject->SetPreferences(%Param);
+}
+
+sub _UserCacheClear {
+    my ( $Self, %Param ) = @_;
+
+    if ( !$Param{UserID} ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "Need UserID!"
+        );
+        return;
+    }
 
     # get configuration for the full name order
-    my $FirstnameLastNameOrder = $ConfigObject->Get('FirstnameLastnameOrder') || 0;
+    my $FirstnameLastNameOrder = $Kernel::OM->Get('Kernel::Config')->Get('FirstnameLastnameOrder') || 0;
 
     # create cachekey
     my $Login = $Self->UserLookup( UserID => $Param{UserID} );
@@ -1220,6 +1234,8 @@ sub SetPreferences {
         'UserList::Long::0::' . $FirstnameLastNameOrder . '::1',
         'UserList::Long::1::' . $FirstnameLastNameOrder . '::0',
         'UserList::Long::1::' . $FirstnameLastNameOrder . '::1',
+        'UserLookup::ID::' . $Login,
+        'UserLookup::Login::' . $Param{UserID},
     );
 
     # get cache object
@@ -1234,18 +1250,10 @@ sub SetPreferences {
         );
     }
 
-    # get user preferences config
-    my $GeneratorModule = $ConfigObject->Get('User::PreferencesModule')
-        || 'Kernel::System::User::Preferences::DB';
-
-    # get generator preferences module
-    my $PreferencesObject = $Kernel::OM->Get($GeneratorModule);
-
-    # set preferences
-    return $PreferencesObject->SetPreferences(%Param);
+    return 1;
 }
 
-=item GetPreferences()
+=head2 GetPreferences()
 
 get user preferences
 
@@ -1268,7 +1276,7 @@ sub GetPreferences {
     return $PreferencesObject->GetPreferences(%Param);
 }
 
-=item SearchPreferences()
+=head2 SearchPreferences()
 
 search in user preferences
 
@@ -1292,7 +1300,7 @@ sub SearchPreferences {
     return $PreferencesObject->SearchPreferences(@_);
 }
 
-=item TokenGenerate()
+=head2 TokenGenerate()
 
 generate a random token
 
@@ -1327,7 +1335,7 @@ sub TokenGenerate {
     return $Token;
 }
 
-=item TokenCheck()
+=head2 TokenCheck()
 
 check password token
 
@@ -1375,7 +1383,7 @@ sub TokenCheck {
 
 =begin Internal:
 
-=item _UserFullname()
+=head2 _UserFullname()
 
 Builds the user fullname based on firstname, lastname and login. The order
 can be configured.
@@ -1455,7 +1463,7 @@ sub _UserFullname {
 
 =cut
 
-=item UserLoginExistsCheck()
+=head2 UserLoginExistsCheck()
 
 return 1 if another user with this login (username) already exists
 
@@ -1492,8 +1500,6 @@ sub UserLoginExistsCheck {
 }
 
 1;
-
-=back
 
 =head1 TERMS AND CONDITIONS
 

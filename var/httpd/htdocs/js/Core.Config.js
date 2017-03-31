@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -35,7 +35,7 @@ Core.Config = (function (TargetNS) {
      * @description
      *      The prefix for all config keys to avoid name conflicts
      */
-        ConfigPrefix = 'Config';
+        ConfigPrefix = '';
 
     if (!Core.Debug.CheckDependency('Core.Config', 'Core.Data', 'Core.Data')) {
         return false;
@@ -135,7 +135,7 @@ Core.Config = (function (TargetNS) {
 
         if (typeof ConfigKey === 'undefined') {
             $.each(Data, function (Key, Value) {
-                ConfigLevel[ConfigPrefix + Key] = Value;
+                TargetNS.Set(Key,Value);
             });
         }
         else {

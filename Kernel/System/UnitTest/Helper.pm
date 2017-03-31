@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -13,6 +13,12 @@ package Kernel::System::UnitTest::Helper;
 use strict;
 use warnings;
 
+use File::Path qw(rmtree);
+
+# Load DateTime so that we can override functions for the FixedTimeSet().
+use DateTime;
+
+use Kernel::System::VariableCheck qw(:all);
 use Kernel::System::SysConfig;
 
 our @ObjectDependencies = (
@@ -21,28 +27,25 @@ our @ObjectDependencies = (
     'Kernel::System::Cache',
     'Kernel::System::CustomerUser',
     'Kernel::System::Group',
+    'Kernel::System::Log',
     'Kernel::System::Main',
     'Kernel::System::UnitTest',
     'Kernel::System::User',
+    'Kernel::System::XML',
 );
 
 =head1 NAME
 
 Kernel::System::UnitTest::Helper - unit test helper functions
 
-=over 4
 
-=cut
-
-=item new()
+=head2 new()
 
 construct a helper object.
 
     use Kernel::System::ObjectManager;
     local $Kernel::OM = Kernel::System::ObjectManager->new(
         'Kernel::System::UnitTest::Helper' => {
-            RestoreSystemConfiguration => 1,        # optional, save ZZZAuto.pm
-                                                    # and restore it in the destructor
             RestoreDatabase            => 1,        # runs the test in a transaction,
                                                     # and roll it back in the destructor
                                                     #
@@ -68,14 +71,8 @@ sub new {
 
     $Self->{UnitTestObject} = $Kernel::OM->Get('Kernel::System::UnitTest');
 
-    # make backup of system configuration if needed
-    if ( $Param{RestoreSystemConfiguration} ) {
-        $Self->{SysConfigObject} = Kernel::System::SysConfig->new();
-
-        $Self->{SysConfigBackup} = $Self->{SysConfigObject}->Download();
-
-        $Self->{UnitTestObject}->True( 1, 'Creating backup of the system configuration.' );
-    }
+    # Remove any leftover custom files from aborted previous runs.
+    $Self->CustomFileCleanup();
 
     # set environment variable to skip SSL certificate verification if needed
     if ( $Param{SkipSSLVerify} ) {
@@ -90,6 +87,11 @@ sub new {
         $Self->{UnitTestObject}->True( 1, 'Skipping SSL certificates verification' );
     }
 
+    # switch article dir to a temporary one to avoid collisions
+    if ( $Param{UseTmpArticleDir} ) {
+        $Self->UseTmpArticleDir();
+    }
+
     if ( $Param{RestoreDatabase} ) {
         $Self->{RestoreDatabase} = 1;
         my $StartedTransaction = $Self->BeginWork();
@@ -100,7 +102,7 @@ sub new {
     return $Self;
 }
 
-=item GetRandomID()
+=head2 GetRandomID()
 
 creates a random ID that can be used in tests as a unique identifier.
 
@@ -117,7 +119,7 @@ sub GetRandomID {
     return 'test' . $Self->GetRandomNumber();
 }
 
-=item GetRandomNumber()
+=head2 GetRandomNumber()
 
 creates a random Number that can be used in tests as a unique identifier.
 
@@ -130,23 +132,19 @@ to create test data.
 
 # Use package variables here (instead of attributes in $Self)
 # to make it work across several unit tests that run during the same second.
-my $GetRandomNumberPreviousEpoch = 0;
-my $GetRandomNumberCounter       = 0;
+my %GetRandomNumberPrevious;
 
 sub GetRandomNumber {
-    my ( $Self, %Param ) = @_;
 
-    my $Epoch = time();
-    $GetRandomNumberPreviousEpoch //= 0;
-    if ( $GetRandomNumberPreviousEpoch != $Epoch ) {
-        $GetRandomNumberPreviousEpoch = $Epoch;
-        $GetRandomNumberCounter       = 0;
-    }
+    my $PIDReversed = reverse $$;
+    my $PID = reverse sprintf '%.6d', $PIDReversed;
 
-    return $Epoch . $GetRandomNumberCounter++;
+    my $Prefix = $PID . substr time(), -5, 5;
+
+    return $Prefix . sprintf( '%.05d', ( $GetRandomNumberPrevious{$Prefix}++ || 0 ) );
 }
 
-=item TestUserCreate()
+=head2 TestUserCreate()
 
 creates a test user that can be used in tests. It will
 be set to invalid automatically during the destructor. Returns
@@ -162,22 +160,33 @@ the login name of the new user, the password is the same.
 sub TestUserCreate {
     my ( $Self, %Param ) = @_;
 
-    # create test user
-    my $TestUserLogin = $Self->GetRandomID();
-
     # disable email checks to create new user
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
     local $ConfigObject->{CheckEmailAddresses} = 0;
 
-    my $TestUserID = $Kernel::OM->Get('Kernel::System::User')->UserAdd(
-        UserFirstname => $TestUserLogin,
-        UserLastname  => $TestUserLogin,
-        UserLogin     => $TestUserLogin,
-        UserPw        => $TestUserLogin,
-        UserEmail     => $TestUserLogin . '@localunittest.com',
-        ValidID       => 1,
-        ChangeUserID  => 1,
-    ) || die "Could not create test user";
+    # create test user
+    my $TestUserID;
+    my $TestUserLogin;
+    COUNT:
+    for my $Count ( 1 .. 10 ) {
+
+        $TestUserLogin = $Self->GetRandomID();
+
+        $TestUserID = $Kernel::OM->Get('Kernel::System::User')->UserAdd(
+            UserFirstname => $TestUserLogin,
+            UserLastname  => $TestUserLogin,
+            UserLogin     => $TestUserLogin,
+            UserPw        => $TestUserLogin,
+            UserEmail     => $TestUserLogin . '@localunittest.com',
+            ValidID       => 1,
+            ChangeUserID  => 1,
+        );
+
+        last COUNT if $TestUserID;
+    }
+
+    die 'Could not create test user login' if !$TestUserLogin;
+    die 'Could not create test user'       if !$TestUserID;
 
     # Remember UserID of the test user to later set it to invalid
     #   in the destructor.
@@ -225,7 +234,7 @@ sub TestUserCreate {
     return $TestUserLogin;
 }
 
-=item TestCustomerUserCreate()
+=head2 TestCustomerUserCreate()
 
 creates a test customer user that can be used in tests. It will
 be set to invalid automatically during the destructor. Returns
@@ -245,19 +254,28 @@ sub TestCustomerUserCreate {
     local $ConfigObject->{CheckEmailAddresses} = 0;
 
     # create test user
-    my $TestUserLogin = $Self->GetRandomID();
+    my $TestUser;
+    COUNT:
+    for my $Count ( 1 .. 10 ) {
 
-    my $TestUser = $Kernel::OM->Get('Kernel::System::CustomerUser')->CustomerUserAdd(
-        Source         => 'CustomerUser',
-        UserFirstname  => $TestUserLogin,
-        UserLastname   => $TestUserLogin,
-        UserCustomerID => $TestUserLogin,
-        UserLogin      => $TestUserLogin,
-        UserPassword   => $TestUserLogin,
-        UserEmail      => $TestUserLogin . '@localunittest.com',
-        ValidID        => 1,
-        UserID         => 1,
-    ) || die "Could not create test user";
+        my $TestUserLogin = $Self->GetRandomID();
+
+        $TestUser = $Kernel::OM->Get('Kernel::System::CustomerUser')->CustomerUserAdd(
+            Source         => 'CustomerUser',
+            UserFirstname  => $TestUserLogin,
+            UserLastname   => $TestUserLogin,
+            UserCustomerID => $TestUserLogin,
+            UserLogin      => $TestUserLogin,
+            UserPassword   => $TestUserLogin,
+            UserEmail      => $TestUserLogin . '@localunittest.com',
+            ValidID        => 1,
+            UserID         => 1,
+        );
+
+        last COUNT if $TestUser;
+    }
+
+    die 'Could not create test user' if !$TestUser;
 
     # Remember UserID of the test user to later set it to invalid
     #   in the destructor.
@@ -278,7 +296,7 @@ sub TestCustomerUserCreate {
     return $TestUser;
 }
 
-=item BeginWork()
+=head2 BeginWork()
 
     $Helper->BeginWork()
 
@@ -293,7 +311,7 @@ sub BeginWork {
     return $DBObject->{dbh}->begin_work();
 }
 
-=item Rollback()
+=head2 Rollback()
 
     $Helper->Rollback()
 
@@ -312,7 +330,7 @@ sub Rollback {
     return 1;
 }
 
-=item GetTestHTTPHostname()
+=head2 GetTestHTTPHostname()
 
 returns a hostname for HTTP based tests, possibly including the port.
 
@@ -344,9 +362,9 @@ sub GetTestHTTPHostname {
     return $Host;
 }
 
-my $FixedDateTimeObject;
+my $FixedTime;
 
-=item FixedTimeSet()
+=head2 FixedTimeSet()
 
 makes it possible to override the system time as long as this object lives.
 You can pass an optional time parameter that should be used, if not,
@@ -355,9 +373,9 @@ the current system time will be used.
 All calls to methods of Kernel::System::Time and Kernel::System::DateTime will
 use the given time afterwards.
 
-    $HelperObject->FixedTimeSet(366475757); # with Timestamp
-    $HelperObject->FixedTimeSet($DateTimeObject); # with previously created DateTime object
-    $HelperObject->FixedTimeSet(); # set to current date and time
+    $HelperObject->FixedTimeSet(366475757);         # with Timestamp
+    $HelperObject->FixedTimeSet($DateTimeObject);   # with previously created DateTime object
+    $HelperObject->FixedTimeSet();                  # set to current date and time
 
 Returns:
     Timestamp
@@ -367,31 +385,19 @@ Returns:
 sub FixedTimeSet {
     my ( $Self, $TimeToSave ) = @_;
 
-    if ( defined $TimeToSave ) {
-        if ( ref $TimeToSave eq 'Kernel::System::DateTime' ) {
-            $FixedDateTimeObject = $TimeToSave;
-        }
-        else {
-            $FixedDateTimeObject = $Kernel::OM->Create(
-                'Kernel::System::DateTime',
-                ObjectParams => {
-                    Epoch => $TimeToSave,
-                },
-            );
-        }
+    if ( $TimeToSave && ref $TimeToSave eq 'Kernel::System::DateTime' ) {
+        $FixedTime = $TimeToSave->ToEpoch();
     }
     else {
-        $FixedDateTimeObject = $Kernel::OM->Create('Kernel::System::DateTime');
+        $FixedTime = $TimeToSave // CORE::time()
     }
 
-    # This is needed to reload objects that directly use the time functions
+    # This is needed to reload objects that directly use the native time functions
     #   to get a hold of the overrides.
     my @Objects = (
         'Kernel::System::Time',
         'Kernel::System::Cache::FileStorable',
         'Kernel::System::PID',
-        'DateTime',
-        'Kernel::System::DateTime',
     );
 
     for my $Object (@Objects) {
@@ -405,10 +411,10 @@ sub FixedTimeSet {
         }
     }
 
-    return $FixedDateTimeObject->ToEpoch();
+    return $FixedTime;
 }
 
-=item FixedTimeUnset()
+=head2 FixedTimeUnset()
 
 restores the regular system time behaviour.
 
@@ -417,12 +423,11 @@ restores the regular system time behaviour.
 sub FixedTimeUnset {
     my ($Self) = @_;
 
-    undef $FixedDateTimeObject;
-
+    undef $FixedTime;
     return;
 }
 
-=item FixedTimeAddSeconds()
+=head2 FixedTimeAddSeconds()
 
 adds a number of seconds to the fixed system time which was previously
 set by FixedTimeSet(). You can pass a negative value to go back in time.
@@ -432,71 +437,62 @@ set by FixedTimeSet(). You can pass a negative value to go back in time.
 sub FixedTimeAddSeconds {
     my ( $Self, $SecondsToAdd ) = @_;
 
-    my $FixedDateTimeObject = $Self->FixedDateTimeObjectGet();
-    return if !defined $FixedDateTimeObject;
-
-    if ( $SecondsToAdd > 0 ) {
-        $FixedDateTimeObject->Add( Seconds => $SecondsToAdd );
-    }
-    else {
-        $FixedDateTimeObject->Subtract( Seconds => abs $SecondsToAdd );
-    }
-
+    return if !defined $FixedTime;
+    $FixedTime += $SecondsToAdd;
     return;
-}
-
-=item FixedDateTimeObjectGet()
-
-Returns the fixed DateTime object that is currently being used/set.
-
-=cut
-
-sub FixedDateTimeObjectGet {
-    my ($Self) = @_;
-
-    return $FixedDateTimeObject;
 }
 
 # See http://perldoc.perl.org/5.10.0/perlsub.html#Overriding-Built-in-Functions
 BEGIN {
+    no warnings 'redefine';
     *CORE::GLOBAL::time = sub {
-        return defined $FixedDateTimeObject ? $FixedDateTimeObject->ToEpoch() : CORE::time();
+        return defined $FixedTime ? $FixedTime : CORE::time();
     };
     *CORE::GLOBAL::localtime = sub {
         my ($Time) = @_;
         if ( !defined $Time ) {
-            $Time = defined $FixedDateTimeObject ? $FixedDateTimeObject->ToEpoch() : CORE::time();
+            $Time = defined $FixedTime ? $FixedTime : CORE::time();
         }
         return CORE::localtime($Time);
     };
     *CORE::GLOBAL::gmtime = sub {
         my ($Time) = @_;
         if ( !defined $Time ) {
-            $Time = defined $FixedDateTimeObject ? $FixedDateTimeObject->ToEpoch() : CORE::time();
+            $Time = defined $FixedTime ? $FixedTime : CORE::time();
         }
         return CORE::gmtime($Time);
+    };
+
+    # Newer versions of DateTime provide a function _core_time() to override for time simulations.
+    *DateTime::_core_time = sub {    ## no critic
+        return defined $FixedTime ? $FixedTime : CORE::time();
+    };
+
+    # Make sure versions of DateTime also use _core_time() it by overriding now() as well.
+    *DateTime::now = sub {
+        my $Self = shift;
+        return $Self->from_epoch(
+            epoch => $Self->_core_time(),
+            @_
+        );
     };
 }
 
 sub DESTROY {
     my $Self = shift;
 
-    # Reset time freeze
+    # reset time freeze
     FixedTimeUnset();
 
     # FixedDateTimeObjectUnset();
 
-    #
-    # Restore system configuration if needed
-    #
-    if ( $Self->{SysConfigBackup} ) {
-        $Self->{SysConfigObject}->Upload( Content => $Self->{SysConfigBackup} );
-        $Self->{UnitTestObject}->True( 1, 'Restored the system configuration' );
-    }
+    # Cleanup temporary database if it was set up.
+    $Self->TestDatabaseCleanup() if $Self->{ProvideTestDatabase};
 
-    #
-    # Restore environment variable to skip SSL certificate verification if needed
-    #
+    # Remove any custom files.
+    $Self->CustomFileCleanup();
+
+    # restore environment variable to skip SSL certificate verification if needed
     if ( $Self->{RestoreSSLVerify} ) {
 
         $ENV{PERL_LWP_SSL_VERIFY_HOSTNAME} = $Self->{PERL_LWP_SSL_VERIFY_HOSTNAME};
@@ -506,7 +502,7 @@ sub DESTROY {
         $Self->{UnitTestObject}->True( 1, 'Restored SSL certificates verification' );
     }
 
-    # Restore database, clean caches
+    # restore database, clean caches
     if ( $Self->{RestoreDatabase} ) {
         my $RollbackSuccess = $Self->Rollback();
         $Kernel::OM->Get('Kernel::System::Cache')->CleanUp();
@@ -516,6 +512,11 @@ sub DESTROY {
     # disable email checks to create new user
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
     local $ConfigObject->{CheckEmailAddresses} = 0;
+
+    # cleanup temporary article directory
+    if ( $Self->{TmpArticleDir} && -d $Self->{TmpArticleDir} ) {
+        File::Path::rmtree( $Self->{TmpArticleDir} );
+    }
 
     # invalidate test users
     if ( ref $Self->{TestUsers} eq 'ARRAY' && @{ $Self->{TestUsers} } ) {
@@ -576,9 +577,466 @@ sub DESTROY {
     }
 }
 
-1;
+=head2 ConfigSettingChange()
 
-=back
+temporarily change a configuration setting system wide to another value,
+both in the current ConfigObject and also in the system configuration on disk.
+
+This will be reset when the Helper object is destroyed.
+
+Please note that this will not work correctly in clustered environments.
+
+    $Helper->ConfigSettingChange(
+        Valid => 1,            # (optional) enable or disable setting
+        Key   => 'MySetting',  # setting name
+        Value => { ... } ,     # setting value
+    );
+
+=cut
+
+sub ConfigSettingChange {
+    my ( $Self, %Param ) = @_;
+
+    my $Valid = $Param{Valid} // 1;
+    my $Key   = $Param{Key};
+    my $Value = $Param{Value};
+
+    die "Need 'Key'" if !defined $Key;
+
+    my $RandomNumber = $Self->GetRandomNumber();
+
+    my $KeyDump = $Key;
+    $KeyDump =~ s|'|\\'|smxg;
+    $KeyDump = "\$Self->{'$KeyDump'}";
+    $KeyDump =~ s|\#{3}|'}->{'|smxg;
+
+    # Also set at runtime in the ConfigObject. This will be destroyed at the end of the unit test.
+    $Kernel::OM->Get('Kernel::Config')->Set(
+        Key   => $Key,
+        Value => $Valid ? $Value : undef,
+    );
+
+    my $ValueDump;
+    if ($Valid) {
+        $ValueDump = $Kernel::OM->Get('Kernel::System::Main')->Dump($Value);
+        $ValueDump =~ s/\$VAR1/$KeyDump/;
+    }
+    else {
+        $ValueDump = "delete $KeyDump;"
+    }
+
+    my $PackageName = "ZZZZUnitTest$RandomNumber";
+
+    my $Content = <<"EOF";
+# OTRS config file (automatically generated)
+# VERSION:1.1
+package Kernel::Config::Files::$PackageName;
+use strict;
+use warnings;
+no warnings 'redefine';
+use utf8;
+sub Load {
+    my (\$File, \$Self) = \@_;
+    $ValueDump
+}
+1;
+EOF
+    my $Home     = $Kernel::OM->Get('Kernel::Config')->Get('Home');
+    my $FileName = "$Home/Kernel/Config/Files/$PackageName.pm";
+    $Kernel::OM->Get('Kernel::System::Main')->FileWrite(
+        Location => $FileName,
+        Mode     => 'utf8',
+        Content  => \$Content,
+    ) || die "Could not write $FileName";
+
+    return 1;
+}
+
+=head2 CustomCodeActivate()
+
+Temporarily include custom code in the system. For example, you may use this to redefine a
+subroutine from another class. This change will persist for remainder of the test.
+
+All code will be removed when the Helper object is destroyed.
+
+Please note that this will not work correctly in clustered environments.
+
+    $Helper->CustomCodeActivate(
+        Code => q^
+use Kernel::System::WebUserAgent;
+package Kernel::System::WebUserAgent;
+use strict;
+use warnings;
+{
+    no warnings 'redefine';
+    sub Request {
+        my $JSONString = '{"Results":{},"ErrorMessage":"","Success":1}';
+        return (
+            Content => \$JSONString,
+            Status  => '200 OK',
+        );
+    }
+}
+1;^,
+        Identifier => 'News',   # (optional) Code identifier to include in file name
+    );
+
+=cut
+
+sub CustomCodeActivate {
+    my ( $Self, %Param ) = @_;
+
+    my $Code = $Param{Code};
+    my $Identifier = $Param{Identifier} || $Self->GetRandomNumber();
+
+    die "Need 'Code'" if !defined $Code;
+
+    my $PackageName = "ZZZZUnitTest$Identifier";
+
+    my $Home     = $Kernel::OM->Get('Kernel::Config')->Get('Home');
+    my $FileName = "$Home/Kernel/Config/Files/$PackageName.pm";
+    $Kernel::OM->Get('Kernel::System::Main')->FileWrite(
+        Location => $FileName,
+        Mode     => 'utf8',
+        Content  => \$Code,
+    ) || die "Could not write $FileName";
+
+    return 1;
+}
+
+=head2 CustomFileCleanup()
+
+Remove all custom files from C<ConfigSettingChange()> and C<CustomCodeActivate()>.
+
+=cut
+
+sub CustomFileCleanup {
+    my ( $Self, %Param ) = @_;
+
+    my $Home  = $Kernel::OM->Get('Kernel::Config')->Get('Home');
+    my @Files = $Kernel::OM->Get('Kernel::System::Main')->DirectoryRead(
+        Directory => "$Home/Kernel/Config/Files",
+        Filter    => "ZZZZUnitTest*.pm",
+    );
+    for my $File (@Files) {
+        $Kernel::OM->Get('Kernel::System::Main')->FileDelete(
+            Location => $File,
+        ) || die "Could not delete $File";
+    }
+    return 1;
+}
+
+=head2 UseTmpArticleDir()
+
+switch the article storage directory to a temporary one to prevent collisions;
+
+=cut
+
+sub UseTmpArticleDir {
+    my ( $Self, %Param ) = @_;
+
+    my $Home = $Kernel::OM->Get('Kernel::Config')->Get('Home');
+
+    my $TmpArticleDir;
+    TRY:
+    for my $Try ( 1 .. 100 ) {
+
+        $TmpArticleDir = $Home . '/var/tmp/unittest-article-' . $Self->GetRandomNumber();
+
+        next TRY if -e $TmpArticleDir;
+        last TRY;
+    }
+
+    $Self->ConfigSettingChange(
+        Valid => 1,
+        Key   => 'ArticleDir',
+        Value => $TmpArticleDir,
+    );
+
+    $Self->{TmpArticleDir} = $TmpArticleDir;
+
+    return 1;
+}
+
+=head2 ProvideTestDatabase()
+
+Provide temporary database for the test. Please first define test database settings in C<Config.pm>,
+i.e:
+
+    $Self->{TestDatabase} = {
+        DatabaseDSN  => 'DBI:mysql:database=otrs_test;host=127.0.0.1;',
+        DatabaseUser => 'otrs_test',
+        DatabasePw   => 'otrs_test',
+    };
+
+The method call will override global database configuration for duration of the test, i.e. temporary
+database will receive all calls sent over system C<DBObject>.
+
+All database contents will be automatically dropped when the Helper object is destroyed.
+
+    $Helper->ProvideTestDatabase(
+        DatabaseXMLString => $XML,      # (optional) OTRS database XML schema to execute
+                                        # or
+        DatabaseXMLFiles => [           # (optional) List of XML files to load and execute
+            '/opt/otrs/scripts/database/otrs-schema.xml',
+            '/opt/otrs/scripts/database/otrs-initial_insert.xml',
+        ],
+    );
+
+=cut
+
+sub ProvideTestDatabase {
+    my ( $Self, %Param ) = @_;
+
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
+    my $TestDatabase = $ConfigObject->Get('TestDatabase');
+    return if !$TestDatabase;
+
+    for (qw(DatabaseDSN DatabaseUser DatabasePw)) {
+        if ( !$TestDatabase->{$_} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "Need $_ in TestDatabase!",
+            );
+            return;
+        }
+    }
+
+    my %EscapedSettings;
+    for my $Key (qw(DatabaseDSN DatabaseUser DatabasePw)) {
+
+        # Override database connection settings in memory.
+        $ConfigObject->Set(
+            Key   => $Key,
+            Value => $TestDatabase->{$Key},
+        );
+
+        # Escape quotes in database settings.
+        $EscapedSettings{$Key} = $TestDatabase->{$Key};
+        $EscapedSettings{$Key} =~ s/'/\\'/g;
+    }
+
+    # Override database connection settings system wide.
+    my $Identifier  = 'TestDatabase';
+    my $PackageName = "ZZZZUnitTest$Identifier";
+    $Self->CustomCodeActivate(
+        Code => qq^
+# OTRS config file (automatically generated)
+# VERSION:1.1
+package Kernel::Config::Files::$PackageName;
+use strict;
+use warnings;
+no warnings 'redefine';
+use utf8;
+sub Load {
+    my (\$File, \$Self) = \@_;
+    \$Self->{DatabaseDSN}  = '$EscapedSettings{DatabaseDSN}';
+    \$Self->{DatabaseUser} = '$EscapedSettings{DatabaseUser}';
+    \$Self->{DatabasePw}   = '$EscapedSettings{DatabasePw}';
+}
+1;^,
+        Identifier => $Identifier,
+    );
+
+    # Discard already instanced database object.
+    $Kernel::OM->ObjectsDiscard( Objects => ['Kernel::System::DB'] );
+
+    # Delete cache.
+    $Kernel::OM->Get('Kernel::System::Cache')->CleanUp();
+
+    $Self->{ProvideTestDatabase} = 1;
+
+    # Clear test database.
+    my $Success = $Self->TestDatabaseCleanup();
+    if ( !$Success ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => 'Error clearing temporary database!',
+        );
+        return;
+    }
+
+    # Load supplied XML files.
+    if ( IsArrayRefWithData( $Param{DatabaseXMLFiles} ) ) {
+        $Param{DatabaseXMLString} //= '';
+
+        my $Index = 0;
+        my $Count = scalar @{ $Param{DatabaseXMLFiles} };
+
+        XMLFILE:
+        for my $XMLFile ( @{ $Param{DatabaseXMLFiles} } ) {
+            next XMLFILE if !$XMLFile;
+
+            # Load XML contents.
+            my $XML = $Kernel::OM->Get('Kernel::System::Main')->FileRead(
+                Location => $XMLFile,
+            );
+            if ( !$XML ) {
+                $Kernel::OM->Get('Kernel::System::Log')->Log(
+                    Priority => 'error',
+                    Message  => "Could not load '$XMLFile'!",
+                );
+                return;
+            }
+
+            # Concatenate the file contents, but make sure to remove duplicated XML tags first.
+            #   - First file should get only end tag removed.
+            #   - Last file should get only start tags removed.
+            #   - Any other file should get both start and end tags removed.
+            $XML = ${$XML};
+            if ( $Index != 0 ) {
+                $XML =~ s/<\?xml .*? \?>//xm;
+                $XML =~ s/<database .*? >//xm;
+            }
+            if ( $Index != $Count - 1 ) {
+                $XML =~ s/<\/database .*? >//xm;
+            }
+            $Param{DatabaseXMLString} .= $XML;
+
+            $Index++;
+        }
+    }
+
+    # Execute supplied XML.
+    if ( $Param{DatabaseXMLString} ) {
+        my $Success = $Self->DatabaseXMLExecute( XML => $Param{DatabaseXMLString} );
+        if ( !$Success ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => 'Error executing supplied XML!',
+            );
+            return;
+        }
+    }
+
+    return 1;
+}
+
+=head2 TestDatabaseCleanup()
+
+Clears temporary database used in the test. Always call C<ProvideTestDatabase()> called first, in
+order to set it up.
+
+Please note that all database contents will be dropped, USE WITH CARE!
+
+    $Helper->TestDatabaseCleanup();
+
+=cut
+
+sub TestDatabaseCleanup {
+    my ( $Self, %Param ) = @_;
+
+    if ( !$Self->{ProvideTestDatabase} ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => 'Please call ProvideTestDatabase() first!',
+        );
+        return;
+    }
+
+    my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
+
+    # Get a list of all tables in database.
+    my @Tables = $DBObject->ListTables();
+
+    if ( scalar @Tables ) {
+        my $TableList = join ', ', sort @Tables;
+        my $DBType = $DBObject->{'DB::Type'};
+
+        if ( $DBType eq 'mysql' ) {
+
+            # Turn off checking foreign key constraints temporarily.
+            $DBObject->Do( SQL => 'SET foreign_key_checks = 0' );
+
+            # Drop all found tables in the database in same statement.
+            $DBObject->Do( SQL => "DROP TABLE $TableList" );
+
+            # Turn back on checking foreign key constraints.
+            $DBObject->Do( SQL => 'SET foreign_key_checks = 1' );
+        }
+        elsif ( $DBType eq 'postgresql' ) {
+
+            # Drop all found tables in the database in same statement.
+            $DBObject->Do( SQL => "DROP TABLE $TableList" );
+        }
+        elsif ( $DBType eq 'oracle' ) {
+
+            # Drop each found table in the database in a separate statement.
+            for my $Table (@Tables) {
+                $DBObject->Do( SQL => "DROP TABLE $Table CASCADE CONSTRAINTS" );
+            }
+        }
+
+        # Check if all tables have been dropped.
+        @Tables = $DBObject->ListTables();
+        return if scalar @Tables;
+    }
+
+    return 1;
+}
+
+=head2 DatabaseXMLExecute()
+
+Execute supplied XML against current database. Content of supplied XML parameter must be valid OTRS
+database XML schema.
+
+    $Helper->DatabaseXMLExecute(
+        XML => $XML,     # (required) OTRS database XML schema to execute
+    );
+
+=cut
+
+sub DatabaseXMLExecute {
+    my ( $Self, %Param ) = @_;
+
+    if ( !$Param{XML} ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => 'Need XML!',
+        );
+        return;
+    }
+
+    my @XMLArray = $Kernel::OM->Get('Kernel::System::XML')->XMLParse( String => $Param{XML} );
+    if ( !@XMLArray ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => 'Could not parse XML!',
+        );
+        return;
+    }
+
+    my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
+
+    my @SQLPre = $DBObject->SQLProcessor(
+        Database => \@XMLArray,
+    );
+    if ( !@SQLPre ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => 'Could not generate SQL!',
+        );
+        return;
+    }
+
+    my @SQLPost = $DBObject->SQLProcessorPost();
+
+    for my $SQL ( @SQLPre, @SQLPost ) {
+        my $Success = $DBObject->Do( SQL => $SQL );
+        if ( !$Success ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => 'Database action failed: ' . $DBObject->Error(),
+            );
+            return;
+        }
+    }
+
+    return 1;
+}
+
+1;
 
 =head1 TERMS AND CONDITIONS
 

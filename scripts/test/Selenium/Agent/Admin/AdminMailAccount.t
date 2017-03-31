@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -43,6 +43,12 @@ $Selenium->RunTest(
         $Selenium->find_element( "table thead tr th", 'css' );
         $Selenium->find_element( "table tbody tr td", 'css' );
 
+        # check breadcrumb on Overview screen
+        $Self->True(
+            $Selenium->find_element( '.BreadCrumb', 'css' ),
+            "Breadcrumb is found on Overview screen.",
+        );
+
         # check "Add mail account" link
         $Selenium->find_element("//a[contains(\@href, \'Action=AdminMailAccount;Subaction=AddNew' )]")->VerifiedClick();
 
@@ -53,6 +59,19 @@ $Selenium->RunTest(
             my $Element = $Selenium->find_element( "#$ID", 'css' );
             $Element->is_enabled();
             $Element->is_displayed();
+        }
+
+        # check breadcrumb on Add screen
+        my $Count = 1;
+        my $IsLinkedBreadcrumbText;
+        for my $BreadcrumbText ( 'Mail Account Management', 'Add Mail Account' ) {
+            $Self->Is(
+                $Selenium->execute_script("return \$('.BreadCrumb li:eq($Count)').text().trim()"),
+                $BreadcrumbText,
+                "Breadcrumb text '$BreadcrumbText' is found on screen"
+            );
+
+            $Count++;
         }
 
         # add real test mail account
@@ -75,6 +94,75 @@ $Selenium->RunTest(
 
         # edit test mail account and set it to invalid
         $Selenium->find_element( $TestMailHost, 'link_text' )->VerifiedClick();
+
+        # check breadcrumb on Edit screen
+        $Count = 1;
+        for my $BreadcrumbText (
+            'Mail Account Management',
+            'Edit Mail Account for host "pop3.example.com" and user account "' . $RandomID . '"'
+            )
+        {
+            $Self->Is(
+                $Selenium->execute_script("return \$('.BreadCrumb li:eq($Count)').text().trim()"),
+                $BreadcrumbText,
+                "Breadcrumb text '$BreadcrumbText' is found on screen"
+            );
+
+            $Count++;
+        }
+
+        my %Check = (
+            Type          => 'IMAP',
+            LoginEdit     => $RandomID,
+            PasswordEdit  => 'otrs-dummy-password-placeholder',    # real password is not sent to user
+            HostEdit      => 'pop3.example.com',
+            Trusted       => 0,
+            DispatchingBy => 'Queue',
+            Comment       => "Selenium test AdminMailAccount",
+        );
+
+        for my $CheckKey ( sort keys %Check ) {
+
+            $Self->Is(
+                $Selenium->find_element( "#$CheckKey", 'css' )->get_value(),
+                $Check{$CheckKey},
+                "Value '$CheckKey' of created email account",
+            );
+        }
+
+        my $MailAccountID = $Selenium->find_element( 'input[name=ID]', 'css' )->get_value();
+        my %MailAccount = $Kernel::OM->Get('Kernel::System::MailAccount')->MailAccountGet( ID => $MailAccountID );
+        $Self->Is(
+            scalar $MailAccount{Password},
+            'SomePassword',
+            'Password after adding',    # make sure real password was stored
+        );
+
+        # Save current screen and verify that the password is not changed even though it was not sent to the user.
+        $Selenium->find_element( "#LoginEdit", 'css' )->VerifiedSubmit();
+
+        $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AdminMailAccount;Subaction=Update;ID=$MailAccountID");
+        %MailAccount = $Kernel::OM->Get('Kernel::System::MailAccount')->MailAccountGet( ID => $MailAccountID );
+        $Self->Is(
+            scalar $MailAccount{Password},
+            'SomePassword',
+            'Password after edit without change'
+        );
+
+        # Update password and verify that it is changed in DB.
+        $Selenium->find_element( "#PasswordEdit", 'css' )->clear();
+        $Selenium->find_element( "#PasswordEdit", 'css' )->send_keys("SomePassword2");
+        $Selenium->find_element( "#LoginEdit",    'css' )->VerifiedSubmit();
+
+        %MailAccount = $Kernel::OM->Get('Kernel::System::MailAccount')->MailAccountGet( ID => $MailAccountID );
+        $Self->Is(
+            scalar $MailAccount{Password},
+            'SomePassword2',
+            'Password after change'
+        );
+
+        # disable account
+        $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AdminMailAccount;Subaction=Update;ID=$MailAccountID");
 
         $Selenium->find_element( "#HostEdit", 'css' )->clear();
         $Selenium->find_element( "#HostEdit", 'css' )->send_keys("pop3edit.example.com");
@@ -170,18 +258,24 @@ $Selenium->RunTest(
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AdminMailAccount");
 
         # test mail account delete button
-        my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
-        my $Success  = $DBObject->Prepare(
-            SQL => "SELECT id FROM mail_account WHERE login='$RandomID'",
+        $Selenium->find_element("//a[contains(\@data-query-string, \'Subaction=Delete;ID=$MailAccountID' )]")->click();
+        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $(".Dialog:visible").length === 1;' );
+
+        # verify delete dialog message
+        my $DeleteMessage = 'Do you really want to delete this mail account?';
+        $Self->True(
+            index( $Selenium->get_page_source(), $DeleteMessage ) > -1,
+            "Delete message is found",
         );
 
-        if ($Success) {
-            my $MailAccountID;
-            while ( my @Row = $DBObject->FetchrowArray() ) {
-                $MailAccountID = $Row[0];
-            }
-            $Selenium->find_element("//a[contains(\@href, \'Subaction=Delete;ID=$MailAccountID' )]")->VerifiedClick();
-        }
+        # confirm delete action
+        $Selenium->find_element( "#DialogButton1", 'css' )->VerifiedClick();
+
+        # check if mail account is deleted
+        $Self->True(
+            index( $Selenium->get_page_source(), $TestMailHost ) == -1,
+            "$TestMailHost is not found on page after deleting",
+        );
 
     }
 

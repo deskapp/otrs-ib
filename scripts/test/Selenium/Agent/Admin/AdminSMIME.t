@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -20,11 +20,6 @@ $Selenium->RunTest(
     sub {
 
         # get helper object
-        $Kernel::OM->ObjectParamAdd(
-            'Kernel::System::UnitTest::Helper' => {
-                RestoreSystemConfiguration => 1,
-            },
-        );
         my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 
         # create test user and login
@@ -39,8 +34,7 @@ $Selenium->RunTest(
         );
 
         # get needed objects
-        my $SysConfigObject = $Kernel::OM->Get('Kernel::System::SysConfig');
-        my $ConfigObject    = $Kernel::OM->Get('Kernel::Config');
+        my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
         # create directory for certificates and private keys
         my $CertPath    = $ConfigObject->Get('Home') . "/var/tmp/certs";
@@ -54,17 +48,20 @@ $Selenium->RunTest(
         my $ScriptAlias = $ConfigObject->Get('ScriptAlias');
 
         # disabled SMIME in config
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'SMIME',
             Value => 0
         );
 
-        # let mod_perl / Apache2::Reload pick up the changed configuration
-        sleep 1;
-
         # navigate to AdminSMIME screen
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AdminSMIME");
+
+        # check breadcrumb on Overview screen
+        $Self->True(
+            $Selenium->find_element( '.BreadCrumb', 'css' ),
+            "Breadcrumb is found on Overview screen.",
+        );
 
         # check widget sidebar when SMIME sysconfig is disabled
         $Self->True(
@@ -77,26 +74,23 @@ $Selenium->RunTest(
         );
 
         # enable SMIME in config
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'SMIME',
             Value => 1
         );
 
         # set SMIME paths in sysConfig
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'SMIME::CertPath',
             Value => '/SomeCertPath',
         );
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'SMIME::PrivatePath',
             Value => '/SomePrivatePath',
         );
-
-        # let mod_perl / Apache2::Reload pick up the changed configuration
-        sleep 1;
 
         # refresh AdminSMIME screen
         $Selenium->VerifiedRefresh();
@@ -112,19 +106,16 @@ $Selenium->RunTest(
         );
 
         # set SMIME paths in sysConfig
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'SMIME::CertPath',
             Value => $CertPath,
         );
-        $SysConfigObject->ConfigItemUpdate(
+        $Helper->ConfigSettingChange(
             Valid => 1,
             Key   => 'SMIME::PrivatePath',
             Value => $PrivatePath,
         );
-
-        # let mod_perl / Apache2::Reload pick up the changed configuration
-        sleep 1;
 
         # refresh AdminSMIME screen
         $Selenium->VerifiedRefresh();
@@ -135,9 +126,22 @@ $Selenium->RunTest(
         $Selenium->find_element( "table tbody tr td", 'css' );
         $Selenium->find_element( "#FilterSMIME",      'css' );
 
-        # click 'Add Certificate'
+        # click 'Add certificate'
         $Selenium->find_element("//a[contains(\@href, \'Subaction=ShowAddCertificate' )]")->VerifiedClick();
 
+        # check breadcrumb on 'Add Certificate' screen
+        my $Count = 1;
+        for my $BreadcrumbText ( 'S/MIME Management', 'Add Certificate' ) {
+            $Self->Is(
+                $Selenium->execute_script("return \$('.BreadCrumb li:eq($Count)').text().trim()"),
+                $BreadcrumbText,
+                "Breadcrumb text '$BreadcrumbText' is found on screen"
+            );
+
+            $Count++;
+        }
+
+        # add certificate
         my $CertLocation = $ConfigObject->Get('Home')
             . "/scripts/test/sample/SMIME/SMIMECertificate-smimeuser1.crt";
 
@@ -147,6 +151,19 @@ $Selenium->RunTest(
         # click 'Add private key'
         $Selenium->find_element("//a[contains(\@href, \'Subaction=ShowAddPrivate' )]")->VerifiedClick();
 
+        # check breadcrumb on 'Add Private Key' screen
+        $Count = 1;
+        for my $BreadcrumbText ( 'S/MIME Management', 'Add Private Key' ) {
+            $Self->Is(
+                $Selenium->execute_script("return \$('.BreadCrumb li:eq($Count)').text().trim()"),
+                $BreadcrumbText,
+                "Breadcrumb text '$BreadcrumbText' is found on screen"
+            );
+
+            $Count++;
+        }
+
+        # add private key
         my $PrivateLocation = $ConfigObject->Get('Home')
             . "/scripts/test/sample/SMIME/SMIMEPrivateKey-smimeuser1.pem";
 
@@ -155,14 +172,19 @@ $Selenium->RunTest(
         $Selenium->find_element("//button[\@type='submit']")->VerifiedClick();
 
         # click to 'Read certificate', verify JS will open a pop up window
-        $Selenium->find_element( ".CertificateRead", 'css' )->click();
+        $Selenium->find_element( ".CertificateRead", 'css' )->VerifiedClick();
 
         $Selenium->WaitFor( WindowCount => 2 );
         my $Handles = $Selenium->get_window_handles();
         $Selenium->switch_to_window( $Handles->[1] );
 
+        # Wait for page to be fully loaded
+        $Selenium->WaitFor(
+            JavaScript => 'return typeof($) === "function" && $("a.CancelClosePopup:visible").length === 1;'
+        );
+
         $Self->True(
-            $Selenium->find_element( ".CancelClosePopup", 'css' )->click(),
+            $Selenium->find_element( "a.CancelClosePopup", 'css' )->click(),
             "Pop-up window is found - JS is successful"
         );
 
@@ -171,16 +193,24 @@ $Selenium->RunTest(
         $Selenium->switch_to_window( $Handles->[0] );
 
         # check for test created Certificate and Privatekey and delete them
-        for my $TestSMIME (qw(key cert))
-        {
+        for my $TestSMIME (qw(key cert)) {
+
             $Self->True(
                 index( $Selenium->get_page_source(), "Type=$TestSMIME;Filename=" ) > -1,
-                "Test $TestSMIME SMIME found on table"
+                "Test $TestSMIME SMIME found on table",
             );
+
             $Selenium->find_element("//a[contains(\@href, \'Subaction=Delete;Type=$TestSMIME;Filename=' )]")->click();
+
+            $Selenium->WaitFor( AlertPresent => 1 );
 
             # accept JS delete confirmation dialog
             $Selenium->accept_alert();
+
+            $Selenium->WaitFor(
+                JavaScript =>
+                    'return typeof(Core) == "object" && typeof(Core.App) == "object" && Core.App.PageLoadComplete'
+            );
         }
 
         # delete needed test directories
@@ -191,9 +221,7 @@ $Selenium->RunTest(
                 "Directory deleted - '$Directory'",
             );
         }
-
     }
-
 );
 
 1;

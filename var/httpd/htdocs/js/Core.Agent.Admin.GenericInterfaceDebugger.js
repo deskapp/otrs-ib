@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -59,12 +59,18 @@ Core.Agent.Admin.GenericInterfaceDebugger = (function (TargetNS) {
      * @name Init
      * @memberof Core.Agent.Admin.GenericInterfaceDebugger
      * @function
-     * @param {Number} WebserviceID - ID of the webservice
      * @description
      *      Initializes the module functions.
      */
-    TargetNS.Init = function (WebserviceID) {
-        TargetNS.WebserviceID = parseInt(WebserviceID, 10);
+    TargetNS.Init = function () {
+
+        TargetNS.WebserviceID = parseInt(Core.Config.Get('WebserviceID'), 10);
+
+        // add click binds
+        $('#FilterRefresh').on('click', TargetNS.GetRequestList);
+        $('#DeleteButton').on('click', TargetNS.ShowDeleteDialog);
+
+        TargetNS.GetRequestList();
     };
 
     /**
@@ -83,7 +89,6 @@ Core.Agent.Admin.GenericInterfaceDebugger = (function (TargetNS) {
             FilterRemoteIP: $('#FilterRemoteIP').val() || '',
             FilterType: $('#FilterType').val() || ''
         };
-
 
         Data.FilterFrom = FormatISODate($('#FilterFromYear').val(), $('#FilterFromMonth').val(), $('#FilterFromDay').val()) + ' 00:00:00';
         Data.FilterTo = FormatISODate($('#FilterToYear').val(), $('#FilterToMonth').val(), $('#FilterToDay').val()) + ' 23:59:59';
@@ -118,7 +123,7 @@ Core.Agent.Admin.GenericInterfaceDebugger = (function (TargetNS) {
 
             $('#RequestList tbody').html(HTML);
 
-            $('#RequestList a').bind('click', function() {
+            $('#RequestList a').on('click', function() {
                 var CommunicationID = $(this).blur().parents('tr').find('input.CommunicationID').val();
 
                 TargetNS.LoadCommunicationDetails(CommunicationID);
@@ -243,6 +248,8 @@ Core.Agent.Admin.GenericInterfaceDebugger = (function (TargetNS) {
 
         Event.stopPropagation();
     };
+
+    Core.Init.RegisterNamespace(TargetNS, 'APP_MODULE');
 
     return TargetNS;
 }(Core.Agent.Admin.GenericInterfaceDebugger || {}));

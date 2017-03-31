@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -25,14 +25,33 @@ Core.Agent.Admin.GenericInterfaceOperation = (function (TargetNS) {
      * @name Init
      * @memberof Core.Agent.Admin.GenericInterfaceOperation
      * @function
-     * @param {Object} Params - Initialization and internationalization parameters.
      * @description
-     *      This function initialize the module.
+     *      This function initialize the module functionality.
      */
-    TargetNS.Init = function (Params) {
-        TargetNS.WebserviceID = parseInt(Params.WebserviceID, 10);
-        TargetNS.Operation = Params.Operation;
-        TargetNS.Action = Params.Action;
+    TargetNS.Init = function () {
+
+        TargetNS.WebserviceID = parseInt(Core.Config.Get('WebserviceID'), 10);
+        TargetNS.Operation = Core.Config.Get('Operation');
+        TargetNS.Action = 'AdminGenericInterfaceOperationDefault';
+
+        $('#MappingInboundConfigureButton').on('click', function() {
+            TargetNS.Redirect('MappingInbound');
+        });
+
+        $('#MappingOutboundConfigureButton').on('click', function() {
+            TargetNS.Redirect('MappingOutbound');
+        });
+
+        $('#SaveAndFinishButton').on('click', function(){
+            $('#ReturnToWebservice').val(1);
+        });
+
+        $('.RegisterChange').on('change.RegisterChange keyup.RegisterChange', function () {
+            $('.HideOnChange').hide();
+            $('.ShowOnChange').show();
+        });
+
+        $('#DeleteButton').on('click', TargetNS.ShowDeleteDialog);
     };
 
     /**
@@ -80,7 +99,6 @@ Core.Agent.Admin.GenericInterfaceOperation = (function (TargetNS) {
                                 WebserviceID: TargetNS.WebserviceID
                             });
 
-
                         }, 'json');
 
                        Core.UI.Dialog.CloseDialog($('#DeleteDialog'));
@@ -91,6 +109,36 @@ Core.Agent.Admin.GenericInterfaceOperation = (function (TargetNS) {
 
         Event.stopPropagation();
     };
+
+    /**
+     * @name Redirect
+     * @memberof Core.Agent.Admin.GenericInterfaceOperation
+     * @function
+     * @param {String} ConfigKey
+     * @description
+     *      Redirects.
+     */
+    TargetNS.Redirect = function(ConfigKey) {
+        var ConfigElement;
+
+        // get the Config Element name, if none it will have "null" value
+        ConfigElement = $('#' + ConfigKey + 'ConfigDialog').val();
+
+        // check is config element is a valid scring
+        if (ConfigElement !== null) {
+
+            // redirect to correct url
+            Core.App.InternalRedirect({
+                Action: ConfigElement,
+                Subaction: 'Change',
+                WebserviceID: TargetNS.WebserviceID,
+                Operation: TargetNS.Operation,
+                Direction: ConfigKey
+            });
+        }
+    };
+
+    Core.Init.RegisterNamespace(TargetNS, 'APP_MODULE');
 
     return TargetNS;
 }(Core.Agent.Admin.GenericInterfaceOperation || {}));
