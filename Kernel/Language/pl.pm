@@ -1,7 +1,7 @@
 # --
 # Copyright (C) 2003-2010 Tomasz Melissa <janek at rumianek.com>
 # Copyright (C) 2009 Artur Skalski <skal.ar at wp.pl>
-# Copyright (C) 2011-2013 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+# Copyright (C) 2011-2017 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # Copyright (C) 2014 Wojciech Myrda <wmyrda at auticon.pl>, http://www.auticon.pl
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
@@ -469,9 +469,9 @@ sub Data {
         'New Dynamic Field Values' => 'Wartości nowego pola dynamicznego',
         'Archive selected tickets' => 'Zarchiwizuj zaznaczone zgłoszenia',
         'Add Note' => 'Dodaj notatkę',
-        'Time units' => 'Zaraportowany czas obsługi',
-        'Execute Ticket Commands' => 'Wykonaj polecenia zgłoszeń',
-        'Send agent/customer notifications on changes' => 'Wyślij powidomienia agentowi/klientowi przy zmianie ',
+        'Time units' => 'Czas pracy',
+        'Execute Ticket Commands' => 'Wykonaj polecenia zgłoszenia',
+        'Send agent/customer notifications on changes' => 'Wyślij powidomienia agentowi/klientowi przy zmianach',
         'CMD' => 'linia poleceń',
         'This command will be executed. ARG[0] will be the ticket number. ARG[1] the ticket id.' =>
             'Komenda zostanie wykonana. ARG[0] to numer zgłoszenia. ARG[1] to id zgłoszenia.',
@@ -2764,11 +2764,11 @@ sub Data {
         'Dispatching by selected Queue.' => 'Przydzielaj na podstawie wybranej kolejki.',
 
         # Perl Module: Kernel/Modules/AdminNotificationEvent.pm
-        'Notification updated!' => '',
-        'Notification added!' => '',
+        'Notification updated!' => 'Powiadomienie zaktualizowane!',
+        'Notification added!' => 'Powiadomienie dodane!',
         'There was an error getting data for Notification with ID:%s!' =>
-            '',
-        'Unknown Notification %s!' => '',
+            'Błąd przy pobieraniu danych powiadomienia z ID:%s!',
+        'Unknown Notification %s!' => 'Nieznane powiadomienie %s!',
         'There was an error creating the Notification' => '',
         'Notifications could not be Imported due to a unknown error, please check OTRS logs for more information' =>
             '',
@@ -3056,7 +3056,7 @@ sub Data {
         'Previous Owner' => 'Poprzedni właściciel',
         'wrote' => 'napisał(a)',
         'Message from' => 'Wiadomość od',
-        'End message' => 'Wiadomość kończąca',
+        'End message' => 'Koniec wiadomości',
 
         # Perl Module: Kernel/Modules/AgentTicketBounce.pm
         '%s is needed!' => '',
@@ -3101,7 +3101,7 @@ sub Data {
 
         # Perl Module: Kernel/Modules/AgentTicketForward.pm
         'Forwarded message from' => 'Wiadomość przekazana od',
-        'End forwarded message' => 'Wiadomość kończąca przekazana od',
+        'End forwarded message' => 'Koniec przekazanej wiadomości',
 
         # Perl Module: Kernel/Modules/AgentTicketHistory.pm
         'Can\'t show history, no TicketID is given!' => '',
@@ -3278,7 +3278,7 @@ sub Data {
         'Forward' => 'Prześlij dalej',
         'Forward article via mail' => 'Prześlij wiadomość dalej przez e-mail',
         'Bounce Article to a different mail address' => 'Przekaż wiadomość na inny adres e-mail',
-        'Bounce' => 'Przekaż',
+        'Bounce' => 'Odbij',
         'Split this article' => 'Podziel wiadomość',
         'Split' => 'Podziel',
         'Print this article' => 'Wydrukuj tą wiadomość',
@@ -3458,7 +3458,7 @@ sub Data {
 
         # Perl Module: Kernel/Output/HTML/Notification/OutofOfficeCheck.pm
         'You have Out of Office enabled, would you like to disable it?' =>
-            'Usługa wiadomości o  nieobecności jest aktywna, czy chcesz ją wyłączyć?',
+            'Masz włączoną nieobecność - czy chcesz ją wyłączyć?',
 
         # Perl Module: Kernel/Output/HTML/Notification/UIDCheck.pm
         'Don\'t use the Superuser account to work with OTRS! Create new Agents and work with these accounts instead.' =>
@@ -4349,7 +4349,7 @@ Thanks for your help!
         '(UserLogin) Firstname Lastname' => '(Login) Imię',
         '(UserLogin) Lastname Firstname' => '',
         '(UserLogin) Lastname, Firstname' => '(Login) Nazwisko',
-        '*** out of office until %s (%s d left) ***' => '',
+        '*** out of office until %s (%s d left) ***' => '*** poza biurem do %s (pozostało %s d) ***',
         '10 minutes' => '10 minut',
         '100 (Expert)' => '',
         '15 minutes' => '15 minut',
@@ -4363,7 +4363,7 @@ Thanks for your help!
         'ACL module that allows closing parent tickets only if all its children are already closed ("State" shows which states are not available for the parent ticket until all child tickets are closed).' =>
             'Moduł ACL pozwala na zamykanie nadrzędnych zgłoszeń, tylko wówczas, gdy wszystkie podrzędne są już zamknięte ("Stan" pokazuje, które stany nie są dostępne dla zgłoszenia nadrzędnego, aż do momentu zamknięcia wszystkich podrzędnych).',
         'Access Control Lists (ACL)' => 'Lista Kontroli dostępu (ACL)',
-        'AccountedTime' => 'Ubiegły czas',
+        'AccountedTime' => 'Zaraportowany czas',
         'Activates a blinking mechanism of the queue that contains the oldest ticket.' =>
             'Aktywuje mechanizm pulsowania kolejki dla najstarszych zgłoszeń.',
         'Activates lost password feature for agents, in the agent interface.' =>
@@ -4652,12 +4652,12 @@ Thanks for your help!
         'Create and manage ticket types.' => 'Ustawienia typów zgłoszeń.',
         'Create and manage web services.' => 'Zarządzanie serwisami sieciowymi.',
         'Create new Ticket.' => '',
-        'Create new email ticket and send this out (outbound).' => '',
-        'Create new email ticket.' => '',
-        'Create new phone ticket (inbound).' => '',
-        'Create new phone ticket.' => '',
-        'Create new process ticket.' => '',
-        'Create tickets.' => '',
+        'Create new email ticket and send this out (outbound).' => 'Utwórz nowe zgłoszenie e-mail i wyślij je.',
+        'Create new email ticket.' => 'Utwórz nowe zgłoszenie e-mail.',
+        'Create new phone ticket (inbound).' => 'Utwórz nowe zgłoszenie telefoniczne (przychodzące).',
+        'Create new phone ticket.' => 'Utwórz nowe zgłoszenie telefoniczne.',
+        'Create new process ticket.' => 'Utwórz nowe zgłoszenie procesowe.',
+        'Create tickets.' => 'Utwórz zgłoszenia.',
         'Croatian' => '',
         'Custom RSS Feed' => '',
         'Custom text for the page shown to customers that have no tickets yet (if you need those text translated add them to a custom translation module).' =>
@@ -6016,7 +6016,7 @@ Thanks for your help!
         'Out Of Office Time' => 'Przebywam poza biurem',
         'Overloads (redefines) existing functions in Kernel::System::Ticket. Used to easily add customizations.' =>
             '',
-        'Overview Escalated Tickets.' => '',
+        'Overview Escalated Tickets.' => 'Przegląd zgłoszeń eskalowanych.',
         'Overview Refresh Time' => 'Czas odświeżania przeglądu',
         'Overview of all escalated tickets.' => '',
         'Overview of all open Tickets.' => 'Przegląd wszystkich otwartych zgłoszeń.',
