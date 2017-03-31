@@ -6338,7 +6338,7 @@ Thanks for your help!
             '',
         'Select the main interface language.' => '',
         'Select your frontend Theme.' => 'Wybierz schemat wyglądu systemu.',
-        'Select your preferred layout for OTRS.' => '',
+        'Select your preferred layout.' => 'Wybierz preferowany wygląd.',
         'Selects the cache backend to use.' => 'Wybiera program cache do użycia',
         'Selects the module to handle uploads via the web interface. "DB" stores all uploads in the database, "FS" uses the file system.' =>
             '',
