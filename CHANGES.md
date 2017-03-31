@@ -1,4 +1,5 @@
 #5.0.18 2017-03-28
+ - 2017-03-31 Allow to hide transifex link using AdsAndExternalReportsEnabled.
  - 2017-03-31 PL translation update.
  - 2017-02-22 Updated translations, thanks to all translators.
  - 2017-03-22 Fixed bug#[12716](https://bugs.otrs.org/show_bug.cgi?id=12716)(PR#1667) - Activity dialog causes an Error in customer interface. Thanks to S7!
