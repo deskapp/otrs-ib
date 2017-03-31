@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -89,10 +89,12 @@ sub GetObjectAttributes {
         $ValidAgent = 1;
     }
 
-    # get user list
+    # Get user list without the out of office message, because of the caching in the statistics
+    #   and not meaningful with a date selection.
     my %UserList = $UserObject->UserList(
-        Type  => 'Long',
-        Valid => $ValidAgent,
+        Type          => 'Long',
+        Valid         => $ValidAgent,
+        NoOutOfOffice => 1,
     );
 
     # get state list
@@ -124,7 +126,7 @@ sub GetObjectAttributes {
         20        => 20,
         50        => 50,
         100       => 100,
-        unlimited => 'unlimited',
+        unlimited => Translatable('unlimited'),
     );
 
     my %TicketAttributes = %{ $Self->_TicketAttributes() };
@@ -152,8 +154,8 @@ sub GetObjectAttributes {
     }
 
     my %SortSequence = (
-        Up   => 'ascending',
-        Down => 'descending',
+        Up   => Translatable('ascending'),
+        Down => Translatable('descending'),
     );
 
     my @ObjectAttributes = (
@@ -304,14 +306,6 @@ sub GetObjectAttributes {
             UseAsValueSeries => 0,
             UseAsRestriction => 1,
             Element          => 'Title',
-            Block            => 'InputField',
-        },
-        {
-            Name             => Translatable('CustomerUserLogin'),
-            UseAsXvalue      => 0,
-            UseAsValueSeries => 0,
-            UseAsRestriction => 1,
-            Element          => 'CustomerUserLogin',
             Block            => 'InputField',
         },
         {
@@ -604,16 +598,77 @@ sub GetObjectAttributes {
     }
     else {
 
+        my @CustomerIDAttributes = (
+            {
+                Name             => Translatable('CustomerID (complex search)'),
+                UseAsXvalue      => 0,
+                UseAsValueSeries => 0,
+                UseAsRestriction => 1,
+                Element          => 'CustomerID',
+                Block            => 'InputField',
+            },
+            {
+                Name             => Translatable('CustomerID (exact match)'),
+                UseAsXvalue      => 0,
+                UseAsValueSeries => 0,
+                UseAsRestriction => 1,
+                Element          => 'CustomerIDRaw',
+                Block            => 'InputField',
+            },
+        );
+
+        push @ObjectAttributes, @CustomerIDAttributes;
+    }
+
+    if ( $ConfigObject->Get('Stats::CustomerUserLoginsAsMultiSelect') ) {
+
+        # Get all CustomerUserLogins which are related to a tiket.
+        $DBObject->Prepare(
+            SQL => "SELECT DISTINCT customer_user_id FROM ticket",
+        );
+
+        # fetch the result
+        my %CustomerUserIDs;
+        while ( my @Row = $DBObject->FetchrowArray() ) {
+            if ( $Row[0] ) {
+                $CustomerUserIDs{ $Row[0] } = $Row[0];
+            }
+        }
+
         my %ObjectAttribute = (
-            Name             => Translatable('CustomerID'),
+            Name             => Translatable('CustomerUserLogin'),
             UseAsXvalue      => 0,
             UseAsValueSeries => 0,
             UseAsRestriction => 1,
-            Element          => 'CustomerID',
-            Block            => 'InputField',
+            Element          => 'CustomerUserLoginRaw',
+            Block            => 'MultiSelectField',
+            Values           => \%CustomerUserIDs,
         );
 
         push @ObjectAttributes, \%ObjectAttribute;
+    }
+    else {
+
+        my @CustomerIDAttributes = (
+            {
+                Name             => Translatable('CustomerUserLogin (complex search)'),
+                UseAsXvalue      => 0,
+                UseAsValueSeries => 0,
+                UseAsRestriction => 1,
+                Element          => 'CustomerUserLogin',
+                Block            => 'InputField',
+            },
+            {
+                Name             => Translatable('CustomerUserLogin (exact match)'),
+                UseAsXvalue      => 0,
+                UseAsValueSeries => 0,
+                UseAsRestriction => 1,
+                Element          => 'CustomerUserLoginRaw',
+                Block            => 'InputField',
+            },
+        );
+
+        push @ObjectAttributes, @CustomerIDAttributes;
     }
 
     if ( $ConfigObject->Get('Ticket::ArchiveSystem') ) {
@@ -627,9 +682,9 @@ sub GetObjectAttributes {
             Block            => 'SelectField',
             Translation      => 1,
             Values           => {
-                ArchivedTickets    => 'Archived tickets',
-                NotArchivedTickets => 'Unarchived tickets',
-                AllTickets         => 'All tickets',
+                ArchivedTickets    => Translatable('Archived tickets'),
+                NotArchivedTickets => Translatable('Unarchived tickets'),
+                AllTickets         => Translatable('All tickets'),
             },
         );
 
@@ -736,7 +791,7 @@ sub GetObjectAttributes {
                     Element          => $DynamicFieldStatsParameter->{Element},
                     Block            => $DynamicFieldStatsParameter->{Block},
                     Values           => $DynamicFieldStatsParameter->{Values},
-                    Translation      => 0,
+                    Translation      => $DynamicFieldStatsParameter->{TranslatableValues} || 0,
                     IsDynamicField   => 1,
                     ShowAsTree       => $DynamicFieldConfig->{Config}->{TreeView} || 0,
                 );
@@ -802,6 +857,12 @@ sub GetStatTable {
         'CustomerID' => 1,
         'Title'      => 1,
     );
+
+    # Map the CustomerID search parameter to CustomerIDRaw search parameter for the
+    #   exact search match, if the 'Stats::CustomerIDAsMultiSelect' is active.
+    if ( $Kernel::OM->Get('Kernel::Config')->Get('Stats::CustomerIDAsMultiSelect') ) {
+        $Param{Restrictions}->{CustomerIDRaw} = $Param{Restrictions}->{CustomerID};
+    }
 
     ATTRIBUTE:
     for my $Key ( sort keys %{ $Param{Restrictions} } ) {

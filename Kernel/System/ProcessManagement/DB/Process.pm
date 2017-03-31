@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -731,6 +731,7 @@ get a Process list
     $List = {
         'P1' => 'NameOfProcess',
     }
+
 =cut
 
 sub ProcessList {

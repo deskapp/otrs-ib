@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -94,11 +94,30 @@ $Selenium->RunTest(
 
         $Selenium->find_element( "#EditName", 'css' )->send_keys($PostMasterRandomID);
         $Selenium->execute_script("\$('#MatchHeader1').val('Body').trigger('redraw.InputField').trigger('change');");
-        $Selenium->find_element( "#MatchNot1",   'css' )->click();
+        $Selenium->find_element( "#MatchNot1",   'css' )->VerifiedClick();
         $Selenium->find_element( "#MatchValue1", 'css' )->send_keys($PostMasterBody);
         $Selenium->execute_script(
             "\$('#SetHeader1').val('X-OTRS-Priority').trigger('redraw.InputField').trigger('change');"
         );
+
+        # make sure that "Body" is disabled on other condition selects
+        my $BodyDisabled
+            = $Selenium->execute_script("return \$('#MatchHeader2 option[Value=\"Body\"]').attr('disabled');");
+        $Self->Is(
+            $BodyDisabled,
+            "disabled",
+            "Body is disabled in #MatchHeader2."
+        );
+
+        # make sure that "X-OTRS-Priority" is disabled on other selects
+        my $XOTRSPriorityDisabled
+            = $Selenium->execute_script("return \$('#SetHeader2 option[Value=\"X-OTRS-Priority\"]').attr('disabled');");
+        $Self->Is(
+            $XOTRSPriorityDisabled,
+            "disabled",
+            "X-OTRS-Priority is disabled in #SetHeader2."
+        );
+
         $Selenium->find_element( "#SetValue1", 'css' )->send_keys($PostMasterPriority);
         $Selenium->find_element( "#EditName",  'css' )->VerifiedSubmit();
 
@@ -146,7 +165,7 @@ $Selenium->RunTest(
         my $EditPostMasterPriority = "4 high";
 
         $Selenium->execute_script("\$('#StopAfterMatch').val('1').trigger('redraw.InputField').trigger('change');");
-        $Selenium->find_element( "#MatchNot1", 'css' )->click();
+        $Selenium->find_element( "#MatchNot1", 'css' )->VerifiedClick();
         $Selenium->find_element( "#SetValue1", 'css' )->clear();
         $Selenium->find_element( "#SetValue1", 'css' )->send_keys($EditPostMasterPriority);
         $Selenium->find_element( "#EditName",  'css' )->VerifiedSubmit();
@@ -170,13 +189,42 @@ $Selenium->RunTest(
             "#SetValue1 updated value",
         );
 
+        # Make sure that 0 can be stored in match and set as well (see http://bugs.otrs.org/show_bug.cgi?id=12218)
+        $Selenium->find_element( "#MatchValue1", 'css' )->clear();
+        $Selenium->find_element( "#MatchValue1", 'css' )->send_keys('0');
+        $Selenium->find_element( "#SetValue1",   'css' )->clear();
+        $Selenium->find_element( "#SetValue1",   'css' )->send_keys('0');
+        $Selenium->find_element( "#EditName",    'css' )->VerifiedSubmit();
+
+        # check edited test PostMasterFilter values
+        $Selenium->find_element( $PostMasterRandomID, 'link_text' )->VerifiedClick();
+
+        $Self->Is(
+            $Selenium->find_element( '#MatchValue1', 'css' )->get_value(),
+            0,
+            "#SetValue1 updated value",
+        );
+
+        $Self->Is(
+            $Selenium->find_element( '#SetValue1', 'css' )->get_value(),
+            0,
+            "#SetValue1 updated value",
+        );
+
         # go back to AdminPostMasterFilter screen
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AdminPostMasterFilter");
 
         # delete test PostMasterFilter with delete button
-        $Selenium->find_element("//a[contains(\@href, \'Subaction=Delete;Name=$PostMasterRandomID' )]")
-            ->VerifiedClick();
+        $Selenium->find_element("//a[contains(\@href, \'Subaction=Delete;Name=$PostMasterRandomID' )]")->click();
 
+        # Accept delete confirmation dialog
+        $Selenium->accept_alert();
+
+        # check overview page
+        $Self->True(
+            index( $Selenium->get_page_source(), $PostMasterRandomID ) == -1,
+            'Postmaster filter is deleted - $PostMasterRandomID'
+        );
     }
 
 );

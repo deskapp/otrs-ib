@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -118,9 +118,6 @@ sub new {
 
     $Self->{Home} = $Self->{ConfigObject}->Get('Home');
 
-    # permission check
-    die if !$Self->_FileSystemCheck();
-
     # init of event handler
     $Self->EventHandlerInit(
         Config => 'Package::EventModulePost',
@@ -138,13 +135,12 @@ sub new {
 =item RepositoryList()
 
 returns a list of repository packages
-using Result => 'short' will only return name, version, install_status md5sum and vendor
-instead of the structure
 
     my @List = $PackageObject->RepositoryList();
 
     my @List = $PackageObject->RepositoryList(
-        Result => 'short',
+        Result => 'short',  # will only return name, version, install_status md5sum and vendor
+        instead of the structure
     );
 
 =cut
@@ -483,6 +479,9 @@ sub PackageInstall {
         }
     }
 
+    # write permission check
+    return if !$Self->_FileSystemCheck();
+
     # check OS
     if ( $Structure{OS} && !$Param{Force} ) {
         return if !$Self->_OSCheck( OS => $Structure{OS} );
@@ -650,6 +649,9 @@ sub PackageReinstall {
     # parse source file
     my %Structure = $Self->PackageParse(%Param);
 
+    # write permission check
+    return if !$Self->_FileSystemCheck();
+
     # check OS
     if ( $Structure{OS} && !$Param{Force} ) {
         return if !$Self->_OSCheck( OS => $Structure{OS} );
@@ -757,6 +759,9 @@ sub PackageUpgrade {
         );
         return;
     }
+
+    # write permission check
+    return if !$Self->_FileSystemCheck();
 
     # check OS
     if ( $Structure{OS} && !$Param{Force} ) {
@@ -1146,6 +1151,9 @@ sub PackageUninstall {
         return if !$Self->_CheckPackageDepends( Name => $Structure{Name}->{Content} );
     }
 
+    # write permission check
+    return if !$Self->_FileSystemCheck();
+
     # uninstall code (pre)
     if ( $Structure{CodeUninstall} ) {
         $Self->_Code(
@@ -1395,8 +1403,11 @@ sub PackageOnlineList {
         my $CurrentFramework = $Kernel::OM->Get('Kernel::Config')->Get('Version');
         FRAMEWORKVERSION:
         for my $FrameworkVersion ( sort keys %{$ListResult} ) {
+            my $FrameworkVersionMatch = $FrameworkVersion;
+            $FrameworkVersionMatch =~ s/\./\\\./g;
+            $FrameworkVersionMatch =~ s/x/.+?/gi;
 
-            if ( $CurrentFramework =~ m{ \A $FrameworkVersion }xms ) {
+            if ( $CurrentFramework =~ m{ \A $FrameworkVersionMatch }xms ) {
 
                 @Packages = @{ $ListResult->{$FrameworkVersion} };
                 last FRAMEWORKVERSION;
@@ -1646,7 +1657,7 @@ sub DeployCheck {
                 );
             }
 
-            $Self->{DeployCheckInfo}->{File}->{ $File->{Location} } = 'No file installed!';
+            $Self->{DeployCheckInfo}->{File}->{ $File->{Location} } = Translatable('File is not installed!');
             $Hit = 1;
         }
         elsif ( -e $LocalFile ) {
@@ -1660,7 +1671,7 @@ sub DeployCheck {
 
                 if ( ${$Content} ne $File->{Content} ) {
 
-                    if ( $Param{Log} ) {
+                    if ( $Param{Log} && !$Kernel::OM->Get('Kernel::Config')->Get('Package::AllowLocalModifications') ) {
                         $Kernel::OM->Get('Kernel::System::Log')->Log(
                             Priority => 'error',
                             Message  => "$Param{Name}-$Param{Version}: $LocalFile is different!",
@@ -1668,7 +1679,7 @@ sub DeployCheck {
                     }
 
                     $Hit = 1;
-                    $Self->{DeployCheckInfo}->{File}->{ $File->{Location} } = 'File is different!';
+                    $Self->{DeployCheckInfo}->{File}->{ $File->{Location} } = Translatable('File is different!');
                 }
             }
             else {
@@ -1680,7 +1691,7 @@ sub DeployCheck {
                     );
                 }
 
-                $Self->{DeployCheckInfo}->{File}->{ $File->{Location} } = 'Can\' read File!';
+                $Self->{DeployCheckInfo}->{File}->{ $File->{Location} } = Translatable('Can\'t read file!');
             }
         }
     }
@@ -2013,7 +2024,7 @@ build an opm package
             Content => 'L<http://otrs.org/>',
         },
         License => {
-            Content => 'GNU GENERAL PUBLIC LICENSE Version 2, June 1991',
+            Content => 'GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007',
         }
         Description => [
             {
@@ -2612,6 +2623,9 @@ returns true if the distribution package (located under ) can get installed
 sub PackageInstallDefaultFiles {
     my ( $Self, %Param ) = @_;
 
+    # write permission check
+    return if !$Self->_FileSystemCheck();
+
     my $Directory    = $Self->{ConfigObject}->Get('Home') . '/var/packages';
     my @PackageFiles = $Self->{MainObject}->DirectoryRead(
         Directory => $Directory,
@@ -2658,6 +2672,7 @@ generates a MD5 Sum for all files in a given package
     );
 
 returns:
+
     $MD5SumLookup = {
         'Direcoty/File1' => 'f3f30bd59afadf542770d43edb280489'
         'Direcoty/File2' => 'ccb8a0b86adf125a36392e388eb96778'
@@ -2909,6 +2924,17 @@ sub _OSCheck {
     return;
 }
 
+=item _CheckFramework()
+
+Compare a framework array with the current framework.
+
+    my $CheckOk = $PackageObject->_CheckFramework(
+        Framework       => $Structure{Framework}, # [ { 'Content' => '4.0.x', 'Minimum' => '4.0.4'} ]
+        NoLog           => 1, # optional
+    )
+
+=cut
+
 sub _CheckFramework {
     my ( $Self, %Param ) = @_;
 
@@ -2941,6 +2967,7 @@ sub _CheckFramework {
 
             next FW if !$FW;
 
+            # add framework versions for the log entry
             $PossibleFramework .= $FW->{Content} . ';';
 
             # regexp modify
@@ -2948,11 +2975,107 @@ sub _CheckFramework {
             $Framework =~ s/\./\\\./g;
             $Framework =~ s/x/.+?/gi;
 
+            # skip to next framework, if we get no positive match
             next FW if $CurrentFramework !~ /^$Framework$/i;
 
+            # framework is correct
             $FWCheck = 1;
 
-            last FW;
+            # get minimum and/or maximum values
+            # e.g. the opm contains <Framework Minimum="5.0.7" Maximum="5.0.12">5.0.x</Framework>
+            my $FrameworkMinimum = $FW->{Minimum} || '';
+            my $FrameworkMaximum = $FW->{Maximum} || '';
+
+            # check for minimum or maximum required framework, if it was defined
+            if ( $FrameworkMinimum || $FrameworkMaximum ) {
+
+                # prepare hash for framework comparsion
+                my %FrameworkComparsion;
+                $FrameworkComparsion{MinimumFrameworkRequired} = $FrameworkMinimum;
+                $FrameworkComparsion{MaximumFrameworkRequired} = $FrameworkMaximum;
+                $FrameworkComparsion{CurrentFramework}         = $CurrentFramework;
+
+                # prepare version parts hash
+                my %VersionParts;
+
+                TYPE:
+                for my $Type (qw(MinimumFrameworkRequired MaximumFrameworkRequired CurrentFramework)) {
+
+                    # split version string
+                    my @ThisVersionParts = split /\./, $FrameworkComparsion{$Type};
+                    $VersionParts{$Type} = \@ThisVersionParts;
+                }
+
+                # check minimum required framework
+                if ($FrameworkMinimum) {
+
+                    COUNT:
+                    for my $Count ( 0 .. 2 ) {
+
+                        $VersionParts{MinimumFrameworkRequired}->[$Count] ||= 0;
+                        $VersionParts{CurrentFramework}->[$Count]         ||= 0;
+
+                        # skip equal version parts
+                        next COUNT
+                            if $VersionParts{MinimumFrameworkRequired}->[$Count] eq
+                            $VersionParts{CurrentFramework}->[$Count];
+
+                        # skip current framework verion parts containing "x"
+                        next COUNT if $VersionParts{CurrentFramework}->[$Count] =~ /x/;
+
+                        if (
+                            $VersionParts{CurrentFramework}->[$Count]
+                            > $VersionParts{MinimumFrameworkRequired}->[$Count]
+                            )
+                        {
+                            $FWCheck = 1;
+                            last COUNT;
+                        }
+                        else {
+
+                            # add required minimum version for the log entry
+                            $PossibleFramework .= 'Minimum Version ' . $FrameworkMinimum . ';';
+                            $FWCheck = 0;
+                        }
+
+                    }
+                }
+
+                # check maximum required framework, if the framework check is still positive so far
+                if ( $FrameworkMaximum && $FWCheck ) {
+
+                    COUNT:
+                    for my $Count ( 0 .. 2 ) {
+
+                        $VersionParts{MaximumFrameworkRequired}->[$Count] ||= 0;
+                        $VersionParts{CurrentFramework}->[$Count]         ||= 0;
+
+                        next COUNT
+                            if $VersionParts{MaximumFrameworkRequired}->[$Count] eq
+                            $VersionParts{CurrentFramework}->[$Count];
+
+                        # skip current framework verion parts containing "x"
+                        next COUNT if $VersionParts{CurrentFramework}->[$Count] =~ /x/;
+
+                        if (
+                            $VersionParts{CurrentFramework}->[$Count]
+                            < $VersionParts{MaximumFrameworkRequired}->[$Count]
+                            )
+                        {
+
+                            $FWCheck = 1;
+                            last COUNT;
+                        }
+                        else {
+
+                            # add required maximum version for the log entry
+                            $PossibleFramework .= 'Maximum Version ' . $FrameworkMaximum . ';';
+                            $FWCheck = 0;
+                        }
+
+                    }
+                }
+            }
         }
     }
 
@@ -3539,6 +3662,8 @@ sub _ReadDistArchive {
 sub _FileSystemCheck {
     my ( $Self, %Param ) = @_;
 
+    return 1 if $Self->{FileSystemCheckAlreadyDone};
+
     my $Home = $Param{Home} || $Self->{Home};
 
     # check Home
@@ -3576,6 +3701,8 @@ sub _FileSystemCheck {
         # delete test file
         $Self->{MainObject}->FileDelete( Location => $Location );
     }
+
+    $Self->{FileSystemCheckAlreadyDone} = 1;
 
     return 1;
 }

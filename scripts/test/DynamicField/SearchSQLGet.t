@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -154,6 +154,15 @@ my %DynamicFieldConfigs = (
     },
 );
 
+# Set expected results depends on database case sensitivity (bug#12657).
+my $SearchTerm = "(\'Foo\')";
+my $ValueText  = '(dfv.value_text)';
+
+if ( $DBObject->GetDatabaseFunction('CaseSensitive') ) {
+    $ValueText  = 'LOWER' . $ValueText;
+    $SearchTerm = 'LOWER' . $SearchTerm;
+}
+
 # define tests
 my @Tests = (
     {
@@ -218,14 +227,14 @@ my @Tests = (
             },
         },
         ExpectedResult => {
-            Equals            => " dfv.value_text = 'Foo' ",
-            GreaterThan       => " dfv.value_text > 'Foo' ",
-            GreaterThanEquals => " dfv.value_text >= 'Foo' ",
+            Equals            => " $ValueText = $SearchTerm ",
+            GreaterThan       => " $ValueText > $SearchTerm ",
+            GreaterThanEquals => " $ValueText >= $SearchTerm ",
             Like              => {
                 ColumnKey => 'dfv.value_text',
             },
-            SmallerThan       => " dfv.value_text < 'Foo' ",
-            SmallerThanEquals => " dfv.value_text <= 'Foo' ",
+            SmallerThan       => " $ValueText < $SearchTerm ",
+            SmallerThanEquals => " $ValueText <= $SearchTerm ",
         },
     },
     {
@@ -243,14 +252,14 @@ my @Tests = (
             },
         },
         ExpectedResult => {
-            Equals            => " dfv.value_text = 'Foo' ",
-            GreaterThan       => " dfv.value_text > 'Foo' ",
-            GreaterThanEquals => " dfv.value_text >= 'Foo' ",
+            Equals            => " $ValueText = $SearchTerm ",
+            GreaterThan       => " $ValueText > $SearchTerm ",
+            GreaterThanEquals => " $ValueText >= $SearchTerm ",
             Like              => {
                 ColumnKey => 'dfv.value_text',
             },
-            SmallerThan       => " dfv.value_text < 'Foo' ",
-            SmallerThanEquals => " dfv.value_text <= 'Foo' ",
+            SmallerThan       => " $ValueText < $SearchTerm ",
+            SmallerThanEquals => " $ValueText <= $SearchTerm ",
         },
     },
     {

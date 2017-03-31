@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -33,6 +33,15 @@ $Kernel::OM->ObjectParamAdd(
     },
 );
 my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+
+# Disabled the package deployment plugins, to avoid timeout issues in the test.
+$Helper->ConfigSettingChange(
+    Valid => 1,
+    Key   => 'SupportDataCollector::DisablePlugins',
+    Value => [
+        'Kernel::System::SupportDataCollector::Plugin::OTRS::PackageDeployment',
+    ],
+);
 
 # cleanup the Home variable (remove tailing "/")
 my $Home = $ConfigObject->Get('Home');
@@ -465,6 +474,8 @@ for my $Identifier (
     Kernel::System::SupportDataCollector::Plugin::Webserver::Apache::Performance::ModHeadersLoaded
     Kernel::System::SupportDataCollector::Plugin::Webserver::EnvironmentVariables::MOD_PERL
     Kernel::System::SupportDataCollector::Plugin::Webserver::EnvironmentVariables::MOD_PERL_API_VERSION
+    Kernel::System::SupportDataCollector::Plugin::Webserver::EnvironmentVariables::PERL_USE_UNSAFE_INC
+    Kernel::System::SupportDataCollector::Plugin::Webserver::EnvironmentVariables::LANGUAGE
     )
     )
 {
@@ -514,6 +525,8 @@ for my $Identifier (
     Kernel::System::SupportDataCollector::Plugin::Webserver::Apache::Performance::ModHeadersLoaded
     Kernel::System::SupportDataCollector::Plugin::Webserver::EnvironmentVariables::MOD_PERL
     Kernel::System::SupportDataCollector::Plugin::Webserver::EnvironmentVariables::MOD_PERL_API_VERSION
+    Kernel::System::SupportDataCollector::Plugin::Webserver::EnvironmentVariables::PERL_USE_UNSAFE_INC
+    Kernel::System::SupportDataCollector::Plugin::Webserver::EnvironmentVariables::LANGUAGE
     )
     )
 {

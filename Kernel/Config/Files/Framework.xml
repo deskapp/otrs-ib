@@ -72,7 +72,7 @@
         <Group>Framework</Group>
         <SubGroup>Core</SubGroup>
         <Setting>
-            <String Regex="">OTRS 5</String>
+            <String Regex="">OTRS 5s</String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="SystemID" Required="1" Valid="1" ConfigLevel="200">
@@ -89,6 +89,14 @@
         <SubGroup>Core</SubGroup>
         <Setting>
             <String Regex="">yourhost.example.com</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="SupportDataCollector::HTTPHostname" Required="0" Valid="0" ConfigLevel="200">
+        <Description Translatable="1">Defines the HTTP hostname for the support data collection with the public module 'PublicSupportDataCollector' (e.g. used from the OTRS Daemon).</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core</SubGroup>
+        <Setting>
+            <String Regex=""></String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="NodeID" Required="0" Valid="0" ConfigLevel="200">
@@ -171,6 +179,7 @@
                 <Item Key="hi" Translatable="1">Hindi</Item>
                 <Item Key="hr" Translatable="1">Croatian</Item>
                 <Item Key="hu" Translatable="1">Hungarian</Item>
+                <Item Key="id" Translatable="1">Indonesian</Item>
                 <Item Key="it" Translatable="1">Italian</Item>
                 <Item Key="ja" Translatable="1">Japanese</Item>
                 <Item Key="lt" Translatable="1">Lithuanian</Item>
@@ -226,6 +235,7 @@
                 <Item Key="hi">हिन्दी</Item>
                 <Item Key="hr">Hrvatski</Item>
                 <Item Key="hu">Magyar</Item>
+                <Item Key="id">Bahasa Indonesia</Item>
                 <Item Key="it">Italiano</Item>
                 <Item Key="ja">日本語</Item>
                 <Item Key="lt">Lietuvių kalba</Item>
@@ -460,6 +470,17 @@
             </Option>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="Frontend::RichText::EnhancedMode::Customer" Required="1" Valid="1">
+        <Description Translatable="1">Defines if the enhanced mode should be used (enables use of table, replace, subscript, superscript, paste from word, etc.) in customer interface.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Web</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="DisableMSIFrameSecurityRestricted" Required="0" Valid="1">
         <Description Translatable="1">Disable restricted security for IFrames in IE. May be required for SSO to work in IE.</Description>
         <Group>Framework</Group>
@@ -473,6 +494,17 @@
     </ConfigItem>
     <ConfigItem Name="DisableIFrameOriginRestricted" Required="0" Valid="1">
         <Description Translatable="1">Disable HTTP header "X-Frame-Options: SAMEORIGIN" to allow OTRS to be included as an IFrame in other websites. Disabling this HTTP header can be a security issue! Only disable it, if you know what you are doing!</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Web</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="DisableContentSecurityPolicy" Required="0" Valid="1">
+        <Description Translatable="1">Disable HTTP header "Content-Security-Policy" to allow loading of external script contents. Disabling this HTTP header can be a security issue! Only disable it, if you know what you are doing!</Description>
         <Group>Framework</Group>
         <SubGroup>Core::Web</SubGroup>
         <Setting>
@@ -776,11 +808,22 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="SendmailNotificationEnvelopeFrom" Required="0" Valid="0" ConfigLevel="200">
-        <Description Translatable="1">If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty.</Description>
+        <Description Translatable="1">If set, this address is used as envelope sender header in outgoing notifications. If no address is specified, the envelope sender header is empty (unless SendmailNotificationEnvelopeFrom::FallbackToEmailFrom is set).</Description>
         <Group>Framework</Group>
         <SubGroup>Core::Sendmail</SubGroup>
         <Setting>
             <String Regex=""></String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="SendmailNotificationEnvelopeFrom::FallbackToEmailFrom" Required="0" Valid="0" ConfigLevel="200">
+        <Description Translatable="1">If no SendmailNotificationEnvelopeFrom is specified, this setting makes it possible to use the email's from address instead of an empty envelope sender (required in certain mail server configurations).</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Sendmail</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="SendmailEncodingForce" Required="0" Valid="0" ConfigLevel="200">
@@ -872,6 +915,16 @@
             </Hash>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="Frontend::NotifyModule###250-AgentSessionLimit" Required="1" Valid="1">
+        <Description Translatable="1">Defines the module to display a notification in the agent interface, if the agent session limit prior warning is reached.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Frontend::Agent::ModuleNotify</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Module">Kernel::Output::HTML::Notification::AgentSessionLimit</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="Frontend::NotifyModule###300-ShowAgentOnline" Required="0" Valid="0">
         <Description Translatable="1">Defines the module that shows all the currently logged in agents in the agent interface.</Description>
         <Group>Framework</Group>
@@ -885,7 +938,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Frontend::NotifyModule###400-ShowCustomerOnline" Required="0" Valid="0">
-        <Description Translatable="1">Defines the module that shows all the currently loged in customers in the agent interface.</Description>
+        <Description Translatable="1">Defines the module that shows all the currently logged in customers in the agent interface.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Agent::ModuleNotify</SubGroup>
         <Setting>
@@ -985,7 +1038,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="SessionMaxIdleTime" Required="1" Valid="1">
-        <Description Translatable="1">Sets the inactivity time (in seconds) to pass before a session is killed and a user is loged out.</Description>
+        <Description Translatable="1">Sets the inactivity time (in seconds) to pass before a session is killed and a user is logged out.</Description>
         <Group>Framework</Group>
         <SubGroup>Core::Session</SubGroup>
         <Setting>
@@ -993,11 +1046,11 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="SessionActiveTime" Required="1" Valid="1">
-        <Description Translatable="1">Sets the time (in seconds) a user is marked as active.</Description>
+        <Description Translatable="1">Sets the time (in seconds) a user is marked as active (minimum active time is 300 seconds).</Description>
         <Group>Framework</Group>
         <SubGroup>Core::Session</SubGroup>
         <Setting>
-            <String Regex="^[0-9]{1,8}$">600</String>
+            <String Regex="^[3-9][0-9]{2,6}|[1-9][0-9]{3,6}$">600</String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="SessionDeleteIfTimeToOld" Required="1" Valid="1">
@@ -1042,6 +1095,14 @@
                 <Item Key="0" Translatable="1">No</Item>
                 <Item Key="1" Translatable="1">Yes</Item>
             </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="AgentSessionLimitPriorWarning" Required="0" Valid="0">
+        <Description Translatable="1">Sets the maximum number of active agents within the timespan defined in SessionActiveTime before a prior warning will be visible for the logged in agents.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core::Session</SubGroup>
+        <Setting>
+            <String Regex="^[0-9]{1,8}$">90</String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="AgentSessionLimit" Required="0" Valid="1">
@@ -3423,6 +3484,17 @@
             </Option>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="SMIME::FetchFromCustomer" Required="1" Valid="1">
+        <Description Translatable="1">Enables fetch S/MIME from CustomerUser backend support.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Crypt::SMIME</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="NotificationSenderName" Required="1" Valid="1">
         <Description Translatable="1">Specifies the name that should be used by the application when sending notifications. The sender name is used to build the complete display name for the notification master (i.e. "OTRS Notifications" otrs@your.example.com).</Description>
         <Group>Framework</Group>
@@ -3643,6 +3715,7 @@ You can log in via the following URL:
                 <Item Key="Module">Kernel::Output::HTML::Preferences::Password</Item>
                 <Item Key="Column">User Profile</Item>
                 <Item Key="Label" Translatable="1">Change password</Item>
+                <Item Key="Desc" Translatable="1">Set a new password by filling in your current password and a new one.</Item>
                 <Item Key="Prio">0500</Item>
                 <Item Key="Area">Agent</Item>
                 <!-- <Item Key="PasswordRegExp">[a-z]|[A-z]|[0-9]|\.|;|,|:|-|\+|#|!|\$|&|\?</Item> -->
@@ -3742,6 +3815,7 @@ You can log in via the following URL:
                 <Item Key="Module">Kernel::Output::HTML::Preferences::Language</Item>
                 <Item Key="Column">User Profile</Item>
                 <Item Key="Label" Translatable="1">Language</Item>
+                <Item Key="Desc" Translatable="1">Select the main interface language.</Item>
                 <Item Key="Key" Translatable="1">Language</Item>
                 <Item Key="PrefKey">UserLanguage</Item>
                 <Item Key="Prio">1000</Item>
@@ -3758,6 +3832,7 @@ You can log in via the following URL:
                 <Item Key="Module">Kernel::Output::HTML::Preferences::Skin</Item>
                 <Item Key="Column">Other Settings</Item>
                 <Item Key="Label" Translatable="1">Skin</Item>
+                <Item Key="Desc" Translatable="1">Select your preferred layout for OTRS.</Item>
                 <Item Key="Key" Translatable="1">Skin</Item>
                 <Item Key="PrefKey">UserSkin</Item>
                 <Item Key="Prio">100</Item>
@@ -3791,6 +3866,7 @@ You can log in via the following URL:
                 <Item Key="Column">User Profile</Item>
                 <Item Key="Block">OutOfOffice</Item>
                 <Item Key="Label" Translatable="1">Out Of Office Time</Item>
+                <Item Key="Desc" Translatable="1">If you're going to be out of office, you may wish to let other users know by setting the exact dates of your absence.</Item>
                 <Item Key="Key" Translatable="1"></Item>
                 <Item Key="PrefKey">UserOutOfOffice</Item>
                 <Item Key="Prio">4000</Item>
@@ -3881,7 +3957,7 @@ You can log in via the following URL:
         </Setting>
     </ConfigItem>
     <ConfigItem Name="CustomerFrontend::NotifyModule###1-ShowAgentOnline" Required="0" Valid="0">
-        <Description Translatable="1">Defines the module that shows the currently loged in agents in the customer interface.</Description>
+        <Description Translatable="1">Defines the module that shows the currently logged in agents in the customer interface.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Customer::ModuleNotify</SubGroup>
         <Setting>
@@ -3893,7 +3969,7 @@ You can log in via the following URL:
         </Setting>
     </ConfigItem>
     <ConfigItem Name="CustomerFrontend::NotifyModule###1-ShowCustomerOnline" Required="0" Valid="0">
-        <Description Translatable="1">Defines the module that shows the currently loged in customers in the customer interface.</Description>
+        <Description Translatable="1">Defines the module that shows the currently logged in customers in the customer interface.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Customer::ModuleNotify</SubGroup>
         <Setting>
@@ -4452,6 +4528,7 @@ via the Preferences button after logging in.
                 <Item Key="Label" Translatable="1">Change password</Item>
                 <Item Key="Prio">1000</Item>
                 <Item Key="Area">Customer</Item>
+                <Item Key="Desc" Translatable="1">Set a new password by filling in your current password and a new one.</Item>
                 <!-- <Item Key="PasswordRegExp">[a-z]|[A-z]|[0-9]|\.|;|,|:|-|\+|#|!|\$|&|\?</Item> -->
                 <Item Key="PasswordRegExp"></Item>
                 <Item Key="PasswordMinSize">0</Item>
@@ -4488,6 +4565,7 @@ via the Preferences button after logging in.
                 <Item Key="Module">Kernel::Output::HTML::Preferences::Language</Item>
                 <Item Key="Column">User Profile</Item>
                 <Item Key="Label" Translatable="1">Interface language</Item>
+                <Item Key="Desc" Translatable="1">Select the main interface language.</Item>
                 <Item Key="Key" Translatable="1">Language</Item>
                 <Item Key="PrefKey">UserLanguage</Item>
                 <Item Key="Prio">2000</Item>
@@ -5299,6 +5377,21 @@ via the Preferences button after logging in.
             </FrontendModuleReg>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="Frontend::Module###AgentOTRSBusiness" Required="0" Valid="1">
+        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Group>Framework</Group>
+        <SubGroup>Frontend::Agent::ModuleRegistration</SubGroup>
+        <Setting>
+            <FrontendModuleReg>
+                <Description>Agent</Description>
+                <Title>OTRS Business Solution™</Title>
+                <NavBarName></NavBarName>
+                <Loader>
+                    <CSS>Core.Agent.Admin.OTRSBusiness.css</CSS>
+                </Loader>
+            </FrontendModuleReg>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="Frontend::Module###AdminSupportDataCollector" Required="0" Valid="1">
         <Description Translatable="1">Frontend module registration for the agent interface.</Description>
         <Group>Framework</Group>
@@ -5667,7 +5760,7 @@ via the Preferences button after logging in.
         <SubGroup>Frontend::Agent::Stats</SubGroup>
         <Setting>
             <Array>
-                <Item>stats</Item>
+                <Item Translatable="1">stats</Item>
             </Array>
         </Setting>
     </ConfigItem>
@@ -5748,6 +5841,17 @@ via the Preferences button after logging in.
         <SubGroup>Frontend::Agent::Stats</SubGroup>
         <Setting>
             <Option SelectedID="1">
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
+            </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Stats::CustomerUserLoginsAsMultiSelect" Required="1" Valid="1">
+        <Description Translatable="1">Shows all the customer user identifiers in a multi-select field (not useful if you have a lot of customer user identifiers).</Description>
+        <Group>Framework</Group>
+        <SubGroup>Frontend::Agent::Stats</SubGroup>
+        <Setting>
+            <Option SelectedID="0">
                 <Item Key="0" Translatable="1">No</Item>
                 <Item Key="1" Translatable="1">Yes</Item>
             </Option>
@@ -6257,7 +6361,7 @@ via the Preferences button after logging in.
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Secure::DisableBanner" Required="1" Valid="1">
-        <Description Translatable="1">If enabled, the OTRS version tag will be removed from the Webinterface, the HTTP headers and the X-Headers of outgoing mails.</Description>
+        <Description Translatable="1">If enabled, the OTRS version tag will be removed from the Webinterface, the HTTP headers and the X-Headers of outgoing mails. NOTE: If you change this option, please make sure to delete the cache.</Description>
         <Group>Framework</Group>
         <SubGroup>Core</SubGroup>
         <Setting>
@@ -6265,16 +6369,6 @@ via the Preferences button after logging in.
                 <Item Key="0" Translatable="1">No</Item>
                 <Item Key="1" Translatable="1">Yes</Item>
             </Option>
-        </Setting>
-    </ConfigItem>
-    <ConfigItem Name="StandardTemplate2QueueByCreating" Required="0" Valid="0">
-        <Description Translatable="1">List of default Standard Templates which are assigned automatically to new Queues upon creation.</Description>
-        <Group>Framework</Group>
-        <SubGroup>Core</SubGroup>
-        <Setting>
-            <Array>
-                <Item></Item>
-            </Array>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="Loader::Enabled::CSS" Required="1" Valid="1">
@@ -6564,7 +6658,7 @@ via the Preferences button after logging in.
     <ConfigItem Name="Loader::Agent::DefaultSelectedSkin" Required="1" Valid="1">
         <Description Translatable="1">The agent skin's InternalName which should be used in the agent interface. Please check the available skins in Frontend::Agent::Skins.</Description>
         <Group>Framework</Group>
-        <SubGroup>Core::Web</SubGroup>
+        <SubGroup>Frontend::Agent</SubGroup>
         <Setting>
             <String Regex="">default</String>
         </Setting>
@@ -6604,7 +6698,7 @@ via the Preferences button after logging in.
     <ConfigItem Name="Loader::Customer::SelectedSkin::HostBased" Required="0" Valid="0" ConfigLevel="200">
         <Description Translatable="1">It is possible to configure different skins, for example to distinguish between diferent customers, to be used on a per-domain basis within the application. Using a regular expression (regex), you can configure a Key/Content pair to match a domain. The value in "Key" should match the domain, and the value in "Content" should be a valid skin on your system. Please see the example entries for the proper form of the regex.</Description>
         <Group>Framework</Group>
-        <SubGroup>Core::Web</SubGroup>
+        <SubGroup>Frontend::Customer</SubGroup>
         <Setting>
             <Hash>
                 <Item Key="host1\.example\.com">Someskin1</Item>
@@ -6862,8 +6956,8 @@ via the Preferences button after logging in.
         <SubGroup>Core::OTRSBusiness</SubGroup>
         <Setting>
             <Option SelectedID="1">
-                <Item Key="0">Development</Item>
-                <Item Key="1">Stable</Item>
+                <Item Key="0" Translatable="1">Development</Item>
+                <Item Key="1" Translatable="1">Stable</Item>
             </Option>
         </Setting>
     </ConfigItem>

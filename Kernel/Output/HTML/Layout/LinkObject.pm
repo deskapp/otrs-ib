@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -162,20 +162,20 @@ sub LinkObjectTableCreateComplex {
 
         ITEM:
         for my $Item ( @{ $Block->{ItemList} } ) {
+            if ( !grep { $_->{Key} } @{$Item} ) {
+                $Item->[0] = {
+                    Type => 'Text',
+                    Content =>
+                        'ERROR: Key attribute not found in any column of the item list.',
+                };
+            }
 
-            next ITEM if $Item->[0]->{Key} && $Block->{Object};
+            next ITEM if $Block->{Object};
 
             if ( !$Block->{Object} ) {
                 $Item->[0] = {
                     Type    => 'Text',
                     Content => 'ERROR: Object attribute not found in the block data.',
-                };
-            }
-            else {
-                $Item->[0] = {
-                    Type => 'Text',
-                    Content =>
-                        'ERROR: Key attribute not found in the first column of the item list.',
                 };
             }
         }
@@ -194,11 +194,14 @@ sub LinkObjectTableCreateComplex {
 
         for my $Item ( @{ $Block->{ItemList} } ) {
 
+            # search for key
+            my ($ItemWithKey) = grep { $_->{Key} } @{$Item};
+
             # define check-box cell
             my $CheckboxCell = {
                 Type         => 'LinkTypeList',
                 Content      => '',
-                LinkTypeList => $LinkList{ $Block->{Object} }->{ $Item->[0]->{Key} },
+                LinkTypeList => $LinkList{ $Block->{Object} }->{ $ItemWithKey->{Key} },
                 Translate    => 1,
             };
 
@@ -223,11 +226,14 @@ sub LinkObjectTableCreateComplex {
 
             for my $Item ( @{ $Block->{ItemList} } ) {
 
+                # search for key
+                my ($ItemWithKey) = grep { $_->{Key} } @{$Item};
+
                 # define check-box cell
                 my $CheckboxCell = {
                     Type    => 'Checkbox',
                     Name    => 'LinkTargetKeys',
-                    Content => $Item->[0]->{Key},
+                    Content => $ItemWithKey->{Key},
                 };
 
                 # add check-box cell to item
@@ -250,13 +256,16 @@ sub LinkObjectTableCreateComplex {
 
             for my $Item ( @{ $Block->{ItemList} } ) {
 
+                # search for key
+                my ($ItemWithKey) = grep { $_->{Key} } @{$Item};
+
                 # define check-box delete cell
                 my $CheckboxCell = {
                     Type         => 'CheckboxDelete',
                     Object       => $Block->{Object},
                     Content      => '',
-                    Key          => $Item->[0]->{Key},
-                    LinkTypeList => $LinkList{ $Block->{Object} }->{ $Item->[0]->{Key} },
+                    Key          => $ItemWithKey->{Key},
+                    LinkTypeList => $LinkList{ $Block->{Object} }->{ $ItemWithKey->{Key} },
                     Translate    => 1,
                 };
 
@@ -324,7 +333,9 @@ sub LinkObjectTableCreateComplex {
 
         # check if registered in SysConfig
         if (
-            IsHashRefWithData($Config)
+            # AgentLinkObject not allowed because it would result in nested forms
+            $OriginalAction ne 'AgentLinkObject'
+            && IsHashRefWithData($Config)
             && $Config->{ $Block->{Blockname} }
             && grep { $OriginalAction eq $_ } @SettingsVisible
             )
@@ -344,6 +355,14 @@ sub LinkObjectTableCreateComplex {
             my %Preferences = $Self->ComplexTablePreferencesGet(
                 Config  => $Config->{ $Block->{Blockname} },
                 PrefKey => "LinkObject::ComplexTable-" . $Block->{Blockname},
+            );
+
+            $LayoutObject->Block(
+                Name => 'ContentLargePreferencesForm',
+                Data => {
+                    Name     => $Block->{Blockname},
+                    NameForm => $Block->{Blockname},
+                },
             );
 
             $LayoutObject->Block(
@@ -585,7 +604,7 @@ sub LinkObjectTableCreateSimple {
 
 =item LinkObjectSelectableObjectList()
 
-return a selection list of linkable objects
+return a selection list of link-able objects
 
     my $String = $LayoutObject->LinkObjectSelectableObjectList(
         Object   => 'Ticket',
@@ -904,6 +923,14 @@ sub ComplexTablePreferencesSet {
 
     # remove Columns (not needed)
     delete $Preference->{Columns};
+
+    if ( $Param{DestinationObject} eq 'Ticket' ) {
+
+        # Make sure that ticket number is always present, otherwise there will be problems.
+        if ( !grep { $_ eq 'TicketNumber' } @{ $Preference->{Order} } ) {
+            unshift @{ $Preference->{Order} }, 'TicketNumber';
+        }
+    }
 
     if ( IsHashRefWithData($Preference) ) {
 

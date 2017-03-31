@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -163,6 +163,108 @@ sub AgentCustomerViewTable {
                     }
                 }
             }
+
+            if (
+                $ConfigObject->Get('ChatEngine::Active')
+                && $Field->[0] eq 'UserLogin'
+                )
+            {
+                # Check if agent has permission to start chats with the customer users.
+                my $EnableChat = 1;
+                my $ChatStartingAgentsGroup
+                    = $ConfigObject->Get('ChatEngine::PermissionGroup::ChatStartingAgents') || 'users';
+
+                if (
+                    !defined $Self->{"UserIsGroup[$ChatStartingAgentsGroup]"}
+                    || $Self->{"UserIsGroup[$ChatStartingAgentsGroup]"} ne 'Yes'
+                    )
+                {
+                    $EnableChat = 0;
+                }
+                if (
+                    $EnableChat
+                    && !$ConfigObject->Get('ChatEngine::ChatDirection::AgentToCustomer')
+                    )
+                {
+                    $EnableChat = 0;
+                }
+
+                if ($EnableChat) {
+                    my $VideoChatEnabled = 0;
+                    my $VideoChatAgentsGroup
+                        = $ConfigObject->Get('ChatEngine::PermissionGroup::VideoChatAgents') || 'users';
+
+                    # Enable the video chat feature if system is entitled and agent is a member of configured group.
+                    if (
+                        defined $Self->{"UserIsGroup[$VideoChatAgentsGroup]"}
+                        && $Self->{"UserIsGroup[$VideoChatAgentsGroup]"} eq 'Yes'
+                        )
+                    {
+                        if ( $Kernel::OM->Get('Kernel::System::Main')
+                            ->Require( 'Kernel::System::VideoChat', Silent => 1 ) )
+                        {
+                            $VideoChatEnabled = $Kernel::OM->Get('Kernel::System::VideoChat')->IsEnabled();
+                        }
+                    }
+
+                    my $CustomerEnableChat = 0;
+                    my $ChatAccess         = 0;
+                    my $VideoChatAvailable = 0;
+                    my $VideoChatSupport   = 0;
+
+                    # Default status is offline.
+                    my $UserState            = Translatable('Offline');
+                    my $UserStateDescription = $Self->{LanguageObject}->Translate('User is currently offline.');
+
+                    my $CustomerChatAvailability = $Kernel::OM->Get('Kernel::System::Chat')->CustomerAvailabilityGet(
+                        UserID => $Param{Data}->{UserID},
+                    );
+
+                    my $CustomerUserObject = $Kernel::OM->Get('Kernel::System::CustomerUser');
+
+                    my %CustomerUser = $CustomerUserObject->CustomerUserDataGet(
+                        User => $Param{Data}->{UserID},
+                    );
+                    $CustomerUser{UserFullname} = $CustomerUserObject->CustomerName(
+                        UserLogin => $Param{Data}->{UserID},
+                    );
+                    $VideoChatSupport = 1 if $CustomerUser{VideoChatHasWebRTC};
+
+                    if ( $CustomerChatAvailability == 3 ) {
+                        $UserState            = Translatable('Active');
+                        $CustomerEnableChat   = 1;
+                        $UserStateDescription = $Self->{LanguageObject}->Translate('User is currently active.');
+                        $VideoChatAvailable   = 1;
+                    }
+                    elsif ( $CustomerChatAvailability == 2 ) {
+                        $UserState            = Translatable('Away');
+                        $CustomerEnableChat   = 1;
+                        $UserStateDescription = $Self->{LanguageObject}->Translate('User was inactive for a while.');
+                    }
+
+                    $Self->Block(
+                        Name => 'CustomerRowUserStatus',
+                        Data => {
+                            %CustomerUser,
+                            UserState            => $UserState,
+                            UserStateDescription => $UserStateDescription,
+                        },
+                    );
+
+                    if ($CustomerEnableChat) {
+                        $Self->Block(
+                            Name => 'CustomerRowChatIcons',
+                            Data => {
+                                %{ $Param{Data} },
+                                %CustomerUser,
+                                VideoChatEnabled   => $VideoChatEnabled,
+                                VideoChatAvailable => $VideoChatAvailable,
+                                VideoChatSupport   => $VideoChatSupport,
+                            },
+                        );
+                    }
+                }
+            }
         }
     }
 
@@ -280,7 +382,7 @@ sub AgentQueueListOption {
         # find index of first element in array @QueueDataArray for displaying in frontend
         # at the top should be element with ' $QueueDataArray[$_]->{Key} = 0' like "- Move -"
         # when such element is found, it is moved at the top
-        my ($FirstElementIndex) = grep $QueueDataArray[$_]->{Key} == 0, 0 .. $#QueueDataArray;
+        my ($FirstElementIndex) = grep $QueueDataArray[$_]->{Key} == 0, 0 .. $#QueueDataArray || 0;
         splice( @QueueDataArray, 0, 0, splice( @QueueDataArray, $FirstElementIndex, 1 ) );
         $Param{Data} = \@QueueDataArray;
 
@@ -552,9 +654,10 @@ sub ArticleQuote {
 
             # convert html body to correct charset
             $Body = $Kernel::OM->Get('Kernel::System::Encode')->Convert(
-                Text => $AttachmentHTML{Content},
-                From => $Charset,
-                To   => $Self->{UserCharset},
+                Text  => $AttachmentHTML{Content},
+                From  => $Charset,
+                To    => $Self->{UserCharset},
+                Check => 1,
             );
 
             # get HTML utils object

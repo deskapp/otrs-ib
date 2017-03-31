@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -131,8 +131,10 @@ sub Run {
     # get search string params (get submitted params)
     else {
         for my $Key (
-            qw(TicketNumber Title From To Cc Subject Body CustomerID CustomerUserLogin StateType
-            Agent ResultForm TimeSearchType ChangeTimeSearchType CloseTimeSearchType LastChangeTimeSearchType EscalationTimeSearchType
+            qw(TicketNumber Title From To Cc Subject Body CustomerID CustomerIDRaw
+            CustomerUserLogin CustomerUserLoginRaw StateType Agent ResultForm
+            TimeSearchType ChangeTimeSearchType CloseTimeSearchType LastChangeTimeSearchType
+            EscalationTimeSearchType
             UseSubQueues AttachmentName
             ArticleTimeSearchType SearchInArchive
             Fulltext ShownAttributes
@@ -774,7 +776,7 @@ sub Run {
 
             my %HeaderMap = (
                 TicketNumber => Translatable('Ticket Number'),
-                CustomerName => Translatable('Customer Realname'),
+                CustomerName => Translatable('Customer Name'),
             );
 
             my @CSVHeadTranslated = map { $LayoutObject->{LanguageObject}->Translate( $HeaderMap{$_} || $_ ); }
@@ -1307,11 +1309,19 @@ sub Run {
             },
             {
                 Key   => 'CustomerID',
-                Value => Translatable('CustomerID'),
+                Value => Translatable('CustomerID (complex search)'),
+            },
+            {
+                Key   => 'CustomerIDRaw',
+                Value => Translatable('CustomerID (exact match)'),
             },
             {
                 Key   => 'CustomerUserLogin',
-                Value => Translatable('Customer User Login'),
+                Value => Translatable('Customer User Login (complex search)'),
+            },
+            {
+                Key   => 'CustomerUserLoginRaw',
+                Value => Translatable('Customer User Login (exact match)'),
             },
             {
                 Key   => 'StateIDs',

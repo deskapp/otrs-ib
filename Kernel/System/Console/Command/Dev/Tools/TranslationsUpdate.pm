@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -183,8 +183,15 @@ sub HandleLanguage {
     my $WritePOT = $Param{WritePO} || -e $TargetPOTFile;
 
     if ( !-w $TargetFile ) {
-        $Self->PrintError("Ignoring nonexisting file $TargetFile!");
-        return;
+        if ( -w $TargetPOFile ) {
+            $Self->Print(
+                "Creating missing file <yellow>$TargetFile</yellow>\n"
+            );
+        }
+        else {
+            $Self->PrintError("Ignoring missing file $TargetFile!");
+            return;
+        }
     }
 
     if ( !@OriginalTranslationStrings ) {
@@ -705,7 +712,7 @@ sub WritePerlLanguageFile {
 
         $NewOut = <<"EOF";
 $Separator
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 $Separator
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -802,15 +809,3 @@ EOF
 }
 
 1;
-
-=back
-
-=head1 TERMS AND CONDITIONS
-
-This software is part of the OTRS project (L<http://otrs.org/>).
-
-This software comes with ABSOLUTELY NO WARRANTY. For details, see
-the enclosed file COPYING for license information (AGPL). If you
-did not receive this file, see L<http://www.gnu.org/licenses/agpl.txt>.
-
-=cut

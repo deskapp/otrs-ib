@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -97,13 +97,28 @@ Core.App.Ready(function () {
         NewPersonalChat: [% Translate("New personal chat request") | JSON %],
         NewCustomerChat: [% Translate("New customer chat request") | JSON %],
         NewPublicChat: [% Translate("New public chat request") | JSON %],
+        NewChatUnavailable: [% Translate("Selected user is not available for chat.") | JSON %],
+        NewChatStart: [% Translate("Start chat") | JSON %],
         NewChatActivity: [% Translate("New activity") | JSON %],
         NewChatActivityMonitored: [% Translate("New activity on one of your monitored chats.") | JSON %],
+        VideoChatEnabled: parseInt([% ( Data.VideoChatEnabled || 0 )| JSON %], 10),
+        VideoChatVideoCall: [% Translate("Video call") | JSON %],
+        VideoChatAudioCall: [% Translate("Audio call") | JSON %],
+        VideoChatBrowserUnsupported: [% Translate("Your browser does not support video and audio calling.") | JSON %],
+        VideoChatInviteUnavailable: [% Translate("Selected user is not available for video and audio call.") | JSON %],
+        VideoChatInviteUnsupported: [% Translate("Target user's browser does not support video and audio calling.") | JSON %],
+        VideoChatClose: [% Translate("Close") | JSON %],
+        VideoChatInviteAccept: [% Translate("Accept") | JSON %],
+        VideoChatInviteDecline: [% Translate("Decline") | JSON %],
+        VideoChatInternalError: [% Translate("An internal error occurred.") | JSON %],
         TicketActionTemplateOverwrite: [% Translate("Setting a template will overwrite any text or attachment.") | JSON %],
         TicketActionTemplateOverwriteConfirm: [% Translate("Do you really want to continue?") | JSON %],
         AgentLogoURL: '[% Config("AgentLogo").URL %]',
         OTRSBusinessIsInstalled: parseInt([% Data.OTRSBusinessIsInstalled | JSON %], 10),
-        OTRSDaemonDialogTitleMsg: [% Translate('Information about the OTRS Daemon') | JSON %]
+        OTRSDaemonDialogTitleMsg: [% Translate('Information about the OTRS Daemon') | JSON %],
+        TextNone: [% Translate('none') | JSON %],
+        ConnectionErrorTitle: [% Translate('Connection error') | JSON %],
+        ConnectionErrorReloadButton: [% Translate('Reload page') | JSON %],
     });
 
     Core.Agent.Init();
@@ -120,7 +135,7 @@ Core.App.Ready(function () {
             true,
             [
                {
-                   Label: [% Translate('Close') | JSON %],
+                   Label: [% Translate('Close dialog') | JSON %],
                    Class: 'Primary',
                    Function: function () {
                        Core.UI.Dialog.CloseDialog($('.OTRSBusinessRequiredDialog'));
@@ -170,6 +185,30 @@ Core.App.Ready(function () {
     Core.App.UnblockEvents();
 });
 //]]></script>
+
+<div id="AjaxErrorDialog">
+    <div id="AjaxErrorDialogInner">
+        <div class="NoConnection">
+            <span class="Icon">
+                <i class="fa fa-bolt"></i>
+            </span>
+            <p>
+                [% Translate("Your browser was not able to communicate with OTRS properly, there seems to be something wrong with your network connection. You could either try reloading this page manually or wait until your browser has re-established the connection on its own.") %]
+            </p>
+        </div>
+        <div class="ConnectionReEstablished" style="display:none;">
+            <span class="Icon">
+                <i class="fa fa-check"></i>
+            </span>
+            <p>
+                [% Translate("The connection has been re-established after a temporary connection loss. Due to this, elements on this page could have stopped to work correctly. In order to be able to use all elements correctly again, it is strongly recommended to reload this page.") %]
+            </p>
+        </div>
+    </div>
+</div>
+[% IF Config("ChatEngine::Active") %]
+    [% INCLUDE "ChatStartForm.tt" %]
+[% END %]
 
 <div id="ResponsiveFooter">
     <div class="Visible-ScreenXL"></div>

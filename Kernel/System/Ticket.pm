@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -31,6 +31,7 @@ our @ObjectDependencies = (
     'Kernel::System::DB',
     'Kernel::System::DynamicField',
     'Kernel::System::DynamicField::Backend',
+    'Kernel::System::DynamicFieldValue',
     'Kernel::System::Email',
     'Kernel::System::Group',
     'Kernel::System::HTMLUtils',
@@ -589,31 +590,12 @@ sub TicketDelete {
         }
     }
 
-    # get dynamic field objects
-    my $DynamicFieldObject        = $Kernel::OM->Get('Kernel::System::DynamicField');
-    my $DynamicFieldBackendObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
-
-    # get all dynamic fields for the object type Ticket
-    my $DynamicFieldListTicket = $DynamicFieldObject->DynamicFieldListGet(
+    # Delete dynamic field values for this ticket.
+    $Kernel::OM->Get('Kernel::System::DynamicFieldValue')->ObjectValuesDelete(
         ObjectType => 'Ticket',
-        Valid      => 0,
+        ObjectID   => $Param{TicketID},
+        UserID     => $Param{UserID},
     );
-
-    # delete dynamicfield values for this ticket
-    DYNAMICFIELD:
-    for my $DynamicFieldConfig ( @{$DynamicFieldListTicket} ) {
-
-        next DYNAMICFIELD if !$DynamicFieldConfig;
-        next DYNAMICFIELD if !IsHashRefWithData($DynamicFieldConfig);
-        next DYNAMICFIELD if !$DynamicFieldConfig->{Name};
-        next DYNAMICFIELD if !IsHashRefWithData( $DynamicFieldConfig->{Config} );
-
-        $DynamicFieldBackendObject->ValueDelete(
-            DynamicFieldConfig => $DynamicFieldConfig,
-            ObjectID           => $Param{TicketID},
-            UserID             => $Param{UserID},
-        );
-    }
 
     # clear ticket cache
     $Self->_TicketCacheClear( TicketID => $Param{TicketID} );
@@ -681,6 +663,9 @@ sub TicketDelete {
         },
         UserID => $Param{UserID},
     );
+
+    # Clear ticket cache again, in case it was rebuilt in the meantime.
+    $Self->_TicketCacheClear( TicketID => $Param{TicketID} );
 
     return 1;
 }
@@ -771,7 +756,7 @@ sub TicketNumberLookup {
 
 rebuild a new ticket subject
 
-This will generate a subject like "RE: [Ticket# 2004040510440485] Some subject"
+This will generate a subject like C<RE: [Ticket# 2004040510440485] Some subject>
 
     my $NewSubject = $TicketObject->TicketSubjectBuild(
         TicketNumber => '2004040510440485',
@@ -779,7 +764,7 @@ This will generate a subject like "RE: [Ticket# 2004040510440485] Some subject"
         Action       => 'Reply',
     );
 
-This will generate a subject like  "[Ticket# 2004040510440485] Some subject"
+This will generate a subject like C<[Ticket# 2004040510440485] Some subject>
 (so without RE: )
 
     my $NewSubject = $TicketObject->TicketSubjectBuild(
@@ -789,7 +774,7 @@ This will generate a subject like  "[Ticket# 2004040510440485] Some subject"
         Action       => 'Reply',
     );
 
-This will generate a subject like "FWD: [Ticket# 2004040510440485] Some subject"
+This will generate a subject like C<FWD: [Ticket# 2004040510440485] Some subject>
 
     my $NewSubject = $TicketObject->TicketSubjectBuild(
         TicketNumber => '2004040510440485',
@@ -797,7 +782,7 @@ This will generate a subject like "FWD: [Ticket# 2004040510440485] Some subject"
         Action       => 'Forward', # Possible values are Reply and Forward, Reply is default.
     );
 
-This will generate a subject like "[Ticket# 2004040510440485] Re: Some subject"
+This will generate a subject like C<[Ticket# 2004040510440485] Re: Some subject>
 (so without clean-up of subject)
 
     my $NewSubject = $TicketObject->TicketSubjectBuild(
@@ -1666,11 +1651,15 @@ sub TicketTitleUpdate {
     # clear ticket cache
     $Self->_TicketCacheClear( TicketID => $Param{TicketID} );
 
+    # truncate title
+    my $Title = substr( $Param{Title}, 0, 50 );
+    $Title .= '...' if length($Title) == 50;
+
     # history insert
     $Self->HistoryAdd(
         TicketID     => $Param{TicketID},
         HistoryType  => 'TitleUpdate',
-        Name         => "\%\%$Ticket{Title}\%\%$Param{Title}",
+        Name         => "\%\%$Ticket{Title}\%\%$Title",
         CreateUserID => $Param{UserID},
     );
 
@@ -1780,6 +1769,7 @@ sub TicketQueueID {
         TicketID      => $Param{TicketID},
         DynamicFields => 0,
         UserID        => 1,
+        Silent        => 1,
     );
 
     return if !%Ticket;
@@ -2682,7 +2672,7 @@ sub TicketEscalationIndexBuild {
         if ( !defined $Param{$Needed} ) {
             $Kernel::OM->Get('Kernel::System::Log')->Log(
                 Priority => 'error',
-                Message  => "Need $Needed!"
+                Message  => "Need $Needed!",
             );
             return;
         }
@@ -2698,7 +2688,7 @@ sub TicketEscalationIndexBuild {
     my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
 
     # do no escalations on (merge|close|remove) tickets
-    if ( $Ticket{StateType} =~ /^(merge|close|remove)/i ) {
+    if ( $Ticket{StateType} && $Ticket{StateType} =~ /^(merge|close|remove)/i ) {
 
         # update escalation times with 0
         my %EscalationTimes = (
@@ -2730,10 +2720,13 @@ sub TicketEscalationIndexBuild {
     }
 
     # get escalation properties
-    my %Escalation = $Self->TicketEscalationPreferences(
-        Ticket => \%Ticket,
-        UserID => $Param{UserID},
-    );
+    my %Escalation;
+    if (%Ticket) {
+        %Escalation = $Self->TicketEscalationPreferences(
+            Ticket => \%Ticket,
+            UserID => $Param{UserID},
+        );
+    }
 
     # find escalation times
     my $EscalationTime = 0;
@@ -6098,6 +6091,13 @@ sub TicketMerge {
         Bind => [ \$Param{MainTicketID}, \$Param{MergeTicketID} ],
     );
 
+    # transfer all linked objects to new ticket
+    $Self->TicketMergeLinkedObjects(
+        MergeTicketID => $Param{MergeTicketID},
+        MainTicketID  => $Param{MainTicketID},
+        UserID        => $Param{UserID},
+    );
+
     # link tickets
     $Kernel::OM->Get('Kernel::System::LinkObject')->LinkAdd(
         SourceObject => 'Ticket',
@@ -6139,7 +6139,7 @@ sub TicketMerge {
     );
 
     # remove seen flag for all users on the main ticket
-    my $Success = $Self->TicketFlagDelete(
+    $Self->TicketFlagDelete(
         TicketID => $Param{MainTicketID},
         Key      => 'Seen',
         AllUsers => 1,
@@ -6253,6 +6253,68 @@ sub TicketMergeDynamicFields {
             );
         }
     }
+
+    return 1;
+}
+
+=item TicketMergeLinkedObjects()
+
+merge linked objects from one ticket into another, that is, move
+them from the merge ticket to the main ticket in the link_relation table.
+
+    my $Success = $TicketObject->TicketMergeLinkedObjects(
+        MainTicketID  => 123,
+        MergeTicketID => 42,
+        UserID        => 1,
+    );
+
+=cut
+
+sub TicketMergeLinkedObjects {
+    my ( $Self, %Param ) = @_;
+
+    for my $Needed (qw(MainTicketID MergeTicketID UserID)) {
+        if ( !$Param{$Needed} ) {
+            $Kernel::OM->Get('Kernel::System::Log')->Log(
+                Priority => 'error',
+                Message  => "Need $Needed!",
+            );
+            return;
+        }
+    }
+
+    # lookup the object id of a ticket
+    my $TicketObjectID = $Kernel::OM->Get('Kernel::System::LinkObject')->ObjectLookup(
+        Name => 'Ticket',
+    );
+
+    # update links from old ticket to new ticket where the old ticket is the source
+    $Kernel::OM->Get('Kernel::System::DB')->Do(
+        SQL => '
+            UPDATE link_relation
+            SET source_key = ?
+            WHERE source_object_id = ?
+              AND source_key = ?',
+        Bind => [
+            \$Param{MainTicketID},
+            \$TicketObjectID,
+            \$Param{MergeTicketID},
+        ],
+    );
+
+    # update links from old ticket to new ticket where the old ticket is the target
+    $Kernel::OM->Get('Kernel::System::DB')->Do(
+        SQL => '
+            UPDATE link_relation
+            SET target_key = ?
+            WHERE target_object_id = ?
+              AND target_key = ?',
+        Bind => [
+            \$Param{MainTicketID},
+            \$TicketObjectID,
+            \$Param{MergeTicketID},
+        ],
+    );
 
     return 1;
 }

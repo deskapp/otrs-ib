@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -36,7 +36,7 @@ Kernel::System::Web::InterfaceAgent - the agent web interface
 
 =head1 SYNOPSIS
 
-the global agent web interface (incl. auth, session, ...)
+the global agent web interface (authentication, session handling, ...)
 
 =head1 PUBLIC INTERFACE
 
@@ -167,14 +167,14 @@ sub Run {
         my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
         if ( !$DBCanConnect ) {
             $LayoutObject->FatalError(
-                Comment => Translatable('Please contact your administrator'),
+                Comment => Translatable('Please contact the administrator.'),
             );
             return;
         }
         if ( $ParamObject->Error() ) {
             $LayoutObject->FatalError(
                 Message => $ParamObject->Error(),
-                Comment => Translatable('Please contact your administrator'),
+                Comment => Translatable('Please contact the administrator.'),
             );
             return;
         }
@@ -567,8 +567,8 @@ sub Run {
         # remove session id
         if ( !$SessionObject->RemoveSessionID( SessionID => $Param{SessionID} ) ) {
             $LayoutObject->FatalError(
-                Message => Translatable('Can`t remove SessionID'),
-                Comment => Translatable('Please contact your administrator'),
+                Message => Translatable('Can`t remove SessionID.'),
+                Comment => Translatable('Please contact the administrator.'),
             );
             return;
         }
@@ -690,7 +690,7 @@ sub Run {
             );
             if ( !$Sent ) {
                 $LayoutObject->FatalError(
-                    Comment => Translatable('Please contact your administrator'),
+                    Comment => Translatable('Please contact the administrator.'),
                 );
                 return;
             }
@@ -750,7 +750,7 @@ sub Run {
 
         if ( !$Sent ) {
             $LayoutObject->FatalError(
-                Comment => Translatable('Please contact your administrator'),
+                Comment => Translatable('Please contact the administrator.'),
             );
             return;
         }
@@ -906,7 +906,7 @@ sub Run {
                     "Module Kernel::Modules::$Param{Action} not registered in Kernel/Config.pm!",
             );
             $Kernel::OM->Get('Kernel::Output::HTML::Layout')->FatalError(
-                Comment => Translatable('Please contact your administrator'),
+                Comment => Translatable('Please contact the administrator.'),
             );
             return;
         }
@@ -969,6 +969,7 @@ sub Run {
         # update last request time
         if (
             !$ParamObject->IsAJAXRequest()
+            || $Param{Action} eq 'AgentVideoChat'
             ||
             (
                 $Param{Action} eq 'AgentChat'
@@ -1095,7 +1096,7 @@ sub Run {
         },
     );
     $Kernel::OM->Get('Kernel::Output::HTML::Layout')->FatalError(
-        Comment => Translatable('Please contact your administrator'),
+        Comment => Translatable('Please contact the administrator.'),
     );
     return;
 }

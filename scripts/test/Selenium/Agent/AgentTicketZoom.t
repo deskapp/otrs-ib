@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -20,6 +20,18 @@ $Selenium->RunTest(
 
         # get helper object
         my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+
+        # make sure we start with RuntimeDB search
+        $Helper->ConfigSettingChange(
+            Valid => 1,
+            Key   => 'Ticket::Hook',
+            Value => 'TestTicket#',
+        );
+        $Helper->ConfigSettingChange(
+            Valid => 1,
+            Key   => 'Ticket::HookDivider',
+            Value => '::',
+        );
 
         # create and login test user
         my $TestUserLogin = $Helper->TestUserCreate(
@@ -69,10 +81,14 @@ $Selenium->RunTest(
         # navigate to AgentTicketZoom for test created ticket
         $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AgentTicketZoom;TicketID=$TicketID");
 
-        # verify its right screen
         $Self->True(
-            index( $Selenium->get_page_source(), $TitleRandom ) > -1,
-            "Ticket $TitleRandom found on page",
+            $Selenium->execute_script("return \$('h1:contains(TestTicket#::)')"),
+            "Ticket::Hook and Ticket::HookDivider found",
+        );
+
+        $Self->True(
+            $Selenium->execute_script("return \$('h1:contains($TitleRandom)')"),
+            "Ticket $TitleRandom found",
         );
 
         # check page

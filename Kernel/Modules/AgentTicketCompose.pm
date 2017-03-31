@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -48,7 +48,7 @@ sub Run {
     if ( !$Self->{TicketID} ) {
         return $LayoutObject->ErrorScreen(
             Message => Translatable('No TicketID is given!'),
-            Comment => Translatable('Please contact the admin.'),
+            Comment => Translatable('Please contact the administrator.'),
         );
     }
 
@@ -393,7 +393,8 @@ sub Run {
     DYNAMICFIELD:
     for my $DynamicFieldItem ( sort keys %DynamicFieldValues ) {
         next DYNAMICFIELD if !$DynamicFieldItem;
-        next DYNAMICFIELD if !$DynamicFieldValues{$DynamicFieldItem};
+        next DYNAMICFIELD if !defined $DynamicFieldValues{$DynamicFieldItem};
+        next DYNAMICFIELD if !length $DynamicFieldValues{$DynamicFieldItem};
 
         $DynamicFieldACLParameters{ 'DynamicField_' . $DynamicFieldItem } = $DynamicFieldValues{$DynamicFieldItem};
     }
@@ -697,7 +698,7 @@ sub Run {
                             'Could not perform validation on field %s!',
                             $DynamicFieldConfig->{Label},
                         ),
-                        Comment => Translatable('Please contact the admin.'),
+                        Comment => Translatable('Please contact the administrator.'),
                     );
                 }
 
@@ -835,7 +836,7 @@ sub Run {
         if ( !$ArticleTypeID ) {
             return $LayoutObject->ErrorScreen(
                 Message => Translatable('Can not determine the ArticleType!'),
-                Comment => Translatable('Please contact the admin.'),
+                Comment => Translatable('Please contact the administrator.'),
             );
         }
 
@@ -1148,6 +1149,11 @@ sub Run {
         $Data{OrigFromName} = $Data{OrigFrom};
         $Data{OrigFromName} =~ s/<.*>|\(.*\)|\"|;|,//g;
         $Data{OrigFromName} =~ s/( $)|(  $)//g;
+
+        # Fallback to OrigFrom if realname part is empty.
+        if ( !$Data{OrigFromName} ) {
+            $Data{OrigFromName} = $Data{OrigFrom};
+        }
 
         # get customer data
         my %Customer;
@@ -1879,7 +1885,7 @@ sub _Mask {
     }
 
     # set preselected values for To field
-    if ( $Param{To} ne '' && !$CustomerCounter ) {
+    if ( defined $Param{To} && $Param{To} ne '' && !$CustomerCounter ) {
         $LayoutObject->Block(
             Name => 'PreFilledTo',
         );

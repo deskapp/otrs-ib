@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -68,8 +68,8 @@ sub new {
 
 =item Generate()
 
-Generates a support bundle tar or tar.gz with the following contents: Registration Information,
-Support Data, Installed Packages, and another tar or tar.gz with all changed or new files in the
+Generates a support bundle C<.tar> or C<.tar.gz> with the following contents: Registration Information,
+Support Data, Installed Packages, and another C<.tar> or C<.tar.gz> with all changed or new files in the
 OTRS installation directory.
 
     my $Result = $SupportBundleGeneratorObject->Generate();
@@ -274,12 +274,12 @@ sub Generate {
 
 =item GenerateCustomFilesArchive()
 
-Generates a .tar or tar.gz file with all eligible changed or added files taking the ARCHIVE file as
-a reference
+Generates a C<.tar> or C<.tar.gz> file with all eligible changed or added files taking the ARCHIVE file as a reference
 
     my ( $Content, $Filename ) = $SupportBundleGeneratorObject->GenerateCustomFilesArchive();
 
 Returns:
+
     $Content  = $FileContentsRef;
     $Filename = 'application.tar';      # or 'application.tar.gz'
 
@@ -340,24 +340,15 @@ sub GenerateCustomFilesArchive {
         return;
     }
 
-    my @TrimAction = qw(
-        DatabasePw
-        SearchUserPw
-        UserPw
-        SendmailModule::AuthPassword
-        AuthModule::Radius::Password
-        PGP::Key::Password
-        Customer::AuthModule::DB::CustomerPassword
-        Customer::AuthModule::Radius::Password
-        PublicFrontend::AuthPassword
-    );
+    # Trim any passswords from Config.pm.
+    # Simple settings like $Self->{'DatabasePw'} or $Self->{'AuthModule::LDAP::SearchUserPw1'}
+    $Config =~ s/(\$Self->\{'[^']+(?:Password|Pw)\d*'\}\s*=\s*)\'.*?\'/$1\'xxx\'/mg;
 
-    STRING:
-    for my $String (@TrimAction) {
-        next STRING if !$String;
-        $Config =~ s/(^\s+\$Self.*?$String.*?=.*?)\'.*?\';/$1\'xxx\';/mg;
-    }
-    $Config =~ s/(^\s+Password.*?=>.*?)\'.*?\',/$1\'xxx\',/mg;
+    # Complex settings like:
+    #     $Self->{CustomerUser1} = {
+    #         Params => {
+    #             UserPw => 'xxx',
+    $Config =~ s/((?:Password|Pw)\d*\s*=>\s*)\'.*?\'/$1\'xxx\'/mg;
 
     $TarObject->replace_content( $HomeWithoutSlash . '/Kernel/Config.pm', $Config );
 
@@ -452,11 +443,12 @@ sub GeneratePackageList {
 
 =item GenerateRegistrationInfo()
 
-Generates a .json file with the otrs system registration information
+Generates a C<.json> file with the otrs system registration information
 
     my ( $Content, $Filename ) = $SupportBundleGeneratorObject->GenerateRegistrationInfo();
 
 Returns:
+
     $Content  = $FileContentsRef;
     $Filename = 'RegistrationInfo.json';
 
@@ -501,11 +493,12 @@ sub GenerateRegistrationInfo {
 
 =item GenerateSupportData()
 
-Generates a .json file with the support data
+Generates a C<.json> file with the support data
 
     my ( $Content, $Filename ) = $SupportBundleGeneratorObject->GenerateSupportData();
 
 Returns:
+
     $Content  = $FileContentsRef;
     $Filename = 'GenerateSupportData.json';
 

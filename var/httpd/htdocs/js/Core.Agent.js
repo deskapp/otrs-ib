@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -217,7 +217,7 @@ Core.Agent = (function (TargetNS) {
                 // That means that a subnavigation in mobile mode is still collapsed/expanded,
                 // although the link to the new page is clicked
                 // we force the redirect with this workaround
-                if ($Target.closest('ul').attr('id') !== 'Navigation') {
+                if (navigator && navigator.userAgent && navigator.userAgent.match(/Windows Phone/i) && $Target.closest('ul').attr('id') !== 'Navigation') {
                     window.location.href = $Target.closest('a').attr('href');
                     Event.stopPropagation();
                     Event.preventDefault();
@@ -554,10 +554,16 @@ Core.Agent = (function (TargetNS) {
                 .addClass('IsResized');
         }
 
+        // we have to do an exact calculation here (with floating point numbers),
+        // otherwise the results will be different across browsers.
         $('#Navigation > li').each(function() {
-            NavigationBarWidth += parseInt($(this).outerWidth(true), 10);
+            NavigationBarWidth += $(this)[0].getBoundingClientRect().width
+                + parseInt($(this).css('margin-left'), 10)
+                + parseInt($(this).css('margin-right'), 10)
+                + parseInt($(this).css('border-left-width'), 10)
+                + parseInt($(this).css('border-right-width'), 10);
         });
-        $('#Navigation').css('width', (NavigationBarWidth + 3) + 'px');
+        $('#Navigation').css('width', NavigationBarWidth);
 
         if (NavigationBarWidth > $('#NavigationContainer').outerWidth()) {
             NavigationBarShowSlideButton('Right', parseInt($('#NavigationContainer').outerWidth(true) - NavigationBarWidth, 10));
@@ -629,6 +635,16 @@ Core.Agent = (function (TargetNS) {
         Core.UI.InputFields.Init();
         Core.UI.TreeSelection.InitTreeSelection();
         Core.UI.TreeSelection.InitDynamicFieldTreeViewRestore();
+
+        if (
+            typeof Core.Agent.Chat !== 'undefined'
+            && typeof Core.Agent.Chat.Toolbar !== 'undefined'
+            && typeof Core.Agent.Chat.Toolbar.InitChatButtons !== 'undefined'
+            )
+        {
+            Core.Agent.Chat.Toolbar.InitChatButtons();
+        }
+
         // late execution of accessibility code
         Core.UI.Accessibility.Init();
     };

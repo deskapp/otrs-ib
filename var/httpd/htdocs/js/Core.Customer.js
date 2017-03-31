@@ -1,5 +1,5 @@
 // --
-// Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+// Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 // --
 // This software comes with ABSOLUTELY NO WARRANTY. For details, see
 // the enclosed file COPYING for license information (AGPL). If you
@@ -92,6 +92,21 @@ Core.Customer = (function (TargetNS) {
         // Init tree selection/tree view for dynamic fields
         Core.UI.TreeSelection.InitTreeSelection();
         Core.UI.TreeSelection.InitDynamicFieldTreeViewRestore();
+
+        // Initialize customer chat request checks in the background.
+        if (
+            typeof Core.Customer.Chat !== 'undefined'
+            && typeof Core.Customer.Chat.Toolbar !== 'undefined'
+            && typeof Core.Customer.Chat.Toolbar.Init !== 'undefined'
+            )
+        {
+            Core.Customer.Chat.Toolbar.Init();
+        }
+
+        // unveil full error details only on click
+        $('.TriggerFullErrorDetails').on('click', function() {
+            $('.Content.ErrorDetails').toggle();
+        });
     };
 
     /**

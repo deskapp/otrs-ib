@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -745,7 +745,11 @@ sub Send {
 
     # set envelope sender for autoresponses and notifications
     if ( $Param{Loop} ) {
-        $RealFrom = $ConfigObject->Get('SendmailNotificationEnvelopeFrom') || '';
+        my $NotificationEnvelopeFrom = $ConfigObject->Get('SendmailNotificationEnvelopeFrom') || '';
+        my $NotificationFallback = $ConfigObject->Get('SendmailNotificationEnvelopeFrom::FallbackToEmailFrom');
+        if ( $NotificationEnvelopeFrom || !$NotificationFallback ) {
+            $RealFrom = $NotificationEnvelopeFrom;
+        }
     }
 
     # debug
@@ -826,13 +830,7 @@ sub Bounce {
     }
 
     # check and create message id
-    my $MessageID = '';
-    if ( $Param{'Message-ID'} ) {
-        $MessageID = $Param{'Message-ID'};
-    }
-    else {
-        $MessageID = $Self->_MessageIDCreate();
-    }
+    my $MessageID = $Param{'Message-ID'} || $Self->_MessageIDCreate();
 
     # split body && header
     my @EmailPlain = split( /\n/, $Param{Email} );
@@ -842,13 +840,12 @@ sub Bounce {
     my @Sender   = Mail::Address->parse( $Param{From} );
     my $RealFrom = $Sender[0]->address();
 
-    # add ReSent header
+    # add ReSent header (see https://www.ietf.org/rfc/rfc2822.txt A.3. Resent messages)
     my $HeaderObject = $EmailObject->head();
-    my $OldMessageID = $HeaderObject->get('Message-ID') || '??';
-    $HeaderObject->replace( 'Message-ID',        $MessageID );
-    $HeaderObject->replace( 'ReSent-Message-ID', $OldMessageID );
+    $HeaderObject->replace( 'Resent-Message-ID', $MessageID );
     $HeaderObject->replace( 'Resent-To',         $Param{To} );
     $HeaderObject->replace( 'Resent-From',       $RealFrom );
+    $HeaderObject->replace( 'Resent-Date',       $Kernel::OM->Get('Kernel::System::Time')->MailTimeStamp() );
     my $Body         = $EmailObject->body();
     my $BodyAsString = '';
     for ( @{$Body} ) {
@@ -858,6 +855,7 @@ sub Bounce {
 
     # debug
     if ( $Self->{Debug} > 1 ) {
+        my $OldMessageID = $HeaderObject->get('Message-ID') || '??';
         $Kernel::OM->Get('Kernel::System::Log')->Log(
             Priority => 'notice',
             Message  => "Bounced email to '$Param{To}' from '$RealFrom'. "
@@ -905,7 +903,7 @@ sub _MessageIDCreate {
 
     my $FQDN = $Kernel::OM->Get('Kernel::Config')->Get('FQDN');
 
-    return 'Message-ID: <' . time() . '.' . rand(999999) . '@' . $FQDN . '>';
+    return '<' . time() . '.' . rand(999999) . '@' . $FQDN . '>';
 }
 
 1;

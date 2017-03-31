@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -65,7 +65,7 @@ from from the web server process.
 
 Based on the request the Operation to be used is determined.
 
-No outbound communication is done here, except from continue requests.
+No out-bound communication is done here, except from continue requests.
 
 In case of an error, the resulting http error code and message are remembered for the response.
 
@@ -175,12 +175,18 @@ sub ProviderProcessRequest {
             );
         }
 
+        # Remove trailing "/" form configuration and request for comparison
+        $NameSpaceFromHeader =~ s{\A ( .+? ) / \z}{$1}msx;
+
+        my $NameSpace = $Config->{NameSpace};
+        $NameSpace =~ s{\A ( .+? ) / \z}{$1}msx;
+
         # check name-space for match to configuration
-        if ( $NameSpaceFromHeader ne $Config->{NameSpace} ) {
+        if ( $NameSpaceFromHeader ne $NameSpace ) {
             return $Self->_Error(
                 Summary =>
                     "Namespace from SOAPAction '$NameSpaceFromHeader' does not match namespace"
-                    . " from configuration '$Config->{NameSpace}'",
+                    . " from configuration '$NameSpace'",
             );
         }
     }
@@ -200,7 +206,7 @@ sub ProviderProcessRequest {
 
     # convert charset if necessary
     my $ContentCharset;
-    if ( $ENV{'CONTENT_TYPE'} =~ m{ \A ( .+ ) ;charset= ["']{0,1} ( .+? ) ["']{0,1} \z }xmsi ) {
+    if ( $ENV{'CONTENT_TYPE'} =~ m{ \A ( .+ ) ;\s*charset= ["']{0,1} ( .+? ) ["']{0,1} (;|\z) }xmsi ) {
 
         # remember content type for the response
         $Self->{ContentType} = $1;
@@ -292,9 +298,9 @@ In case of an error, error code and message are taken from environment
 (previously set on request processing).
 
 The HTTP code is set accordingly
-- 200 for (syntactically) correct messages
-- 4xx for http errors
-- 500 for content syntax errors
+- C<200> for (syntactically) correct messages
+- C<4xx> for http errors
+- C<500> for content syntax errors
 
     my $Result = $TransportObject->ProviderGenerateResponse(
         Success => 1
@@ -553,41 +559,35 @@ sub RequesterPerformRequest {
             )
         {
 
-            # force Net::SSL instead of IO::Socket::SSL, otherwise GI can't connect to certificate
-            # authentication restricted servers
-            my $SSLModule = 'Net::SSL';
-            if ( !$Kernel::OM->Get('Kernel::System::Main')->Require($SSLModule) ) {
-                return {
-                    Success      => 0,
-                    ErrorMessage => "The Perl module \"$SSLModule\" needed to manage SSL"
-                        . " connections with certificates is missing!",
-                };
-            }
+            # Force Net::SSL instead of IO::Socket::SSL, otherwise GI can't connect to certificate
+            #   authentication restricted servers, see https://metacpan.org/pod/Net::HTTPS#ENVIRONMENT,
+            #   see bug #12306.
+            $ENV{PERL_NET_HTTPS_SSL_SOCKET_CLASS} = 'Net::SSL';    ## no critic
 
-            $ENV{HTTPS_PKCS12_FILE}     = $Config->{SSL}->{SSLP12Certificate};
-            $ENV{HTTPS_PKCS12_PASSWORD} = $Config->{SSL}->{SSLP12Password};
+            $ENV{HTTPS_PKCS12_FILE}     = $Config->{SSL}->{SSLP12Certificate};    ## no critic
+            $ENV{HTTPS_PKCS12_PASSWORD} = $Config->{SSL}->{SSLP12Password};       ## no critic
 
             # add certificate authority
             if ( IsStringWithData( $Config->{SSL}->{SSLCAFile} ) ) {
-                $ENV{HTTPS_CA_FILE} = $Config->{SSL}->{SSLCAFile};
+                $ENV{HTTPS_CA_FILE} = $Config->{SSL}->{SSLCAFile};                ## no critic
             }
             if ( IsStringWithData( $Config->{SSL}->{SSLCADir} ) ) {
-                $ENV{HTTPS_CA_DIR} = $Config->{SSL}->{SSLCADir};
+                $ENV{HTTPS_CA_DIR} = $Config->{SSL}->{SSLCADir};                  ## no critic
             }
         }
     }
 
     # add proxy
     if ( IsStringWithData( $Config->{SSL}->{SSLProxy} ) ) {
-        $ENV{HTTPS_PROXY} = $Config->{SSL}->{SSLProxy};
+        $ENV{HTTPS_PROXY} = $Config->{SSL}->{SSLProxy};                           ## no critic
     }
 
     # add proxy basic authentication
     if ( IsStringWithData( $Config->{SSL}->{SSLProxyUser} ) ) {
-        $ENV{HTTPS_PROXY_USERNAME} = $Config->{SSL}->{SSLProxyUser};
+        $ENV{HTTPS_PROXY_USERNAME} = $Config->{SSL}->{SSLProxyUser};              ## no critic
     }
     if ( IsStringWithData( $Config->{SSL}->{SSLProxyPassword} ) ) {
-        $ENV{HTTPS_PROXY_PASSWORD} = $Config->{SSL}->{SSLProxyPassword};
+        $ENV{HTTPS_PROXY_PASSWORD} = $Config->{SSL}->{SSLProxyPassword};          ## no critic
     }
 
     # prepare connect
@@ -881,7 +881,7 @@ sub _Output {
     $Param{HTTPCode} ||= 500;
     my $ContentType;
     if ( $Param{HTTPCode} eq 200 ) {
-        $ContentType = 'application/soap+xml';
+        $ContentType = 'text/xml';
         if ( $Self->{ContentType} ) {
             $ContentType = $Self->{ContentType};
         }

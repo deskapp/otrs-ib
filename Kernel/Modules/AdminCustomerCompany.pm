@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2016 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -520,43 +520,42 @@ sub _Overview {
         );
     }
 
-    # get config object
-    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
-
-    # same Limit as $Self->{CustomerCompanyMap}->{'CustomerCompanySearchListLimit'}
-    # smallest Limit from all sources
-    my $Limit = 400;
-    SOURCE:
-    for my $Count ( '', 1 .. 10 ) {
-        next SOURCE if !$ConfigObject->Get("CustomerCompany$Count");
-        my $CustomerUserMap = $ConfigObject->Get("CustomerCompany$Count");
-        next SOURCE if !$CustomerUserMap->{CustomerCompanySearchListLimit};
-        if ( $CustomerUserMap->{CustomerCompanySearchListLimit} < $Limit ) {
-            $Limit = $CustomerUserMap->{CustomerCompanySearchListLimit};
-        }
-    }
-
-    my %ListAll = $CustomerCompanyObject->CustomerCompanyList(
-        Search => $Param{Search},
-        Limit  => $Limit + 1,
-        Valid  => 0,
-    );
-
-    if ( keys %ListAll <= $Limit ) {
-        my $ListAll = keys %ListAll;
-        $LayoutObject->Block(
-            Name => 'OverviewHeader',
-            Data => {
-                ListAll => $ListAll,
-                Limit   => $Limit,
-            },
-        );
-    }
-
-    my %List = ();
-
     # if there are any registries to search, the table is filled and shown
     if ( $Param{Search} ) {
+
+        # get config object
+        my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
+        # same Limit as $Self->{CustomerCompanyMap}->{'CustomerCompanySearchListLimit'}
+        # smallest Limit from all sources
+        my $Limit = 400;
+        SOURCE:
+        for my $Count ( '', 1 .. 10 ) {
+            next SOURCE if !$ConfigObject->Get("CustomerCompany$Count");
+            my $CustomerUserMap = $ConfigObject->Get("CustomerCompany$Count");
+            next SOURCE if !$CustomerUserMap->{CustomerCompanySearchListLimit};
+            if ( $CustomerUserMap->{CustomerCompanySearchListLimit} < $Limit ) {
+                $Limit = $CustomerUserMap->{CustomerCompanySearchListLimit};
+            }
+        }
+
+        my %ListAll = $CustomerCompanyObject->CustomerCompanyList(
+            Search => $Param{Search},
+            Limit  => $Limit + 1,
+            Valid  => 0,
+        );
+
+        if ( keys %ListAll <= $Limit ) {
+            my $ListAll = keys %ListAll;
+            $LayoutObject->Block(
+                Name => 'OverviewHeader',
+                Data => {
+                    ListAll => $ListAll,
+                    Limit   => $Limit,
+                },
+            );
+        }
+
         my %List = $CustomerCompanyObject->CustomerCompanyList(
             Search => $Param{Search},
             Valid  => 0,
