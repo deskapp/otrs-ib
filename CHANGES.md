@@ -1,4 +1,5 @@
 #5.0.18 2017-03-28
+ - 2017-03-31 Hardcoded OTRS in preference label removed.
  - 2017-03-31 Allow to hide transifex link using AdsAndExternalReportsEnabled.
  - 2017-03-31 PL translation update.
  - 2017-02-22 Updated translations, thanks to all translators.
