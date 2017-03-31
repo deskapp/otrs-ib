@@ -1,4 +1,5 @@
 #6.0.0.beta1 2017-??-??
+ - 2017-03-31 Hardcoded OTRS in preference label removed.
  - 2017-03-31 Allow to hide transifex link using AdsAndExternalReportsEnabled.
  - 2017-03-31 PL translation update.
  - 2017-03-26 Fixed bug#[12650](https://bugs.otrs.org/show_bug.cgi?id=12650)(PR#1636) - SendCustomerNotification does not respect newly assigned mail address. Thanks to S7!
