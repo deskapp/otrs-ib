@@ -172,7 +172,7 @@
 
                                 <div class="SettingDescription">
                                     [% Translate(Data.Desc) | html %]
-                                [% IF Data.Label == 'Language' %]
+                                [% IF Data.Label == 'Language' && Config('AdsAndExternalReportsEnabled') %]
                                     [% Translate("Did you know? You can help translating OTRS at %s.", '<a href="https://www.transifex.com/otrs/OTRS/" target="_blank">Transifex</a>') %]
                                 [% END %]
                                 </div>
