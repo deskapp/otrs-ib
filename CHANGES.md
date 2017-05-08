@@ -1,4 +1,5 @@
 #6.0.0.beta1 2017-??-??
+ - 2017-05-08 OTRS Daemon task start/finish message logging added.
  - 2017-03-31 Hardcoded OTRS in preference label removed.
  - 2017-03-31 Allow to hide transifex link using AdsAndExternalReportsEnabled.
  - 2017-03-31 PL translation update.
