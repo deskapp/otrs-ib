@@ -6999,6 +6999,7 @@ Thanks for your help!
         'CreateTicket' => 'Nowe zgłoszenie',
         'TicketZoom' => 'Podgląd zgłoszenia',
         'PhoneCall' => 'Połączenie telefoniczne',
+        'Customer tickets' => 'Zgłoszenia klienta',
 
     };
     # $$STOP$$
