@@ -57,6 +57,7 @@ Kernel/Output/HTML/Fred/*
 Kernel/Output/HTML/Templates/Standard/DevelFred*
 Kernel/Config/Files/AAAFred.pm
 Kernel/Config/Files/Fred.xml
+Kernel/Config/Files/XML/Fred.xml
 Kernel/Modules/DevelFred.pm
 Kernel/System/Fred
 var/fred
@@ -168,6 +169,7 @@ scripts/test/Chat
 scripts/test/Console/Command/Maint/Chat*
 scripts/test/Console/Command/Maint/NotificationView*
 scripts/test/Console/Command/Maint/Stats/Reports*
+scripts/test/DynamicField/DynamicFieldDatabase.t
 scripts/test/NotificationView*
 scripts/test/Selenium/Agent/Admin/AdminContactWithData.t
 scripts/test/Selenium/Agent/Admin/AdminDynamicFieldContactWithData.t

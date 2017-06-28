@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OTRS\n"
-"POT-Creation-Date: 2017-03-22 12:37+0000\n"
-"PO-Revision-Date: 2017-03-22 18:44+0000\n"
+"POT-Creation-Date: 2017-05-31 17:16+0000\n"
+"PO-Revision-Date: 2017-05-31 22:17+0000\n"
 "Last-Translator: Carlos Rodríguez <carlos.rodriguez@otrs.com>\n"
 "Language-Team: Thai (Thailand) (http://www.transifex.com/otrs/OTRS/language/th_TH/)\n"
 "MIME-Version: 1.0\n"
@@ -5714,6 +5714,10 @@ msgid "Manage %s"
 msgstr "จัดการ% s"
 
 #. Template: AdminOTRSBusinessInstalled
+msgid "Go to the OTRS customer portal"
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
 msgid "Downgrade to OTRS Free"
 msgstr "ดาวน์เกรดไปเป็น  OTRS แบบฟรี"
 
@@ -5779,6 +5783,50 @@ msgid "%s Update Available"
 msgstr "%s การอัปเดตที่พร้อมใช้งาน"
 
 #. Template: AdminOTRSBusinessInstalled
+msgid "Package installation requires patch level update of OTRS."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "Please visit our customer portal and file a request."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "Everything else will be done as part of your contract."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "Your installed OTRS version is %s."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid ""
+"To install the current version of OTRS Business Solution™, you need to "
+"update to OTRS %s or higher."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid ""
+"To install the current version of OTRS Business Solution™, the Maximum OTRS "
+"Version is %s."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "To install this package, the required Framework version is %s."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "Why should I keep OTRS up to date?"
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "You will receive updates about relevant security issues."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "You will receive updates for all other relevant OTRS issues"
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
 msgid "An update for your %s is available! Please update at your earliest!"
 msgstr "การอัปเดตสำหรับ% s ของคุณพร้อมใช้งาน โปรดอัปเดตโดยเร็วที่สุด!"
 
@@ -5814,6 +5862,14 @@ msgid ""
 "Connection to cloud.otrs.com via HTTPS couldn't be established. Please make "
 "sure that your OTRS can connect to cloud.otrs.com via port 443."
 msgstr "การเชื่อมต่อกับ cloud.otrs.com ผ่าน HTTPS ไม่สามารถยืนยันได โปรดตรวจสอบว่า OTRSของคุณคุณสามารถเชื่อมต่อกับ cloud.otrs.com ผ่านทางพอร์ต443"
+
+#. Template: AdminOTRSBusinessNotInstalled
+msgid "To install this package, you need to update to OTRS %s or higher."
+msgstr ""
+
+#. Template: AdminOTRSBusinessNotInstalled
+msgid "To install this package, the Maximum OTRS Version is %s."
+msgstr ""
 
 #. Template: AdminOTRSBusinessNotInstalled
 msgid "With your existing contract you can only use a small part of the %s."
@@ -5985,6 +6041,64 @@ msgid ""
 "Do you really want to reinstall this package? Any manual changes will be "
 "lost."
 msgstr "คุณต้องการติดตั้งแพคเกจนี้อีกครั้งหรือไม่? การเปลี่ยนแปลงด้วยตนเองจะหายไป"
+
+#. Template: AdminPackageManager
+msgid "Go to upgrading instructions"
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "package information"
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "Package installation requires a patch level update of OTRS."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "Package update requires a patch level update of OTRS."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid ""
+"If you are a OTRS Business Solution™ customer, please visit our customer "
+"portal and file a request."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "Please note that your installed OTRS version is %s."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid ""
+"To install this package, you need to update OTRS to version %s or newer."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "This package can only be installed on OTRS version %s or older."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "This package can only be installed on OTRS version %s or newer."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "You will receive updates for all other relevant OTRS issues."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "How can I do a patch level update if I don’t have a contract?"
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid ""
+"Please find all relevant information within the upgrading instructions at "
+"%s."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid ""
+"In case you would have further questions we would be glad to answer them."
+msgstr "ในกรณีที่คุณมีคำถามอื่นๆเรายินดีที่จะตอบคำถามเหล่านั้น"
 
 #. Template: AdminPackageManager
 msgid "Continue"
@@ -6234,8 +6348,8 @@ msgid "Edit PostMaster Filter"
 msgstr "แก้ไขตัวกรอง PostMaster"
 
 #. Template: AdminPostMasterFilter
-msgid "The name is required."
-msgstr "ต้องระบุชื่อ"
+msgid "A postmaster filter with this name already exists!"
+msgstr ""
 
 #. Template: AdminPostMasterFilter
 msgid "Filter Condition"
@@ -7254,11 +7368,6 @@ msgid "Typically this would be around once every three days."
 msgstr "ซึ่งโดยปกติแล้วประมาณทุกๆสามวัน"
 
 #. Template: AdminRegistration
-msgid ""
-"In case you would have further questions we would be glad to answer them."
-msgstr "ในกรณีที่คุณมีคำถามอื่นๆเรายินดีที่จะตอบคำถามเหล่านั้น"
-
-#. Template: AdminRegistration
 msgid "Please visit our"
 msgstr "กรุณาเยี่ยมชม  ของเรา"
 
@@ -7739,6 +7848,10 @@ msgid "Edit Service"
 msgstr "แก้ไขการบริการ"
 
 #. Template: AdminService
+msgid "Service name maximum length is 200 characters (with Sub-service)."
+msgstr ""
+
+#. Template: AdminService
 msgid "Sub-service of"
 msgstr "การบริการย่อยของ"
 
@@ -8169,8 +8282,18 @@ msgid "Edit System Email Address"
 msgstr "แก้ไขที่อยู่อีเมลของระบบ"
 
 #. Template: AdminSystemAddress
+msgid "This email address is already used as system email address."
+msgstr ""
+
+#. Template: AdminSystemAddress
 msgid "The display name and email address will be shown on mail you send."
 msgstr "ชื่อที่ปรากฏและที่อยู่อีเมลจะแสดงบนอีเมลที่คุณส่ง"
+
+#. Template: AdminSystemAddress
+msgid ""
+"This system address cannot be set to invalid, because it is used in one or "
+"more queue(s)."
+msgstr ""
 
 #. Template: AdminSystemMaintenance
 msgid "System Maintenance Management"
@@ -9411,6 +9534,10 @@ msgid "Article Create Time (between)"
 msgstr "เวลาที่สร้างบทความ(ในระหว่าง)"
 
 #. Template: AgentTicketSearch
+msgid "Invalid date"
+msgstr ""
+
+#. Template: AgentTicketSearch
 msgid "Ticket Create Time (before/after)"
 msgstr "เวลาที่สร้างตั๋ว (ก่อน/หลัง)"
 
@@ -9627,24 +9754,6 @@ msgstr "ปิดข้อความนี้"
 #. Template: AgentTicketZoom
 msgid "Article could not be opened! Perhaps it is on another article page?"
 msgstr "ไม่สามารถเปิดบทความ! บางทีมันอาจจะอยู่บนหน้าบทความอื่นได้หรือไม่?"
-
-#. Template: AgentTicketZoom
-msgid "Scale preview content"
-msgstr "ตัวอย่างสเกลเนื้อหา"
-
-#. Template: AgentTicketZoom
-msgid "Open URL in new tab"
-msgstr "เปิด URL ในแท็บใหม่"
-
-#. Template: AgentTicketZoom
-msgid "Close preview"
-msgstr "ปิดการแสดงตัวอย่าง"
-
-#. Template: AgentTicketZoom
-msgid ""
-"A preview of this website can't be provided because it didn't allow to be "
-"embedded."
-msgstr ""
 
 #. Template: AttachmentBlocker
 msgid "To protect your privacy, remote content was blocked."
@@ -10586,6 +10695,24 @@ msgstr "การร้องขอรหัสผ่านใหม่"
 #. Template: Login
 msgid "Back to login"
 msgstr "กลับไปเข้าสู่ระบบ"
+
+#. Template: MetaFloater
+msgid "Scale preview content"
+msgstr "ตัวอย่างสเกลเนื้อหา"
+
+#. Template: MetaFloater
+msgid "Open URL in new tab"
+msgstr "เปิด URL ในแท็บใหม่"
+
+#. Template: MetaFloater
+msgid "Close preview"
+msgstr "ปิดการแสดงตัวอย่าง"
+
+#. Template: MetaFloater
+msgid ""
+"A preview of this website can't be provided because it didn't allow to be "
+"embedded."
+msgstr ""
 
 #. Template: MobileNotAvailableWidget
 msgid "Feature not available"
@@ -12217,14 +12344,9 @@ msgstr "ActivityEntityID หายไปในตั๋ว %s!"
 
 #. Perl Module: Kernel/Modules/AgentTicketProcess.pm
 msgid ""
-"This step does not belong anymore the current activity in process for Ticket"
-" %s!"
-msgstr ""
-
-#. Perl Module: Kernel/Modules/AgentTicketProcess.pm
-msgid ""
-"Another user changed this ticket in the meantime. Please close this window "
-"and reload the ticket."
+"This step does not belong anymore to the current activity in process for "
+"ticket '%s%s%s'! Another user changed this ticket in the meantime. Please "
+"close this window and reload the ticket."
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketProcess.pm
@@ -12577,6 +12699,16 @@ msgid "Create a new ticket!"
 msgstr "สร้างตั๋วใหม่!"
 
 #. Perl Module: Kernel/Modules/Installer.pm
+msgid "SecureMode active!"
+msgstr "ใช้งาน SecureMode!"
+
+#. Perl Module: Kernel/Modules/Installer.pm
+msgid ""
+"If you want to re-run the Installer, disable the SecureMode in the "
+"SysConfig."
+msgstr ""
+
+#. Perl Module: Kernel/Modules/Installer.pm
 msgid "Directory \"%s\" doesn't exist!"
 msgstr "ไม่มีไดเรกทอรี "
 
@@ -12888,6 +13020,11 @@ msgstr "โปรดลบคำต่อไปนี้เพราะมัน
 msgid "Order by"
 msgstr "จัดเรียงโดย"
 
+#. Perl Module: Kernel/System/ACL/DB/ACL.pm
+msgid ""
+"Couldn't read ACL configuration file. Please make sure the file is valid."
+msgstr ""
+
 #. Perl Module: Kernel/System/AuthSession.pm
 msgid ""
 "You have exceeded the number of concurrent agents - contact sales@otrs.com."
@@ -12923,12 +13060,26 @@ msgstr "การตั้งค่านี้ยังไม่ทำงาน
 msgid "This setting can not be deactivated."
 msgstr "ไม่สามารถปิดการใช้งานการตั้งค่านี้"
 
+#. Perl Module: Kernel/System/CustomerUser.pm
+msgid "Customer user \"%s\" already exists."
+msgstr ""
+
+#. Perl Module: Kernel/System/CustomerUser/DB.pm
+msgid "This email address is already in use for another customer user."
+msgstr ""
+
 #. Perl Module: Kernel/System/DynamicField/Driver/BaseText.pm
 msgid "e.g. Text or Te*t"
 msgstr ""
 
 #. Perl Module: Kernel/System/DynamicField/Driver/Checkbox.pm
 msgid "Ignore this field."
+msgstr ""
+
+#. Perl Module: Kernel/System/NotificationEvent.pm
+msgid ""
+"Couldn't read Notification configuration file. Please make sure the file is "
+"valid."
 msgstr ""
 
 #. Perl Module: Kernel/System/Package.pm
@@ -12945,6 +13096,10 @@ msgstr ""
 
 #. Perl Module: Kernel/System/Package.pm
 msgid "Can't read file!"
+msgstr ""
+
+#. Perl Module: Kernel/System/ProcessManagement/DB/Process.pm
+msgid "The process \"%s\" and all of its data has been imported successfully."
 msgstr ""
 
 #. Perl Module: Kernel/System/ProcessManagement/DB/Process/State.pm
@@ -13975,16 +14130,6 @@ msgid "Can't send account info!"
 msgstr "ไม่สามารถส่งข้อมูลบัญชี!"
 
 #. Perl Module: Kernel/System/Web/InterfaceInstaller.pm
-msgid "SecureMode active!"
-msgstr "ใช้งาน SecureMode!"
-
-#. Perl Module: Kernel/System/Web/InterfaceInstaller.pm
-msgid ""
-"If you want to re-run the Installer, disable the SecureMode in the "
-"SysConfig."
-msgstr ""
-
-#. Perl Module: Kernel/System/Web/InterfaceInstaller.pm
 msgid "Action \"%s\" not found!"
 msgstr "ไม่พบการกระทำ \"%s\"!"
 
@@ -14097,8 +14242,8 @@ msgstr "ตั๋วใหม่"
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid ""
 "Follow-ups for closed tickets are not possible. A new ticket will be "
-"created.."
-msgstr "เป็นไปได้ที่จะติดตามตั๋วที่ปิดแล้วและจะมีการสร้างตั๋วใหม่"
+"created."
+msgstr ""
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid "Postmaster queue."
@@ -17456,6 +17601,13 @@ msgid ""
 msgstr "กำหนดโซนเวลาของปฏิทินที่ระบุไว้ซึ่งสามารถกำหนดไปยังคิวตามที่ระบุไว้หลังจากนั้น"
 
 #. SysConfig
+msgid ""
+"Defines the timeout (in seconds, minimum is 20 seconds) for the support data"
+" collection with the public module 'PublicSupportDataCollector' (e.g. used "
+"from the OTRS Daemon)."
+msgstr ""
+
+#. SysConfig
 msgid "Defines the two-factor module to authenticate agents."
 msgstr "กำหนดโมดูลสองปัจจัยในการตรวจสอบเอเย่นต์"
 
@@ -18391,8 +18543,8 @@ msgstr "Frontend"
 #. SysConfig
 msgid ""
 "Frontend module registration (disable AgentTicketService link if Ticket "
-"Serivice feature is not used)."
-msgstr "การลงทะเบียนโมดูล Frontend (ปิดการใช้งานการเชื่อมโยงAgentTicketService  หากตั๋วฟีเจอร์การบริการไม่ถูกใช้)"
+"Service feature is not used)."
+msgstr ""
 
 #. SysConfig
 msgid ""
@@ -18423,6 +18575,10 @@ msgstr "การลงทะเบียนโมดูล Frontend สำห�
 #. SysConfig
 msgid "Frontend theme"
 msgstr "ธีม Frontend"
+
+#. SysConfig
+msgid "Frontend theme."
+msgstr ""
 
 #. SysConfig
 msgid "Full value"
@@ -18905,8 +19061,10 @@ msgstr ""
 
 #. SysConfig
 msgid ""
-"If this option is enabled, then the decrypted data will be stored in the "
-"database if they are displayed in AgentTicketZoom."
+"If this option is disabled, articles will not automatically be decrypted and"
+" stored in the database. Please note that this also means no decryption will"
+" take place and the articles will be shown in ticket zoom in their original "
+"(encrypted) form."
 msgstr ""
 
 #. SysConfig
@@ -19346,7 +19504,7 @@ msgid ""
 msgstr ""
 
 #. SysConfig
-msgid "Merge this ticket and all articles into a another ticket"
+msgid "Merge this ticket and all articles into another ticket"
 msgstr ""
 
 #. SysConfig
@@ -19664,10 +19822,6 @@ msgid "PGP Key Management"
 msgstr "การจัดการคีย์ PGP"
 
 #. SysConfig
-msgid "PGP Key Upload"
-msgstr "อัพโหลดคีย์ PGP"
-
-#. SysConfig
 msgid "Package event module file a scheduler task for update registration."
 msgstr ""
 
@@ -19702,9 +19856,9 @@ msgstr ""
 #. SysConfig
 msgid ""
 "Parameters for the dashboard backend of the customer company information of "
-"the agent interface . \"Group\" is used to restrict the access to the plugin"
-" (e. g. Group: admin;group1;group2;). \"Default\" determines if the plugin "
-"is enabled by default or if the user needs to enable it manually. "
+"the agent interface. \"Group\" is used to restrict the access to the plugin "
+"(e. g. Group: admin;group1;group2;). \"Default\" determines if the plugin is"
+" enabled by default or if the user needs to enable it manually. "
 "\"CacheTTLLocal\" is the cache time in minutes for the plugin."
 msgstr ""
 
@@ -20153,9 +20307,8 @@ msgstr ""
 
 #. SysConfig
 msgid ""
-"Run file based generic agent jobs (Note: module name need needs to be "
-"specified in -configuration-module param e.g. "
-"\"Kernel::System::GenericAgent\")."
+"Run file based generic agent jobs (Note: module name needs to be specified "
+"in -configuration-module param e.g. \"Kernel::System::GenericAgent\")."
 msgstr ""
 
 #. SysConfig
@@ -20185,10 +20338,6 @@ msgstr ""
 #. SysConfig
 msgid "Russian"
 msgstr "ภาษารัสเซีย"
-
-#. SysConfig
-msgid "S/MIME Certificate Upload"
-msgstr ""
 
 #. SysConfig
 msgid "SMS"
@@ -20266,11 +20415,15 @@ msgid "Select the main interface language."
 msgstr ""
 
 #. SysConfig
-msgid "Select your frontend Theme."
+msgid "Select your default spelling dictionary."
 msgstr ""
 
 #. SysConfig
 msgid "Select your preferred layout for OTRS."
+msgstr ""
+
+#. SysConfig
+msgid "Select your preferred theme for OTRS."
 msgstr ""
 
 #. SysConfig
@@ -20363,12 +20516,6 @@ msgid "Set a new password by filling in your current password and a new one."
 msgstr ""
 
 #. SysConfig
-msgid ""
-"Set minimum loglevel. If you select 'error', just errors are logged. With "
-"'debug' you get all logging messages."
-msgstr ""
-
-#. SysConfig
 msgid "Set sender email addresses for this system."
 msgstr ""
 
@@ -20388,6 +20535,13 @@ msgstr ""
 msgid ""
 "Set the maximum height (in pixels) of inline HTML articles in "
 "AgentTicketZoom."
+msgstr ""
+
+#. SysConfig
+msgid ""
+"Set the minimum log level. If you select 'error', just errors are logged. "
+"With 'debug' you get all logging messages. The order of log levels is: "
+"'debug', 'info', 'notice' and 'error'."
 msgstr ""
 
 #. SysConfig
@@ -22405,6 +22559,14 @@ msgstr ""
 
 #. SysConfig
 msgid "Updates the ticket index accelerator."
+msgstr ""
+
+#. SysConfig
+msgid "Upload your PGP key."
+msgstr ""
+
+#. SysConfig
+msgid "Upload your S/MIME certificate."
 msgstr ""
 
 #. SysConfig

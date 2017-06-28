@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OTRS\n"
-"POT-Creation-Date: 2017-03-22 12:37+0000\n"
-"PO-Revision-Date: 2017-03-22 18:44+0000\n"
+"POT-Creation-Date: 2017-05-31 17:16+0000\n"
+"PO-Revision-Date: 2017-05-31 22:17+0000\n"
 "Last-Translator: Carlos Rodríguez <carlos.rodriguez@otrs.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/otrs/OTRS/language/id/)\n"
 "MIME-Version: 1.0\n"
@@ -5718,6 +5718,10 @@ msgid "Manage %s"
 msgstr "Mengatur %s"
 
 #. Template: AdminOTRSBusinessInstalled
+msgid "Go to the OTRS customer portal"
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
 msgid "Downgrade to OTRS Free"
 msgstr "Menurunkan OTRS gratis"
 
@@ -5783,6 +5787,50 @@ msgid "%s Update Available"
 msgstr "%s update tersedia"
 
 #. Template: AdminOTRSBusinessInstalled
+msgid "Package installation requires patch level update of OTRS."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "Please visit our customer portal and file a request."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "Everything else will be done as part of your contract."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "Your installed OTRS version is %s."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid ""
+"To install the current version of OTRS Business Solution™, you need to "
+"update to OTRS %s or higher."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid ""
+"To install the current version of OTRS Business Solution™, the Maximum OTRS "
+"Version is %s."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "To install this package, the required Framework version is %s."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "Why should I keep OTRS up to date?"
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "You will receive updates about relevant security issues."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "You will receive updates for all other relevant OTRS issues"
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
 msgid "An update for your %s is available! Please update at your earliest!"
 msgstr "Update untuk %s anda tersedia! Silahkan perbarui seperti awal!"
 
@@ -5818,6 +5866,14 @@ msgid ""
 "Connection to cloud.otrs.com via HTTPS couldn't be established. Please make "
 "sure that your OTRS can connect to cloud.otrs.com via port 443."
 msgstr "Koneksi ke cloud.otrs.com melalui HTTPS tidak dapat ditentukan. Pastikan bahwa OTRS anda dapat terhubung ke cloud.otrs.com melalui port 443."
+
+#. Template: AdminOTRSBusinessNotInstalled
+msgid "To install this package, you need to update to OTRS %s or higher."
+msgstr ""
+
+#. Template: AdminOTRSBusinessNotInstalled
+msgid "To install this package, the Maximum OTRS Version is %s."
+msgstr ""
 
 #. Template: AdminOTRSBusinessNotInstalled
 msgid "With your existing contract you can only use a small part of the %s."
@@ -5989,6 +6045,64 @@ msgid ""
 "Do you really want to reinstall this package? Any manual changes will be "
 "lost."
 msgstr "Apakah anda ingin menginstal ulang paket ini? Semua perubahan manual akan hilang."
+
+#. Template: AdminPackageManager
+msgid "Go to upgrading instructions"
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "package information"
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "Package installation requires a patch level update of OTRS."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "Package update requires a patch level update of OTRS."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid ""
+"If you are a OTRS Business Solution™ customer, please visit our customer "
+"portal and file a request."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "Please note that your installed OTRS version is %s."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid ""
+"To install this package, you need to update OTRS to version %s or newer."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "This package can only be installed on OTRS version %s or older."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "This package can only be installed on OTRS version %s or newer."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "You will receive updates for all other relevant OTRS issues."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "How can I do a patch level update if I don’t have a contract?"
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid ""
+"Please find all relevant information within the upgrading instructions at "
+"%s."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid ""
+"In case you would have further questions we would be glad to answer them."
+msgstr "Dalam hal ini anda akan memiliki pertanyaan lebih lanjut, dan kami akan menjawab mereka dengan senang hati"
 
 #. Template: AdminPackageManager
 msgid "Continue"
@@ -6238,8 +6352,8 @@ msgid "Edit PostMaster Filter"
 msgstr "Ubah penyaring PostMaster"
 
 #. Template: AdminPostMasterFilter
-msgid "The name is required."
-msgstr "Nama diperlukan."
+msgid "A postmaster filter with this name already exists!"
+msgstr ""
 
 #. Template: AdminPostMasterFilter
 msgid "Filter Condition"
@@ -7258,11 +7372,6 @@ msgid "Typically this would be around once every three days."
 msgstr "Biasanya ini akan menjadi sekitar tiga hari sekali."
 
 #. Template: AdminRegistration
-msgid ""
-"In case you would have further questions we would be glad to answer them."
-msgstr "Dalam hal ini anda akan memiliki pertanyaan lebih lanjut, dan kami akan menjawab mereka dengan senang hati"
-
-#. Template: AdminRegistration
 msgid "Please visit our"
 msgstr "Silahkan kunjungi kami"
 
@@ -7743,6 +7852,10 @@ msgid "Edit Service"
 msgstr "Ubah layanan"
 
 #. Template: AdminService
+msgid "Service name maximum length is 200 characters (with Sub-service)."
+msgstr ""
+
+#. Template: AdminService
 msgid "Sub-service of"
 msgstr "Sub-layanan dari"
 
@@ -8173,8 +8286,18 @@ msgid "Edit System Email Address"
 msgstr "Ubah sistem alamat email"
 
 #. Template: AdminSystemAddress
+msgid "This email address is already used as system email address."
+msgstr ""
+
+#. Template: AdminSystemAddress
 msgid "The display name and email address will be shown on mail you send."
 msgstr "Paparkan nama dan alamat email yang akan ditunjukkan di email yang anda kirim"
+
+#. Template: AdminSystemAddress
+msgid ""
+"This system address cannot be set to invalid, because it is used in one or "
+"more queue(s)."
+msgstr ""
 
 #. Template: AdminSystemMaintenance
 msgid "System Maintenance Management"
@@ -9415,6 +9538,10 @@ msgid "Article Create Time (between)"
 msgstr "Waktu mencipta artikel (diantara)"
 
 #. Template: AgentTicketSearch
+msgid "Invalid date"
+msgstr ""
+
+#. Template: AgentTicketSearch
 msgid "Ticket Create Time (before/after)"
 msgstr "Waktu mencipta tiket (sebelum/sesudah)"
 
@@ -9631,24 +9758,6 @@ msgstr "Tutup pesan ini"
 #. Template: AgentTicketZoom
 msgid "Article could not be opened! Perhaps it is on another article page?"
 msgstr "Artikel tidak bisa dibuka! Mungkin artikel itu berada dihalaman lain"
-
-#. Template: AgentTicketZoom
-msgid "Scale preview content"
-msgstr "konten skala pratinjau "
-
-#. Template: AgentTicketZoom
-msgid "Open URL in new tab"
-msgstr "Buka URL di tab baru"
-
-#. Template: AgentTicketZoom
-msgid "Close preview"
-msgstr "Tutup tinjauan"
-
-#. Template: AgentTicketZoom
-msgid ""
-"A preview of this website can't be provided because it didn't allow to be "
-"embedded."
-msgstr "Sebuah preview dari situs ini tidak dapat diberikan karena tidak memungkinkan untuk dimasukkan."
 
 #. Template: AttachmentBlocker
 msgid "To protect your privacy, remote content was blocked."
@@ -10590,6 +10699,24 @@ msgstr "Meminta kata sandi baru"
 #. Template: Login
 msgid "Back to login"
 msgstr "Kembali ke dalam login"
+
+#. Template: MetaFloater
+msgid "Scale preview content"
+msgstr "konten skala pratinjau "
+
+#. Template: MetaFloater
+msgid "Open URL in new tab"
+msgstr "Buka URL di tab baru"
+
+#. Template: MetaFloater
+msgid "Close preview"
+msgstr "Tutup tinjauan"
+
+#. Template: MetaFloater
+msgid ""
+"A preview of this website can't be provided because it didn't allow to be "
+"embedded."
+msgstr "Sebuah preview dari situs ini tidak dapat diberikan karena tidak memungkinkan untuk dimasukkan."
 
 #. Template: MobileNotAvailableWidget
 msgid "Feature not available"
@@ -12221,14 +12348,9 @@ msgstr "ActivityEntityID hilang di Ticket %s!"
 
 #. Perl Module: Kernel/Modules/AgentTicketProcess.pm
 msgid ""
-"This step does not belong anymore the current activity in process for Ticket"
-" %s!"
-msgstr ""
-
-#. Perl Module: Kernel/Modules/AgentTicketProcess.pm
-msgid ""
-"Another user changed this ticket in the meantime. Please close this window "
-"and reload the ticket."
+"This step does not belong anymore to the current activity in process for "
+"ticket '%s%s%s'! Another user changed this ticket in the meantime. Please "
+"close this window and reload the ticket."
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketProcess.pm
@@ -12581,6 +12703,16 @@ msgid "Create a new ticket!"
 msgstr "Mencipta tiket baru!"
 
 #. Perl Module: Kernel/Modules/Installer.pm
+msgid "SecureMode active!"
+msgstr "Modus aman aktif!"
+
+#. Perl Module: Kernel/Modules/Installer.pm
+msgid ""
+"If you want to re-run the Installer, disable the SecureMode in the "
+"SysConfig."
+msgstr ""
+
+#. Perl Module: Kernel/Modules/Installer.pm
 msgid "Directory \"%s\" doesn't exist!"
 msgstr "Tidak ada direktori \"%s\""
 
@@ -12892,6 +13024,11 @@ msgstr "Harap hapus kata-kata berikut karena mereka tidak dapat digunakan untuk 
 msgid "Order by"
 msgstr "Dipesan oleh"
 
+#. Perl Module: Kernel/System/ACL/DB/ACL.pm
+msgid ""
+"Couldn't read ACL configuration file. Please make sure the file is valid."
+msgstr ""
+
 #. Perl Module: Kernel/System/AuthSession.pm
 msgid ""
 "You have exceeded the number of concurrent agents - contact sales@otrs.com."
@@ -12927,12 +13064,26 @@ msgstr "Pengaturan ini tidak aktif secara default."
 msgid "This setting can not be deactivated."
 msgstr "Pengaturan ini tidak dapat dinonaktifkan."
 
+#. Perl Module: Kernel/System/CustomerUser.pm
+msgid "Customer user \"%s\" already exists."
+msgstr ""
+
+#. Perl Module: Kernel/System/CustomerUser/DB.pm
+msgid "This email address is already in use for another customer user."
+msgstr ""
+
 #. Perl Module: Kernel/System/DynamicField/Driver/BaseText.pm
 msgid "e.g. Text or Te*t"
 msgstr ""
 
 #. Perl Module: Kernel/System/DynamicField/Driver/Checkbox.pm
 msgid "Ignore this field."
+msgstr ""
+
+#. Perl Module: Kernel/System/NotificationEvent.pm
+msgid ""
+"Couldn't read Notification configuration file. Please make sure the file is "
+"valid."
 msgstr ""
 
 #. Perl Module: Kernel/System/Package.pm
@@ -12949,6 +13100,10 @@ msgstr ""
 
 #. Perl Module: Kernel/System/Package.pm
 msgid "Can't read file!"
+msgstr ""
+
+#. Perl Module: Kernel/System/ProcessManagement/DB/Process.pm
+msgid "The process \"%s\" and all of its data has been imported successfully."
 msgstr ""
 
 #. Perl Module: Kernel/System/ProcessManagement/DB/Process/State.pm
@@ -13979,16 +14134,6 @@ msgid "Can't send account info!"
 msgstr "Tidak dapat mengirim info akun!"
 
 #. Perl Module: Kernel/System/Web/InterfaceInstaller.pm
-msgid "SecureMode active!"
-msgstr "Modus aman aktif!"
-
-#. Perl Module: Kernel/System/Web/InterfaceInstaller.pm
-msgid ""
-"If you want to re-run the Installer, disable the SecureMode in the "
-"SysConfig."
-msgstr ""
-
-#. Perl Module: Kernel/System/Web/InterfaceInstaller.pm
 msgid "Action \"%s\" not found!"
 msgstr "Action \"%s\" tidak ditemukan!"
 
@@ -14101,8 +14246,8 @@ msgstr "Tiket baru"
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid ""
 "Follow-ups for closed tickets are not possible. A new ticket will be "
-"created.."
-msgstr "Tindak lanjut untuk tiket tertutup tidak mungkin. Sebuah tiket baru akan dibuat..."
+"created."
+msgstr ""
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid "Postmaster queue."
@@ -17460,6 +17605,13 @@ msgid ""
 msgstr "Mendefinisikan zona waktu kalender ditunjukkan, yang dapat diberikan kemudian untuk antrian tertentu."
 
 #. SysConfig
+msgid ""
+"Defines the timeout (in seconds, minimum is 20 seconds) for the support data"
+" collection with the public module 'PublicSupportDataCollector' (e.g. used "
+"from the OTRS Daemon)."
+msgstr ""
+
+#. SysConfig
 msgid "Defines the two-factor module to authenticate agents."
 msgstr "Mendefinisikan modul dua faktor untuk otentikasi agen."
 
@@ -18395,8 +18547,8 @@ msgstr "paling depan"
 #. SysConfig
 msgid ""
 "Frontend module registration (disable AgentTicketService link if Ticket "
-"Serivice feature is not used)."
-msgstr "pendaftaran modul antarmuka (menonaktifkan Agen TicketService Link jika fitur Layanan Tiket tidak digunakan)."
+"Service feature is not used)."
+msgstr ""
 
 #. SysConfig
 msgid ""
@@ -18427,6 +18579,10 @@ msgstr "Frontend pendaftaran modul untuk antarmuka pelanggan."
 #. SysConfig
 msgid "Frontend theme"
 msgstr "tema frontend"
+
+#. SysConfig
+msgid "Frontend theme."
+msgstr ""
 
 #. SysConfig
 msgid "Full value"
@@ -18909,9 +19065,11 @@ msgstr "Jika diatur, alamat ini digunakan sebagai pengirim amplop di pesan kelua
 
 #. SysConfig
 msgid ""
-"If this option is enabled, then the decrypted data will be stored in the "
-"database if they are displayed in AgentTicketZoom."
-msgstr "Jika opsi ini diaktifkan, maka data didekripsi akan disimpan dalam database jika mereka ditampilkan dalam Agen Tiket Zoom."
+"If this option is disabled, articles will not automatically be decrypted and"
+" stored in the database. Please note that this also means no decryption will"
+" take place and the articles will be shown in ticket zoom in their original "
+"(encrypted) form."
+msgstr ""
 
 #. SysConfig
 msgid ""
@@ -19350,8 +19508,8 @@ msgid ""
 msgstr "ukuran maksimum (dalam karakter) dari meja informasi pelanggan dalam tampilan zoom tiket."
 
 #. SysConfig
-msgid "Merge this ticket and all articles into a another ticket"
-msgstr "Gabung tiket ini dan semua artikel ke dalam tiket lain"
+msgid "Merge this ticket and all articles into another ticket"
+msgstr ""
 
 #. SysConfig
 msgid "Merged Ticket <OTRS_TICKET> to <OTRS_MERGE_TO_TICKET>."
@@ -19668,10 +19826,6 @@ msgid "PGP Key Management"
 msgstr "PGP Manajemen Kunci"
 
 #. SysConfig
-msgid "PGP Key Upload"
-msgstr "Kunci PGP Upload"
-
-#. SysConfig
 msgid "Package event module file a scheduler task for update registration."
 msgstr "Paket acara modul mengajukan tugas scheduler untuk pendaftaran pembaruan."
 
@@ -19706,11 +19860,11 @@ msgstr "Parameter untuk filter kolom dari gambaran tiket kecil."
 #. SysConfig
 msgid ""
 "Parameters for the dashboard backend of the customer company information of "
-"the agent interface . \"Group\" is used to restrict the access to the plugin"
-" (e. g. Group: admin;group1;group2;). \"Default\" determines if the plugin "
-"is enabled by default or if the user needs to enable it manually. "
+"the agent interface. \"Group\" is used to restrict the access to the plugin "
+"(e. g. Group: admin;group1;group2;). \"Default\" determines if the plugin is"
+" enabled by default or if the user needs to enable it manually. "
 "\"CacheTTLLocal\" is the cache time in minutes for the plugin."
-msgstr "Parameter untuk backend dashboard informasi perusahaan pelanggan antarmuka agen. \"Grup\" digunakan untuk membatasi akses ke plugin (e g Grup:.. Admin; group1, group2;). \"Default\" menentukan apakah plugin diaktifkan secara default atau jika pengguna perlu mengaktifkannya secara manual. \"CacheTTLLocal\" adalah waktu cache di menit untuk plugin."
+msgstr ""
 
 #. SysConfig
 msgid ""
@@ -20157,10 +20311,9 @@ msgstr "Peran <-> Grup"
 
 #. SysConfig
 msgid ""
-"Run file based generic agent jobs (Note: module name need needs to be "
-"specified in -configuration-module param e.g. "
-"\"Kernel::System::GenericAgent\")."
-msgstr "File menjalankan berdasarkan pekerjaan agen generik (Catatan: nama modul perlu harus ditentukan dalam -Konfigurasi-modul param misalnya \"Kernel::System::GenericAgent\")."
+"Run file based generic agent jobs (Note: module name needs to be specified "
+"in -configuration-module param e.g. \"Kernel::System::GenericAgent\")."
+msgstr ""
 
 #. SysConfig
 msgid "Running Process Tickets"
@@ -20189,10 +20342,6 @@ msgstr "Menjalankan sistem dalam mode \"Demo\". Jika diatur ke \"Ya\", agen dapa
 #. SysConfig
 msgid "Russian"
 msgstr "Rusia"
-
-#. SysConfig
-msgid "S/MIME Certificate Upload"
-msgstr "S/MIME Sertifikat muat turun"
 
 #. SysConfig
 msgid "SMS"
@@ -20270,11 +20419,15 @@ msgid "Select the main interface language."
 msgstr ""
 
 #. SysConfig
-msgid "Select your frontend Theme."
-msgstr "Pilih tema frontend anda"
+msgid "Select your default spelling dictionary."
+msgstr ""
 
 #. SysConfig
 msgid "Select your preferred layout for OTRS."
+msgstr ""
+
+#. SysConfig
+msgid "Select your preferred theme for OTRS."
 msgstr ""
 
 #. SysConfig
@@ -20367,12 +20520,6 @@ msgid "Set a new password by filling in your current password and a new one."
 msgstr ""
 
 #. SysConfig
-msgid ""
-"Set minimum loglevel. If you select 'error', just errors are logged. With "
-"'debug' you get all logging messages."
-msgstr "Mengatur tingkat log minimum. Jika Anda memilih 'kesalahan', hanya kesalahan login. Dengan 'men-debug' Anda mendapatkan semua pesan masuk."
-
-#. SysConfig
 msgid "Set sender email addresses for this system."
 msgstr "Mengatur alamat email pengirim untuk sistem ini."
 
@@ -20393,6 +20540,13 @@ msgid ""
 "Set the maximum height (in pixels) of inline HTML articles in "
 "AgentTicketZoom."
 msgstr "Mengatur ketinggian maksimum (dalam piksel) dari artikel HTML inline di Agen Tiket Zoom."
+
+#. SysConfig
+msgid ""
+"Set the minimum log level. If you select 'error', just errors are logged. "
+"With 'debug' you get all logging messages. The order of log levels is: "
+"'debug', 'info', 'notice' and 'error'."
+msgstr ""
 
 #. SysConfig
 msgid ""
@@ -22410,6 +22564,14 @@ msgstr "Update indeks eskalasi tiket setelah atribut tiket harus diperbarui."
 #. SysConfig
 msgid "Updates the ticket index accelerator."
 msgstr "Updated indeks tiket akselerator."
+
+#. SysConfig
+msgid "Upload your PGP key."
+msgstr ""
+
+#. SysConfig
+msgid "Upload your S/MIME certificate."
+msgstr ""
 
 #. SysConfig
 msgid ""

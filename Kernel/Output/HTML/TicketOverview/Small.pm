@@ -432,12 +432,14 @@ sub Run {
             # get last customer article
             my %Article = $TicketObject->ArticleLastCustomerArticle(
                 TicketID      => $TicketID,
+                Extended      => 1,
                 DynamicFields => 0,
             );
 
             # get ticket data
             my %Ticket = $TicketObject->TicketGet(
                 TicketID      => $TicketID,
+                Extended      => 1,
                 DynamicFields => 0,
             );
 
@@ -793,7 +795,7 @@ sub Run {
                     )
                 {
                     my $Css;
-                    if ( $Column eq 'CustomerID' || $Column eq 'Owner' ) {
+                    if ( $Column eq 'CustomerID' || $Column eq 'Owner' || $Column eq 'Responsible' ) {
                         $Css .= ' Hidden';
                     }
 
@@ -832,7 +834,7 @@ sub Run {
                             },
                         );
                     }
-                    elsif ( $Column eq 'Owner' ) {
+                    elsif ( $Column eq 'Owner' || $Column eq 'Responsible' ) {
 
                         $LayoutObject->Block(
                             Name => 'ContentLargeTicketGenericHeaderColumnFilterLinkUserSearch',
@@ -846,7 +848,7 @@ sub Run {
 
                 }
 
-                # verify if column is filterable and sortable
+                # verify if column is filterable
                 elsif ( $Self->{ValidFilterableColumns}->{$Column} ) {
 
                     # variable to save the filter's HTML code
@@ -971,10 +973,6 @@ sub Run {
                     && $Self->{ValidSortableColumns}->{$Column}
                     )
                 {
-                    my $Css;
-                    if ( $Column eq 'Responsible' ) {
-                        $Css .= ' Hidden';
-                    }
 
                     # variable to save the filter's HTML code
                     my $ColumnFilterHTML = $Self->_InitialColumnFilter(
@@ -982,7 +980,6 @@ sub Run {
                         Label         => $Column,
                         ColumnValues  => $ColumnValues->{$Column},
                         SelectedValue => $Param{GetColumnFilter}->{$Column} || '',
-                        Css           => $Css,
                     );
 
                     $LayoutObject->Block(
@@ -998,19 +995,6 @@ sub Run {
                             FilterTitle          => $FilterTitle,
                         },
                     );
-
-                    if ( $Column eq 'Responsible' ) {
-
-                        $LayoutObject->Block(
-                            Name => 'ContentLargeTicketGenericHeaderColumnFilterLinkUserSearch',
-                            Data => {
-                                minQueryLength      => 2,
-                                queryDelay          => 100,
-                                maxResultsDisplayed => 20,
-                            },
-                        );
-                    }
-
                 }
 
                 # verify if column is just filterable

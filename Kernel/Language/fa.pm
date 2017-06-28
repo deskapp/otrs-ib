@@ -26,7 +26,7 @@ sub Data {
     $Self->{DateFormatShort}     = '%D.%M.%Y';
     $Self->{DateInputFormat}     = '%D.%M.%Y';
     $Self->{DateInputFormatLong} = '%D.%M.%Y - %T';
-    $Self->{Completeness}        = 0.988818865623094;
+    $Self->{Completeness}        = 0.97941473259334;
 
     # csv separator
     $Self->{Separator} = '';
@@ -1639,6 +1639,7 @@ sub Data {
 
         # Template: AdminOTRSBusinessInstalled
         'Manage %s' => 'مدیریت %s',
+        'Go to the OTRS customer portal' => '',
         'Downgrade to OTRS Free' => 'کاهش دادن به OTRS رایگان',
         'Read documentation' => 'خواندن اسناد',
         '%s makes contact regularly with cloud.otrs.com to check on available updates and the validity of the underlying contract.' =>
@@ -1658,6 +1659,19 @@ sub Data {
         '%s Not Yet Available' => '%s هنوز در دسترس است',
         '%s will be available soon.' => '%s به زودی در دسترس خواهد بود.',
         '%s Update Available' => '%s به روز رسانی دردسترس است',
+        'Package installation requires patch level update of OTRS.' => '',
+        'Please visit our customer portal and file a request.' => '',
+        'Everything else will be done as part of your contract.' => '',
+        'Your installed OTRS version is %s.' => '',
+        'To install the current version of OTRS Business Solution™, you need to update to OTRS %s or higher.' =>
+            '',
+        'To install the current version of OTRS Business Solution™, the Maximum OTRS Version is %s.' =>
+            '',
+        'To install this package, the required Framework version is %s.' =>
+            '',
+        'Why should I keep OTRS up to date?' => '',
+        'You will receive updates about relevant security issues.' => '',
+        'You will receive updates for all other relevant OTRS issues' => '',
         'An update for your %s is available! Please update at your earliest!' =>
             'به روز رسانی برای خود %s در دسترس است! لطفا در اولین فرصت به روز رسانی کنید !',
         '%s Correctly Deployed' => '%s به درستی مستقر شده',
@@ -1674,6 +1688,9 @@ sub Data {
             'قبل از اینکه شما می توانید از آن بهره مند %s ، لطفا با %s به خود %s قرارداد.',
         'Connection to cloud.otrs.com via HTTPS couldn\'t be established. Please make sure that your OTRS can connect to cloud.otrs.com via port 443.' =>
             'اتصال به cloud.otrs.com از طریق HTTPS برقرار نشد. لطفا مطمئن شوید که OTRS خود را می توانید به cloud.otrs.com از طریق پورت 443 متصل کنید .  ',
+        'To install this package, you need to update to OTRS %s or higher.' =>
+            '',
+        'To install this package, the Maximum OTRS Version is %s.' => '',
         'With your existing contract you can only use a small part of the %s.' =>
             'با قرارداد های موجود خود را شما فقط می توانید یک بخش کوچک از استفاده %s .',
         'If you would like to take full advantage of the %s get your contract upgraded now! Contact %s.' =>
@@ -1728,6 +1745,27 @@ sub Data {
         'Reinstall package' => 'نصب مجدد بسته',
         'Do you really want to reinstall this package? Any manual changes will be lost.' =>
             'آیا واقعا می‌خواهید این بسته را مجددا نصب نمایید؟ تمام تغییرات دستی از بین خواهد رفت.',
+        'Go to upgrading instructions' => '',
+        'package information' => '',
+        'Package installation requires a patch level update of OTRS.' => '',
+        'Package update requires a patch level update of OTRS.' => '',
+        'If you are a OTRS Business Solution™ customer, please visit our customer portal and file a request.' =>
+            '',
+        'Please note that your installed OTRS version is %s.' => '',
+        'To install this package, you need to update OTRS to version %s or newer.' =>
+            '',
+        'This package can only be installed on OTRS version %s or older.' =>
+            '',
+        'This package can only be installed on OTRS version %s or newer.' =>
+            '',
+        'You will receive updates for all other relevant OTRS issues.' =>
+            '',
+        'How can I do a patch level update if I don’t have a contract?' =>
+            '',
+        'Please find all relevant information within the upgrading instructions at %s.' =>
+            '',
+        'In case you would have further questions we would be glad to answer them.' =>
+            'در مورد شما می سوال بیشتر دارند ما خوشحال خواهد بود به آنها پاسخ دهد.',
         'Continue' => 'ادامه',
         'Please make sure your database accepts packages over %s MB in size (it currently only accepts packages up to %s MB). Please adapt the max_allowed_packet setting of your database in order to avoid errors.' =>
             'لطفا مطمئن شوید که پایگاه داده خود را بسته بر می پذیرد %s MB در اندازه (در حال حاضر تنها بسته می پذیرد تا %s MB). لطفا تنظیمات max_allowed_packet از پایگاه داده خود را به منظور جلوگیری از اشتباهات وفق دهند.',
@@ -1797,7 +1835,7 @@ sub Data {
         'Do you really want to delete this filter?' => 'آیا واقعا میخواهید این فیلتر را حذف کنید؟',
         'Add PostMaster Filter' => 'افزودن فیلتر پستی',
         'Edit PostMaster Filter' => 'ویرایش فیلتر پستی',
-        'The name is required.' => 'نام مورد نیاز است.',
+        'A postmaster filter with this name already exists!' => '',
         'Filter Condition' => 'شرط تطابق',
         'AND Condition' => 'و شرایط',
         'Check email header' => 'بررسی هدر ایمیل',
@@ -2107,8 +2145,6 @@ sub Data {
         'Your system will send updates to the registration server at regular intervals.' =>
             'سیستم خود را به روز رسانی به سرور ثبت نام در فواصل منظم ارسال می کند.',
         'Typically this would be around once every three days.' => 'به طور معمول این امر می تواند حدودا هر سه روز یکبار رخ دهد .',
-        'In case you would have further questions we would be glad to answer them.' =>
-            'در مورد شما می سوال بیشتر دارند ما خوشحال خواهد بود به آنها پاسخ دهد.',
         'Please visit our' => 'لطفا به ما مراجعه کنید',
         'portal' => 'پورتال',
         'and file a request.' => 'و فایل درخواست.',
@@ -2265,6 +2301,8 @@ sub Data {
         'Add service' => 'افزودن خدمت',
         'Add Service' => 'افزودن خدمت',
         'Edit Service' => 'ویرایش خدمت',
+        'Service name maximum length is 200 characters (with Sub-service).' =>
+            '',
         'Sub-service of' => 'زیرمجموعه‌ای از خدمت',
 
         # Template: AdminSession
@@ -2392,8 +2430,11 @@ sub Data {
         'Display name' => 'نام نمایش داده شده',
         'Add System Email Address' => 'افزودن آدرس ایمیل سیستم',
         'Edit System Email Address' => 'ویرایش آدرس ایمیل سیستم',
+        'This email address is already used as system email address.' => '',
         'The display name and email address will be shown on mail you send.' =>
             'نام نمایش داده شده و آدرس ایمیل در ایمیلی که شما می‌فرستید نمایش داده خواهد شد.',
+        'This system address cannot be set to invalid, because it is used in one or more queue(s).' =>
+            '',
 
         # Template: AdminSystemMaintenance
         'System Maintenance Management' => 'سیستم مدیریت نگهداری و تعمیرات',
@@ -2832,6 +2873,7 @@ sub Data {
         'Watcher' => 'مشاهده‌کننده',
         'Article Create Time (before/after)' => 'زمان ساخت مطلب (قبل از/بعد از)',
         'Article Create Time (between)' => 'زمان ساخت مطلب (بین)',
+        'Invalid date' => '',
         'Ticket Create Time (before/after)' => 'زمان ساخت درخواست (قبل از/بعد از)',
         'Ticket Create Time (between)' => 'زمان ساخت درخواست (بین)',
         'Ticket Change Time (before/after)' => 'زمان تغییر درخواست (قبل از/بعد از)',
@@ -2892,11 +2934,6 @@ sub Data {
         'Close this message' => 'این پیام را ببندید',
         'Article could not be opened! Perhaps it is on another article page?' =>
             'مقاله نمی تواند باز شود. شاید آن در صفحه مقاله دیگری است؟',
-        'Scale preview content' => 'محتوای پیش نمایش مقیاس',
-        'Open URL in new tab' => 'باز کردن URL در تب جدید',
-        'Close preview' => 'بستن پیش نمایش',
-        'A preview of this website can\'t be provided because it didn\'t allow to be embedded.' =>
-            'پیش نمایش از این وب سایت می تواند ارائه شود چرا که آن را اجازه نمی دهد به تعبیه شده است.',
 
         # Template: AttachmentBlocker
         'To protect your privacy, remote content was blocked.' => 'برای محافظت از حریم خصوصی شما، محتوای راه دور متوقف شد.',
@@ -3204,6 +3241,13 @@ sub Data {
         'Lost your password?' => 'رمز عبور خود را فراموش کرده اید؟',
         'Request New Password' => 'درخواست رمز عبور جدید',
         'Back to login' => 'بازگشت به صفحه ورود',
+
+        # Template: MetaFloater
+        'Scale preview content' => 'محتوای پیش نمایش مقیاس',
+        'Open URL in new tab' => 'باز کردن URL در تب جدید',
+        'Close preview' => 'بستن پیش نمایش',
+        'A preview of this website can\'t be provided because it didn\'t allow to be embedded.' =>
+            'پیش نمایش از این وب سایت می تواند ارائه شود چرا که آن را اجازه نمی دهد به تعبیه شده است.',
 
         # Template: MobileNotAvailableWidget
         'Feature not available' => 'از ویژگی های موجود نیست',
@@ -3807,9 +3851,7 @@ sub Data {
         'Could not store ActivityDialog, invalid TicketID: %s!' => 'نمی تواند ActivityDialog، TicketID نامعتبر ذخیره شود: %s !',
         'Invalid TicketID: %s!' => 'TicketID نامعتبر: %s !',
         'Missing ActivityEntityID in Ticket %s!' => 'ازدست رفته ActivityEntityID در درخواست %s !',
-        'This step does not belong anymore the current activity in process for Ticket %s!' =>
-            '',
-        'Another user changed this ticket in the meantime. Please close this window and reload the ticket.' =>
+        'This step does not belong anymore to the current activity in process for ticket \'%s%s%s\'! Another user changed this ticket in the meantime. Please close this window and reload the ticket.' =>
             '',
         'Missing ProcessEntityID in Ticket %s!' => 'از دست رفته ProcessEntityID دردرخواست %s !',
         'Could not set DynamicField value for %s of Ticket with ID "%s" in ActivityDialog "%s"!' =>
@@ -3922,6 +3964,9 @@ sub Data {
         'Create a new ticket!' => 'یک درخواست جدید ایجاد کنید!',
 
         # Perl Module: Kernel/Modules/Installer.pm
+        'SecureMode active!' => 'SecureMode فعال!',
+        'If you want to re-run the Installer, disable the SecureMode in the SysConfig.' =>
+            'اگر می خواهید دوباره اجرا نصب، غیر فعال کردن SecureMode در SysConfig.',
         'Directory "%s" doesn\'t exist!' => 'راهنمای \ " %s " وجود ندارد!',
         'Configure "Home" in Kernel/Config.pm first!' => 'پیکربندی \ "خانه " در هسته / Config.pm برای اولین بار!',
         'File "%s/Kernel/Config.pm" not found!' => 'فایل \ " %s /Kernel/Config.pm " یافت نشد!',
@@ -4047,6 +4092,10 @@ sub Data {
         # Perl Module: Kernel/Output/HTML/TicketOverviewMenu/Sort.pm
         'Order by' => 'مرتب‌سازی بر اساس',
 
+        # Perl Module: Kernel/System/ACL/DB/ACL.pm
+        'Couldn\'t read ACL configuration file. Please make sure the file is valid.' =>
+            '',
+
         # Perl Module: Kernel/System/AuthSession.pm
         'You have exceeded the number of concurrent agents - contact sales@otrs.com.' =>
             'شما بیش از تعدادی از عوامل همزمان - تماس sales@otrs.com.',
@@ -4061,17 +4110,32 @@ sub Data {
         'This setting is not active by default.' => 'این تنظیم به طور پیش فرض فعال است.',
         'This setting can not be deactivated.' => 'این تنظیمات نمی تواند غیر فعال  شود.',
 
+        # Perl Module: Kernel/System/CustomerUser.pm
+        'Customer user "%s" already exists.' => '',
+
+        # Perl Module: Kernel/System/CustomerUser/DB.pm
+        'This email address is already in use for another customer user.' =>
+            '',
+
         # Perl Module: Kernel/System/DynamicField/Driver/BaseText.pm
         'e.g. Text or Te*t' => '',
 
         # Perl Module: Kernel/System/DynamicField/Driver/Checkbox.pm
         'Ignore this field.' => '',
 
+        # Perl Module: Kernel/System/NotificationEvent.pm
+        'Couldn\'t read Notification configuration file. Please make sure the file is valid.' =>
+            '',
+
         # Perl Module: Kernel/System/Package.pm
         'not installed' => 'نصب نشده',
         'File is not installed!' => 'فایل نصب نشده است!',
         'File is different!' => 'فایل متفاوت است!',
         'Can\'t read file!' => 'نمی توانید فایل خوانده شده!',
+
+        # Perl Module: Kernel/System/ProcessManagement/DB/Process.pm
+        'The process "%s" and all of its data has been imported successfully.' =>
+            '',
 
         # Perl Module: Kernel/System/ProcessManagement/DB/Process/State.pm
         'Inactive' => 'غیر فعال',
@@ -4450,9 +4514,6 @@ sub Data {
         'Can\'t send account info!' => 'نمی توانید اطلاعات حساب را ارسال کنید!',
 
         # Perl Module: Kernel/System/Web/InterfaceInstaller.pm
-        'SecureMode active!' => 'SecureMode فعال!',
-        'If you want to re-run the Installer, disable the SecureMode in the SysConfig.' =>
-            'اگر می خواهید دوباره اجرا نصب، غیر فعال کردن SecureMode در SysConfig.',
         'Action "%s" not found!' => 'اقدام \ " %s " یافت نشد!',
 
         # Database XML Definition: scripts/database/otrs-initial_insert.xml
@@ -4484,8 +4545,8 @@ sub Data {
         'Follow-ups for closed tickets are not possible. No new ticket will be created.' =>
             'پیگیری برای درخواست بسته امکان پذیر نیست. بدون درخواست جدید ایجاد خواهد شد.',
         'new ticket' => 'درخواست جدید',
-        'Follow-ups for closed tickets are not possible. A new ticket will be created..' =>
-            'پیگیری برایدرخواست بسته امکان پذیر نیست. یک درخواست جدید ایجاد خواهد شد ..',
+        'Follow-ups for closed tickets are not possible. A new ticket will be created.' =>
+            '',
         'Postmaster queue.' => 'صف رئيس پست.',
         'All default incoming tickets.' => 'همه به طور پیش فرض درخواست ورودی.',
         'All junk tickets.' => 'تمام درخواست های ناخواسته.',
@@ -5523,6 +5584,8 @@ Thanks for your help!
             'تعریف می کند زمینه های بلیط که در حال رفتن به رویدادهای تقویم نمایش داده شود. در \ "کلید " تعریف درست و یا بلیط خاصیت ها و \ "محتوا " نام صفحه نمایش تعریف می کند.',
         'Defines the time zone of the indicated calendar, which can be assigned later to a specific queue.' =>
             'تعریف می کند که منطقه زمانی از تقویم نشان داد، که می تواند بعدا به صف خاص اختصاص داده شود.',
+        'Defines the timeout (in seconds, minimum is 20 seconds) for the support data collection with the public module \'PublicSupportDataCollector\' (e.g. used from the OTRS Daemon).' =>
+            '',
         'Defines the two-factor module to authenticate agents.' => 'تعریف می کند ماژول دو عامل به اعتبار عوامل.',
         'Defines the two-factor module to authenticate customers.' => 'تعریف می کند ماژول دو عامل به اعتبار مشتریان.',
         'Defines the type of protocol, used by the web server, to serve the application. If https protocol will be used instead of plain http, it must be specified here. Since this has no affect on the web server\'s settings or behavior, it will not change the method of access to the application and, if it is wrong, it will not prevent you from logging into the application. This setting is only used as a variable, OTRS_CONFIG_HttpType which is found in all forms of messaging used by the application, to build links to the tickets within your system.' =>
@@ -5805,8 +5868,8 @@ Thanks for your help!
         'French stop words for fulltext index. These words will be removed from the search index.' =>
             'کلمات توقف فرانسه برای شاخص متن. این کلمات از صفحه اول جستجو حذف خواهند شد.',
         'Frontend' => 'ظاهر',
-        'Frontend module registration (disable AgentTicketService link if Ticket Serivice feature is not used).' =>
-            'ثبت نام ماژول ظاهر (لینک AgentTicketService غیر فعال کردن اگر ویژگی بلیط Serivice استفاده نمی شود).',
+        'Frontend module registration (disable AgentTicketService link if Ticket Service feature is not used).' =>
+            '',
         'Frontend module registration (disable company link if no company feature is used).' =>
             'ثبت نام ماژول ظاهر (لینک شرکت غیر فعال کردن اگر هیچ ویژگی شرکت استفاده می شود).',
         'Frontend module registration (disable ticket processes screen if no process available) for Customer.' =>
@@ -5816,6 +5879,7 @@ Thanks for your help!
         'Frontend module registration for the agent interface.' => 'ظاهر ثبت نام ماژول برای رابط عامل.',
         'Frontend module registration for the customer interface.' => 'ظاهر ثبت نام ماژول برای رابط مشتری.',
         'Frontend theme' => 'طرح زمینه واسط',
+        'Frontend theme.' => '',
         'Full value' => 'ارزش کامل',
         'Fulltext index regex filters to remove parts of the text.' => 'متن فیلتر شاخص عبارت منظم به حذف بخش هایی از متن.',
         'Fulltext search' => 'جستجوی متن',
@@ -5960,8 +6024,8 @@ Thanks for your help!
             'اگر تعیین شود، این آدرس به عنوان هدر فرستنده پاکت در اطلاعیه های خروجی استفاده می شود. اگر هیچ آدرس مشخص شده باشد، هدر فرستنده پاکت خالی است (مگر اینکه SendmailNotificationEnvelopeFrom :: FallbackToEmailFrom تنظیم شده است).',
         'If set, this address is used as envelope sender in outgoing messages (not notifications - see below). If no address is specified, the envelope sender is equal to queue e-mail address.' =>
             'اگر تعیین شود، این آدرس به عنوان فرستنده پاکت در پیام های خروجی استفاده می شود (اطلاعیه - پایین را ببینید). اگر هیچ آدرس مشخص شده باشد، فرستنده پاکت برابر به صف آدرس ایمیل است.',
-        'If this option is enabled, then the decrypted data will be stored in the database if they are displayed in AgentTicketZoom.' =>
-            'اگر این گزینه فعال باشد، پس از آن داده خواهد شد رمزگشایی در پایگاه داده ذخیره می شود در صورتی که در AgentTicketZoom نمایش داده شود.',
+        'If this option is disabled, articles will not automatically be decrypted and stored in the database. Please note that this also means no decryption will take place and the articles will be shown in ticket zoom in their original (encrypted) form.' =>
+            '',
         'If this option is set to \'Yes\', tickets created via the web interface, via Customers or Agents, will receive an autoresponse if configured. If this option is set to \'No\', no autoresponses will be sent.' =>
             'اگر این گزینه را به \'بله\'، بلیط ایجاد شده از طریق رابط وب، از طریق مشتریان و یا عوامل، یک خودکار یکطرفه صورت پیکربندی دریافت خواهید کرد. اگر این گزینه را به مجموعه "نه"، هیچ autoresponses ارسال خواهد شد.',
         'If this regex matches, no message will be send by the autoresponder.' =>
@@ -6089,7 +6153,7 @@ Thanks for your help!
             'حداکثر تعداد درخواست در نتیجه این کار نمایش داده می شود.',
         'Maximum size (in characters) of the customer information table in the ticket zoom view.' =>
             'حداکثر اندازه (در شخصیت) از جدول اطلاعات مربوط به مشتری در نظر زوم بلیط.',
-        'Merge this ticket and all articles into a another ticket' => 'ادغام این درخواست و تمام مقالات با درخواست دیگر',
+        'Merge this ticket and all articles into another ticket' => '',
         'Merged Ticket <OTRS_TICKET> to <OTRS_MERGE_TO_TICKET>.' => 'با هم ادغام شدند بلیط <OTRS_TICKET> تا <OTRS_MERGE_TO_TICKET>.',
         'Miscellaneous' => 'تنظیمات اضافی',
         'Module for To-selection in new ticket screen in the customer interface.' =>
@@ -6184,7 +6248,6 @@ Thanks for your help!
         'Overview of all open tickets.' => 'نمای کلی از تمام درخواست باز.',
         'Overview of customer tickets.' => 'بررسی اجمالی از  درخواست مشتری .',
         'PGP Key Management' => 'PGP مدیریت کلید',
-        'PGP Key Upload' => 'ارسال کلید PGP',
         'Package event module file a scheduler task for update registration.' =>
             'بسته ماژول رویداد پرونده وظیفه زمانبند برای ثبت نام به روز رسانی.',
         'Parameters for the CreateNextMask object in the preference view of the agent interface.' =>
@@ -6197,8 +6260,8 @@ Thanks for your help!
             'پارامترهای RefreshTime در نظر اولویت از رابط عامل شی.',
         'Parameters for the column filters of the small ticket overview.' =>
             'پارامترهای فیلتر ستون از نمای کلی درخواست کوچک است.',
-        'Parameters for the dashboard backend of the customer company information of the agent interface . "Group" is used to restrict the access to the plugin (e. g. Group: admin;group1;group2;). "Default" determines if the plugin is enabled by default or if the user needs to enable it manually. "CacheTTLLocal" is the cache time in minutes for the plugin.' =>
-            'پارامترهای باطن داشبورد از اطلاعات مشتری از رابط عامل. \ "گروه " استفاده شده است برای محدود کردن دسترسی به پلاگین (به عنوان مثال گروه: مدیریت. GROUP1؛ GROUP2؛). \ "پیش فرض " تعیین اگر این افزونه به طور پیش فرض و یا اگر کاربر نیاز به آن را فعال کنید به صورت دستی فعال کنید. \ "CacheTTLLocal " زمان کش در دقیقه برای پلاگین است.',
+        'Parameters for the dashboard backend of the customer company information of the agent interface. "Group" is used to restrict the access to the plugin (e. g. Group: admin;group1;group2;). "Default" determines if the plugin is enabled by default or if the user needs to enable it manually. "CacheTTLLocal" is the cache time in minutes for the plugin.' =>
+            '',
         'Parameters for the dashboard backend of the customer id status widget of the agent interface . "Group" is used to restrict the access to the plugin (e. g. Group: admin;group1;group2;). "Default" determines if the plugin is enabled by default or if the user needs to enable it manually. "CacheTTLLocal" is the cache time in minutes for the plugin.' =>
             'پارامترهای باطن داشبورد از شناسه مشتری ویجت وضعیت رابط عامل. \ "گروه " استفاده شده است برای محدود کردن دسترسی به پلاگین (به عنوان مثال گروه: مدیریت. GROUP1؛ GROUP2؛). \ "پیش فرض " تعیین اگر این افزونه به طور پیش فرض و یا اگر کاربر نیاز به آن را فعال کنید به صورت دستی فعال کنید. \ "CacheTTLLocal " زمان کش در دقیقه برای پلاگین است.',
         'Parameters for the dashboard backend of the customer user list overview of the agent interface . "Limit" is the number of entries shown by default. "Group" is used to restrict the access to the plugin (e. g. Group: admin;group1;group2;). "Default" determines if the plugin is enabled by default or if the user needs to enable it manually. "CacheTTLLocal" is the cache time in minutes for the plugin.' =>
@@ -6319,8 +6382,8 @@ Thanks for your help!
             'حفظ تمام خدمات در لیست حتی اگر آنها کودکان از عناصر نامعتبر است.',
         'Right' => 'راست',
         'Roles <-> Groups' => 'نقش <-> گروه',
-        'Run file based generic agent jobs (Note: module name need needs to be specified in -configuration-module param e.g. "Kernel::System::GenericAgent").' =>
-            'فایل اجرا بر اساس شغل عامل عمومی (توجه: نام ماژول نیاز به در پیکربندی ماژول PARAM مثلا \ "هسته :: :: سیستم GenericAgent " مشخص شود).',
+        'Run file based generic agent jobs (Note: module name needs to be specified in -configuration-module param e.g. "Kernel::System::GenericAgent").' =>
+            '',
         'Running Process Tickets' => 'در حال اجرا فرآیند درخواست',
         'Runs an initial wildcard search of the existing customer company when accessing the AdminCustomerCompany module.' =>
             'اجرا می شود جستجو کلمات اولیه این شرکت مشتری های موجود در هنگام دسترسی به ماژول AdminCustomerCompany است.',
@@ -6329,7 +6392,6 @@ Thanks for your help!
         'Runs the system in "Demo" mode. If set to "Yes", agents can change preferences, such as selection of language and theme via the agent web interface. These changes are only valid for the current session. It will not be possible for agents to change their passwords.' =>
             'اجرا می شود سیستم در \ "نسخه ی نمایشی " حالت. اگر به \ "بله "، عوامل می توانید تنظیمات از قبیل انتخاب زبان و از طریق رابط وب عامل را تغییر دهید. این تغییرات تنها برای جلسه فعلی معتبر هستند. این ممکن نخواهد بود برای عوامل به تغییر کلمه عبور خود را.',
         'Russian' => 'روسی',
-        'S/MIME Certificate Upload' => 'S / MIME گواهی آپلود',
         'SMS' => 'پیامک',
         'SMS (Short Message Service)' => 'اس ام اس (خدمات پیام کوتاه)',
         'Sample command output' => 'خروجی دستور نمونه',
@@ -6350,8 +6412,9 @@ Thanks for your help!
         'Select how many tickets should be shown in overviews by default.' =>
             '',
         'Select the main interface language.' => '',
-        'Select your frontend Theme.' => 'الگوی نمایش سیستم را انتخاب نمائید',
+        'Select your default spelling dictionary.' => '',
         'Select your preferred layout for OTRS.' => '',
+        'Select your preferred theme for OTRS.' => '',
         'Selects the cache backend to use.' => 'باطن کش استفاده انتخاب می کند.',
         'Selects the module to handle uploads via the web interface. "DB" stores all uploads in the database, "FS" uses the file system.' =>
             'ماژول که مسئولیت رسیدگی به ارسال از طریق رابط وب انتخاب می کند. \ "DB " فروشگاه های ارسال همه در پایگاه داده، \ "FS " با استفاده از سیستم فایل.',
@@ -6376,8 +6439,6 @@ Thanks for your help!
         'ServiceView' => 'ServiceView',
         'Set a new password by filling in your current password and a new one.' =>
             '',
-        'Set minimum loglevel. If you select \'error\', just errors are logged. With \'debug\' you get all logging messages.' =>
-            'تنظیم حداقل loglevel. اگر شما \'خطا\' را انتخاب کنید، فقط خطاها وارد سایت شوید. با \'اشکال زدایی "شما همه پیام ورود به سیستم را دریافت کنید.',
         'Set sender email addresses for this system.' => 'تنظیم آدرس ایمیل‌های ارسال‌کننده برای این سیستم',
         'Set the default height (in pixels) of inline HTML articles in AgentTicketZoom.' =>
             'مجموعه ای از ارتفاع به طور پیش فرض (به پیکسل) مقالات HTML درون خطی در AgentTicketZoom.',
@@ -6385,6 +6446,8 @@ Thanks for your help!
             'مجموعه ای از محدودیت بلیط خواهد شد که در یک اعدام کار genericagent تک اجرا می شود.',
         'Set the maximum height (in pixels) of inline HTML articles in AgentTicketZoom.' =>
             'تنظیم حداکثر ارتفاع (به پیکسل) مقالات HTML درون خطی در AgentTicketZoom.',
+        'Set the minimum log level. If you select \'error\', just errors are logged. With \'debug\' you get all logging messages. The order of log levels is: \'debug\', \'info\', \'notice\' and \'error\'.' =>
+            '',
         'Set this to yes if you trust in all your public and private pgp keys, even if they are not certified with a trusted signature.' =>
             'با تنظیم این بله اگر شما در تمام کلید PGP عمومی و خصوصی خود را اعتماد، حتی اگر آنها را با یک امضا اعتماد تایید شده است.',
         'Sets if SLA must be selected by the agent.' => 'مجموعه SLA باید توسط کارشناس انتخاب شود.',
@@ -7003,6 +7066,8 @@ Thanks for your help!
         'Updates the ticket escalation index after a ticket attribute got updated.' =>
             'به روز رسانی صفحه اول تشدید بلیط پس از یک ویژگی بلیط به روز کردم.',
         'Updates the ticket index accelerator.' => 'به روز رسانی شتاب دهنده شاخص درخواست',
+        'Upload your PGP key.' => '',
+        'Upload your S/MIME certificate.' => '',
         'Use new type of select and autocomplete fields in agent interface, where applicable (InputFields).' =>
             'استفاده از نوع جدیدی از زمینه را انتخاب کنید و تکمیل خودکار در رابط عامل، که در آن قابل اجرا (InputFields).',
         'Use new type of select and autocomplete fields in customer interface, where applicable (InputFields).' =>

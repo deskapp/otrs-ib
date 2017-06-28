@@ -107,6 +107,14 @@
             <String Regex=""></String>
         </Setting>
     </ConfigItem>
+    <ConfigItem Name="SupportDataCollector::WebUserAgent::Timeout" Required="0" Valid="0" ConfigLevel="200">
+        <Description Translatable="1">Defines the timeout (in seconds, minimum is 20 seconds) for the support data collection with the public module 'PublicSupportDataCollector' (e.g. used from the OTRS Daemon).</Description>
+        <Group>Framework</Group>
+        <SubGroup>Core</SubGroup>
+        <Setting>
+            <String Regex="^[2-9][0-9]{1,}|[1-9][0-9]{2,}$">20</String>
+        </Setting>
+    </ConfigItem>
     <ConfigItem Name="NodeID" Required="0" Valid="0" ConfigLevel="200">
         <Description Translatable="1">Defines the cluster node identifier. This is only used in cluster configurations where there is more than one OTRS frontend system. Note: only values from 1 to 99 are allowed.</Description>
         <Group>Framework</Group>
@@ -841,7 +849,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="MinimumLogLevel" Required="1" Valid="1">
-        <Description Translatable="1">Set minimum loglevel. If you select 'error', just errors are logged. With 'debug' you get all logging messages.</Description>
+        <Description Translatable="1">Set the minimum log level. If you select 'error', just errors are logged. With 'debug' you get all logging messages. The order of log levels is: 'debug', 'info', 'notice' and 'error'.</Description>
         <Group>Framework</Group>
         <SubGroup>Core::Log</SubGroup>
         <Setting>
@@ -3538,7 +3546,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="PGP::StoreDecryptedData" Required="1" Valid="1">
-        <Description Translatable="1">If this option is enabled, then the decrypted data will be stored in the database if they are displayed in AgentTicketZoom.</Description>
+        <Description Translatable="1">If this option is disabled, articles will not automatically be decrypted and stored in the database. Please note that this also means no decryption will take place and the articles will be shown in ticket zoom in their original (encrypted) form.</Description>
         <Group>Framework</Group>
         <SubGroup>Crypt::PGP</SubGroup>
         <Setting>
@@ -3592,7 +3600,7 @@
         </Setting>
     </ConfigItem>
     <ConfigItem Name="SMIME::StoreDecryptedData" Required="1" Valid="1">
-        <Description Translatable="1">If this option is enabled, then the decrypted data will be stored in the database if they are displayed in AgentTicketZoom.</Description>
+        <Description Translatable="1">If this option is disabled, articles will not automatically be decrypted and stored in the database. Please note that this also means no decryption will take place and the articles will be shown in ticket zoom in their original (encrypted) form.</Description>
         <Group>Framework</Group>
         <SubGroup>Crypt::SMIME</SubGroup>
         <Setting>
@@ -3893,6 +3901,7 @@ You can log in via the following URL:
                 <Item Key="Module">Kernel::Output::HTML::Preferences::Generic</Item>
                 <Item Key="Column">User Profile</Item>
                 <Item Key="Label" Translatable="1">Spelling Dictionary</Item>
+                <Item Key="Desc" Translatable="1">Select your default spelling dictionary.</Item>
                 <Item Key="Key" Translatable="1">Default spelling dictionary</Item>
                 <Item Key="Data">
                     <Hash>
@@ -3986,6 +3995,7 @@ You can log in via the following URL:
                 <Item Key="Module">Kernel::Output::HTML::Preferences::Theme</Item>
                 <Item Key="Column">User Profile</Item>
                 <Item Key="Label" Translatable="1">Theme</Item>
+                <Item Key="Desc" Translatable="1">Select your preferred theme for OTRS.</Item>
                 <Item Key="Key" Translatable="1">Frontend theme</Item>
                 <Item Key="PrefKey">UserTheme</Item>
                 <Item Key="Prio">3000</Item>
@@ -4694,6 +4704,7 @@ via the Preferences button after logging in.
                 <Item Key="Column">Other Settings</Item>
                 <Item Key="Label" Translatable="1">Google Authenticator</Item>
                 <Item Key="Key" Translatable="1">Shared Secret</Item>
+                <Item Key="Desc" Translatable="1">Enter your shared secret to enable two factor authentication.</Item>
                 <Item Key="Block">Input</Item>
                 <Item Key="PrefKey">UserGoogleAuthenticatorSecretKey</Item>
                 <Item Key="Prio">1100</Item>
@@ -4727,7 +4738,8 @@ via the Preferences button after logging in.
                 <Item Key="Module">Kernel::Output::HTML::Preferences::Theme</Item>
                 <Item Key="Column">User Profile</Item>
                 <Item Key="Label" Translatable="1">Theme</Item>
-                <Item Key="Key" Translatable="1">Select your frontend Theme.</Item>
+                <Item Key="Desc" Translatable="1">Select your preferred theme for OTRS.</Item>
+                <Item Key="Key" Translatable="1">Frontend theme.</Item>
                 <Item Key="PrefKey">UserTheme</Item>
                 <Item Key="Prio">1000</Item>
                 <Item Key="Active">0</Item>
@@ -4759,7 +4771,8 @@ via the Preferences button after logging in.
                 <Item Key="Module">Kernel::Output::HTML::Preferences::PGP</Item>
                 <Item Key="Column">Other Settings</Item>
                 <Item Key="Label" Translatable="1">PGP Key</Item>
-                <Item Key="Key" Translatable="1">PGP Key Upload</Item>
+                <Item Key="Desc" Translatable="1">Upload your PGP key.</Item>
+                <Item Key="Key" Translatable="1">PGP Key</Item>
                 <Item Key="PrefKey">UserPGPKey</Item>
                 <Item Key="Prio">10000</Item>
                 <Item Key="Active">1</Item>
@@ -4775,7 +4788,8 @@ via the Preferences button after logging in.
                 <Item Key="Module">Kernel::Output::HTML::Preferences::SMIME</Item>
                 <Item Key="Column">Other Settings</Item>
                 <Item Key="Label" Translatable="1">S/MIME Certificate</Item>
-                <Item Key="Key" Translatable="1">S/MIME Certificate Upload</Item>
+                <Item Key="Desc" Translatable="1">Upload your S/MIME certificate.</Item>
+                <Item Key="Key" Translatable="1">S/MIME Certificate</Item>
                 <Item Key="PrefKey">UserSMIMEKey</Item>
                 <Item Key="Prio">11000</Item>
                 <Item Key="Active">1</Item>
@@ -4921,7 +4935,7 @@ via the Preferences button after logging in.
         </Setting>
     </ConfigItem>
     <ConfigItem Name="AgentCustomerInformationCenter::Backend###0600-CIC-CustomerCompanyInformation" Required="0" Valid="1">
-        <Description Translatable="1">Parameters for the dashboard backend of the customer company information of the agent interface . "Group" is used to restrict the access to the plugin (e. g. Group: admin;group1;group2;). "Default" determines if the plugin is enabled by default or if the user needs to enable it manually. "CacheTTLLocal" is the cache time in minutes for the plugin.</Description>
+        <Description Translatable="1">Parameters for the dashboard backend of the customer company information of the agent interface. "Group" is used to restrict the access to the plugin (e. g. Group: admin;group1;group2;). "Default" determines if the plugin is enabled by default or if the user needs to enable it manually. "CacheTTLLocal" is the cache time in minutes for the plugin.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Agent::Dashboard</SubGroup>
         <Setting>
@@ -6742,6 +6756,7 @@ via the Preferences button after logging in.
                 <Item>Core.UI.InputFields.js</Item>
                 <Item>Core.UI.Accessibility.js</Item>
                 <Item>Core.UI.Dialog.js</Item>
+                <Item>Core.UI.Floater.js</Item>
                 <Item>Core.UI.RichTextEditor.js</Item>
                 <Item>Core.UI.Datepicker.js</Item>
                 <Item>Core.UI.Popup.js</Item>

@@ -533,6 +533,18 @@ sub TicketCreate {
         );
     }
 
+    if ( $Kernel::OM->Get('Kernel::Config')->Get('Ticket::Type') ) {
+
+        # Insert history record for ticket type, so that initial value can be seen.
+        #   Please see bug#12702 for more information.
+        $Self->HistoryAdd(
+            TicketID     => $TicketID,
+            HistoryType  => 'TypeUpdate',
+            Name         => "\%\%$Param{Type}\%\%$Param{TypeID}",
+            CreateUserID => $Param{UserID},
+        );
+    }
+
     # set customer data if given
     if ( $Param{CustomerNo} || $Param{CustomerID} || $Param{CustomerUser} ) {
         $Self->TicketCustomerSet(
@@ -679,7 +691,6 @@ ticket id lookup by ticket number
 
     my $TicketID = $TicketObject->TicketIDLookup(
         TicketNumber => '2004040510440485',
-        UserID       => 123,
     );
 
 =cut
@@ -720,7 +731,6 @@ ticket number lookup by ticket id
 
     my $TicketNumber = $TicketObject->TicketNumberLookup(
         TicketID => 123,
-        UserID   => 123,
     );
 
 =cut
@@ -2792,7 +2802,10 @@ sub TicketEscalationIndexBuild {
         TicketID      => $Param{TicketID},
         UserID        => $Param{UserID},
         DynamicFields => 0,
+        Silent        => 1,
     );
+
+    return 1 if !%Ticket;
 
     # get database object
     my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
@@ -6190,7 +6203,7 @@ sub TicketMerge {
         CreateUserID => $Param{UserID},
     );
 
-    # tranfer watchers - only those that were not already watching the main ticket
+    # transfer watchers - only those that were not already watching the main ticket
     # delete all watchers from the merge ticket that are already watching the main ticket
     my %MainWatchers = $Self->TicketWatchGet(
         TicketID => $Param{MainTicketID},
@@ -6447,6 +6460,20 @@ sub TicketMergeLinkedObjects {
             \$Param{MainTicketID},
             \$TicketObjectID,
             \$Param{MergeTicketID},
+        ],
+    );
+
+    # delete all links between tickets where source and target object are the same
+    $Kernel::OM->Get('Kernel::System::DB')->Do(
+        SQL => '
+            DELETE FROM link_relation
+            WHERE source_object_id = ?
+                AND target_object_id = ?
+                AND source_key = target_key
+        ',
+        Bind => [
+            \$TicketObjectID,
+            \$TicketObjectID,
         ],
     );
 

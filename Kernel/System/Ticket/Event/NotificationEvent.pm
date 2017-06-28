@@ -18,6 +18,7 @@ use Kernel::System::VariableCheck qw(:all);
 our @ObjectDependencies = (
     'Kernel::Config',
     'Kernel::System::CustomerUser',
+    'Kernel::System::CheckItem',
     'Kernel::System::DB',
     'Kernel::System::DynamicField',
     'Kernel::System::DynamicField::Backend',
@@ -779,8 +780,21 @@ sub _RecipientsGet {
 
                     );
 
-                    # join Recipient data with CustomerUser data
-                    %Recipient = ( %Recipient, %CustomerUser );
+                    # Check if customer user is email address, in case it is not stored in system
+                    if (
+                        !IsHashRefWithData( \%CustomerUser )
+                        && !$ConfigObject->Get('CustomerNotifyJustToRealCustomer')
+                        && $Kernel::OM->Get('Kernel::System::CheckItem')
+                        ->CheckEmail( Address => $Article{CustomerUserID} )
+                        )
+                    {
+                        $Recipient{UserEmail} = $Article{CustomerUserID};
+                    }
+                    else {
+
+                        # join Recipient data with CustomerUser data
+                        %Recipient = ( %Recipient, %CustomerUser );
+                    }
 
                     # get user language
                     if ( $CustomerUser{UserLanguage} ) {
@@ -984,12 +998,23 @@ sub _SendRecipientNotification {
         );
 
         # get last notification sent ticket history entry for this transport and this user
-        my $LastNotificationHistory = first {
-            $_->{HistoryType} eq 'SendAgentNotification'
-                && $_->{Name} eq
-                "\%\%$Param{Notification}->{Name}\%\%$Param{Recipient}->{UserLogin}\%\%$Param{Transport}"
+        my $LastNotificationHistory;
+        if ( defined $Param{Recipient}->{Source} && $Param{Recipient}->{Source} eq 'CustomerUser' ) {
+            $LastNotificationHistory = first {
+                $_->{HistoryType} eq 'SendCustomerNotification'
+                    && $_->{Name} eq
+                    "\%\%$Param{Recipient}->{UserEmail}"
+            }
+            reverse @HistoryLines;
         }
-        reverse @HistoryLines;
+        else {
+            $LastNotificationHistory = first {
+                $_->{HistoryType} eq 'SendAgentNotification'
+                    && $_->{Name} eq
+                    "\%\%$Param{Notification}->{Name}\%\%$Param{Recipient}->{UserLogin}\%\%$Param{Transport}"
+            }
+            reverse @HistoryLines;
+        }
 
         if ( $LastNotificationHistory && $LastNotificationHistory->{CreateTime} ) {
 

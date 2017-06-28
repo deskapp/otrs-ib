@@ -80,7 +80,7 @@ sub Run {
     for my $Key (
         qw(Year Month Day Hour Minute To Cc Bcc TimeUnits PriorityID Subject Body
         TypeID ServiceID SLAID OwnerAll ResponsibleAll NewResponsibleID NewUserID
-        NextStateID StandardTemplateID
+        NextStateID StandardTemplateID Dest
         )
         )
     {
@@ -510,6 +510,14 @@ sub Run {
                 );
             }
 
+            my $Dest = '';
+            if ( !$Self->{QueueID} && $GetParam{Dest} ) {
+
+                my @QueueParts = split( /\|\|/, $GetParam{Dest} );
+                $Self->{QueueID} = $QueueParts[0];
+                $Dest = $GetParam{Dest};
+            }
+
             # html output
             my $Services = $Self->_GetServices(
                 QueueID => $Self->{QueueID} || 1,
@@ -559,6 +567,7 @@ sub Run {
                     %ACLCompatGetParam,
                     QueueID => $Self->{QueueID}
                 ),
+                FromSelected      => $Dest,
                 To                => '',
                 Subject           => $Subject,
                 Body              => $Body,
@@ -583,6 +592,7 @@ sub Run {
 
     # deliver signature
     elsif ( $Self->{Subaction} eq 'Signature' ) {
+        my $CustomerUser = $ParamObject->GetParam( Param => 'SelectedCustomerUser' ) || '';
         my $QueueID = $ParamObject->GetParam( Param => 'QueueID' );
         if ( !$QueueID ) {
             my $Dest = $ParamObject->GetParam( Param => 'Dest' ) || '';
@@ -592,7 +602,10 @@ sub Run {
         # start with empty signature (no queue selected) - if we have a queue, get the sig.
         my $Signature = '';
         if ($QueueID) {
-            $Signature = $Self->_GetSignature( QueueID => $QueueID );
+            $Signature = $Self->_GetSignature(
+                QueueID        => $QueueID,
+                CustomerUserID => $CustomerUser,
+            );
         }
         my $MimeType = 'text/plain';
         if ( $LayoutObject->{BrowserRichText} ) {
@@ -651,11 +664,6 @@ sub Run {
             $GetParam{From} = $Queue{Email};
         }
 
-        # get sender queue from
-        my $Signature = '';
-        if ($NewQueueID) {
-            $Signature = $Self->_GetSignature( QueueID => $NewQueueID );
-        }
         my $CustomerUser = $ParamObject->GetParam( Param => 'CustomerUser' )
             || $ParamObject->GetParam( Param => 'PreSelectedCustomerUser' )
             || $ParamObject->GetParam( Param => 'SelectedCustomerUser' )
@@ -671,6 +679,15 @@ sub Run {
             || '';
         $GetParam{QueueID}            = $NewQueueID;
         $GetParam{ExpandCustomerName} = $ExpandCustomerName;
+
+        # get sender queue from
+        my $Signature = '';
+        if ($NewQueueID) {
+            $Signature = $Self->_GetSignature(
+                QueueID        => $NewQueueID,
+                CustomerUserID => $CustomerUser
+            );
+        }
 
         if ( $ParamObject->GetParam( Param => 'OwnerAllRefresh' ) ) {
             $GetParam{OwnerAll} = 1;
@@ -1507,7 +1524,10 @@ sub Run {
         }
         my $Signature = '';
         if ($QueueID) {
-            $Signature = $Self->_GetSignature( QueueID => $QueueID );
+            $Signature = $Self->_GetSignature(
+                QueueID        => $QueueID,
+                CustomerUserID => $CustomerUser,
+            );
         }
         my $Users = $Self->_GetUsers(
             %GetParam,
@@ -2111,6 +2131,10 @@ sub _GetTos {
                 || '<Realname> <<Email>> - Queue: <Queue>';
             $String =~ s/<Queue>/$QueueData{Name}/g;
             $String =~ s/<QueueComment>/$QueueData{Comment}/g;
+
+            # remove trailing spaces
+            $String =~ s{\s+\z}{} if !$QueueData{Comment};
+
             if ( $ConfigObject->Get('Ticket::Frontend::NewQueueSelectionType') ne 'Queue' )
             {
                 my %SystemAddressData = $Kernel::OM->Get('Kernel::System::SystemAddress')->SystemAddressGet(

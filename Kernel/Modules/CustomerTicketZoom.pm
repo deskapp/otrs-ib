@@ -1332,9 +1332,11 @@ sub _Mask {
         $LayoutObject->Block(
             Name => 'TicketDynamicField',
             Data => {
-                Label => $Label,
-                Value => $ValueStrg->{Value},
-                Title => $ValueStrg->{Title},
+                Label       => $Label,
+                Value       => $ValueStrg->{Value},
+                Title       => $ValueStrg->{Title},
+                Link        => $DynamicFieldConfig->{Config}->{Link},
+                LinkPreview => $DynamicFieldConfig->{Config}->{LinkPreview},
             },
         );
 

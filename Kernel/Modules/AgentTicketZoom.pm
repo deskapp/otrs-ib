@@ -226,7 +226,7 @@ sub Run {
         Message => Translatable(
             'We are sorry, you do not have permissions anymore to access this ticket in its current state.'
         ),
-        WithHeader => 'yes',
+        WithHeader => $Self->{Subaction} && $Self->{Subaction} eq 'ArticleUpdate' ? 'no' : 'yes',
     ) if !$Access;
 
     # get ticket attributes
@@ -1065,7 +1065,8 @@ sub MaskAgentZoom {
 
                 # check the configured priority for this item. The lowest ClusterPriority
                 # within the same cluster wins.
-                my $Priority = $MenuClusters{ $Menus{$Menu}->{ClusterName} }->{Priority};
+                my $Priority = $MenuClusters{ $Menus{$Menu}->{ClusterName} }->{Priority} || 0;
+                $Menus{$Menu}->{ClusterPriority} ||= 0;
                 if ( !$Priority || $Priority !~ /^\d{3}$/ || $Priority > $Menus{$Menu}->{ClusterPriority} ) {
                     $Priority = $Menus{$Menu}->{ClusterPriority};
                 }

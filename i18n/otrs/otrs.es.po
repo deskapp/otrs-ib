@@ -29,8 +29,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OTRS\n"
-"POT-Creation-Date: 2017-03-22 12:37+0000\n"
-"PO-Revision-Date: 2017-03-22 18:44+0000\n"
+"POT-Creation-Date: 2017-05-31 17:16+0000\n"
+"PO-Revision-Date: 2017-05-31 22:17+0000\n"
 "Last-Translator: Carlos Rodríguez <carlos.rodriguez@otrs.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/otrs/OTRS/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -4887,7 +4887,7 @@ msgstr "'TextoLibre' es utilizado como ejemplo para el valor configurado actualm
 
 #. Template: AdminGenericInterfaceTransportHTTPSOAP
 msgid "Request name free text"
-msgstr ""
+msgstr "Se requiere el nombre en texto libre"
 
 #. Template: AdminGenericInterfaceTransportHTTPSOAP
 msgid "Text to be used to as function wrapper name suffix or replacement."
@@ -5738,6 +5738,10 @@ msgid "Manage %s"
 msgstr "Administrar %s"
 
 #. Template: AdminOTRSBusinessInstalled
+msgid "Go to the OTRS customer portal"
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
 msgid "Downgrade to OTRS Free"
 msgstr "Degradar a OTRS Gratis"
 
@@ -5803,6 +5807,50 @@ msgid "%s Update Available"
 msgstr "%s Actualización Disponible"
 
 #. Template: AdminOTRSBusinessInstalled
+msgid "Package installation requires patch level update of OTRS."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "Please visit our customer portal and file a request."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "Everything else will be done as part of your contract."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "Your installed OTRS version is %s."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid ""
+"To install the current version of OTRS Business Solution™, you need to "
+"update to OTRS %s or higher."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid ""
+"To install the current version of OTRS Business Solution™, the Maximum OTRS "
+"Version is %s."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "To install this package, the required Framework version is %s."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "Why should I keep OTRS up to date?"
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "You will receive updates about relevant security issues."
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
+msgid "You will receive updates for all other relevant OTRS issues"
+msgstr ""
+
+#. Template: AdminOTRSBusinessInstalled
 msgid "An update for your %s is available! Please update at your earliest!"
 msgstr "Una actualización para tu %s está disponible! Por favor actualice cuanto antes!"
 
@@ -5838,6 +5886,14 @@ msgid ""
 "Connection to cloud.otrs.com via HTTPS couldn't be established. Please make "
 "sure that your OTRS can connect to cloud.otrs.com via port 443."
 msgstr "Conexión a cloud.otrs.com a través de HTTPS no se pudo establecer . Por favor, asegúrese de que su OTRS puede conectarse a través del puerto 443 cloud.otrs.com."
+
+#. Template: AdminOTRSBusinessNotInstalled
+msgid "To install this package, you need to update to OTRS %s or higher."
+msgstr ""
+
+#. Template: AdminOTRSBusinessNotInstalled
+msgid "To install this package, the Maximum OTRS Version is %s."
+msgstr ""
 
 #. Template: AdminOTRSBusinessNotInstalled
 msgid "With your existing contract you can only use a small part of the %s."
@@ -6009,6 +6065,64 @@ msgid ""
 "Do you really want to reinstall this package? Any manual changes will be "
 "lost."
 msgstr "¿Realmente desea reinstalar este paquete? Se perderá cualquier cambio manual."
+
+#. Template: AdminPackageManager
+msgid "Go to upgrading instructions"
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "package information"
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "Package installation requires a patch level update of OTRS."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "Package update requires a patch level update of OTRS."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid ""
+"If you are a OTRS Business Solution™ customer, please visit our customer "
+"portal and file a request."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "Please note that your installed OTRS version is %s."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid ""
+"To install this package, you need to update OTRS to version %s or newer."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "This package can only be installed on OTRS version %s or older."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "This package can only be installed on OTRS version %s or newer."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "You will receive updates for all other relevant OTRS issues."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid "How can I do a patch level update if I don’t have a contract?"
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid ""
+"Please find all relevant information within the upgrading instructions at "
+"%s."
+msgstr ""
+
+#. Template: AdminPackageManager
+msgid ""
+"In case you would have further questions we would be glad to answer them."
+msgstr "En caso de que tenga alguna duda estaremos encantados de responderla."
 
 #. Template: AdminPackageManager
 msgid "Continue"
@@ -6258,8 +6372,8 @@ msgid "Edit PostMaster Filter"
 msgstr "Esite Filtro PostMaster"
 
 #. Template: AdminPostMasterFilter
-msgid "The name is required."
-msgstr "El nombre es imprescindible."
+msgid "A postmaster filter with this name already exists!"
+msgstr "Ya existe el filtro de administrador de correos con éste nombre!"
 
 #. Template: AdminPostMasterFilter
 msgid "Filter Condition"
@@ -7278,11 +7392,6 @@ msgid "Typically this would be around once every three days."
 msgstr "Normalmente, esto sería alrededor de una vez cada tres días."
 
 #. Template: AdminRegistration
-msgid ""
-"In case you would have further questions we would be glad to answer them."
-msgstr "En caso de que tenga alguna duda estaremos encantados de responderla."
-
-#. Template: AdminRegistration
 msgid "Please visit our"
 msgstr "Por favor, visite nuestro"
 
@@ -7763,6 +7872,10 @@ msgid "Edit Service"
 msgstr "Editar el servicio"
 
 #. Template: AdminService
+msgid "Service name maximum length is 200 characters (with Sub-service)."
+msgstr ""
+
+#. Template: AdminService
 msgid "Sub-service of"
 msgstr "Subservicio de"
 
@@ -8193,8 +8306,18 @@ msgid "Edit System Email Address"
 msgstr "Editar Dirección de Correo Electrónico de Sistema"
 
 #. Template: AdminSystemAddress
+msgid "This email address is already used as system email address."
+msgstr ""
+
+#. Template: AdminSystemAddress
 msgid "The display name and email address will be shown on mail you send."
 msgstr "El nombre a mostrar y la dirección de correo electrónico serán mostrados en el correo que tu envías."
+
+#. Template: AdminSystemAddress
+msgid ""
+"This system address cannot be set to invalid, because it is used in one or "
+"more queue(s)."
+msgstr ""
 
 #. Template: AdminSystemMaintenance
 msgid "System Maintenance Management"
@@ -8650,7 +8773,7 @@ msgstr "Stream"
 
 #. Template: AgentDashboardStats
 msgid "No Data Available."
-msgstr ""
+msgstr "Los Datos no están  disponibles."
 
 #. Template: AgentDashboardStats
 msgid ""
@@ -9435,6 +9558,10 @@ msgid "Article Create Time (between)"
 msgstr "Hora de creación del artículo (entre)"
 
 #. Template: AgentTicketSearch
+msgid "Invalid date"
+msgstr ""
+
+#. Template: AgentTicketSearch
 msgid "Ticket Create Time (before/after)"
 msgstr "Hora de creación del ticket (antes/después)"
 
@@ -9651,24 +9778,6 @@ msgstr "Cerrar este mensaje"
 #. Template: AgentTicketZoom
 msgid "Article could not be opened! Perhaps it is on another article page?"
 msgstr "El artículo no se pudo abrir! Tal vez sea en otro artículo de la página?"
-
-#. Template: AgentTicketZoom
-msgid "Scale preview content"
-msgstr "Escalar contenido en vista preliminar"
-
-#. Template: AgentTicketZoom
-msgid "Open URL in new tab"
-msgstr "Abrir URL en una nueva pestaña"
-
-#. Template: AgentTicketZoom
-msgid "Close preview"
-msgstr "Cerrar vista previa"
-
-#. Template: AgentTicketZoom
-msgid ""
-"A preview of this website can't be provided because it didn't allow to be "
-"embedded."
-msgstr "La vista previa de esta página no puede ser mostrada porque no se permitió su integración"
 
 #. Template: AttachmentBlocker
 msgid "To protect your privacy, remote content was blocked."
@@ -10611,6 +10720,24 @@ msgstr "Solicitar nueva contraseña"
 msgid "Back to login"
 msgstr "Volver al inicio de sesión"
 
+#. Template: MetaFloater
+msgid "Scale preview content"
+msgstr "Escalar contenido en vista preliminar"
+
+#. Template: MetaFloater
+msgid "Open URL in new tab"
+msgstr "Abrir URL en una nueva pestaña"
+
+#. Template: MetaFloater
+msgid "Close preview"
+msgstr "Cerrar vista previa"
+
+#. Template: MetaFloater
+msgid ""
+"A preview of this website can't be provided because it didn't allow to be "
+"embedded."
+msgstr "La vista previa de esta página no puede ser mostrada porque no se permitió su integración"
+
 #. Template: MobileNotAvailableWidget
 msgid "Feature not available"
 msgstr "Característica no disponible"
@@ -11269,7 +11396,7 @@ msgstr "Servicio web \"%s\" borrado!"
 
 #. Perl Module: Kernel/Modules/AdminGenericInterfaceWebservice.pm
 msgid "New Web service"
-msgstr ""
+msgstr "Nuevo servicio de Web"
 
 #. Perl Module: Kernel/Modules/AdminGenericInterfaceWebserviceHistory.pm
 msgid "Got no WebserviceHistoryID!"
@@ -12241,14 +12368,9 @@ msgstr "Falta ID de Entidad de Actividad en Ticket %s!"
 
 #. Perl Module: Kernel/Modules/AgentTicketProcess.pm
 msgid ""
-"This step does not belong anymore the current activity in process for Ticket"
-" %s!"
-msgstr ""
-
-#. Perl Module: Kernel/Modules/AgentTicketProcess.pm
-msgid ""
-"Another user changed this ticket in the meantime. Please close this window "
-"and reload the ticket."
+"This step does not belong anymore to the current activity in process for "
+"ticket '%s%s%s'! Another user changed this ticket in the meantime. Please "
+"close this window and reload the ticket."
 msgstr ""
 
 #. Perl Module: Kernel/Modules/AgentTicketProcess.pm
@@ -12601,6 +12723,16 @@ msgid "Create a new ticket!"
 msgstr "¡Crear un nuevo Ticket!"
 
 #. Perl Module: Kernel/Modules/Installer.pm
+msgid "SecureMode active!"
+msgstr "¡Modo seguro activo!"
+
+#. Perl Module: Kernel/Modules/Installer.pm
+msgid ""
+"If you want to re-run the Installer, disable the SecureMode in the "
+"SysConfig."
+msgstr "Si desea volver a ejecutar el instalador, desactive el modo seguro en SysConfig."
+
+#. Perl Module: Kernel/Modules/Installer.pm
 msgid "Directory \"%s\" doesn't exist!"
 msgstr "¡El directorio \"%s\" no existe!"
 
@@ -12640,15 +12772,15 @@ msgstr "Base de datos %s"
 
 #. Perl Module: Kernel/Modules/Installer.pm
 msgid "Configure MySQL"
-msgstr ""
+msgstr "Configurar MySQL"
 
 #. Perl Module: Kernel/Modules/Installer.pm
 msgid "Configure PostgreSQL"
-msgstr ""
+msgstr "Configurar PostgreSQL"
 
 #. Perl Module: Kernel/Modules/Installer.pm
 msgid "Configure Oracle"
-msgstr ""
+msgstr "Configurar Oracle"
 
 #. Perl Module: Kernel/Modules/Installer.pm
 msgid "Unknown database type \"%s\"."
@@ -12672,7 +12804,7 @@ msgstr "¡Contacta con tu Administrador!"
 
 #. Perl Module: Kernel/Modules/Installer.pm
 msgid "Syslog"
-msgstr ""
+msgstr "Syslog"
 
 #. Perl Module: Kernel/Modules/Installer.pm
 msgid "Can't write Config file!"
@@ -12912,6 +13044,11 @@ msgstr "Por favor quite las siguientes palabras debido a que no pueden ser utili
 msgid "Order by"
 msgstr "Ordenar por"
 
+#. Perl Module: Kernel/System/ACL/DB/ACL.pm
+msgid ""
+"Couldn't read ACL configuration file. Please make sure the file is valid."
+msgstr ""
+
 #. Perl Module: Kernel/System/AuthSession.pm
 msgid ""
 "You have exceeded the number of concurrent agents - contact sales@otrs.com."
@@ -12947,12 +13084,26 @@ msgstr "Esta opción no esta activa por omisión."
 msgid "This setting can not be deactivated."
 msgstr "Este ajuste no puede ser deshabilitado."
 
+#. Perl Module: Kernel/System/CustomerUser.pm
+msgid "Customer user \"%s\" already exists."
+msgstr ""
+
+#. Perl Module: Kernel/System/CustomerUser/DB.pm
+msgid "This email address is already in use for another customer user."
+msgstr ""
+
 #. Perl Module: Kernel/System/DynamicField/Driver/BaseText.pm
 msgid "e.g. Text or Te*t"
-msgstr ""
+msgstr "ej. Texto ó Te*to"
 
 #. Perl Module: Kernel/System/DynamicField/Driver/Checkbox.pm
 msgid "Ignore this field."
+msgstr "Ignorar éste campo."
+
+#. Perl Module: Kernel/System/NotificationEvent.pm
+msgid ""
+"Couldn't read Notification configuration file. Please make sure the file is "
+"valid."
 msgstr ""
 
 #. Perl Module: Kernel/System/Package.pm
@@ -12970,6 +13121,10 @@ msgstr "¡El archivo es diferente!"
 #. Perl Module: Kernel/System/Package.pm
 msgid "Can't read file!"
 msgstr "¡El archivo no se puede leer!"
+
+#. Perl Module: Kernel/System/ProcessManagement/DB/Process.pm
+msgid "The process \"%s\" and all of its data has been imported successfully."
+msgstr ""
 
 #. Perl Module: Kernel/System/ProcessManagement/DB/Process/State.pm
 msgid "Inactive"
@@ -13165,28 +13320,28 @@ msgstr "Tiempo de Trabajo Máximo de Solución (afectada por la configuración d
 
 #. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
 msgid "First Response Average (affected by escalation configuration)"
-msgstr ""
+msgstr "Primera Respuesta Promedia (afectada por la configuración de escalada)"
 
 #. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
 msgid "First Response Min Time (affected by escalation configuration)"
-msgstr ""
+msgstr "Tiempo Mínimo de Primera Respuesta (afectada por la configuración de escalada)"
 
 #. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
 msgid "First Response Max Time (affected by escalation configuration)"
-msgstr ""
+msgstr "Tiempo Máximo de Primera Respuesta (afectada por la configuración de escalada)"
 
 #. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
 msgid ""
 "First Response Working Time Average (affected by escalation configuration)"
-msgstr ""
+msgstr "Tiempo de Trabajo Promedio de la Primera Respuesta (afectada por la configuración de escalada)"
 
 #. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
 msgid "First Response Min Working Time (affected by escalation configuration)"
-msgstr ""
+msgstr "Tiempo de Trabajo Mínimo de la Primera Respuesta (afectado por la configuración de escalada)"
 
 #. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
 msgid "First Response Max Working Time (affected by escalation configuration)"
-msgstr ""
+msgstr "Tiempo Máximo de Trabajo de la Primera Respuesta (afectado por la configuración de escalada)"
 
 #. Perl Module: Kernel/System/Stats/Dynamic/TicketSolutionResponseTime.pm
 msgid "Number of Tickets (affected by escalation configuration)"
@@ -13922,22 +14077,22 @@ msgstr "PGP firma y codificación"
 #. Perl Module:
 #. Kernel/System/Ticket/Event/NotificationEvent/Transport/Email.pm
 msgid "SMIME sign only"
-msgstr ""
+msgstr "solamente la firma SMIME"
 
 #. Perl Module:
 #. Kernel/System/Ticket/Event/NotificationEvent/Transport/Email.pm
 msgid "SMIME encrypt only"
-msgstr ""
+msgstr "solamente cifrado SMIME"
 
 #. Perl Module:
 #. Kernel/System/Ticket/Event/NotificationEvent/Transport/Email.pm
 msgid "SMIME sign and encrypt"
-msgstr ""
+msgstr "firma y cifrado SMIME"
 
 #. Perl Module:
 #. Kernel/System/Ticket/Event/NotificationEvent/Transport/Email.pm
 msgid "PGP and SMIME not enabled."
-msgstr ""
+msgstr "PGP y SMIME no habilitados"
 
 #. Perl Module:
 #. Kernel/System/Ticket/Event/NotificationEvent/Transport/Email.pm
@@ -13952,17 +14107,17 @@ msgstr "Enviar notificaciones sin firmar"
 #. Perl Module:
 #. Kernel/System/Ticket/Event/NotificationEvent/Transport/Email.pm
 msgid "Send unencrypted notification"
-msgstr ""
+msgstr "Mandar la notificación no cifrada"
 
 #. Perl Module: Kernel/System/Web/InterfaceAgent.pm
 msgid ""
 "Panic, user authenticated but no user data can be found in OTRS DB!! Perhaps"
 " the user is invalid."
-msgstr ""
+msgstr "Pánico, el usuario identificado, pero no se pudieron encontrar ningunos datos del usuario en DB de OTRS! Quizás el usuario es inválido."
 
 #. Perl Module: Kernel/System/Web/InterfaceAgent.pm
 msgid "Can`t remove SessionID."
-msgstr ""
+msgstr "No se puede eliminar el SessionID"
 
 #. Perl Module: Kernel/System/Web/InterfaceAgent.pm
 msgid "Logout successful."
@@ -13974,13 +14129,13 @@ msgstr "¡Pánico! ¡¡¡Sesión no válida!!!"
 
 #. Perl Module: Kernel/System/Web/InterfaceAgent.pm
 msgid "No Permission to use this frontend module!"
-msgstr ""
+msgstr "No tiene Permiso a usar éste módulo de interfaz! "
 
 #. Perl Module: Kernel/System/Web/InterfaceCustomer.pm
 msgid ""
 "Authentication succeeded, but no customer record is found in the customer "
 "backend. Please contact the administrator."
-msgstr ""
+msgstr "Autenticación lograda, pero no se pudieron encontrar ningunos datos de cliente en el interfaz del cliente. Favor, contactar con administrador."
 
 #. Perl Module: Kernel/System/Web/InterfaceCustomer.pm
 msgid "Reset password unsuccessful. Please contact the administrator."
@@ -13997,16 +14152,6 @@ msgstr "¡El usuario del cliente no puede ser agregado!"
 #. Perl Module: Kernel/System/Web/InterfaceCustomer.pm
 msgid "Can't send account info!"
 msgstr "¡No se puede enviar información de la cuenta!"
-
-#. Perl Module: Kernel/System/Web/InterfaceInstaller.pm
-msgid "SecureMode active!"
-msgstr "¡Modo seguro activo!"
-
-#. Perl Module: Kernel/System/Web/InterfaceInstaller.pm
-msgid ""
-"If you want to re-run the Installer, disable the SecureMode in the "
-"SysConfig."
-msgstr "Si desea volver a ejecutar el instalador, desactive el modo seguro en SysConfig."
 
 #. Perl Module: Kernel/System/Web/InterfaceInstaller.pm
 msgid "Action \"%s\" not found!"
@@ -14121,8 +14266,8 @@ msgstr "nuevo ticket"
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid ""
 "Follow-ups for closed tickets are not possible. A new ticket will be "
-"created.."
-msgstr "Los seguimientos para tickets cerrados no son posibles. Un nuevo ticket será creado."
+"created."
+msgstr ""
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid "Postmaster queue."
@@ -14230,7 +14375,7 @@ msgstr "Notificación de seguimiento de Ticket (bloqueada)"
 msgid ""
 "You will receive a notification if a customer sends a follow-up to a locked "
 "ticket of which you are the ticket owner or responsible."
-msgstr ""
+msgstr "Recibirás una notificación cada vez que el cliente te manda el seguimiento al ticket bloqueado de la cuál eres el propietario ó responsable."
 
 #. Database XML Definition: scripts/database/otrs-initial_insert.xml
 msgid ""
@@ -14284,7 +14429,7 @@ msgstr "Notificación de actualización de servicio de Ticket"
 msgid ""
 "You will receive a notification if a ticket's service is changed to one of "
 "your \"My Services\"."
-msgstr ""
+msgstr "Recibirás una notificación cada vez que el servicio de ticket se cambia a uno de sus \"Mis Servicios\""
 
 #. SysConfig
 msgid ""
@@ -14351,7 +14496,7 @@ msgstr "300 (Principiante)"
 
 #. SysConfig
 msgid "A TicketWatcher Module."
-msgstr ""
+msgstr "El Módulo de Vigilante de Ticket"
 
 #. SysConfig
 msgid "A Website"
@@ -14457,7 +14602,7 @@ msgstr "Añadida suscripción para el usuario «%s»."
 
 #. SysConfig
 msgid "Address book of CustomerUser sources."
-msgstr ""
+msgstr "Libro de dirección del fuente de usuario de cliente."
 
 #. SysConfig
 msgid ""
@@ -14510,7 +14655,7 @@ msgstr "Nombre del agente"
 
 #. SysConfig
 msgid "Agent Name + FromSeparator + System Address Display Name"
-msgstr ""
+msgstr "Nombre del Agente + DesdeSeparador + Nombre de la Dirección del Sistema para Mostrar"
 
 #. SysConfig
 msgid "Agent Preferences."
@@ -14533,21 +14678,21 @@ msgid ""
 "Agent interface module to access CIC search via nav bar. Additional access "
 "control to show or not show this link can be done by using Key \"Group\" and"
 " Content like \"rw:group1;move_into:group2\"."
-msgstr ""
+msgstr "El módulo de interfaz del Agente para acceder a la búsqueda CIC mediante nav bar. El control del acceso adicional para demostrar o no demostrar que éste enlace puede ser hecha por usar el \"Grupo\" Clave y el Contenido como \"rw:group1;move_into:group2\". "
 
 #. SysConfig
 msgid ""
 "Agent interface module to access fulltext search via nav bar. Additional "
 "access control to show or not show this link can be done by using Key "
 "\"Group\" and Content like \"rw:group1;move_into:group2\"."
-msgstr ""
+msgstr "El módulo de interfaz de agente para acceder a la búsqueda de texto completo mediante nav bar.\nEl control del acceso adicional para demostrar o no demostrar éste enlace puede ser hecha por usar el \"Grupo\" Clave y el Contenido como \"rw:group1;move_into:group2\". "
 
 #. SysConfig
 msgid ""
 "Agent interface module to access search profiles via nav bar. Additional "
 "access control to show or not show this link can be done by using Key "
 "\"Group\" and Content like \"rw:group1;move_into:group2\"."
-msgstr ""
+msgstr "El módulo de interfaz de agente para acceder a la búsqueda de perfiles mediante nav bar.\nEl control del acceso adicional para demostrar o no demostrar éste enlace puede ser hecha por usar el \"Grupo\" Clave y el Contenido como \"rw:group1;move_into:group2\". "
 
 #. SysConfig
 msgid ""
@@ -14560,7 +14705,7 @@ msgid ""
 "Agent interface notification module to see the number of locked tickets. "
 "Additional access control to show or not show this link can be done by using"
 " Key \"Group\" and Content like \"rw:group1;move_into:group2\"."
-msgstr ""
+msgstr "El módulo de interfaz de agente para ver el número de los tickets bloqueados.\nEl control del acceso adicional para demostrar o no demostrar éste enlace puede ser hecha por usar el \"Grupo\" Clave y el Contenido como \"rw:group1;move_into:group2\". "
 
 #. SysConfig
 msgid ""
@@ -14568,37 +14713,37 @@ msgid ""
 " responsible for. Additional access control to show or not show this link "
 "can be done by using Key \"Group\" and Content like "
 "\"rw:group1;move_into:group2\"."
-msgstr ""
+msgstr "El módulo de interfaz de agente para ver el número de los tickets de los cuáles el agente está responsable.\nEl control del acceso adicional para demostrar o no demostrar éste enlace puede ser hecha por usar el \"Grupo\" Clave y el Contenido como \"rw:group1;move_into:group2\". "
 
 #. SysConfig
 msgid ""
 "Agent interface notification module to see the number of tickets in My "
 "Services. Additional access control to show or not show this link can be "
 "done by using Key \"Group\" and Content like \"rw:group1;move_into:group2\"."
-msgstr ""
+msgstr "El módulo de interfaz de agente para ver el número de los tickets en Mis Servicios.\nEl control del acceso adicional para demostrar o no demostrar éste enlace puede ser hecha por usar el \"Grupo\" Clave y el Contenido como \"rw:group1;move_into:group2\". "
 
 #. SysConfig
 msgid ""
 "Agent interface notification module to see the number of watched tickets. "
 "Additional access control to show or not show this link can be done by using"
 " Key \"Group\" and Content like \"rw:group1;move_into:group2\"."
-msgstr ""
+msgstr "El módulo de interfaz de agente para ver el número de los tickets vistos.\nEl control del acceso adicional para demostrar o no demostrar éste enlace puede ser hecha por usar el \"Grupo\" Clave y el Contenido como \"rw:group1;move_into:group2\". "
 
 #. SysConfig
 msgid "AgentCustomerSearch"
-msgstr ""
+msgstr "La Búsqueda del Cliente de Agente"
 
 #. SysConfig
 msgid "AgentCustomerSearch."
-msgstr ""
+msgstr "La Búsqueda del Cliente de Agente."
 
 #. SysConfig
 msgid "AgentUserSearch"
-msgstr ""
+msgstr "La Búsqueda de Usuario de Agente"
 
 #. SysConfig
 msgid "AgentUserSearch."
-msgstr ""
+msgstr "La Búsqueda de Usuario de Agente."
 
 #. SysConfig
 msgid "Agents <-> Groups"
@@ -14725,21 +14870,21 @@ msgid ""
 "Allows extended search conditions in ticket search of the agent interface. "
 "With this feature you can search e. g. ticket title with this kind of "
 "conditions like \"(*key1*&&*key2*)\" or \"(*key1*||*key2*)\"."
-msgstr ""
+msgstr "Permite las condiciones de una búsqueda extendida en la búsqueda del ticket del interfaz del agente. Con éste función puede buscar por ejemplo, el ticket con tal tipo de condiciones como \"(*key1*&&*key2*)\" ó \"(*key1*||*key2*)\"."
 
 #. SysConfig
 msgid ""
 "Allows extended search conditions in ticket search of the customer "
 "interface. With this feature you can search e. g. ticket title with this "
 "kind of conditions like \"(*key1*&&*key2*)\" or \"(*key1*||*key2*)\"."
-msgstr ""
+msgstr "Permite las condiciones de una búsqueda extendida en la búsqueda del ticket del interfaz del cliente. Con éste función puede buscar por ejemplo, el ticket con tal tipo de condiciones como \"(*key1*&&*key2*)\" ó \"(*key1*||*key2*)\"."
 
 #. SysConfig
 msgid ""
 "Allows extended search conditions in ticket search of the generic agent "
 "interface. With this feature you can search e. g. ticket title with this "
 "kind of conditions like \"(*key1*&&*key2*)\" or \"(*key1*||*key2*)\"."
-msgstr ""
+msgstr "Permite las condiciones de una búsqueda extendida en la búsqueda del ticket del interfaz del agente genérico. Con éste función puede buscar por ejemplo, el ticket con tal tipo de condiciones como \"(*key1*&&*key2*)\" ó \"(*key1*||*key2*)\"."
 
 #. SysConfig
 msgid ""
@@ -14777,7 +14922,7 @@ msgstr "Permite establecer un nuevo estado de ticket en la pantalla mover ticket
 
 #. SysConfig
 msgid "Always show RichText if available"
-msgstr ""
+msgstr "Siempre demostrar RichText cuando está disponible."
 
 #. SysConfig
 msgid "Arabic (Saudi Arabia)"
@@ -14833,7 +14978,7 @@ msgid ""
 "ticket responsible feature is enabled). This will only work by manually "
 "actions of the logged in user. It does not work for automated actions e.g. "
 "GenericAgent, Postmaster and GenericInterface."
-msgstr ""
+msgstr "Establece automáticamente el propietario del ticket como un responsable por éste (siempre cuando la función de responsable por ticket). Ésto solamente puede funcionar por los acciones manuales del usuario conectado. Ésto no va a funcionar para los acciones automatizadas como por ejemplo GenericAgent, Postmaster ó GenericInterface."
 
 #. SysConfig
 msgid ""
@@ -14851,7 +14996,7 @@ msgstr "Apariencia blanca equilibrada por Felix Niklas."
 
 #. SysConfig
 msgid "Based on global RichText setting"
-msgstr ""
+msgstr "Basada en ajustes de RichText global"
 
 #. SysConfig
 msgid ""
@@ -15111,11 +15256,11 @@ msgstr "Nombre de la Empresa la cual será incluida en los emails salientes como
 
 #. SysConfig
 msgid "Compat module for AgentZoom to AgentTicketZoom."
-msgstr ""
+msgstr "Módulo compatible para Zoom de Agente a Zoom del Ticket de Agente"
 
 #. SysConfig
 msgid "Complex"
-msgstr ""
+msgstr "Complejo"
 
 #. SysConfig
 msgid "Configure Processes."
@@ -15159,11 +15304,11 @@ msgstr "Controla cómo mostrar el historial de entradas como valores legibles."
 msgid ""
 "Controls if CustomerID is automatically copied from the sender address for "
 "unknown customers."
-msgstr ""
+msgstr "Controla cada vez cuando el ID de Cliente se copia automáticamente desde la dirección del  remitente a los clientes desconocidos."
 
 #. SysConfig
 msgid "Controls if CustomerID is read-only in the agent interface."
-msgstr ""
+msgstr "Controla cada vez cuando el ID del Cliente es sólo para leer en el interfaz de agente."
 
 #. SysConfig
 msgid "Controls if customers have the ability to sort their tickets."
@@ -15387,7 +15532,7 @@ msgstr "Busqueda de Ticket de Cliente"
 
 #. SysConfig
 msgid "Customer ticket zoom"
-msgstr ""
+msgstr "Ticket zoom del Cliente"
 
 #. SysConfig
 msgid "Customer user search"
@@ -15524,7 +15669,7 @@ msgid ""
 "must have registered the following JS and CSS files: "
 "Core.AllocationList.css, Core.UI.AllocationList.js, Core.UI.Table.Sort.js, "
 "Core.Agent.TableFilters.js."
-msgstr ""
+msgstr "Define los Acciones dónde el botón de ajustes está disponible en el widget del objeto vinculado (LinkObject::ViewMode = \"complex\"). Favor téngase en cuenta que éstos Acciones deben registrar los siguientes JS y CSS archivos: Core.AllocationList.css, Core.UI.AllocationList.js, Core.UI.Table.Sort.js, Core.Agent.TableFilters.js."
 
 #. SysConfig
 msgid ""
@@ -15592,7 +15737,7 @@ msgid ""
 "(LinkObject::ViewMode = \"complex\"). Note: Only Ticket attributes and "
 "Dynamic Fields (DynamicField_NameX) are allowed for DefaultColumns. Possible"
 " settings: 0 = Disabled, 1 = Available, 2 = Enabled by default."
-msgstr ""
+msgstr "Define qué columnas están demostradas en el widget del ticket vinculado (LinkObject::ViewMode = \"complex\"). Nota: Sólo los atributos del Ticket y Campos Dinámicos (DynamicField_NameX) están permitidos a DefaultColumns. Los ajuste posibles son:  0 = Deshabilitado, 1 = Disponible, 2 = Habilitado por forma predeterminada."
 
 #. SysConfig
 msgid ""
@@ -15629,7 +15774,7 @@ msgid ""
 "element Image allows two input kinds. At once the name of an image (e.g. "
 "faq.png). In this case the OTRS image path will be used. The second "
 "possiblity is to insert the link to the image."
-msgstr ""
+msgstr "Define los filtros para la salida html para agregar los vínculos  tras los números CVE. El elemento Imagen permite dos tipos de entrada. En el primer tipo el nombre del imagen (ej.faq.png). En este caso será usado el camino del imagen OTRS. La segunda posibilidad es insertar el vínculo al imagen."
 
 #. SysConfig
 msgid ""
@@ -15637,7 +15782,7 @@ msgid ""
 " element Image allows two input kinds. At once the name of an image (e.g. "
 "faq.png). In this case the OTRS image path will be used. The second "
 "possiblity is to insert the link to the image."
-msgstr ""
+msgstr "Define el filtro de la salida html para agregar los vínculos tras los números de MSBulletin. El Imagen del elemento permite dos tipos de entrada. En el primer tipo el nombre de imagen (ej. faq.png). En éste caso será usado el camino de imagen OTRS. La segunda posibilidad es insertar el vínculo al imagen."
 
 #. SysConfig
 msgid ""
@@ -15645,7 +15790,7 @@ msgid ""
 "element Image allows two input kinds. At once the name of an image (e.g. "
 "faq.png). In this case the OTRS image path will be used. The second "
 "possiblity is to insert the link to the image."
-msgstr ""
+msgstr "Define el filtro de la salida html para agregar los vínculos tras una cadena definida. El Imagen del elemento permite dos tipos de entrada. En el primer tipo el nombre de imagen (ej. faq.png). En éste caso será usado el camino de imagen OTRS. La segunda posibilidad es insertar el vínculo al imagen."
 
 #. SysConfig
 msgid ""
@@ -15653,7 +15798,7 @@ msgid ""
 "element Image allows two input kinds. At once the name of an image (e.g. "
 "faq.png). In this case the OTRS image path will be used. The second "
 "possiblity is to insert the link to the image."
-msgstr ""
+msgstr "Define el filtro de la salida html para agregar los vínculos tras los números de bugtraq. El Imagen del elemento permite dos tipos de entrada. En el primer tipo el nombre de imagen (ej. faq.png). En éste caso será usado el camino de imagen OTRS. La segunda posibilidad es insertar el vínculo al imagen."
 
 #. SysConfig
 msgid ""
@@ -15664,13 +15809,13 @@ msgid ""
 "URL, but also an alternate one. Please note that some websites deny being "
 "displayed within an iframe (e.g. Google) and thus won't work with the "
 "preview mode."
-msgstr ""
+msgstr "Define el filtro para colectar los números CVE desde los textos de artículos en AgentTicketZoom. Los resultados serán mostrados en meta box al lado del artículo. Llena el URLPrevisualización si quieres ver la previsualización cuando apuntes tu cursor del ratón en elemento vinculado. Ésto puede ser el mismo URL como en el URL, pero también un alternativo. Favor téngase en cuenta que algunos páginas web se niegan ser mostrados dentro el i-marco (ej. Google) y por ende no van a funcionar en el modo de previsualización."
 
 #. SysConfig
 msgid ""
 "Defines a filter to process the text in the articles, in order to highlight "
 "predefined keywords."
-msgstr ""
+msgstr "Define el filtro para el procesar el texto en los artículos, para resaltar las palabras claves predefinidos."
 
 #. SysConfig
 msgid ""
@@ -15684,7 +15829,7 @@ msgstr ""
 msgid ""
 "Defines a regular expression that filters all email addresses that should "
 "not be used in the application."
-msgstr ""
+msgstr "Define la expresión regular cuál filtra todos los direcciones de email que no deberían ser usados en éste aplicación."
 
 #. SysConfig
 msgid ""
@@ -17480,6 +17625,13 @@ msgid ""
 msgstr ""
 
 #. SysConfig
+msgid ""
+"Defines the timeout (in seconds, minimum is 20 seconds) for the support data"
+" collection with the public module 'PublicSupportDataCollector' (e.g. used "
+"from the OTRS Daemon)."
+msgstr ""
+
+#. SysConfig
 msgid "Defines the two-factor module to authenticate agents."
 msgstr ""
 
@@ -18415,7 +18567,7 @@ msgstr ""
 #. SysConfig
 msgid ""
 "Frontend module registration (disable AgentTicketService link if Ticket "
-"Serivice feature is not used)."
+"Service feature is not used)."
 msgstr ""
 
 #. SysConfig
@@ -18447,6 +18599,10 @@ msgstr ""
 #. SysConfig
 msgid "Frontend theme"
 msgstr "Tema de la interfaz"
+
+#. SysConfig
+msgid "Frontend theme."
+msgstr ""
 
 #. SysConfig
 msgid "Full value"
@@ -18929,8 +19085,10 @@ msgstr ""
 
 #. SysConfig
 msgid ""
-"If this option is enabled, then the decrypted data will be stored in the "
-"database if they are displayed in AgentTicketZoom."
+"If this option is disabled, articles will not automatically be decrypted and"
+" stored in the database. Please note that this also means no decryption will"
+" take place and the articles will be shown in ticket zoom in their original "
+"(encrypted) form."
 msgstr ""
 
 #. SysConfig
@@ -19370,8 +19528,8 @@ msgid ""
 msgstr ""
 
 #. SysConfig
-msgid "Merge this ticket and all articles into a another ticket"
-msgstr "Fusiona este ticket y todos los artículos en otro ticket "
+msgid "Merge this ticket and all articles into another ticket"
+msgstr ""
 
 #. SysConfig
 msgid "Merged Ticket <OTRS_TICKET> to <OTRS_MERGE_TO_TICKET>."
@@ -19688,10 +19846,6 @@ msgid "PGP Key Management"
 msgstr "Administración de la Clave PGP"
 
 #. SysConfig
-msgid "PGP Key Upload"
-msgstr "Carga de Clave PGP"
-
-#. SysConfig
 msgid "Package event module file a scheduler task for update registration."
 msgstr ""
 
@@ -19726,9 +19880,9 @@ msgstr ""
 #. SysConfig
 msgid ""
 "Parameters for the dashboard backend of the customer company information of "
-"the agent interface . \"Group\" is used to restrict the access to the plugin"
-" (e. g. Group: admin;group1;group2;). \"Default\" determines if the plugin "
-"is enabled by default or if the user needs to enable it manually. "
+"the agent interface. \"Group\" is used to restrict the access to the plugin "
+"(e. g. Group: admin;group1;group2;). \"Default\" determines if the plugin is"
+" enabled by default or if the user needs to enable it manually. "
 "\"CacheTTLLocal\" is the cache time in minutes for the plugin."
 msgstr ""
 
@@ -20177,9 +20331,8 @@ msgstr "Roles <-> Grupos"
 
 #. SysConfig
 msgid ""
-"Run file based generic agent jobs (Note: module name need needs to be "
-"specified in -configuration-module param e.g. "
-"\"Kernel::System::GenericAgent\")."
+"Run file based generic agent jobs (Note: module name needs to be specified "
+"in -configuration-module param e.g. \"Kernel::System::GenericAgent\")."
 msgstr ""
 
 #. SysConfig
@@ -20209,10 +20362,6 @@ msgstr ""
 #. SysConfig
 msgid "Russian"
 msgstr "Ruso"
-
-#. SysConfig
-msgid "S/MIME Certificate Upload"
-msgstr "Carga de Certificado S/MIME"
 
 #. SysConfig
 msgid "SMS"
@@ -20290,11 +20439,15 @@ msgid "Select the main interface language."
 msgstr ""
 
 #. SysConfig
-msgid "Select your frontend Theme."
-msgstr "Seleccione su tema"
+msgid "Select your default spelling dictionary."
+msgstr ""
 
 #. SysConfig
 msgid "Select your preferred layout for OTRS."
+msgstr ""
+
+#. SysConfig
+msgid "Select your preferred theme for OTRS."
 msgstr ""
 
 #. SysConfig
@@ -20387,12 +20540,6 @@ msgid "Set a new password by filling in your current password and a new one."
 msgstr ""
 
 #. SysConfig
-msgid ""
-"Set minimum loglevel. If you select 'error', just errors are logged. With "
-"'debug' you get all logging messages."
-msgstr ""
-
-#. SysConfig
 msgid "Set sender email addresses for this system."
 msgstr "Establecer direcciones de envío de correo electrónico para este sistema."
 
@@ -20412,6 +20559,13 @@ msgstr ""
 msgid ""
 "Set the maximum height (in pixels) of inline HTML articles in "
 "AgentTicketZoom."
+msgstr ""
+
+#. SysConfig
+msgid ""
+"Set the minimum log level. If you select 'error', just errors are logged. "
+"With 'debug' you get all logging messages. The order of log levels is: "
+"'debug', 'info', 'notice' and 'error'."
 msgstr ""
 
 #. SysConfig
@@ -22430,6 +22584,14 @@ msgstr ""
 #. SysConfig
 msgid "Updates the ticket index accelerator."
 msgstr "Actualiza el acelerador del índice de tickets."
+
+#. SysConfig
+msgid "Upload your PGP key."
+msgstr ""
+
+#. SysConfig
+msgid "Upload your S/MIME certificate."
+msgstr ""
 
 #. SysConfig
 msgid ""
