@@ -7106,12 +7106,13 @@ Thanks for your help!
         'responsible' => '',
         'stats' => '',
 
-
         'Resource Usage' => 'Wykorzystanie zasobów',
         'CreateTicket' => 'Nowe zgłoszenie',
         'TicketZoom' => 'Podgląd zgłoszenia',
         'PhoneCall' => 'Połączenie telefoniczne',
         'Customer tickets' => 'Zgłoszenia klienta',
+        'Warning: printout will include internal information also!' => 'Uwaga: wydruk obejmie również informacje wewnętrzne!',
+        'Attach ticket printout' => 'Załącz wydruk zgłoszenia',
 
     };
     # $$STOP$$
