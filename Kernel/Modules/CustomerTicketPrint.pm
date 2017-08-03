@@ -223,7 +223,7 @@ sub Run {
     );
 
     # return the pdf document
-    my $Filename = 'Ticket_' . $Ticket{TicketNumber};
+    my $Filename = $ConfigObject->Get('Ticket::Hook') . $Ticket{TicketNumber};
     my ( $s, $m, $h, $D, $M, $Y ) = $TimeObject->SystemTime2Date(
         SystemTime => $TimeObject->SystemTime(),
     );
@@ -233,7 +233,7 @@ sub Run {
     $m = sprintf( "%02d", $m );
     my $PDFString = $PDFObject->DocumentOutput();
     return $LayoutObject->Attachment(
-        Filename    => $Filename . "_" . "$Y-$M-$D" . "_" . "$h-$m.pdf",
+        Filename    => $Filename . "_" . "$Y$M$D" . "_" . "$h$m.pdf",
         ContentType => "application/pdf",
         Content     => $PDFString,
         Type        => 'inline',

@@ -84,12 +84,13 @@ sub Run {
 
     # get needed objects
     my $TimeObject = $Kernel::OM->Get('Kernel::System::Time');
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
 
     # get time object and use the UserTimeObject, if the system use UTC as
     # system time and the TimeZoneUser feature is active
     if (
         !$Kernel::OM->Get('Kernel::System::Time')->ServerLocalTimeOffsetSeconds()
-        && $Kernel::OM->Get('Kernel::Config')->Get('TimeZoneUser')
+        && $ConfigObject->Get('TimeZoneUser')
         && $Self->{UserTimeZone}
         )
     {
@@ -97,7 +98,7 @@ sub Run {
     }
 
     # return the pdf document
-    my $Filename = 'Ticket_' . $Ticket{TicketNumber};
+    my $Filename = $ConfigObject->Get('Ticket::Hook') . $Ticket{TicketNumber};
     my ( $s, $m, $h, $D, $M, $Y ) = $TimeObject->SystemTime2Date(
         SystemTime => $TimeObject->SystemTime(),
     );
@@ -113,7 +114,7 @@ sub Run {
     );
 
     return $LayoutObject->Attachment(
-        Filename    => $Filename . "_" . "$Y-$M-$D" . "_" . "$h-$m.pdf",
+        Filename    => $Filename . "_" . "$Y$M$D" . "_" . "$h$m.pdf",
         ContentType => "application/pdf",
         Content     => $PDFString,
         Type        => 'inline',
