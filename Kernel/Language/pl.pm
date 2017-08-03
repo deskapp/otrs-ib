@@ -6782,6 +6782,8 @@ Thanks for your help!
         'notice' => 'ogłoszenie',
         'off' => 'wyłączone',
         'reverse' => 'odwróć',
+        'Warning: printout will include internal information also!' => 'Uwaga: wydruk obejmie również informacje wewnętrzne!',
+        'Attach ticket printout' => 'Załącz wydruk zgłoszenia',
 
     };
 

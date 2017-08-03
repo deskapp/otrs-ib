@@ -907,8 +907,8 @@ sub SendEmail {
             if ( $Self->{UserTimeZone} ) {
                 $DateTimeObject->ToTimeZone( TimeZone => $Self->{UserTimeZone} );
             }
-            my $Filename = 'Ticket_' . $Tn . '_';
-            $Filename .= $DateTimeObject->Format( Format => '%Y-%m-%d_%H:%M' );
+            my $Filename = $ConfigObject->Get('Ticket::Hook') . $Tn . '_';
+            $Filename .= $DateTimeObject->Format( Format => '%Y%m%d_%H%M' );
             $Filename .= '.pdf';
 
             # generate pdf printout
