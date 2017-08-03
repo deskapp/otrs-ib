@@ -88,8 +88,8 @@ sub Run {
     if ( $Self->{UserTimeZone} ) {
         $DateTimeObject->ToTimeZone( TimeZone => $Self->{UserTimeZone} );
     }
-    my $Filename = 'Ticket_' . $Ticket{TicketNumber} . '_';
-    $Filename .= $DateTimeObject->Format( Format => '%Y-%m-%d_%H:%M' );
+    my $Filename = $Kernel::OM->Get('Kernel::Config')->Get('Ticket::Hook') . $Ticket{TicketNumber} . '_';
+    $Filename .= $DateTimeObject->Format( Format => '%Y%m%d_%H%M' );
     $Filename .= '.pdf';
 
     # return the pdf document
