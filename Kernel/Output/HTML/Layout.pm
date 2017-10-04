@@ -2494,14 +2494,15 @@ sub Attachment {
         # Disallow external and inline scripts, active content, frames, but keep allowing inline styles
         #   as this is a common use case in emails.
         # Also disallow referrer headers to prevent referrer leaks.
-        # img-src:    allow external and inline (data:) images
-        # script-src: block all scripts
-        # object-src: allow 'self' so that the browser can load plugins for PDF display
-        # frame-src:  block all frames
-        # style-src:  allow inline styles for nice email display
-        # referrer:   don't send referrers to prevent referrer-leak attacks
+        # default-src: allow own stuff loading only by default for better security
+        # img-src:     allow own and inline (data:) images
+        # script-src:  block all scripts
+        # object-src:  allow 'self' so that the browser can load plugins for PDF display
+        # child-src:   block all frames
+        # style-src:   allow inline styles for nice email display
+        # referrer:    don't send referrers to prevent referrer-leak attacks
         $Output
-            .= "Content-Security-Policy: default-src 'self'; img-src 'self' data:; script-src 'none'; object-src 'none'; child-src 'none'; style-src 'unsafe-inline'; referrer no-referrer;\n";
+            .= "Content-Security-Policy: default-src 'self'; img-src 'self' data:; script-src 'none'; object-src 'self'; child-src 'none'; style-src 'unsafe-inline'; referrer no-referrer;\n";
     }
 
     if ( $Param{Charset} ) {
