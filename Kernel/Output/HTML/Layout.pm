@@ -2481,13 +2481,20 @@ sub Attachment {
         $Output .= "X-Frame-Options: SAMEORIGIN\n";
     }
 
-    # use CSP to disallow external content to be loaded if not explicitly enabled;
-    # don't allow inline scripts but allow inline styles for messages and
-    # blocking info box to look nice; for CSP details see
-    # http://www.html5rocks.com/en/tutorials/security/content-security-policy/
-    # https://www.w3.org/TR/CSP2/#directive-default-src
-    if ( defined $Param{LoadExternalContent} && ( $Param{LoadExternalContent} == 0 ) ) {
-        $Output .= "Content-Security-Policy: default-src 'self'; style-src 'unsafe-inline'\n"; 
+    if ( $Param{Sandbox} && !$Kernel::OM->Get('Kernel::Config')->Get('DisableContentSecurityPolicy') ) {
+
+        # Disallow external and inline scripts, active content, frames, but keep allowing inline styles
+        #   as this is a common use case in emails.
+        # Also disallow referrer headers to prevent referrer leaks.
+        # default-src: allow own stuff loading only by default for better security
+        # img-src:     allow own and inline (data:) images
+        # script-src:  block all scripts
+        # object-src:  allow 'self' so that the browser can load plugins for PDF display
+        # child-src:   block all frames
+        # style-src:   allow inline styles for nice email display
+        # referrer:    don't send referrers to prevent referrer-leak attacks
+        $Output
+            .= "Content-Security-Policy: default-src 'self'; img-src 'self' data:; script-src 'none'; object-src 'self'; child-src 'none'; style-src 'unsafe-inline'; referrer no-referrer;\n";
     }
 
     if ( $Param{Charset} ) {
