@@ -1,4 +1,5 @@
 #5.0.24 2017-??-??
+ - 2017-10-04 Fixed Need ObjectID! error on AgentTicketMove with article dynamic field.
 
 #5.0.23 2017-09-19
  - 2017-09-11 Updated translations, thanks to all translators.
