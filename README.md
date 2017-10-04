@@ -45,7 +45,7 @@ or benefit from an inhouse training that covers all the specific needs of your c
 Software requirements
 =====================
 Perl
-- Perl 5.10.0 or higher
+- Perl 5.14.0 or higher
 
 Webserver
 - Apache2 + mod_perl2 or higher (recommended)

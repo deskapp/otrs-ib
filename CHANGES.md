@@ -1,4 +1,5 @@
 #5.0.24 2017-??-??
+ - 2017-10-04 Changed required perl version to 5.14.0 and restored unicode warnings fix.
 
 #5.0.23 2017-09-19
  - 2017-09-11 Updated translations, thanks to all translators.
