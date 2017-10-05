@@ -1,4 +1,5 @@
 #5.0.24 2017-??-??
+ - 2017-10-05 Configurable access to archive searching in agent panel.
  - 2017-10-04 Fixed Need ObjectID! error on AgentTicketMove with article dynamic field.
  - 2017-10-04 Fixed bug#[12461](https://bugs.otrs.org/show_bug.cgi?id=12461) - Chrome can not display attached PDF files since 5.0.14.
  - 2017-10-04 Changed required perl version to 5.14.0 and restored unicode warnings fix.
