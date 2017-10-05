@@ -1452,7 +1452,8 @@ sub Run {
             },
         );
 
-        if ( $ConfigObject->Get('Ticket::ArchiveSystem') ) {
+        if ( $ConfigObject->Get('Ticket::ArchiveSystem')
+            && $ConfigObject->Get('Ticket::AgentArchiveSystem') ) {
             push @Attributes, (
                 {
                     Key   => 'SearchInArchive',
@@ -1771,7 +1772,8 @@ sub Run {
             Class      => 'Modernize',
         );
 
-        if ( $ConfigObject->Get('Ticket::ArchiveSystem') ) {
+        if ( $ConfigObject->Get('Ticket::ArchiveSystem')
+            && $ConfigObject->Get('Ticket::AgentArchiveSystem') ) {
 
             $Param{SearchInArchiveStrg} = $LayoutObject->BuildSelection(
                 Data => {
