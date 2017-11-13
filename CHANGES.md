@@ -1,4 +1,5 @@
 #5.0.24 2017-??-??
+ - 2017-11-13 Enhanced configurable access to archive searching in agent panel.
  - 2017-10-05 Configurable access to archive searching in agent panel.
 
 #5.0.23 2017-09-19
