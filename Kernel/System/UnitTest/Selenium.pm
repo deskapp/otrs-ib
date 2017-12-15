@@ -214,6 +214,28 @@ sub get {    ## no critic
     return;
 }
 
+=item get_alert_text()
+
+Override get_alert_text() method of base class to return alert text as string.
+
+    my $AlertText = $SeleniumObject->get_alert_text();
+
+returns
+
+    my $AlertText = 'Some alert text!'
+
+=cut
+
+sub get_alert_text {    ## no critic
+    my ($Self) = @_;
+
+    my $AlertText = $Self->SUPER::get_alert_text();
+
+    die "Alert dialog is not present" if ref $AlertText eq 'HASH';    # Chrome returns HASH when there is no alert text.
+
+    return $AlertText;
+}
+
 =item VerifiedGet()
 
 perform a get() call, but wait for the page to be fully loaded (works only within OTRS).
@@ -506,7 +528,7 @@ sub HandleError {
             Directory => $SharedScreenshotDir,
             Filename  => $Filename,
             Content   => \$Data,
-        ) || return $Self->False( 1, "Could not write file $SharedScreenshotDir/$Filename" );
+        ) || return $Self->{UnitTestObject}->False( 1, "Could not write file $SharedScreenshotDir/$Filename" );
     }
 
     $Self->{UnitTestObject}->False( 1, "Saved screenshot in $URL" );

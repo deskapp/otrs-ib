@@ -135,8 +135,9 @@ sub Run {
             );
             $MoveQueues{0} = '- ' . $LayoutObject->{LanguageObject}->Translate('Move') . ' -';
             $Param{MoveQueuesStrg} = $LayoutObject->AgentQueueListOption(
-                Name => 'DestQueueID',
-                Data => \%MoveQueues,
+                Name  => 'DestQueueID',
+                Data  => \%MoveQueues,
+                Class => 'Modernize',
             );
         }
         else {

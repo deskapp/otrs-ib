@@ -103,9 +103,9 @@ sub Run {
                     }
                 }
 
-                # negate result if configured
+                # Switch LocalMatched if Config has a negation.
                 if ( $Config{Not}->{$_} ) {
-                    $LocalMatched ^= 1 ;
+                    $LocalMatched = !$LocalMatched;
                 }
 
                 if ( !$LocalMatched ) {
@@ -114,7 +114,6 @@ sub Run {
                 else {
                     $Matched = 1;
                 }
-
             }
 
             # match string

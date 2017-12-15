@@ -730,9 +730,15 @@ sub Login {
         my %AgentLogo = %{ $ConfigObject->Get('AgentLogo') };
         my %Data;
 
-        # If OTRSBusines is installed, use business logo on Login screen.
+        # check if we need to display a custom logo for the selected skin
         my $AgentLogoCustom = $ConfigObject->Get('AgentLogoCustom');
-        if ($AgentLogoCustom) {
+        if (
+            $Self->{SkinSelected}
+            && $AgentLogoCustom
+            && IsHashRefWithData($AgentLogoCustom)
+            && $AgentLogoCustom->{ $Self->{SkinSelected} }
+            )
+        {
             %AgentLogo = %{ $AgentLogoCustom->{ $Self->{SkinSelected} } };
         }
 
@@ -2493,7 +2499,8 @@ sub Attachment {
 
         # Disallow external and inline scripts, active content, frames, but keep allowing inline styles
         #   as this is a common use case in emails.
-        # Also disallow referrer headers to prevent referrer leaks.
+        # Also disallow referrer headers to prevent referrer leaks via old-style policy directive. Please note this has
+        #   been deprecated and will be removed in future OTRS versions in favor of a separate header (see below).
         # default-src: allow own stuff loading only by default for better security
         # img-src:     allow own and inline (data:) images
         # script-src:  block all scripts
@@ -2503,6 +2510,9 @@ sub Attachment {
         # referrer:    don't send referrers to prevent referrer-leak attacks
         $Output
             .= "Content-Security-Policy: default-src 'self'; img-src 'self' data:; script-src 'none'; object-src 'self'; child-src 'none'; style-src 'unsafe-inline'; referrer no-referrer;\n";
+        # Use Referrer-Policy header to suppress referrer information in modern browsers
+        #   (to prevent referrer-leak attacks).
+        $Output .= "Referrer-Policy: no-referrer\n";
     }
 
     if ( $Param{Charset} ) {

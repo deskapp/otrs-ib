@@ -901,6 +901,7 @@ $('.ShowFieldInfoOverlay').bind('click', function() {
 [% IF Config("TimelineViewEnabled") == 1 %]
 var TicketID    = [% Data.TicketID | JSON %],
     ArticleID   = [% Data.ArticleID | JSON %],
+    NoTimelineViewAutoArticle = [% Data.NoTimelineViewAutoArticle | JSON %],
     ListObjects = [
 [% FOREACH Item IN Data.Items %]
     {
@@ -935,7 +936,7 @@ var TicketID    = [% Data.TicketID | JSON %],
 [% END %]
 ];
 
-Core.Agent.TicketZoom.TimelineView.Init(TicketID, ListObjects, ArticleID);
+Core.Agent.TicketZoom.TimelineView.Init(TicketID, ListObjects, ArticleID, NoTimelineViewAutoArticle);
 
 [% END %]
 //]]></script>
