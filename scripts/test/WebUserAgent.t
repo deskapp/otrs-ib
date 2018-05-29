@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -96,6 +96,7 @@ my @Tests = (
             Realm    => 'OTRS UnitTest',
             Location => 'makalu.otrs.com:443',
         },
+        SkipSSLVerification => 1,    # work around SSL problems on old platforms
     },
     {
         Name        => 'GET - http - MissingCredentials ' . $TestNumber++,
@@ -104,6 +105,7 @@ my @Tests = (
         Proxy       => $Proxy,
         Success     => 0,
         ErrorNumber => 401,
+        SkipSSLVerification => 1,    # work around SSL problems on old platforms
     },
     {
         Name        => 'GET - http - IncompleteCredentials ' . $TestNumber++,
@@ -114,8 +116,9 @@ my @Tests = (
             User     => 'guest',
             Password => 'guest',
         },
-        Success     => 0,
-        ErrorNumber => 401,
+        Success             => 0,
+        ErrorNumber         => 401,
+        SkipSSLVerification => 1,     # work around SSL problems on old platforms
     },
 );
 

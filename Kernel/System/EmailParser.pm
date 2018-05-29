@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -298,6 +298,24 @@ sub GetContentType {
     return $Self->{ContentType} if $Self->{ContentType};
 
     return $Self->GetParam( WHAT => 'Content-Type' ) || 'text/plain';
+}
+
+=item GetContentDisposition()
+
+Returns the message body (or from the first attachment) "ContentDisposition" header.
+
+    my $ContentDisposition = $ParserObject->GetContentDisposition();
+
+    (e. g. 'Content-Disposition: attachment; filename="test-123"')
+
+=cut
+
+sub GetContentDisposition {
+    my $Self = shift;
+
+    return $Self->{ContentDisposition} if $Self->{ContentDisposition};
+
+    return $Self->GetParam( WHAT => 'Content-Disposition' );
 }
 
 =item GetCharset()

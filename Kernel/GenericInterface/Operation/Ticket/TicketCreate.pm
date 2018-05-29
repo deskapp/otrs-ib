@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -1307,6 +1307,16 @@ sub _TicketCreate {
         );
     }
 
+    my $PlainBody = $Article->{Body};
+
+    # Convert article body to plain text, if HTML content was supplied. This is necessary since auto response code
+    #   expects plain text content. Please see bug#13397 for more information.
+    if ( $Article->{ContentType} =~ /text\/html/i || $Article->{MimeType} =~ /text\/html/i ) {
+        $PlainBody = $Kernel::OM->Get('Kernel::System::HTMLUtils')->ToAscii(
+            String => $Article->{Body},
+        );
+    }
+
     # create article
     my $ArticleID = $TicketObject->ArticleCreate(
         NoAgentNotify  => $Article->{NoAgentNotify}  || 0,
@@ -1330,8 +1340,7 @@ sub _TicketCreate {
             From    => $From,
             To      => $To,
             Subject => $Article->{Subject},
-            Body    => $Article->{Body},
-
+            Body    => $PlainBody,
         },
     );
 

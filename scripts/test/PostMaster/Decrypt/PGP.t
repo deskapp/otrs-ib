@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -18,10 +18,18 @@ use Kernel::System::PostMaster;
 # Get helper object.
 $Kernel::OM->ObjectParamAdd(
     'Kernel::System::UnitTest::Helper' => {
-        RestoreDatabase => 1,
+        RestoreDatabase  => 1,
+        UseTmpArticleDir => 1,
     },
 );
 my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+
+my $TestUserLogin = $Helper->TestUserCreate(
+    Groups => [ 'admin', 'users' ],
+);
+my $UserID = $Kernel::OM->Get('Kernel::System::User')->UserLookup(
+    UserLogin => $TestUserLogin,
+);
 
 # Get config object.
 my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
@@ -233,7 +241,7 @@ my %Ticket = $TicketObject->TicketGet(
 
 my @ArticleIndex = $TicketObject->ArticleGet(
     TicketID => $Return[1],
-    UserID   => 1,
+    UserID   => $UserID,
 );
 
 $Self->Is(
@@ -302,7 +310,7 @@ my %TicketEncrypted = $TicketObject->TicketGet(
 
 my @ArticleIndexEncrypted = $TicketObject->ArticleGet(
     TicketID => $ReturnEncrypted[1],
-    UserID   => 1,
+    UserID   => $UserID,
 );
 
 $Self->Is(

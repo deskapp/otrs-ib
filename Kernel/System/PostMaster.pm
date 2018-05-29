@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -634,12 +634,13 @@ sub GetEmailParams {
         }
     }
 
-    # get body
+    # Get body.
     $GetParam{Body} = $Self->{ParserObject}->GetMessageBody();
 
-    # get content type
-    $GetParam{'Content-Type'} = $Self->{ParserObject}->GetReturnContentType();
-    $GetParam{Charset} = $Self->{ParserObject}->GetReturnCharset();
+    # Get content type, disposition and charset.
+    $GetParam{'Content-Type'}        = $Self->{ParserObject}->GetReturnContentType();
+    $GetParam{'Content-Disposition'} = $Self->{ParserObject}->GetContentDisposition();
+    $GetParam{Charset}               = $Self->{ParserObject}->GetReturnCharset();
 
     # get attachments
     my @Attachments = $Self->{ParserObject}->GetAttachments();

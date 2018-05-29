@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -52,6 +52,9 @@ sub Run {
             Type => $Nav eq 'Agent' ? 'Customers' : 'Admin',
         );
     }
+
+    # Get list of valid IDs.
+    my @ValidIDList = $Kernel::OM->Get('Kernel::System::Valid')->ValidIDsGet();
 
     # check the permission for the SwitchToCustomer feature
     if ( $ConfigObject->Get('SwitchToCustomer') ) {
@@ -279,6 +282,7 @@ sub Run {
         if (
             $GetParam{UserEmail}
             && !$CheckItemObject->CheckEmail( Address => $GetParam{UserEmail} )
+            && grep { $_ eq $GetParam{ValidID} } @ValidIDList
             )
         {
             $Errors{UserEmailInvalid} = 'ServerError';
@@ -440,6 +444,7 @@ sub Run {
         if (
             $GetParam{UserEmail}
             && !$CheckItemObject->CheckEmail( Address => $GetParam{UserEmail} )
+            && grep { $_ eq $GetParam{ValidID} } @ValidIDList
             )
         {
             $Errors{UserEmailInvalid} = 'ServerError';

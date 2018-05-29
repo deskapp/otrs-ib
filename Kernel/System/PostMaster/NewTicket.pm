@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -453,25 +453,26 @@ sub Run {
 
     # do article db insert
     my $ArticleID = $TicketObject->ArticleCreate(
-        TicketID         => $TicketID,
-        ArticleType      => $GetParam{'X-OTRS-ArticleType'},
-        SenderType       => $GetParam{'X-OTRS-SenderType'},
-        From             => $GetParam{From},
-        ReplyTo          => $GetParam{ReplyTo},
-        To               => $GetParam{To},
-        Cc               => $GetParam{Cc},
-        Subject          => $GetParam{Subject},
-        MessageID        => $GetParam{'Message-ID'},
-        InReplyTo        => $GetParam{'In-Reply-To'},
-        References       => $GetParam{'References'},
-        ContentType      => $GetParam{'Content-Type'},
-        Body             => $GetParam{Body},
-        UserID           => $Param{InmailUserID},
-        HistoryType      => 'EmailCustomer',
-        HistoryComment   => "\%\%$Comment",
-        OrigHeader       => \%GetParam,
-        AutoResponseType => $AutoResponseType,
-        Queue            => $Queue,
+        TicketID           => $TicketID,
+        ArticleType        => $GetParam{'X-OTRS-ArticleType'},
+        SenderType         => $GetParam{'X-OTRS-SenderType'},
+        From               => $GetParam{From},
+        ReplyTo            => $GetParam{ReplyTo},
+        To                 => $GetParam{To},
+        Cc                 => $GetParam{Cc},
+        Subject            => $GetParam{Subject},
+        MessageID          => $GetParam{'Message-ID'},
+        InReplyTo          => $GetParam{'In-Reply-To'},
+        References         => $GetParam{'References'},
+        ContentType        => $GetParam{'Content-Type'},
+        ContentDisposition => $GetParam{'Content-Disposition'},
+        Body               => $GetParam{Body},
+        UserID             => $Param{InmailUserID},
+        HistoryType        => 'EmailCustomer',
+        HistoryComment     => "\%\%$Comment",
+        OrigHeader         => \%GetParam,
+        AutoResponseType   => $AutoResponseType,
+        Queue              => $Queue,
     );
 
     # close ticket if article create failed!

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -16,10 +16,6 @@ use vars (qw($Self));
 my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
 
 my $Home = $Kernel::OM->Get('Kernel::Config')->Get('Home');
-
-# Avoid zombie processes during the lifetime of the main UT process.
-# https://docstore.mik.ua/orelly/perl/cookbook/ch16_20.htm
-local $SIG{CHLD} = 'IGNORE';
 
 my $Daemon = $Home . '/bin/otrs.Daemon.pl';
 

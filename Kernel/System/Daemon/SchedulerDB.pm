@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -1400,6 +1400,8 @@ sub CronTaskToExecute {
     # get current time
     my $SystemTime = $TimeObject->SystemTime();
 
+    my %UsedTaskNames;
+
     CRONJOBKEY:
     for my $CronjobKey ( sort keys %{$Config} ) {
 
@@ -1410,20 +1412,22 @@ sub CronTaskToExecute {
 
         next CRONJOBKEY if !IsHashRefWithData($JobConfig);
 
-        if ( !$JobConfig->{Module} ) {
-            $Kernel::OM->Get('Kernel::System::Log')->Log(
-                Priority => 'error',
-                Message  => "Config option Daemon::SchedulerCronTaskManager::Task###$CronjobKey is invalid."
-                    . " Need 'Module' parameter!",
-            );
-            next CRONJOBKEY;
+        for my $Needed (qw(Module TaskName Function)) {
+            if ( !$JobConfig->{$Needed} ) {
+                $Kernel::OM->Get('Kernel::System::Log')->Log(
+                    Priority => 'error',
+                    Message  => "Config option Daemon::SchedulerCronTaskManager::Task###$CronjobKey is invalid."
+                        . " Need '$Needed' parameter!",
+                );
+                next CRONJOBKEY;
+            }
         }
 
-        if ( $JobConfig->{Module} && !$JobConfig->{Function} ) {
+        if ( $UsedTaskNames{ $JobConfig->{TaskName} } ) {
             $Kernel::OM->Get('Kernel::System::Log')->Log(
                 Priority => 'error',
                 Message  => "Config option Daemon::SchedulerCronTaskManager::Task###$CronjobKey is invalid."
-                    . " Need 'Function' parameter!",
+                    . " TaskName parameter '$JobConfig->{TaskName}' is already used by another task!",
             );
             next CRONJOBKEY;
         }
@@ -1449,6 +1453,7 @@ sub CronTaskToExecute {
                 Params   => $JobConfig->{Params}   || '',
             },
         );
+        $UsedTaskNames{ $JobConfig->{TaskName} } = 1;
     }
 
     return 1;
@@ -2017,7 +2022,6 @@ sub RecurrentTaskExecute {
         }
     }
 
-    # get cache object
     my $CacheObject = $Kernel::OM->Get('Kernel::System::Cache');
 
     my $CacheKey = "$Param{TaskName}::$Param{TaskType}";

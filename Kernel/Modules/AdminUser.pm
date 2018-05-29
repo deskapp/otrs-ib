@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -38,6 +38,9 @@ sub Run {
     my $CheckItemObject = $Kernel::OM->Get('Kernel::System::CheckItem');
 
     my $Search = $ParamObject->GetParam( Param => 'Search' ) || '';
+
+    # Get list of valid IDs.
+    my @ValidIDList = $Kernel::OM->Get('Kernel::System::Valid')->ValidIDsGet();
 
     # ------------------------------------------------------------ #
     #  switch to user
@@ -182,6 +185,7 @@ sub Run {
         if (
             $GetParam{UserEmail}
             && !$CheckItemObject->CheckEmail( Address => $GetParam{UserEmail} )
+            && grep { $_ eq $GetParam{ValidID} } @ValidIDList
             )
         {
             $Errors{UserEmailInvalid} = 'ServerError';
@@ -348,6 +352,7 @@ sub Run {
         if (
             $GetParam{UserEmail}
             && !$CheckItemObject->CheckEmail( Address => $GetParam{UserEmail} )
+            && grep { $_ eq $GetParam{ValidID} } @ValidIDList
             )
         {
             $Errors{UserEmailInvalid} = 'ServerError';

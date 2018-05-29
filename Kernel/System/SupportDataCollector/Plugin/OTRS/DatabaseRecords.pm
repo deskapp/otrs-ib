@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -58,6 +58,11 @@ sub Run {
             SQL        => "SELECT count(*) FROM queue",
             Identifier => 'QueueCount',
             Label      => Translatable("Queues"),
+        },
+        {
+            SQL        => "SELECT count(*) FROM service",
+            Identifier => 'ServiceCount',
+            Label      => Translatable("Services"),
         },
         {
             SQL        => "SELECT count(*) FROM users",

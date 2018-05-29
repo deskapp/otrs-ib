@@ -372,6 +372,13 @@
     fieldset.TableLike > .Row > .FloatingField {
         padding: 0px;
         float: none;
+        margin: 0;
+    }
+
+    body.Popup fieldset.TableLike > .RichTextField,
+    body.RealPopup.RTL fieldset.TableLike > .RichTextField {
+        padding: 0px;
+        margin: 0;
     }
 
     fieldset.TableLike > .Field > select,
@@ -1207,6 +1214,11 @@
         margin-top: -22px;
     }
 
+    #OverviewBody.Overview.TicketList {
+        overflow-y:auto;
+    }
+
+
 }
 
 /*  ~ Tablet landscape */
@@ -1258,6 +1270,8 @@
     #ResponsiveFooter .Visible-ScreenXS {
         display: none;
     }
+
+
 }
 
 /*  All devices smaller than tablet landscape */

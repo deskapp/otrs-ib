@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -754,6 +754,7 @@ sub CustomerUserAdd {
     if (
         $Param{UserEmail}
         && !$CheckItemObject->CheckEmail( Address => $Param{UserEmail} )
+        && grep { $_ eq $Param{ValidID} } $Kernel::OM->Get('Kernel::System::Valid')->ValidIDsGet()
         )
     {
         $Kernel::OM->Get('Kernel::System::Log')->Log(
@@ -881,6 +882,7 @@ sub CustomerUserUpdate {
     if (
         $Param{UserEmail}
         && !$CheckItemObject->CheckEmail( Address => $Param{UserEmail} )
+        && grep { $_ eq $Param{ValidID} } $Kernel::OM->Get('Kernel::System::Valid')->ValidIDsGet()
         )
     {
         $Kernel::OM->Get('Kernel::System::Log')->Log(

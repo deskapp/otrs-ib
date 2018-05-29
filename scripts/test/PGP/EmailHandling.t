@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2017 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -28,10 +28,16 @@ $Kernel::OM->ObjectParamAdd(
     'Kernel::System::UnitTest::Helper' => {
         RestoreDatabase  => 1,
         UseTmpArticleDir => 1,
-        UseTmpArticleDir => 1,
     },
 );
 my $Helper = $Kernel::OM->Get('Kernel::System::UnitTest::Helper');
+
+my $TestUserLogin = $Helper->TestUserCreate(
+    Groups => [ 'admin', 'users' ],
+);
+my $UserID = $Kernel::OM->Get('Kernel::System::User')->UserLookup(
+    UserLogin => $TestUserLogin,
+);
 
 # set config
 $ConfigObject->Set(
@@ -260,13 +266,13 @@ for my $Test (@Tests) {
         my %RawArticle = $TicketObject->ArticleGet(
             ArticleID     => $ArticleIDs[0],
             DynamicFields => 0,
-            UserID        => 1,
+            UserID        => $UserID,
         );
 
         # use ArticleCheck::PGP to decrypt the article
         my $CheckObject = Kernel::Output::HTML::ArticleCheck::PGP->new(
             ArticleID => $ArticleIDs[0],
-            UserID    => 1,
+            UserID    => $UserID,
         );
         my @CheckResult = $CheckObject->Check( Article => \%RawArticle );
 
@@ -300,7 +306,7 @@ for my $Test (@Tests) {
         my %Article = $TicketObject->ArticleGet(
             ArticleID     => $ArticleIDs[0],
             DynamicFields => 0,
-            UserID        => 1,
+            UserID        => $UserID,
         );
 
         $Self->Is(
@@ -320,7 +326,7 @@ for my $Test (@Tests) {
             ArticleID                  => $ArticleIDs[0],
             Article                    => \%Article,
             StripPlainBodyAsAttachment => 1,
-            UserID                     => 1,
+            UserID                     => $UserID,
         );
 
         FILEID:
@@ -333,7 +339,7 @@ for my $Test (@Tests) {
             my %Attachment = $TicketObject->ArticleAttachment(
                 ArticleID => $ArticleIDs[0],
                 FileID    => $FileID,
-                UserID    => 1,
+                UserID    => $UserID,
             );
 
             # read the original file (from file system)
@@ -538,7 +544,7 @@ my $TicketID = $TicketObject->TicketCreate(
     CustomerNo   => '123465',
     CustomerUser => 'customer@example.com',
     OwnerID      => 1,
-    UserID       => 1,
+    UserID       => $UserID,
 );
 
 $Self->True(
@@ -563,7 +569,7 @@ for my $Test (@TestVariations) {
         HistoryComment => 'note',
         Subject        => 'Unittest data',
         Charset        => 'utf-8',
-        UserID         => 1,
+        UserID         => $UserID,
     );
 
     $Self->True(
@@ -576,7 +582,7 @@ for my $Test (@TestVariations) {
     #   which doesn't contain signatures etc.
     my $Email = $TicketObject->ArticlePlain(
         ArticleID => $ArticleID,
-        UserID    => 1,
+        UserID    => $UserID,
     );
 
     # Add ticket number to subject (to ensure mail will be attached to original ticket)
@@ -608,7 +614,7 @@ for my $Test (@TestVariations) {
 
     my $CheckObject = Kernel::Output::HTML::ArticleCheck::PGP->new(
         ArticleID => $Article{ArticleID},
-        UserID    => 1,
+        UserID    => $UserID,
     );
 
     my @CheckResult = $CheckObject->Check( Article => \%Article );
@@ -659,7 +665,7 @@ for my $Test (@TestVariations) {
         my $Found;
         my %Index = $TicketObject->ArticleAttachmentIndex(
             ArticleID                  => $Article{ArticleID},
-            UserID                     => 1,
+            UserID                     => $UserID,
             Article                    => \%FinalArticleData,
             StripPlainBodyAsAttachment => 0,
         );

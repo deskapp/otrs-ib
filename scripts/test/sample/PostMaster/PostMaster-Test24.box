@@ -1,29 +1,23 @@
-Date: Wed, 16 Apr 2016 12:00:00 +0200
-From: test <test@host.test>
-To: test <test@host.test>
-Subject: test
-Message-ID: <testmsg1@host.test>
-MIME-Version: 1.0
-Content-Type: multipart/related; boundary="testpart1"
-
---testpart1
-Content-Type: text/html; charset="iso-8859-2"
-Content-Disposition: inline
+From skywalker@otrs.org  Fri Dec 21 23:59:24 2001
+Return-Path: <skywalker@otrs.org>
+Received: (from skywalker@localhost)
+       by avro.de (8.11.3/8.11.3/SuSE Linux 8.11.1-0.5) id f3MMSE303694
+       for martin@localhost; Fri, 21 Dec 2001 23:59:24 +0200
+Date: Fri, 21 Dec 2001 23:59:24 +0200
+From: Skywalker Attachment <skywalker@otrs.org>
+To: darthvader@otrs.org
+Subject: test 1
+Message-ID: <20011221002814.A3599@avro>
+Mime-Version: 1.0
+Content-Type: application/xml; charset="iso-8859-1"
+Content-Disposition: attachment;
+       filename="Test-123-456-789"
 Content-Transfer-Encoding: quoted-printable
 
-test pic: <img id=3D"testcid1" src=3D"http://www.h=
-ost.test/test.png" alt=3D"" width=3D"10" height=3D"10" />
-
---testpart1
-Content-Type: image/png;
- name="test.png"
-Content-Transfer-Encoding: base64
-Content-ID: <testcid1>
-Content-Disposition: inline;
- filename="test.png"
-
-iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKAQMAAAC3/F3+AAAABlBMVEX///8AAABVwtN+AAAA
-CXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gQYFBgEGpRZowAAAB1pVFh0Q29tbWVudAAA
-AAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAEklEQVQI12NggAEWBgY+MIkEAAGUABckedJ2
-AAAAAElFTkSuQmCC
---testpart1--
+<addresses xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation='test.xsd'>
+  <address>
+    <name>Joe Tester</name>
+    <street>Baker street 5</street>
+  </address>
+</addresses>
