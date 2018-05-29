@@ -30,8 +30,8 @@
 
     Core.Config.Set('RichText.TextDir', [% Env("TextDirection") | JSON %]);
     Core.Config.Set('RichText.SpellChecker', [% Env("BrowserSpellCheckerInline") | JSON %]);
-    Core.Config.Set('RichText.PreventImagePaste', '[% Config("Frontend::RichText::PreventImagePaste") | JSON %]');
-    Core.Config.Set('RichText.EditingAreaCSS', "[% Config("Frontend::RichText::EditingAreaCSS") | JSON %] body.cke_editable { [% Config("Frontend::RichText::DefaultCSS") | JSON %] }");
+    Core.Config.Set('RichText.PreventImagePaste', [% Config("Frontend::RichText::PreventImagePaste") | JSON %]);
+    Core.Config.Set('RichText.EditingAreaCSS', [% Config("Frontend::RichText::EditingAreaCSS") | JSON %] + ' body.cke_editable { ' +  [% Config("Frontend::RichText::DefaultCSS") | JSON %] + ' }');
     Core.Config.Set('RichText.Lang.SplitQuote', [% Translate('Split Quote') | JSON %]);
     Core.Config.Set('RichText.Lang.RemoveQuote', [% Translate('Remove Quote') | JSON %]);
     Core.Config.Set('RichText.Lang.OpenLink', [% Translate('Open link') | JSON %]);
