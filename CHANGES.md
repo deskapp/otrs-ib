@@ -1,4 +1,5 @@
 #6.0.0.beta1 2017-??-??
+ - 2018-05-29 Generic agent notification handling fixes.
  - 2017-11-13 Fixed incorrect postmaster filter matching.
  - 2017-11-13 Enhanced configurable access to archive searching in agent panel.
  - 2017-10-16 Fulltext searching performance optimization for MySQL.
