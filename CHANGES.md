@@ -1,4 +1,5 @@
 #5.0.28 ????-??-??
+ - 2018-05-29 Configurable access to sensitive generic agent ops.
  - 2018-05-29 Generic agent notification handling fixes.
 
 #5.0.27 2018-03-13

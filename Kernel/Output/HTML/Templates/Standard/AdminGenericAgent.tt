@@ -800,6 +800,7 @@ Core.Agent.Admin.GenericAgent.Init({
                 </div>
                 <div class="Content">
                     <fieldset class="TableLike">
+[% IF Config('Ticket::GenericAgentCustomExecEnabled') %]
                         <label for="NewCMD">[% Translate("CMD") | html %]:</label>
                         <div class="Field">
                             <input type="text" name="NewCMD" id="NewCMD" value="[% Data.NewCMD | html %]" size="40"/>
@@ -807,6 +808,8 @@ Core.Agent.Admin.GenericAgent.Init({
                                 ([% Translate("This command will be executed. ARG[0] will be the ticket number. ARG[1] the ticket id.") | html %])
                             </p>
                         </div>
+[% END %]
+[% IF Config('Ticket::GenericAgentRemoveEnabled') %]
                         <div class="Clear"></div>
 
                         <label for="NewDelete">[% Translate("Delete tickets") | html %]:</label>
@@ -816,10 +819,13 @@ Core.Agent.Admin.GenericAgent.Init({
                                 [% Translate("Warning: All affected tickets will be removed from the database and cannot be restored!") | html %]
                             </p>
                         </div>
+[% END %]
                         <div class="Clear"></div>
                     </fieldset>
                 </div>
             </div>
+
+[% IF Config('Ticket::GenericAgentCustomExecEnabled') %]
 
             <div class="WidgetSimple SpacingTop Collapsed">
                 <div class="Header">
@@ -886,6 +892,7 @@ Core.Agent.Admin.GenericAgent.Init({
                     </fieldset>
                 </div>
             </div>
+[% END %]
 
             <div class="WidgetSimple SpacingTop">
                 <div class="Header">

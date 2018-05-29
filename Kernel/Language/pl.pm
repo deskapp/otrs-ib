@@ -1188,9 +1188,9 @@ sub Data {
         'Time units' => 'Czas pracy',
         'Execute Ticket Commands' => 'Wykonaj polecenia zgłoszenia',
         'Send new note notification' => 'Wyślij powiadomienie o nowej notatce',
-        'CMD' => 'linia poleceń',
+        'CMD' => 'CMD',
         'This command will be executed. ARG[0] will be the ticket number. ARG[1] the ticket id.' =>
-            'Komenda zostanie wykonana. ARG[0] to numer zgłoszenia. ARG[1] to id zgłoszenia.',
+            'Polecenie do wykonania. ARG[0] to numer zgłoszenia. ARG[1] to id zgłoszenia.',
         'Delete tickets' => 'Usuń zgłoszenia',
         'Warning: All affected tickets will be removed from the database and cannot be restored!' =>
             'Uwaga: wszystkie wybrane zgłoszenia będą usunięte z bazy danych i nie będzie można ich przywrócić!',

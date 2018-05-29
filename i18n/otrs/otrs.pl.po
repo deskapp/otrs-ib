@@ -4233,7 +4233,7 @@ msgstr "Wyślij powidomienia agentowi/klientowi przy zmianie "
 
 #. Template: AdminGenericAgent
 msgid "CMD"
-msgstr "linia poleceń"
+msgstr "CMD"
 
 #. Template: AdminGenericAgent
 msgid ""
