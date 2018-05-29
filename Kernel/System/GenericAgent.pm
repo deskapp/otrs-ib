@@ -993,7 +993,7 @@ sub _JobRunTicket {
             UserID         => $Param{UserID},
             HistoryType    => 'AddNote',
             HistoryComment => 'Generic Agent note added.',
-            NoAgentNotify  => $Param{Config}->{New}->{SendNoNotification} || 0,
+            NoAgentNotify  => $Param{Config}->{New}->{SendNoNotification} // 1,
         );
         my $TimeUnits = $Param{Config}->{New}->{Note}->{TimeUnits}
             || $Param{Config}->{New}->{NoteTimeUnits};
