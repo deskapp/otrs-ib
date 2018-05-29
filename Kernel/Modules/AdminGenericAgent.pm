@@ -1352,7 +1352,7 @@ sub _MaskRun {
             );
         }
 
-        if ( $JobData{NewDelete} ) {
+        if ( $JobData{NewDelete} && $ConfigObject->Get('Ticket::GenericAgentRemoveEnabled') ) {
             $LayoutObject->Block(
                 Name => 'DeleteWarning',
             );

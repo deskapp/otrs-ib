@@ -1,4 +1,5 @@
 #5.0.28 ????-??-??
+ - 2018-05-29 Configurable access to sensitive generic agent ops.
 
 #5.0.27 2018-03-13
  - 2018-03-05 Fixed bug#[13549](https://bugs.otrs.org/show_bug.cgi?id=13549) - Scrolling not possible for some articles on iOS Safari.
