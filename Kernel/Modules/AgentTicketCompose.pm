@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 package Kernel::Modules::AgentTicketCompose;
@@ -108,21 +108,31 @@ sub Run {
     my $TicketBackType = 'TicketBack';
     if ( $Config->{RequiredLock} ) {
         if ( !$TicketObject->TicketLockGet( TicketID => $Self->{TicketID} ) ) {
-            $TicketObject->TicketLockSet(
+
+            my $Lock = $TicketObject->TicketLockSet(
                 TicketID => $Self->{TicketID},
                 Lock     => 'lock',
                 UserID   => $Self->{UserID}
             );
-            my $Owner = $TicketObject->TicketOwnerSet(
-                TicketID  => $Self->{TicketID},
-                UserID    => $Self->{UserID},
-                NewUserID => $Self->{UserID},
-            );
 
-            # show lock state
-            if ( !$Owner ) {
-                return $LayoutObject->FatalError();
+            # Set new owner if ticket owner is different then logged user.
+            if ( $Lock && ( $Ticket{OwnerID} != $Self->{UserID} ) ) {
+
+                # Remember previous owner, which will be used to restore ticket owner on undo action.
+                $Ticket{PreviousOwner} = $Ticket{OwnerID};
+
+                my $Success = $TicketObject->TicketOwnerSet(
+                    TicketID  => $Self->{TicketID},
+                    UserID    => $Self->{UserID},
+                    NewUserID => $Self->{UserID},
+                );
+
+                # show lock state
+                if ( !$Success ) {
+                    return $LayoutObject->FatalError();
+                }
             }
+
             $TicketBackType .= 'Undo';
         }
         else {
@@ -1067,7 +1077,7 @@ sub Run {
 
                 # get AJAX param values
                 if ( $Object->can('GetParamAJAX') ) {
-                    %GetParam = ( %GetParam, $Object->GetParamAJAX(%GetParam) )
+                    %GetParam = ( %GetParam, $Object->GetParamAJAX(%GetParam) );
                 }
 
                 my $Key = $Object->Option( %GetParam, Config => $Jobs{$Job} );
@@ -1571,7 +1581,7 @@ sub Run {
             next LINE if !$Data{$Line};
             for my $Email ( Mail::Address->parse( $Data{$Line} ) ) {
                 if ( !$CheckItemObject->CheckEmail( Address => $Email->address() ) ) {
-                    $Error{ $Line . "Invalid" } = " ServerError"
+                    $Error{ $Line . "Invalid" } = " ServerError";
                 }
             }
         }
@@ -1853,12 +1863,12 @@ sub _Mask {
     # Multiple-Autocomplete
     $Param{To} = ( scalar @{ $Param{MultipleCustomer} } ? '' : $Param{To} );
     if ( defined $Param{To} && $Param{To} ne '' ) {
-        $Param{ToInvalid} = ''
+        $Param{ToInvalid} = '';
     }
 
     $Param{Cc} = ( scalar @{ $Param{MultipleCustomerCc} } ? '' : $Param{Cc} );
     if ( defined $Param{Cc} && $Param{Cc} ne '' ) {
-        $Param{CcInvalid} = ''
+        $Param{CcInvalid} = '';
     }
 
     # Cc

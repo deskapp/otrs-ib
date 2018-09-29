@@ -1,21 +1,19 @@
 #!/usr/bin/perl
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU AFFERO General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# any later version.
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-# or see http://www.gnu.org/licenses/agpl.txt.
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 use strict;
@@ -40,7 +38,7 @@ my $DBDump      = '';
 getopt( 'hcrtd', \%Opts );
 if ( exists $Opts{h} ) {
     print "backup.pl - backup script\n";
-    print "Copyright (C) 2001-2018 OTRS AG, http://otrs.com/\n";
+    print "Copyright (C) 2001-2018 OTRS AG, https://otrs.com/\n";
     print "usage: backup.pl -d /data_backup_dir/ [-c gzip|bzip2] [-r 30] [-t fullbackup|nofullbackup|dbonly]\n";
     exit 1;
 }
@@ -139,8 +137,9 @@ if ( $Home !~ m{\/\z} ) {
 
 chdir($Home);
 
+my $SystemTimeObject = $Kernel::OM->Get('Kernel::System::Time');
 my ( $Sec, $Min, $Hour, $Day, $Month, $Year, $WeekDay ) = $Kernel::OM->Get('Kernel::System::Time')->SystemTime2Date(
-    SystemTime => $Kernel::OM->Get('Kernel::System::Time')->SystemTime(),
+    SystemTime => $SystemTimeObject->SystemTime(),
 );
 
 # create directory name - this looks like 2013-09-09_22-19'
@@ -230,7 +229,7 @@ else {
     }
 
     if ($DatabaseHost) {
-        $DatabaseHost = "-h $DatabaseHost"
+        $DatabaseHost = "-h $DatabaseHost";
     }
 
     if ( !system("$DBDump -f $Directory/DatabaseBackup.sql $DatabaseHost -U $DatabaseUser $Database") ) {
@@ -257,7 +256,7 @@ else {
 # remove old backups only after everything worked well
 if ( defined $Opts{r} ) {
     my %LeaveBackups;
-    my $SystemTime = $Kernel::OM->Get('Kernel::System::Time')->SystemTime();
+    my $SystemTime = $SystemTimeObject->SystemTime();
 
     # we'll be substracting days to the current time
     # we don't want DST changes to affect our dates

@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 package Kernel::System::Ticket;
@@ -550,8 +550,8 @@ sub TicketCreate {
         $Self->TicketCustomerSet(
             TicketID => $TicketID,
             No       => $Param{CustomerNo} || $Param{CustomerID} || '',
-            User => $Param{CustomerUser} || '',
-            UserID => $Param{UserID},
+            User     => $Param{CustomerUser} || '',
+            UserID   => $Param{UserID},
         );
     }
 
@@ -6131,6 +6131,21 @@ sub TicketMerge {
         }
     }
 
+    # Get the list of all merged states.
+    my @MergeStateList = $Kernel::OM->Get('Kernel::System::State')->StateGetStatesByType(
+        StateType => ['merged'],
+        Result    => 'Name',
+    );
+
+    # Error handling.
+    if ( !@MergeStateList ) {
+        $Kernel::OM->Get('Kernel::System::Log')->Log(
+            Priority => 'error',
+            Message  => "No merge state found! Please add a valid merge state.",
+        );
+        return 'NoValidMergeStates';
+    }
+
     # get database object
     my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
 
@@ -6267,21 +6282,6 @@ sub TicketMerge {
         SQL  => 'UPDATE ticket SET change_time = current_timestamp, change_by = ? WHERE id = ?',
         Bind => [ \$Param{UserID}, \$Param{MainTicketID} ],
     );
-
-    # get the list of all merged states
-    my @MergeStateList = $Kernel::OM->Get('Kernel::System::State')->StateGetStatesByType(
-        StateType => ['merged'],
-        Result    => 'Name',
-    );
-
-    # error handling
-    if ( !@MergeStateList ) {
-        $Kernel::OM->Get('Kernel::System::Log')->Log(
-            Priority => 'error',
-            Message  => "No merge state found! Please add a valid merge state.",
-        );
-        return;
-    }
 
     # set new state of merge ticket
     $Self->TicketStateSet(
@@ -6442,27 +6442,71 @@ sub TicketMergeLinkedObjects {
         }
     }
 
-    # lookup the object id of a ticket
+    # Lookup the object id of a ticket.
     my $TicketObjectID = $Kernel::OM->Get('Kernel::System::LinkObject')->ObjectLookup(
         Name => 'Ticket',
     );
 
-    # update links from old ticket to new ticket where the old ticket is the source
-    $Kernel::OM->Get('Kernel::System::DB')->Do(
+    my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
+
+    # Delete all duplicate links relations between merged tickets.
+    # See bug#12994 (https://bugs.otrs.org/show_bug.cgi?id=12994).
+    $DBObject->Prepare(
+        SQL => '
+            SELECT target_key
+            FROM link_relation
+            WHERE target_object_id = ?
+              AND source_object_id = ?
+              AND source_key= ?
+              AND target_key
+              IN (SELECT target_key FROM link_relation WHERE source_key= ? )',
+        Bind => [
+            \$TicketObjectID,
+            \$TicketObjectID,
+            \$Param{MainTicketID},
+            \$Param{MergeTicketID},
+        ],
+    );
+
+    my @Relations;
+    while ( my @Row = $DBObject->FetchrowArray() ) {
+        push @Relations, $Row[0];
+    }
+    if (@Relations) {
+
+        my $SQL = "DELETE FROM link_relation
+                 WHERE target_object_id = ?
+                   AND source_object_id = ?
+                   AND source_key = ?
+                   AND target_key IN ( '${\(join '\',\'', @Relations)}' )";
+
+        $DBObject->Prepare(
+            SQL  => $SQL,
+            Bind => [
+                \$TicketObjectID,
+                \$TicketObjectID,
+                \$Param{MergeTicketID},
+            ],
+        );
+    }
+
+    # Update links from old ticket to new ticket where the old ticket is the source  MainTicketID.
+    $DBObject->Do(
         SQL => '
             UPDATE link_relation
             SET source_key = ?
             WHERE source_object_id = ?
               AND source_key = ?',
         Bind => [
+
             \$Param{MainTicketID},
             \$TicketObjectID,
             \$Param{MergeTicketID},
         ],
     );
 
-    # update links from old ticket to new ticket where the old ticket is the target
-    $Kernel::OM->Get('Kernel::System::DB')->Do(
+    # Update links from old ticket to new ticket where the old ticket is the target.
+    $DBObject->Do(
         SQL => '
             UPDATE link_relation
             SET target_key = ?
@@ -6475,8 +6519,8 @@ sub TicketMergeLinkedObjects {
         ],
     );
 
-    # delete all links between tickets where source and target object are the same
-    $Kernel::OM->Get('Kernel::System::DB')->Do(
+    # Delete all links between tickets where source and target object are the same.
+    $DBObject->Do(
         SQL => '
             DELETE FROM link_relation
             WHERE source_object_id = ?
@@ -7648,10 +7692,10 @@ sub StateSet {
 
 =head1 TERMS AND CONDITIONS
 
-This software is part of the OTRS project (L<http://otrs.org/>).
+This software is part of the OTRS project (L<https://otrs.org/>).
 
 This software comes with ABSOLUTELY NO WARRANTY. For details, see
-the enclosed file COPYING for license information (AGPL). If you
-did not receive this file, see L<http://www.gnu.org/licenses/agpl.txt>.
+the enclosed file COPYING for license information (GPL). If you
+did not receive this file, see L<https://www.gnu.org/licenses/gpl-3.0.txt>.
 
 =cut

@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 package Kernel::Modules::AgentTicketEmailOutbound;
@@ -390,26 +390,34 @@ sub Form {
     if ( $Config->{RequiredLock} ) {
         if ( !$TicketObject->TicketLockGet( TicketID => $Self->{TicketID} ) ) {
 
-            # set owner
-            $TicketObject->TicketOwnerSet(
-                TicketID  => $Self->{TicketID},
-                UserID    => $Self->{UserID},
-                NewUserID => $Self->{UserID},
-            );
-
-            # set lock
             my $Lock = $TicketObject->TicketLockSet(
                 TicketID => $Self->{TicketID},
                 Lock     => 'lock',
                 UserID   => $Self->{UserID}
             );
 
-            # show lock state
-            if ($Lock) {
-                $LayoutObject->Block(
-                    Name => 'PropertiesLock',
-                    Data => { %Param, TicketID => $Self->{TicketID} },
+            # Set new owner if ticket owner is different then logged user.
+            if ( $Lock && ( $Ticket{OwnerID} != $Self->{UserID} ) ) {
+
+                # Remember previous owner, which will be used to restore ticket owner on undo action.
+                $Param{PreviousOwner} = $Ticket{OwnerID};
+
+                my $Success = $TicketObject->TicketOwnerSet(
+                    TicketID  => $Self->{TicketID},
+                    UserID    => $Self->{UserID},
+                    NewUserID => $Self->{UserID},
                 );
+
+                # show lock state
+                if ($Success) {
+                    $LayoutObject->Block(
+                        Name => 'PropertiesLock',
+                        Data => {
+                            %Param,
+                            TicketID => $Self->{TicketID},
+                        },
+                    );
+                }
             }
         }
         else {
@@ -1186,7 +1194,7 @@ sub SendEmail {
         if ($To) {
             $To .= ', ';
         }
-        $To .= $GetParam{$Key}
+        $To .= $GetParam{$Key};
     }
 
     # get article type ID param
@@ -1856,10 +1864,10 @@ sub _Mask {
         )
     {
         $Param{StandardTemplateStrg} = $LayoutObject->BuildSelection(
-            Data       => $QueueStandardTemplates    || {},
-            Name       => 'StandardTemplateID',
-            SelectedID => $Param{StandardTemplateID} || '',
-            Class      => 'Modernize',
+            Data         => $QueueStandardTemplates || {},
+            Name         => 'StandardTemplateID',
+            SelectedID   => $Param{StandardTemplateID} || '',
+            Class        => 'Modernize',
             PossibleNone => 1,
             Sort         => 'AlphanumericValue',
             Translation  => 1,

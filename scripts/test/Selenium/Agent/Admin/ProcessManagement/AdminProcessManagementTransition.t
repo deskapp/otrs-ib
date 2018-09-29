@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 use strict;
@@ -182,7 +182,10 @@ $Selenium->RunTest(
         $Selenium->find_element( "#TransitionFilter", 'css' )->send_keys($TransitionRandom);
 
         # Wait for filter to kick in.
-        sleep 2;
+        $Selenium->WaitFor(
+            JavaScript =>
+                'return typeof($) === "function" && $(".OneRow[data-entity*=\'Transition\']:visible").length === 1 && $.active == 0'
+        );
 
         $Self->True(
             $Selenium->find_element("//*[text()=\"$TransitionRandom\"]")->is_displayed(),
@@ -281,13 +284,8 @@ $Selenium->RunTest(
 
         $Selenium->WaitFor(
             JavaScript =>
-                "return typeof(\$) === 'function' && \$('a[href*=\"Subaction=TransitionEdit;ID=$TransitionID\"]:visible').length"
+                "return typeof(\$) === 'function' && \$('a[href*=\"Subaction=TransitionEdit;ID=$TransitionID\"]:visible').length && \$.active == 0"
         );
-
-        $Selenium->find_element( "#TransitionFilter", 'css' )->send_keys($TransitionRandom);
-
-        # Wait for filter to kick in.
-        sleep 2;
 
         # Go to edit test Transition screen again.
         $Selenium->find_element("//a[contains(\@href, \'Subaction=TransitionEdit;ID=$TransitionID' )]")->click();

@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 package Kernel::System::Stats;
@@ -1128,7 +1128,7 @@ sub GetObjectBehaviours {
 
     # check if it is cached
     if ( $Self->{'Cache::ObjectBehaviours'}->{$Module} ) {
-        return $Self->{'Cache::ObjectBehaviours'}->{$Module}
+        return $Self->{'Cache::ObjectBehaviours'}->{$Module};
     }
 
     # load module, return if module does not exist
@@ -2523,7 +2523,7 @@ sub _GenerateDynamicStats {
             $Second = 0;
             $Minute = 0;
             $Hour   = 0;
-            ( $Year, $Month, $Day ) = Monday_of_Week( Week_of_Year( $Year, $Month, $Day ) )
+            ( $Year, $Month, $Day ) = Monday_of_Week( Week_of_Year( $Year, $Month, $Day ) );
         }
         elsif ( $Element->{SelectedValues}[0] eq 'Month' ) {
             $Second = 0;
@@ -3352,7 +3352,7 @@ sub _GenerateDynamicStats {
     my @StatArray = ( [$Title], \@HeaderLine, @DataArray );
 
     if ( !$Param{Cache} || $Preview ) {
-        return @StatArray
+        return @StatArray;
     }
 
     # check if we should cache this result
@@ -3979,10 +3979,10 @@ sub _GetCacheString {
 
 =head1 TERMS AND CONDITIONS
 
-This software is part of the OTRS project (L<http://otrs.org/>).
+This software is part of the OTRS project (L<https://otrs.org/>).
 
 This software comes with ABSOLUTELY NO WARRANTY. For details, see
-the enclosed file COPYING for license information (AGPL). If you
-did not receive this file, see L<http://www.gnu.org/licenses/agpl.txt>.
+the enclosed file COPYING for license information (GPL). If you
+did not receive this file, see L<https://www.gnu.org/licenses/gpl-3.0.txt>.
 
 =cut

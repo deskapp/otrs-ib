@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 use strict;
@@ -90,6 +90,31 @@ $Selenium->RunTest(
         $Selenium->execute_script("\$('#Events').val('ArticleCreate').trigger('redraw.InputField').trigger('change');");
         $Selenium->find_element( "#ArticleSubjectMatch", 'css' )->send_keys($NotifEventText);
         $Selenium->find_element( "#en_Subject",          'css' )->send_keys($NotifEventText);
+
+        # Check 'Additional recipient' length validation from Additional recipient email addresses (see bug#13936).
+        my $FieldValue = "a" x 201;
+
+        # Check TransportEmail checkbox if it is not checked.
+        my $TransportEmailCheck = $Selenium->execute_script("return \$('#TransportEmail').prop('checked');");
+        if ( !$TransportEmailCheck ) {
+            $Selenium->execute_script("\$('#TransportEmail').prop('checked', true);");
+            $Selenium->WaitFor( JavaScript => "return \$('#TransportEmail').prop('checked') === true;" );
+        }
+        $Selenium->find_element( "#RecipientEmail", 'css' )->send_keys($FieldValue);
+        $Selenium->find_element("//button[\@type='submit']")->click();
+        $Selenium->WaitFor( JavaScript => "return \$('#RecipientEmail.Error').length;" );
+
+        $Self->True(
+            $Selenium->execute_script("return \$('#RecipientEmail.Error').length;"),
+            "Validation for 'Additional recipient' field is correct",
+        );
+        $Selenium->find_element( "#RecipientEmail", 'css' )->clear();
+
+        # Set back TransportEmail checkbox if it was not checked.
+        if ( !$TransportEmailCheck ) {
+            $Selenium->execute_script("\$('#TransportEmail').prop('checked', false);");
+            $Selenium->WaitFor( JavaScript => "return \$('#TransportEmail').prop('checked') === false;" );
+        }
 
         # Insert long string into text area using jQuery, since send_keys() takes too long.
         $Selenium->execute_script(

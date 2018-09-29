@@ -1,21 +1,19 @@
 #!/usr/bin/perl
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU AFFERO General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# any later version.
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-# or see http://www.gnu.org/licenses/agpl.txt.
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 use strict;
@@ -52,7 +50,7 @@ local $Kernel::OM = Kernel::System::ObjectManager->new(
         print <<"EOF";
 
 DBUpdate-to-5.pl - Upgrade script for OTRS 4 to 5 migration.
-Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 
 Usage: $0 [-h]
     Options are as follows:
@@ -254,11 +252,11 @@ sub _CheckFrameworkVersion {
     }
 
     if ( $ProductName ne 'OTRS' ) {
-        die "Error: No OTRS system found"
+        die "Error: No OTRS system found";
     }
     if ( $Version !~ /^5\.0(.*)$/ ) {
 
-        die "Error: You are trying to run this script on the wrong framework version $Version!"
+        die "Error: You are trying to run this script on the wrong framework version $Version!";
     }
 
     return 1;
@@ -903,10 +901,10 @@ sub _MigrateNotifications {
                 VisibleForAgentTooltip => [
                     'You will receive a notification if a customer sends a follow-up to a locked ticket of which you are the ticket owner or responsible.'
                 ],
-                Events            => ['NotificationFollowUp'],
-                Recipients        => [ 'AgentOwner', 'AgentResponsible', 'AgentWatcher' ],
-                SendOnOutOfOffice => [1],
-                LockID => [ 2, 3 ],    # locked
+                Events                => ['NotificationFollowUp'],
+                Recipients            => [ 'AgentOwner', 'AgentResponsible', 'AgentWatcher' ],
+                SendOnOutOfOffice     => [1],
+                LockID                => [ 2, 3 ],                                               # locked
                 Transports            => ['Email'],
                 AgentEnabledByDefault => ['Email'],
             },

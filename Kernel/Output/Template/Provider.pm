@@ -1,14 +1,14 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 package Kernel::Output::Template::Provider;
 ## no critic(Perl::Critic::Policy::OTRS::RequireCamelCase)
-## nofilter(TidyAll::Plugin::OTRS::Perl::SyntaxCheck) # bails on TT Constants
+## nofilter(TidyAll::Plugin::OTRS::Perl::SyntaxCheck)
 
 use strict;
 use warnings;
@@ -110,8 +110,9 @@ sub _fetch {
     # Check if the template exists, is cacheable and if a cached version exists.
     if ( -e $name && $self->{CachingEnabled} ) {
 
+        my $UserTheme      = $self->{LayoutObject}->{EnvRef}->{UserTheme};
         my $template_mtime = $self->_template_modified($name);
-        my $CacheKey       = $self->_compiled_filename($name) . '::' . $template_mtime;
+        my $CacheKey       = $self->_compiled_filename($name) . '::' . $template_mtime . '::' . $UserTheme;
 
         # Is there an up-to-date compiled version in the cache?
         my $Cache = $Kernel::OM->Get('Kernel::System::Cache')->Get(
@@ -242,7 +243,8 @@ sub _compile {
 
         # write the Perl code to the file $compfile, if defined
         if ($compfile) {
-            my $CacheKey = $compfile . '::' . $data->{time};
+            my $UserTheme = $self->{LayoutObject}->{EnvRef}->{UserTheme};
+            my $CacheKey  = $compfile . '::' . $data->{time} . '::' . $UserTheme;
 
             if ( $self->{CachingEnabled} ) {
                 $Kernel::OM->Get('Kernel::System::Cache')->Set(
@@ -274,7 +276,7 @@ sub _compile {
     # return STATUS_ERROR, or STATUS_DECLINED if we're being tolerant
     return $self->{TOLERANT}
         ? ( undef, Template::Constants::STATUS_DECLINED )
-        : ( $error, Template::Constants::STATUS_ERROR )
+        : ( $error, Template::Constants::STATUS_ERROR );
 }
 
 =item store()
@@ -339,7 +341,7 @@ sub _PreProcessTemplateContent {
     #
     # Remove DTL-style comments (lines starting with #)
     #
-    $Content =~ s/^#.*\n//gm;
+    $Content =~ s/^#.*\n//gm if !$ENV{TEMPLATE_KEEP_COMMENTS};
 
     #
     # Insert a BLOCK call into the template.
@@ -691,10 +693,10 @@ sub MigrateDTLtoTT {
 
 =head1 TERMS AND CONDITIONS
 
-This software is part of the OTRS project (L<http://otrs.org/>).
+This software is part of the OTRS project (L<https://otrs.org/>).
 
 This software comes with ABSOLUTELY NO WARRANTY. For details, see
-the enclosed file COPYING for license information (AGPL). If you
-did not receive this file, see L<http://www.gnu.org/licenses/agpl.txt>.
+the enclosed file COPYING for license information (GPL). If you
+did not receive this file, see L<https://www.gnu.org/licenses/gpl-3.0.txt>.
 
 =cut

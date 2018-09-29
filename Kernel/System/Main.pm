@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 package Kernel::System::Main;
@@ -19,10 +19,12 @@ use Unicode::Normalize;
 use List::Util qw();
 use Storable;
 use Fcntl qw(:flock);
+use Encode;
 
 our @ObjectDependencies = (
     'Kernel::System::Encode',
     'Kernel::System::Log',
+    'Kernel::Config',
 );
 
 =head1 NAME
@@ -228,6 +230,11 @@ sub FilenameCleanUp {
         return;
     }
 
+    # escape if cleanup is not needed
+    if ( $Param{NoFilenameClean} ) {
+        return $Param{Filename};
+    }
+
     my $Type = lc( $Param{Type} || 'local' );
 
     if ( $Type eq 'md5' ) {
@@ -237,13 +244,16 @@ sub FilenameCleanUp {
     else {
 
         # trim whitespace
-        $Param{Filename} =~ s/^\s+|\n|\s+$//g;
+        $Param{Filename} =~ s/^\s+|\r|\n|\s+$//g;
 
         # strip leading dots
         $Param{Filename} =~ s/^\.+//;
 
         # only whitelisted characters allowed in filename for security
         $Param{Filename} =~ s/[^\w\-+.#_]/_/g;
+
+        # Enclosed alphanumerics are kept on older Perl versions, make sure to replace them too.
+        $Param{Filename} =~ s/[\x{2460}-\x{24FF}]/_/g;
 
         # additional cleaup for attachment filename
         if ( $Type eq 'attachment' ) {
@@ -258,13 +268,29 @@ sub FilenameCleanUp {
             $Param{Filename} =~ s/(\x{00C3}\x{009F}|\x{00DF})/ss/g;
             $Param{Filename} =~ s/-+/-/g;
 
-            # cut the string if too long
-            if ( length( $Param{Filename} ) > 100 ) {
-                my $Ext = '';
-                if ( $Param{Filename} =~ /^.*(\.(...|....))$/ ) {
-                    $Ext = $1;
+            # separate filename and extension
+            my $FileName = $Param{Filename};
+            my $FileExt  = '';
+            if ( $Param{Filename} =~ /(.*)\.+(.*)$/ ) {
+                $FileName = $1;
+                $FileExt  = '.' . $2;
+            }
+
+            if ( length $FileName ) {
+                my $ModifiedName;
+
+                # remove character by character starting from the end of the filename string
+                # untill we get acceptable 100 byte long filename size including extension
+                CHOPSTRING:
+                while (1) {
+
+                    $ModifiedName = $FileName . $FileExt;
+
+                    last CHOPSTRING if ( length encode( 'UTF-8', $ModifiedName ) < 100 );
+                    chop $FileName;
+
                 }
-                $Param{Filename} = substr( $Param{Filename}, 0, 95 ) . $Ext;
+                $Param{Filename} = $ModifiedName;
             }
         }
     }
@@ -429,8 +455,9 @@ sub FileWrite {
 
         # filename clean up
         $Param{Filename} = $Self->FilenameCleanUp(
-            Filename => $Param{Filename},
-            Type     => $Param{Type} || 'Local',    # Local|Attachment|MD5
+            Filename        => $Param{Filename},
+            Type            => $Param{Type} || 'Local',    # Local|Attachment|MD5
+            NoFilenameClean => $Param{NoFilenameClean},
         );
         $Param{Location} = "$Param{Directory}/$Param{Filename}";
     }
@@ -1193,10 +1220,10 @@ sub _Dump {
 
 =head1 TERMS AND CONDITIONS
 
-This software is part of the OTRS project (L<http://otrs.org/>).
+This software is part of the OTRS project (L<https://otrs.org/>).
 
 This software comes with ABSOLUTELY NO WARRANTY. For details, see
-the enclosed file COPYING for license information (AGPL). If you
-did not receive this file, see L<http://www.gnu.org/licenses/agpl.txt>.
+the enclosed file COPYING for license information (GPL). If you
+did not receive this file, see L<https://www.gnu.org/licenses/gpl-3.0.txt>.
 
 =cut

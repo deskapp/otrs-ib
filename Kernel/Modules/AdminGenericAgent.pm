@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 package Kernel::Modules::AdminGenericAgent;
@@ -246,6 +246,17 @@ sub Run {
         # check needed data
         if ( !$Self->{Profile} ) {
             $Errors{ProfileInvalid} = 'ServerError';
+        }
+
+        # Check length of fields from Add Note section.
+        if ( length $GetParam{NewNoteFrom} > 200 ) {
+            $Errors{NewNoteFromServerError} = 'ServerError';
+        }
+        if ( length $GetParam{NewNoteSubject} > 200 ) {
+            $Errors{NewNoteSubjectServerError} = 'ServerError';
+        }
+        if ( length $GetParam{NewNoteBody} > 200 ) {
+            $Errors{NewNoteBodyServerError} = 'ServerError';
         }
 
         # Check if ticket selection contains stop words
@@ -1021,6 +1032,14 @@ sub _MaskUpdate {
     for my $DynamicFieldConfig ( @{ $Self->{DynamicField} } ) {
         next DYNAMICFIELD if !IsHashRefWithData($DynamicFieldConfig);
 
+        # Check if field is Attachment type ( from OTRSDynamicFieldAttachment )
+        #   this field is not updatable by Generic Agent
+        my $IsAttachement = $DynamicFieldBackendObject->HasBehavior(
+            DynamicFieldConfig => $DynamicFieldConfig,
+            Behavior           => 'IsAttachement',
+        );
+        next DYNAMICFIELD if $IsAttachement;
+
         my $PossibleValuesFilter;
 
         my $IsACLReducible = $DynamicFieldBackendObject->HasBehavior(
@@ -1144,9 +1163,9 @@ sub _MaskUpdate {
 
         # paint each selector
         my $EventStrg = $LayoutObject->BuildSelection(
-            Data => $RegisteredEvents{$Type} || [],
-            Name => $Type . 'Event',
-            Sort => 'AlphanumericValue',
+            Data         => $RegisteredEvents{$Type} || [],
+            Name         => $Type . 'Event',
+            Sort         => 'AlphanumericValue',
             PossibleNone => 0,
             Class        => 'EventList GenericInterfaceSpacing ' . $EventListHidden,
             Title        => $LayoutObject->{LanguageObject}->Translate('Event'),

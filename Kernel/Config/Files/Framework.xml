@@ -344,10 +344,10 @@
         <Setting>
             <Hash>
                 <Item Key="URL">skins/Customer/default/img/logo.png</Item>
-                <Item Key="StyleTop">2px</Item>
+                <Item Key="StyleTop">9px</Item>
                 <Item Key="StyleRight">25px</Item>
-                <Item Key="StyleHeight">50px</Item>
-                <Item Key="StyleWidth">135px</Item>
+                <Item Key="StyleHeight">45px</Item>
+                <Item Key="StyleWidth">300px</Item>
             </Hash>
         </Setting>
     </ConfigItem>
@@ -382,10 +382,10 @@
         <Setting>
             <Hash>
                 <Item Key="URL">skins/Agent/default/img/logo_bg.png</Item>
-                <Item Key="StyleTop">4px</Item>
-                <Item Key="StyleRight">38px</Item>
-                <Item Key="StyleHeight">85px</Item>
-                <Item Key="StyleWidth">270px</Item>
+                <Item Key="StyleTop">7px</Item>
+                <Item Key="StyleRight">24px</Item>
+                <Item Key="StyleHeight">55px</Item>
+                <Item Key="StyleWidth">300px</Item>
             </Hash>
         </Setting>
     </ConfigItem>
@@ -396,10 +396,10 @@
         <Setting>
             <Hash>
                 <Item Key="URL">skins/Agent/default/img/logo_bg.png</Item>
-                <Item Key="StyleTop">4px</Item>
-                <Item Key="StyleRight">38px</Item>
-                <Item Key="StyleHeight">67px</Item>
-                <Item Key="StyleWidth">270px</Item>
+                <Item Key="StyleTop">7px</Item>
+                <Item Key="StyleRight">24px</Item>
+                <Item Key="StyleHeight">55px</Item>
+                <Item Key="StyleWidth">300px</Item>
             </Hash>
         </Setting>
     </ConfigItem>
@@ -410,10 +410,10 @@
         <Setting>
             <Hash>
                 <Item Key="URL">skins/Agent/default/img/logo_bg.png</Item>
-                <Item Key="StyleTop">4px</Item>
-                <Item Key="StyleRight">38px</Item>
-                <Item Key="StyleHeight">67px</Item>
-                <Item Key="StyleWidth">270px</Item>
+                <Item Key="StyleTop">7px</Item>
+                <Item Key="StyleRight">24px</Item>
+                <Item Key="StyleHeight">55px</Item>
+                <Item Key="StyleWidth">300px</Item>
             </Hash>
         </Setting>
     </ConfigItem>
@@ -424,10 +424,10 @@
         <Setting>
             <Hash>
                 <Item Key="URL">skins/Agent/default/img/logo_bg.png</Item>
-                <Item Key="StyleTop">4px</Item>
-                <Item Key="StyleRight">38px</Item>
-                <Item Key="StyleHeight">67px</Item>
-                <Item Key="StyleWidth">270px</Item>
+                <Item Key="StyleTop">7px</Item>
+                <Item Key="StyleRight">24px</Item>
+                <Item Key="StyleHeight">55px</Item>
+                <Item Key="StyleWidth">300px</Item>
             </Hash>
         </Setting>
     </ConfigItem>
@@ -438,10 +438,10 @@
         <Setting>
             <Hash>
                 <Item Key="URL">skins/Agent/default/img/logo_bg.png</Item>
-                <Item Key="StyleTop">4px</Item>
-                <Item Key="StyleRight">38px</Item>
-                <Item Key="StyleHeight">67px</Item>
-                <Item Key="StyleWidth">270px</Item>
+                <Item Key="StyleTop">10px</Item>
+                <Item Key="StyleRight">45px</Item>
+                <Item Key="StyleHeight">45px</Item>
+                <Item Key="StyleWidth">220px</Item>
             </Hash>
         </Setting>
     </ConfigItem>
@@ -452,7 +452,7 @@
         <Setting>
             <Hash>
                 <Item Key="URL">skins/Agent/default/img/loginlogo_default.png</Item>
-                <Item Key="StyleHeight">100px</Item>
+                <Item Key="StyleHeight">50px</Item>
             </Hash>
         </Setting>
     </ConfigItem>
@@ -3229,7 +3229,7 @@
         <SubGroup>Core::Package</SubGroup>
         <Setting>
             <Array>
-                <Item>http://ftp.otrs.org/pub/otrs/misc/packages/repository.xml</Item>
+                <Item>https://ftp.otrs.org/pub/otrs/misc/packages/repository.xml</Item>
             </Array>
         </Setting>
     </ConfigItem>
@@ -5766,7 +5766,7 @@ via the Preferences button after logging in.
         </Setting>
     </ConfigItem>
     <ConfigItem Name="PublicFrontend::Module###PublicDefault" Required="0" Valid="1">
-        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Description Translatable="1">Frontend module registration for the public interface.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Public::ModuleRegistration</SubGroup>
         <Setting>
@@ -5778,7 +5778,7 @@ via the Preferences button after logging in.
         </Setting>
     </ConfigItem>
     <ConfigItem Name="PublicFrontend::Module###PublicRepository" Required="0" Valid="1">
-        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Description Translatable="1">Frontend module registration for the public interface.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Public::ModuleRegistration</SubGroup>
         <Setting>
@@ -5790,7 +5790,7 @@ via the Preferences button after logging in.
         </Setting>
     </ConfigItem>
     <ConfigItem Name="PublicFrontend::Module###PublicSupportDataCollector" Required="0" Valid="1">
-        <Description Translatable="1">Frontend module registration for the agent interface.</Description>
+        <Description Translatable="1">Frontend module registration for the public interface.</Description>
         <Group>Framework</Group>
         <SubGroup>Frontend::Public::ModuleRegistration</SubGroup>
         <Setting>

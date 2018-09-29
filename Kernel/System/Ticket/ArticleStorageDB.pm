@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 package Kernel::System::Ticket::ArticleStorageDB;
@@ -259,6 +259,12 @@ sub ArticleWriteAttachment {
         }
     }
 
+    $Param{Filename} = $Kernel::OM->Get('Kernel::System::Main')->FilenameCleanUp(
+        Filename  => $Param{Filename},
+        Type      => 'Local',
+        NoReplace => 1,
+    );
+
     my $NewFileName = $Param{Filename};
     my %UsedFile;
     my %Index = $Self->ArticleAttachmentIndex(
@@ -452,7 +458,7 @@ sub ArticleAttachmentIndexRaw {
 
             # converted article body should be inline
             elsif ( $Row[0] =~ m{file-[12]} ) {
-                $Disposition = 'inline'
+                $Disposition = 'inline';
             }
 
             # all others including attachments with content id that are not images
@@ -568,7 +574,7 @@ sub ArticleAttachmentIndexRaw {
 
             # converted article body should be inline
             elsif ( $Filename =~ m{file-[12]} ) {
-                $Disposition = 'inline'
+                $Disposition = 'inline';
             }
 
             # all others including attachments with content id that are not images
@@ -686,7 +692,7 @@ sub ArticleAttachment {
 
         # converted article body should be inline
         elsif ( $Data{Filename} =~ m{file-[12]} ) {
-            $Data{Disposition} = 'inline'
+            $Data{Disposition} = 'inline';
         }
 
         # all others including attachments with content id that are not images
@@ -789,7 +795,7 @@ sub ArticleAttachment {
 
                     # converted article body should be inline
                     elsif ( $Filename =~ m{file-[12]} ) {
-                        $Data{Disposition} = 'inline'
+                        $Data{Disposition} = 'inline';
                     }
 
                     # all others including attachments with content id that are not images

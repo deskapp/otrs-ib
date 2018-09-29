@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 package Kernel::System::Console::Command::Maint::OTRSBusiness::AvailabilityCheck;
@@ -80,7 +80,7 @@ sub Run {
         my $SystemTime = $TimeObject->SystemTime();
 
         # skip if is not time yet to check again
-        return $Self->SkippCheck() if $SystemTime < $NextUpdateSystemTime
+        return $Self->SkippCheck() if $SystemTime < $NextUpdateSystemTime;
     }
 
     # call the OTRS Business Solution™ availability cloud service

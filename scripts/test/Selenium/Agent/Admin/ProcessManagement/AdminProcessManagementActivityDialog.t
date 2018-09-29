@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 use strict;
@@ -57,8 +57,10 @@ $Selenium->RunTest(
         # click on ActivityDialog dropdown
         $Selenium->find_element( "Activity Dialogs", 'link_text' )->VerifiedClick();
 
-        # wait to toggle element
-        sleep 1;
+        $Selenium->WaitFor(
+            JavaScript =>
+                "return typeof(\$) === 'function' && \$('a.AsBlock:contains(\"Activity Dialogs\")').closest('.AccordionElement').hasClass('Active') === true"
+        );
 
         # click "Create New Activity Dialog"
         $Selenium->find_element("//a[contains(\@href, \'Subaction=ActivityDialogNew' )]")->click();
@@ -113,8 +115,10 @@ $Selenium->RunTest(
         $Selenium->find_element( "Activity Dialogs",      'link_text' )->VerifiedClick();
         $Selenium->find_element( "#ActivityDialogFilter", 'css' )->send_keys($ActivityDialogRandom);
 
-        # wait for filter to kick in
-        sleep 1;
+        $Selenium->WaitFor(
+            JavaScript =>
+                "return typeof(\$) === 'function' && \$('#ActivityDialogs li:visible').length === 1"
+        );
 
         $Self->True(
             $Selenium->find_element("//*[text()=\"$ActivityDialogRandom\"]")->is_displayed(),
@@ -185,11 +189,15 @@ $Selenium->RunTest(
             JavaScript =>
                 "return typeof(\$) === 'function' && \$('ul#ActivityDialogs li:contains($ActivityDialogRandomEdit)').length"
         );
-        $Selenium->find_element( "Activity Dialogs",      'link_text' )->VerifiedClick();
+        $Selenium->find_element( "Activity Dialogs", 'link_text' )->VerifiedClick();
+
+        $Selenium->find_element( "#ActivityDialogFilter", 'css' )->clear();
         $Selenium->find_element( "#ActivityDialogFilter", 'css' )->send_keys($ActivityDialogRandomEdit);
 
-        # Wait for filter to kick in.
-        sleep 1;
+        $Selenium->WaitFor(
+            JavaScript =>
+                "return typeof(\$) === 'function' && \$('#ActivityDialogs li:visible').length === 1"
+        );
 
         $Self->True(
             $Selenium->find_element("//*[text()=\"$ActivityDialogRandomEdit\"]")->is_displayed(),
@@ -228,8 +236,26 @@ $Selenium->RunTest(
         );
 
         # return to main window
-        $Selenium->close();
+        $Selenium->find_element( ".ClosePopup", 'css' )->click();
+        $Selenium->WaitFor( WindowCount => 1 );
         $Selenium->switch_to_window( $Handles->[0] );
+
+        # Verify ActivityDialog filter remains same after popup close, see bug#13824.
+        $Selenium->WaitFor(
+            JavaScript =>
+                "return typeof(\$) === 'function' && \$('#ActivityDialogs li:visible').length === 1 && \$.active == 0"
+        );
+
+        $Self->Is(
+            $Selenium->find_element( "#ActivityDialogFilter", 'css' )->get_value(),
+            $ActivityDialogRandomEdit,
+            "ActivityDialog filter has correct value - $ActivityDialogRandomEdit",
+        );
+        $Self->Is(
+            $Selenium->execute_script("return \$('#ActivityDialogs li:visible').length"),
+            1,
+            "ActivityDialog filter filtered correctly after popup closing",
+        );
 
         # get process id and return to overview afterwards
         my $ProcessID = $Selenium->execute_script('return $("#ProcessDelete").data("id")') || undef;

@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 use strict;
@@ -62,7 +62,13 @@ $Selenium->RunTest(
             },
         );
 
-        # Get needed variables.
+        # Enable ticket type feature.
+        $Helper->ConfigSettingChange(
+            Valid => 1,
+            Key   => 'Ticket::Type',
+            Value => 1,
+        );
+
         my $RandomNumber = $Helper->GetRandomNumber();
         my $Success;
 
@@ -87,9 +93,13 @@ $Selenium->RunTest(
             push @GroupNames, $GroupName;
         }
 
-        # Create test user for login.
+        # Defined user language for testing if message is being translated correctly.
+        my $Language = "de";
+
+        # create test user and login
         my $TestUserLogin = $Helper->TestUserCreate(
-            Groups => [ 'admin', 'users', @GroupNames ],
+            Groups   => [ 'admin', 'users', @GroupNames ],
+            Language => $Language,
         ) || die "Did not get test user";
 
         # get test user ID
@@ -254,7 +264,8 @@ $Selenium->RunTest(
             my %Ticket = (
                 TicketID     => $TicketID,
                 TicketNumber => $TicketNumber,
-                OwnerID      => $Test->{OwnerID}
+                OwnerID      => $Test->{OwnerID},
+                Title        => $Test->{TicketTitle},
             );
 
             push @Tickets, \%Ticket;
@@ -286,7 +297,7 @@ $Selenium->RunTest(
         $Selenium->find_element("//input[\@value='$Tickets[0]->{TicketID}']")->click();
         $Selenium->find_element("//input[\@value='$Tickets[1]->{TicketID}']")->click();
         $Selenium->find_element("//input[\@value='$Tickets[2]->{TicketID}']")->click();
-        $Selenium->find_element( "Bulk", 'link_text' )->VerifiedClick();
+        $Selenium->find_element( "#BulkAction", 'css' )->click();
 
         # switch to bulk window
         $Selenium->WaitFor( WindowCount => 2 );
@@ -307,7 +318,24 @@ $Selenium->RunTest(
             $Element->is_displayed();
         }
 
-        # click on 'Undo & close' link
+        # Check if ticket type is not translated.
+        # For more information see bug #14030.
+        $Self->Is(
+            $Selenium->execute_script("return \$('#TypeID option[value=1]').text()"),
+            "Unclassified",
+            "On load - Ticket type is not translated",
+        );
+
+        $Selenium->execute_script("\$('#PriorityID').val('4').trigger('redraw.InputField').trigger('change');");
+        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && !$(".AJAXLoader:visible").length' );
+
+        $Self->Is(
+            $Selenium->execute_script("return \$('#TypeID option[value=1]').text()"),
+            "Unclassified",
+            "After change - Ticket type is not translated",
+        );
+
+        # Click on 'Undo & close' link.
         $Selenium->find_element( ".UndoClosePopup", 'css' )->click();
 
         # return to status view
@@ -329,7 +357,7 @@ $Selenium->RunTest(
         $Selenium->find_element("//input[\@value='$Tickets[2]->{TicketID}']")->click();
         $Selenium->find_element("//input[\@value='$Tickets[6]->{TicketID}']")->click();
 
-        $Selenium->find_element( "Bulk", 'link_text' )->click();
+        $Selenium->find_element( "#BulkAction", 'css' )->click();
 
         # switch to bulk window
         $Selenium->WaitFor( WindowCount => 2 );
@@ -337,14 +365,23 @@ $Selenium->RunTest(
         $Selenium->switch_to_window( $Handles->[1] );
 
         # wait until page has loaded, if necessary
-        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && $("#StateID").length' );
+        $Selenium->WaitFor(
+            JavaScript =>
+                'return typeof(Core) == "object" && typeof(Core.App) == "object" && Core.App.PageLoadComplete'
+        );
 
-        # check data
+        my $LanguageObject = Kernel::Language->new(
+            UserLanguage => $Language,
+        );
+
+        # Check data.
         my @ExpectedMessages = (
-            "The following tickets were ignored because they are locked by another agent or you don't have write access to these tickets: "
-                . $Tickets[2]->{TicketNumber} . ", "
-                . $Tickets[6]->{TicketNumber} . ".",
-            "The following tickets were locked: " . $Tickets[1]->{TicketNumber} . ".",
+            $LanguageObject->Translate(
+                "The following tickets were ignored because they are locked by another agent or you don\'t have write access to these tickets: %s.",
+                $Tickets[2]->{TicketNumber} . ", "
+                    . $Tickets[6]->{TicketNumber}
+            ),
+            $LanguageObject->Translate( "The following tickets were locked: %s.", $Tickets[1]->{TicketNumber} ),
         );
         for my $ExpectedMessage (@ExpectedMessages) {
             $Self->True(
@@ -353,9 +390,11 @@ $Selenium->RunTest(
             ) || die;
         }
 
-        # change state and priority in bulk action for test tickets
+        # Change state and priority in bulk action for test tickets.
         $Selenium->execute_script("\$('#PriorityID').val('4').trigger('redraw.InputField').trigger('change');");
+        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && !$(".AJAXLoader:visible").length' );
         $Selenium->execute_script("\$('#StateID').val('2').trigger('redraw.InputField').trigger('change');");
+        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && !$(".AJAXLoader:visible").length' );
         $Selenium->find_element( "#submitRichText", 'css' )->click();
 
         # return to status view
@@ -368,23 +407,22 @@ $Selenium->RunTest(
         # select closed view to verify ticket bulk functionality
         $Selenium->find_element("//a[contains(\@href, \'Filter=Closed' )]")->VerifiedClick();
 
-        # verify which tickets are shown in ticket closed view
+        # Verify which tickets are shown in ticket closed view.
         for my $Ticket (@Tickets) {
             if ( $Ticket->{OwnerID} != 1 && $Ticket->{Title} !~ m/-Four|-Five|-Six$/ ) {
                 $Self->True(
-                    index( $Selenium->get_page_source(), $Ticket->{TicketNumber} ) > -1,
+                    $Selenium->execute_script("return \$('#TicketID_$Ticket->{TicketID}').length"),
                     "Closed ticket $Ticket->{TicketNumber} is found on page",
                 ) || die;
             }
             else {
 
-                # ticket is locked by another agent and it was ignored in bulk feature
+                # Ticket is locked by another agent and it was ignored in bulk feature.
                 $Self->True(
-                    index( $Selenium->get_page_source(), $Ticket->{TicketNumber} ) == -1,
-                    "Ticket $Ticket->{TicketNumber} is not found on page",
+                    $Selenium->execute_script("return !\$('#TicketID_$Ticket->{TicketID}').length"),
+                    "Closed ticket $Ticket->{TicketNumber} is not found on page",
                 ) || die;
             }
-
         }
 
         # Select view of open tickets in the table.
@@ -395,7 +433,7 @@ $Selenium->RunTest(
         $Selenium->find_element("//input[\@value='$Tickets[3]->{TicketID}']")->click();
         $Selenium->find_element("//input[\@value='$Tickets[4]->{TicketID}']")->click();
         $Selenium->find_element("//input[\@value='$Tickets[5]->{TicketID}']")->click();
-        $Selenium->find_element( "Bulk", 'link_text' )->click();
+        $Selenium->find_element( "#BulkAction", 'css' )->click();
 
         # Switch to bulk window.
         $Selenium->WaitFor( WindowCount => 2 );

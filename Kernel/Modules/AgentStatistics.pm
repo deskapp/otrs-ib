@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 package Kernel::Modules::AgentStatistics;
@@ -191,7 +191,10 @@ sub OverviewScreen {
     }
 
     # build output
-    my $Output = $LayoutObject->Header( Title => 'Overview' );
+    my $Output = $LayoutObject->Header(
+        Title => 'Overview',
+        Area  => 'Statistics',
+    );
     $Output .= $LayoutObject->NavigationBar();
     $Output .= $LayoutObject->Output(
         Data => {
@@ -212,7 +215,10 @@ sub ImportScreen {
 
     my %Errors = %{ $Param{Errors} // {} };
 
-    my $Output = $LayoutObject->Header( Title => 'Import' );
+    my $Output = $LayoutObject->Header(
+        Title => 'Import',
+        Area  => 'Statistics',
+    );
     $Output .= $LayoutObject->NavigationBar();
     $Output .= $LayoutObject->Output(
         TemplateFile => 'AgentStatisticsImport',
@@ -365,7 +371,10 @@ sub EditScreen {
         );
     }
 
-    my $Output = $LayoutObject->Header( Title => 'Edit' );
+    my $Output = $LayoutObject->Header(
+        Title => 'Edit',
+        Area  => 'Statistics',
+    );
     $Output .= $LayoutObject->NavigationBar();
     $Output .= $LayoutObject->Output(
         TemplateFile => 'AgentStatisticsEdit',
@@ -745,7 +754,10 @@ sub ViewScreen {
         UserID => $Self->{UserID},
     );
 
-    my $Output = $LayoutObject->Header( Title => 'View' );
+    my $Output = $LayoutObject->Header(
+        Title => 'View',
+        Area  => 'Statistics',
+    );
     $Output .= $LayoutObject->NavigationBar();
     $Output .= $LayoutObject->Output(
         TemplateFile => 'AgentStatisticsView',
@@ -767,7 +779,7 @@ sub AddScreen {
     my $ParamObject  = $Kernel::OM->Get('Kernel::System::Web::Request');
 
     # In case of page reload because of errors
-    my %Errors   = %{ $Param{Errors}   // {} };
+    my %Errors   = %{ $Param{Errors} //   {} };
     my %GetParam = %{ $Param{GetParam} // {} };
 
     my %Frontend;
@@ -811,6 +823,7 @@ sub AddScreen {
     # build output
     my $Output = $LayoutObject->Header(
         Title => Translatable('Add New Statistic'),
+        Area  => 'Statistics',
     );
     $Output .= $LayoutObject->NavigationBar();
     $Output .= $LayoutObject->Output(

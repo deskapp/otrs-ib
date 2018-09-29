@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 package Kernel::Modules::AdminState;
@@ -70,6 +70,21 @@ sub Run {
             if ( !$GetParam{$Needed} ) {
                 $Errors{ $Needed . 'Invalid' } = 'ServerError';
             }
+        }
+
+        # Check if it has at least one valid state.
+        my @MergeStateList = $StateObject->StateGetStatesByType(
+            StateType => ['merged'],
+            Result    => 'ID',
+        );
+        if (
+            scalar @MergeStateList == 1
+            && $MergeStateList[0] eq $GetParam{ID}
+            && $Kernel::OM->Get('Kernel::System::Valid')->ValidLookup( ValidID => $GetParam{ValidID} ) ne 'valid'
+            )
+        {
+            $Errors{ValidIDInvalid}   = 'ServerError';
+            $Errors{ValidOptionError} = 'MergeError';
         }
 
         # if no errors occurred
@@ -151,6 +166,20 @@ sub Run {
             if ( !$GetParam{$Needed} ) {
                 $Errors{ $Needed . 'Invalid' } = 'ServerError';
             }
+        }
+
+        my @MergeStateList = $StateObject->StateGetStatesByType(
+            StateType => ['merged'],
+            Result    => 'ID',
+        );
+        if (
+            !@MergeStateList
+            && $Kernel::OM->Get('Kernel::System::Valid')->ValidLookup( ValidID => $GetParam{ValidID} ) ne 'valid'
+            && $StateObject->StateTypeLookup( StateTypeID => $GetParam{TypeID} ) eq 'merged'
+            )
+        {
+            $Errors{ValidIDInvalid}   = 'ServerError';
+            $Errors{ValidOptionError} = 'MergeError';
         }
 
         # if no errors occurred
@@ -237,7 +266,7 @@ sub _Edit {
         Data       => { $StateObject->StateTypeList( UserID => 1 ), },
         Name       => 'TypeID',
         SelectedID => $Param{TypeID},
-        Class => 'Modernize Validate_Required ' . ( $Param{Errors}->{'TypeIDInvalid'} || '' ),
+        Class      => 'Modernize Validate_Required ' . ( $Param{Errors}->{'TypeIDInvalid'} || '' ),
     );
     $LayoutObject->Block(
         Name => 'OverviewUpdate',

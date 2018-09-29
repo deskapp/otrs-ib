@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 use strict;
@@ -208,15 +208,15 @@ $Self->True(
 );
 
 %Ah = (
-    'Test' => 123,
-    A      => [ 1, 3, 4 ],
-    B => { a => 1 },
+    'Test'  => 123,
+    A       => [ 1, 3, 4 ],
+    B       => { a => 1 },
     special => undef
 );
 %Bh = (
-    'Test' => 123,
-    A      => [ 1, 3, 4 ],
-    B => { a => 1 },
+    'Test'  => 123,
+    A       => [ 1, 3, 4 ],
+    B       => { a => 1 },
     special => undef
 );
 $Diff = $SysConfigObject->_DataDiff(
@@ -231,7 +231,7 @@ $Self->False(
 %Ah = (
     'Test' => 123,
     A      => [ 1, 3, 4 ],
-    B => { a => 1 },
+    B      => { a => 1 },
 );
 %Bh = (
     'Test' => 123,

@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 package Kernel::System::Stats::Dynamic::TicketList;
@@ -149,7 +149,7 @@ sub GetObjectAttributes {
 
         # remove dynamic fields from the list if is not sortable
         if ( !$IsSortable ) {
-            delete $OrderBy{ 'DynamicField_' . $DynamicFieldConfig->{Name} }
+            delete $OrderBy{ 'DynamicField_' . $DynamicFieldConfig->{Name} };
         }
     }
 
@@ -1681,7 +1681,7 @@ sub _TicketAttributes {
         next DYNAMICFIELD if !IsHashRefWithData($DynamicFieldConfig);
         next DYNAMICFIELD if !$DynamicFieldConfig->{Name};
 
-        $TicketAttributes{ 'DynamicField_' . $DynamicFieldConfig->{Name} } = $DynamicFieldConfig->{Label}
+        $TicketAttributes{ 'DynamicField_' . $DynamicFieldConfig->{Name} } = $DynamicFieldConfig->{Label};
     }
 
     return \%TicketAttributes;

@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 use strict;
@@ -166,6 +166,43 @@ my @Tests = (
         ResponseData    => {},
         ResponseSuccess => 0,
     },
+    {
+        Name             => 'HTTP request (invalid web service)',
+        WebserviceConfig => {
+            Debugger => {
+                DebugThreshold => 'debug',
+            },
+            Provider => {
+                Transport => {
+                    Type   => 'HTTP::Test',
+                    Config => {
+                        Fail => 0,
+                    },
+                },
+                Operation => {
+                    test_operation => {
+                        Type           => 'Test::Test',
+                        MappingInbound => {
+                            Type => 'Test',
+                        },
+                        MappingOutbound => {
+                            Type => 'Test',
+                        },
+                    },
+                },
+            },
+        },
+        EarlyError  => 1,
+        RequestData => {
+            A => 'A',
+            b => '使用下列语言',
+            c => 'Языковые',
+            d => 'd',
+        },
+        ResponseData      => {},
+        ResponseSuccess   => 0,
+        InvalidWebservice => 1,
+    },
 );
 
 my $CreateQueryString = sub {
@@ -208,13 +245,17 @@ if ( $ConfigObject->Get('UnitTestPlackServerPort') ) {
 my $WebserviceObject = $Kernel::OM->Get('Kernel::System::GenericInterface::Webservice');
 my $ProviderObject   = $Kernel::OM->Get('Kernel::GenericInterface::Provider');
 
+my $InvalidID = $Kernel::OM->Get('Kernel::System::Valid')->ValidLookup(
+    Valid => 'invalid',
+);
+
 for my $Test (@Tests) {
 
     # add config
     my $WebserviceID = $WebserviceObject->WebserviceAdd(
         Config  => $Test->{WebserviceConfig},
         Name    => "$Test->{Name} $RandomID",
-        ValidID => 1,
+        ValidID => $Test->{InvalidWebservice} ? $InvalidID : 1,
         UserID  => 1,
     );
 

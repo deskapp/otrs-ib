@@ -1,6 +1,78 @@
-#5.0.28 ????-??-??
+#5.0.31 20??-??-??
+
+#5.0.30 2018-09-21
+ - 2018-09-11 Fixed bug#[14023](https://bugs.otrs.org/show_bug.cgi?id=14023) - Timeline View is broken when a body string contains closing script tag.
+ - 2018-09-04 Fixed bug#[14044](https://bugs.otrs.org/show_bug.cgi?id=14044) - DefaultOverviewColumns and DefaultColumns configurations are inconsistent.
+ - 2018-08-30 Fixed bug#[14030](https://bugs.otrs.org/show_bug.cgi?id=14030) - Values of the type field are translated in the bulk view.
+ - 2018-08-27 Fixed bug#[14025](https://bugs.otrs.org/show_bug.cgi?id=14025) - backup.pl may delete a backup it just created.
+ - 2018-08-27 Fixed bug#[13767](https://bugs.otrs.org/show_bug.cgi?id=13767) - Search result wrong displayed when there is only one result in IE 11.
+ - 2018-08-17 Fixed bug#[13987](https://bugs.otrs.org/show_bug.cgi?id=13987) - The value typed in e.g. customer user is deleted frequently, if already one customer user is selected.
+ - 2018-08-17 Fixed bug#[13957](https://bugs.otrs.org/show_bug.cgi?id=13957) - POP3 fetching mails in wrong order.
+ - 2018-08-15 Fixed bug#[13614](https://bugs.otrs.org/show_bug.cgi?id=13614) - Title is shown based on the first article in customer ticket overview even if the first article is marked as not visible for customer.
+ - 2018-08-15 Fixed bug#[14011](https://bugs.otrs.org/show_bug.cgi?id=14011) - 'Backspace' key returns to previous page in modernize field selection.
+ - 2018-08-09 Fixed bug#[14004](https://bugs.otrs.org/show_bug.cgi?id=14004) - Packages are only accessible via HTTP instead of HTTPS.
+ - 2018-08-08 Fixed bug#[14003](https://bugs.otrs.org/show_bug.cgi?id=14003) - Not possible to add more conditions on process transition edit which has more then 10 conditions.
+ - 2018-08-07 Fixed bug#[14008](https://bugs.otrs.org/show_bug.cgi?id=14008) - Kernel::System::VariableCheck::DataIsDifferent() does not work if one data element is undefined.
+ - 2018-08-07 Fixed bug#[13968](https://bugs.otrs.org/show_bug.cgi?id=13968) - Attachments with spaces in file name does not work properly.
+ - 2018-09-04 Added improvements to HTML filter.
+ - 2018-09-03 Added improvements to SupportDataCollector Admin screen.
+ - 2018-08-02 Fixed bug#[13997](https://bugs.otrs.org/show_bug.cgi?id=13997) - Error in pattern matching for DiskSpacePartitions.
+ - 2018-08-01 Follow-up fix for bug#[13805](https://bugs.otrs.org/show_bug.cgi?id=13805) - Distribution OpenBSD is not recognized by support data collector.
+ - 2018-08-01 Fixed bug#[13988](https://bugs.otrs.org/show_bug.cgi?id=13988) - The Hungarian subsidiary is missing form the first page of the installer.
+ - 2018-08-01 Fixed bug#[13986](https://bugs.otrs.org/show_bug.cgi?id=13986) - UserSearch function does not work for login with upper-case letters on case sensitive databases.
+ - 2018-07-25 Fixed bug#[13972](https://bugs.otrs.org/show_bug.cgi?id=13972) - API documentation: missing default permission types 'note' and 'owner'.
+
+#5.0.29 2018-07-31
+ - 2018-07-24 Add explicit information for robots.
+ - 2018-07-23 Fixed bug#[13978](https://bugs.otrs.org/show_bug.cgi?id=13978) - User and customer preferences may override user data.
+ - 2018-07-17 Fixed bug#[13722](https://bugs.otrs.org/show_bug.cgi?id=13722) - Translation of ticket notification header uses the system language instead of recipients preferences.
+ - 2018-07-16 Fixed bug#[13961](https://bugs.otrs.org/show_bug.cgi?id=13961) - ExternalTicketNumberRecognition not working correctly with spaces.
+ - 2018-07-13 Fixed bug#[13790](https://bugs.otrs.org/show_bug.cgi?id=13790) - Toolbar Fulltext Search will not care for archiving settings.
+ - 2018-07-06 Fixed bug#[13936](https://bugs.otrs.org/show_bug.cgi?id=13936) - Notification looses text for 'Additional recipient email addresses' when sizelimit 200 characters is exceeded.
+ - 2018-07-05 Fixed bug#[13945](https://bugs.otrs.org/show_bug.cgi?id=13945) - Archived tickets won't be moved with StorageSwitch command.
+ - 2018-07-04 Fixed bug#[13938](https://bugs.otrs.org/show_bug.cgi?id=13938) - Statistic: Internal Server Error when invalid date is set for x axis.
+ - 2018-07-02 Fixed bug#[13942](https://bugs.otrs.org/show_bug.cgi?id=13942) - Wrong title in browser window in statistics screens.
+ - 2018-06-27 Fixed bug#[13927](https://bugs.otrs.org/show_bug.cgi?id=13927) - Ticket Merge: "No merge state found! Please add a valid merge state" - Articles are invisible till next action.
+ - 2018-06-27 Fixed bug#[13839](https://bugs.otrs.org/show_bug.cgi?id=13839) - When doing a search from change management the results window does not expand.
+ - 2018-06-27 Fixed bug#[13672](https://bugs.otrs.org/show_bug.cgi?id=13672) - Auto response names are not translated in Auto Responses screen of the Admin interface.
+ - 2018-06-25 Fixed bug#[13923](https://bugs.otrs.org/show_bug.cgi?id=13923) - Sender name in article created by queue move "window" only shows FirstName.
+ - 2018-06-20 Follow-up fix for bug#[13734](https://bugs.otrs.org/show_bug.cgi?id=13734) - Set the last valid Status Merge to invalid is allowed.
+ - 2018-06-15 Fixed bug#[13912](https://bugs.otrs.org/show_bug.cgi?id=13912) - Generic Agents looses text for notes when sizelimit 200 characters is exceeded.
+ - 2018-06-14 Fixed bug#[13893](https://bugs.otrs.org/show_bug.cgi?id=13893) - Wrong descriptions for some system configurations.
+ - 2018-06-14 Fixed bug#[12479](https://bugs.otrs.org/show_bug.cgi?id=12479) - Reply to a ticket locks the ticket and cancel unlocks it but does not reset owner.
+ - 2018-06-05 Added improvements to the support data collector plugins.
+ - 2018-06-05 Fixed bug#[13900](https://bugs.otrs.org/show_bug.cgi?id=13900) - Password authentication issue in Fedora 28 operating system.
+
+#5.0.28 2018-06-12
+ - 2018-06-01 Fixed bug#[13824](https://bugs.otrs.org/show_bug.cgi?id=13824) - Search conditions in AdminProcessManagement are resetted.
+ - 2018-06-01 Fixed bug#[13889](https://bugs.otrs.org/show_bug.cgi?id=13889) - Postmaster filter value limit is 100 characters in frontend.
+ - 2018-06-01 Renamed 'OTRS Free' to '((OTRS)) Community Edition'.
+ - 2018-05-30 Fixed bug#[13868](https://bugs.otrs.org/show_bug.cgi?id=13868) - Customer User Title is not translated.
  - 2018-05-29 Configurable access to sensitive generic agent ops.
  - 2018-05-29 Generic agent notification handling fixes.
+ - 2018-05-25 Fixed bug#[13142](https://bugs.otrs.org/show_bug.cgi?id=13142) - Error The given param 'QueueIDs' is invalid or an empty array reference.
+ - 2018-05-23 Fixed bug#[13826](https://bugs.otrs.org/show_bug.cgi?id=13826) - Queue Names are translated (but should not).
+ - 2018-05-10 Fixed bug#[13846](https://bugs.otrs.org/show_bug.cgi?id=13846) - Ticket invoker base module does not use modernized fields.
+ - 2018-05-10 Fixed bug#[13795](https://bugs.otrs.org/show_bug.cgi?id=13795) - Transition Action 'TicketTitleSet': Tag of a dyn. field type 'date' display the time, too.
+ - 2018-05-10 Follow-up for bug#[7988](https://bugs.otrs.org/show_bug.cgi?id=7988) - Search attributes not consistent.
+ - 2018-05-10 Fixed bug#[12864](https://bugs.otrs.org/show_bug.cgi?id=12864) - Hang in my_readline (updated Net::HTTP).
+ - 2018-05-08 Fixed bug#[12994](https://bugs.otrs.org/show_bug.cgi?id=12994) - Merge Tickets with same linked objects causes error.
+ - 2018-05-07 Fixed bug#[13831](https://bugs.otrs.org/show_bug.cgi?id=13831) - Invalid Web services are still working.
+ - 2018-04-24 Fixed bug#[13805](https://bugs.otrs.org/show_bug.cgi?id=13805) - Distribution OpenBSD is not recognized by support data collector.
+ - 2018-04-18 Fixed bug#[11132](https://bugs.otrs.org/show_bug.cgi?id=11132) - Loss of attached files with long Cyrillic names.
+ - 2018-04-18 Fixed bug#[13554](https://bugs.otrs.org/show_bug.cgi?id=13554) - Non-allowed characters in attachment file names.
+ - 2018-04-17 Fixed bug#[13794](https://bugs.otrs.org/show_bug.cgi?id=13794) - Missleading label that customer can be recipient of notifications as group recipient.
+ - 2018-03-29 Fixed bug#[13750](https://bugs.otrs.org/show_bug.cgi?id=13750) - Process Widget Group not Translatable.
+ - 2018-03-29 Fixed bug#[13739](https://bugs.otrs.org/show_bug.cgi?id=13739) - Wrong Sysconfig descriptions for public interface.
+ - 2018-03-29 Fixed bug#[13734](https://bugs.otrs.org/show_bug.cgi?id=13734) - Set the last valid Status Merge to invalid is allowed.
+ - 2018-03-27 Fixed bug#[13717](https://bugs.otrs.org/show_bug.cgi?id=13717) - AgentTicketService can slow down a system, when having many services and many agents working on there.
+ - 2018-03-26 Fixed bug#[10709](https://bugs.otrs.org/show_bug.cgi?id=10709) - ACL for Action AgentTicketBulk are inconsistent.
+ - 2018-03-19 Fixed bug#[5562](https://bugs.otrs.org/show_bug.cgi?id=5562) - Options configured in Sysconfig aren't used untill a restart of OTRS when deployed on FastCGI.
+ - 2018-03-12 Fixed bug#[13537](https://bugs.otrs.org/show_bug.cgi?id=13537) - Changing customer user doesn't update the Customer Information box.
+ - 2018-03-09 Fixed bug#[13723](https://bugs.otrs.org/show_bug.cgi?id=13723) - Wrong navigation group for Ticket::Frontend::CustomerTicketProcess###StateType.
+ - 2018-03-09 Fixed bug#[13718](https://bugs.otrs.org/show_bug.cgi?id=13718) - CacheTTLLocal setting for the TicketQueueOverview Dashboard Widget is not used.
+ - 2018-03-08 Fixed bug#[13673](https://bugs.otrs.org/show_bug.cgi?id=13673)(PR#1899) - Mandatory fields are not marked as mandatory. Thanks to Balazs Ur.
+ - 2018-03-08 Fixed bug#[7988](https://bugs.otrs.org/show_bug.cgi?id=7988) - Search attributes not consistent.
 
 #5.0.27 2018-03-13
  - 2018-03-05 Fixed bug#[13549](https://bugs.otrs.org/show_bug.cgi?id=13549) - Scrolling not possible for some articles on iOS Safari.

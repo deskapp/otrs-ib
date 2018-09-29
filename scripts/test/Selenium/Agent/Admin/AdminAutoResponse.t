@@ -1,9 +1,9 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, http://otrs.com/
+# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
-# the enclosed file COPYING for license information (AGPL). If you
-# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see https://www.gnu.org/licenses/gpl-3.0.txt.
 # --
 
 use strict;
@@ -28,9 +28,13 @@ $Selenium->RunTest(
             Value => 0
         );
 
+        # Defined user language for testing if message is being translated correctly.
+        my $Language = "de";
+
         # create test user and login
         my $TestUserLogin = $Helper->TestUserCreate(
-            Groups => ['admin'],
+            Groups   => ['admin'],
+            Language => $Language,
         ) || die "Did not get test user";
 
         $Selenium->Login(
@@ -115,6 +119,25 @@ $Selenium->RunTest(
             ),
             "There is a class 'Invalid' for test AutoResponse",
         );
+
+        # Navigate to AdminAutoResponse screen.
+        $Selenium->VerifiedGet("${ScriptAlias}index.pl?Action=AdminAutoResponse");
+
+        my $LanguageObject = Kernel::Language->new(
+            UserLanguage => $Language,
+        );
+
+        my $Count = 0;
+        for my $ColumnName (qw(Name Type Comment Validity Changed Created)) {
+
+            # Check if column name is translated.
+            $Self->Is(
+                $Selenium->execute_script("return \$('.DataTable tr th:eq($Count)').text().trim()"),
+                $LanguageObject->Translate($ColumnName),
+                "Column name $ColumnName is translated",
+            );
+            $Count++;
+        }
 
         # since there are no tickets that rely on our test auto response, we can remove them
         # again from the DB
