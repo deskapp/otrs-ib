@@ -1,4 +1,4 @@
-/**
+/*
 Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
 
 This software comes with ABSOLUTELY NO WARRANTY. For details, see
@@ -93,6 +93,10 @@ div.InputField_InputContainer {
 
 div.InputField_InputContainer .InputField_Search {
     margin: 0;
+}
+
+#ContextSettingsDialog div.InputField_InputContainer .InputField_Search {
+    min-width: 0px;
 }
 
 a.InputField_Action {

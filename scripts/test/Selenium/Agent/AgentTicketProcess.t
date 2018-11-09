@@ -11,6 +11,7 @@ use warnings;
 use utf8;
 
 use vars (qw($Self));
+use Kernel::System::VariableCheck qw(IsHashRefWithData);
 
 my $Selenium = $Kernel::OM->Get('Kernel::System::UnitTest::Selenium');
 
@@ -85,16 +86,22 @@ $Selenium->RunTest(
         # Create test DynamicFields.
         for my $DynamicField (@DynamicFields) {
 
-            my $DynamicFieldID = $DynamicFieldObject->DynamicFieldAdd(
-                %{$DynamicField},
+            my $DynamicFieldGet = $DynamicFieldObject->DynamicFieldGet(
+                Name => $DynamicField->{Name},
             );
 
-            $Self->True(
-                $DynamicFieldID,
-                "Dynamic field $DynamicField->{Name} - ID $DynamicFieldID - created",
-            );
+            if ( !IsHashRefWithData($DynamicFieldGet) ) {
+                my $DynamicFieldID = $DynamicFieldObject->DynamicFieldAdd(
+                    %{$DynamicField},
+                );
 
-            push @DynamicFieldIDs, $DynamicFieldID;
+                $Self->True(
+                    $DynamicFieldID,
+                    "Dynamic field $DynamicField->{Name} - ID $DynamicFieldID - created",
+                );
+
+                push @DynamicFieldIDs, $DynamicFieldID;
+            }
         }
 
         my $RandomID = $Helper->GetRandomID();
@@ -120,6 +127,23 @@ $Selenium->RunTest(
         }
 
         my $ACLObject = $Kernel::OM->Get('Kernel::System::ACL::DB::ACL');
+
+        # Set previous ACLs on invalid.
+        my $ACLList = $ACLObject->ACLList(
+            ValidIDs => ['1'],
+            UserID   => 1,
+        );
+
+        for my $Item ( sort keys %{$ACLList} ) {
+
+            $ACLObject->ACLUpdate(
+                ID   => $Item,
+                Name => $ACLList->{$Item},
+                ,
+                ValidID => 2,
+                UserID  => 1,
+            );
+        }
 
         my @ACLs = (
             {
@@ -331,6 +355,10 @@ $Selenium->RunTest(
 
         $Selenium->execute_script("\$('#QueueID').val('2').trigger('redraw.InputField').trigger('change');");
         $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && !$(".AJAXLoader:visible").length' );
+        $Selenium->execute_script(
+            "\$('#TypeID').val('$Types[1]->{ID}').trigger('redraw.InputField').trigger('change');"
+        );
+        $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && !$(".AJAXLoader:visible").length' );
 
         $Selenium->find_element("//button[\@value='Submit'][\@type='submit']")->VerifiedClick();
 
@@ -369,6 +397,7 @@ $Selenium->RunTest(
         # Return to main window.
         $Selenium->WaitFor( WindowCount => 1 );
         $Selenium->switch_to_window( $Handles->[0] );
+        $Selenium->VerifiedRefresh();
 
         # Check for inputed values as final step in first scenario.
         $Self->True(

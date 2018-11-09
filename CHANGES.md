@@ -1,4 +1,14 @@
-#5.0.31 20??-??-??
+#5.0.32 20??-??-??
+
+#5.0.31 2018-11-09
+ - 2018-10-26 Fixed bug#[14132](https://bugs.otrs.org/show_bug.cgi?id=14132) - After select a sub-queue the queue's field is break in the bulk window.
+ - 2018-10-26 Fixed bug#[14131](https://bugs.otrs.org/show_bug.cgi?id=14131) - Missing Default Sign key field description in AdminQueue.
+ - 2018-10-26 Fixed bug#[14119](https://bugs.otrs.org/show_bug.cgi?id=14119) - WSDL File is incorrect.
+ - 2018-10-23 Fixed bug#[11107](https://bugs.otrs.org/show_bug.cgi?id=11107) - ACL does not work properly in AgentTicketMove screen.
+ - 2018-10-19 Follow-up fix for bug#[13978](https://bugs.otrs.org/show_bug.cgi?id=13978) - User and customer preferences may override user data.
+ - 2018-10-16 Fixed bug#[14079](https://bugs.otrs.org/show_bug.cgi?id=14079) - Cancel and Close button are not visible.
+ - 2018-10-09 Improved upload cache module.
+ - 2018-09-19 Fixed bug#[14072](https://bugs.otrs.org/show_bug.cgi?id=14072) - Type activation warning disappears after new type is added.
 
 #5.0.30 2018-09-21
  - 2018-09-11 Fixed bug#[14023](https://bugs.otrs.org/show_bug.cgi?id=14023) - Timeline View is broken when a body string contains closing script tag.
