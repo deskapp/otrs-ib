@@ -268,35 +268,42 @@ sub FilenameCleanUp {
             $Param{Filename} =~ s/(\x{00C3}\x{009F}|\x{00DF})/ss/g;
             $Param{Filename} =~ s/-+/-/g;
 
-            # separate filename and extension
-            my $FileName = $Param{Filename};
-            my $FileExt  = '';
-            if ( $Param{Filename} =~ /(.*)\.+(.*)$/ ) {
+        }
+
+        # separate filename and extension
+        my $FileName = $Param{Filename};
+        my $FileExt  = '';
+        if ( $Param{Filename} =~ /(.*)\.+(.*)$/ ) {
+
+            # allow extensions up to 10 chars to avoid infinite loop below
+            if (length encode('UTF-8', $2) <= 10) {
                 $FileName = $1;
                 $FileExt  = '.' . $2;
             }
+        }
 
-            if ( length $FileName ) {
-                my $ModifiedName;
+        if ( length $FileName ) {
+            my $ModifiedName;
 
-                # remove character by character starting from the end of the filename string
-                # untill we get acceptable 100 byte long filename size including extension
-                CHOPSTRING:
-                while (1) {
+            # remove character by character starting from the end of the filename string
+            # untill we get acceptable 100 byte long filename size including extension
+            CHOPSTRING:
+            while (1) {
 
-                    $ModifiedName = $FileName . $FileExt;
+                $ModifiedName = $FileName . $FileExt;
 
-                    last CHOPSTRING if ( length encode( 'UTF-8', $ModifiedName ) < 100 );
-                    chop $FileName;
+                last CHOPSTRING if ( length encode( 'UTF-8', $ModifiedName ) < 100 );
+                chop $FileName;
 
-                }
-                $Param{Filename} = $ModifiedName;
             }
+            $Param{Filename} = $ModifiedName;
         }
     }
 
     return $Param{Filename};
 }
+
+
 
 =item FileRead()
 
