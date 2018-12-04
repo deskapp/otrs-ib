@@ -729,21 +729,19 @@ sub PartsAttachments {
         if ( defined($Subject) && ( length($Subject) > 0 ) ) {
 
             # cleanup filename
-            $Subject = $Kernel::OM->Get('Kernel::System::Main')->FilenameCleanUp(
-                Filename => $Subject,
-                Type     => 'Attachment',
+            $PartData{Filename} = $Kernel::OM->Get('Kernel::System::Main')->FilenameCleanUp(
+                Filename => $Subject . '.eml',
+                Type     => 'Local',
             );
         }
-
-        if ( !defined($Subject) || ( length($Subject) == 0 ) ) {
+        else {
             $Self->{NoFilenamePartCounter}++;
-            $Subject = "file-$Self->{NoFilenamePartCounter}";
+            $PartData{Filename} = 'file-' . $Self->{NoFilenamePartCounter} . '.eml';
         }
-        $PartData{Filename} = $Subject . '.eml';
     }
     else {
         $Self->{NoFilenamePartCounter}++;
-        $PartData{Filename} = "file-$Self->{NoFilenamePartCounter}";
+        $PartData{Filename} = 'file-' . $Self->{NoFilenamePartCounter};
     }
 
     # parse/get Content-Id, Content-Location and Disposition for html email attachments
