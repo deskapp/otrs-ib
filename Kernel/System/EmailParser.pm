@@ -720,21 +720,22 @@ sub PartsAttachments {
         my ($SubjectString) = $Part->as_string() =~ m/^Subject: ([^\n]*(\n[ \t][^\n]*)*)/m;
         my $Subject = $Self->_DecodeString( String => $SubjectString );
 
-        # trim whitespace
-        $Subject =~ s/^\s+|\n|\s+$//g;
-        if ( length($Subject) > 246 ) {
-            $Subject = substr( $Subject, 0, 246 );
-        }
+        if ( defined($Subject) && ( length($Subject) > 0 ) ) {
 
-        if ( $Subject eq '' ) {
-            $Self->{NoFilenamePartCounter}++;
-            $Subject = "Unbenannt-$Self->{NoFilenamePartCounter}";
+            # cleanup filename
+            $PartData{Filename} = $Kernel::OM->Get('Kernel::System::Main')->FilenameCleanUp(
+                Filename => $Subject . '.eml',
+                Type     => 'Local',
+            );
         }
-        $PartData{Filename} = $Subject . '.eml';
+        else {
+            $Self->{NoFilenamePartCounter}++;
+            $PartData{Filename} = 'file-' . $Self->{NoFilenamePartCounter} . '.eml';
+        }
     }
     else {
         $Self->{NoFilenamePartCounter}++;
-        $PartData{Filename} = "file-$Self->{NoFilenamePartCounter}";
+        $PartData{Filename} = 'file-' . $Self->{NoFilenamePartCounter};
     }
 
     # parse/get Content-Id, Content-Location and Disposition for html email attachments

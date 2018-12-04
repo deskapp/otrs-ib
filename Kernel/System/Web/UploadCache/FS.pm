@@ -126,34 +126,42 @@ sub FormIDAddFile {
     # get main object
     my $MainObject = $Kernel::OM->Get('Kernel::System::Main');
 
+    $Param{Filename} = $MainObject->FilenameCleanUp(
+        Filename => $Param{Filename},
+    );
+
     # files must readable for creator
     return if !$MainObject->FileWrite(
-        Directory  => $Directory,
-        Filename   => "$Param{Filename}",
-        Content    => \$Param{Content},
-        Mode       => 'binmode',
-        Permission => '640',
+        Directory       => $Directory,
+        Filename        => "$Param{Filename}",
+        Content         => \$Param{Content},
+        Mode            => 'binmode',
+        Permission      => '640',
+        NoFilenameClean => 1,
     );
     return if !$MainObject->FileWrite(
-        Directory  => $Directory,
-        Filename   => "$Param{Filename}.ContentType",
-        Content    => \$Param{ContentType},
-        Mode       => 'binmode',
-        Permission => '640',
+        Directory       => $Directory,
+        Filename        => "$Param{Filename}.ContentType",
+        Content         => \$Param{ContentType},
+        Mode            => 'binmode',
+        Permission      => '640',
+        NoFilenameClean => 1,
     );
     return if !$MainObject->FileWrite(
-        Directory  => $Directory,
-        Filename   => "$Param{Filename}.ContentID",
-        Content    => \$ContentID,
-        Mode       => 'binmode',
-        Permission => '640',
+        Directory       => $Directory,
+        Filename        => "$Param{Filename}.ContentID",
+        Content         => \$ContentID,
+        Mode            => 'binmode',
+        Permission      => '640',
+        NoFilenameClean => 1,
     );
     return if !$MainObject->FileWrite(
-        Directory  => $Directory,
-        Filename   => "$Param{Filename}.Disposition",
-        Content    => \$Disposition,
-        Mode       => 'binmode',
-        Permission => '644',
+        Directory       => $Directory,
+        Filename        => "$Param{Filename}.Disposition",
+        Content         => \$Disposition,
+        Mode            => 'binmode',
+        Permission      => '640',
+        NoFilenameClean => 1,
     );
     return 1;
 }
@@ -189,20 +197,24 @@ sub FormIDRemoveFile {
     my $MainObject = $Kernel::OM->Get('Kernel::System::Main');
 
     $MainObject->FileDelete(
-        Directory => $Directory,
-        Filename  => "$File{Filename}",
+        Directory       => $Directory,
+        Filename        => "$File{Filename}",
+        NoFilenameClean => 1,
     );
     $MainObject->FileDelete(
-        Directory => $Directory,
-        Filename  => "$File{Filename}.ContentType",
+        Directory       => $Directory,
+        Filename        => "$File{Filename}.ContentType",
+        NoFilenameClean => 1,
     );
     $MainObject->FileDelete(
-        Directory => $Directory,
-        Filename  => "$File{Filename}.ContentID",
+        Directory       => $Directory,
+        Filename        => "$File{Filename}.ContentID",
+        NoFilenameClean => 1,
     );
     $MainObject->FileDelete(
-        Directory => $Directory,
-        Filename  => "$File{Filename}.Disposition",
+        Directory       => $Directory,
+        Filename        => "$File{Filename}.Disposition",
+        NoFilenameClean => 1,
     );
 
     return 1;
@@ -266,20 +278,23 @@ sub FormIDGetAllFilesData {
             }
         }
         my $Content = $MainObject->FileRead(
-            Location => $File,
-            Mode     => 'binmode',                                             # optional - binmode|utf8
+            Location        => $File,
+            Mode            => 'binmode',                                      # optional - binmode|utf8
+            NoFilenameClean => 1,
         );
         next FILE if !$Content;
 
         my $ContentType = $MainObject->FileRead(
-            Location => "$File.ContentType",
-            Mode     => 'binmode',                                             # optional - binmode|utf8
+            Location        => "$File.ContentType",
+            Mode            => 'binmode',                                      # optional - binmode|utf8
+            NoFilenameClean => 1,
         );
         next FILE if !$ContentType;
 
         my $ContentID = $MainObject->FileRead(
-            Location => "$File.ContentID",
-            Mode     => 'binmode',                                             # optional - binmode|utf8
+            Location        => "$File.ContentID",
+            Mode            => 'binmode',                                      # optional - binmode|utf8
+            NoFilenameClean => 1,
         );
         next FILE if !$ContentID;
 
@@ -289,8 +304,9 @@ sub FormIDGetAllFilesData {
         }
 
         my $Disposition = $MainObject->FileRead(
-            Location => "$File.Disposition",
-            Mode     => 'binmode',                                             # optional - binmode|utf8
+            Location        => "$File.Disposition",
+            Mode            => 'binmode',                                      # optional - binmode|utf8
+            NoFilenameClean => 1,
         );
         next FILE if !$Disposition;
 
@@ -372,14 +388,16 @@ sub FormIDGetAllFilesMeta {
         }
 
         my $ContentType = $MainObject->FileRead(
-            Location => "$File.ContentType",
-            Mode     => 'binmode',                                             # optional - binmode|utf8
+            Location        => "$File.ContentType",
+            Mode            => 'binmode',                                      # optional - binmode|utf8
+            NoFilenameClean => 1,
         );
         next FILE if !$ContentType;
 
         my $ContentID = $MainObject->FileRead(
-            Location => "$File.ContentID",
-            Mode     => 'binmode',                                             # optional - binmode|utf8
+            Location        => "$File.ContentID",
+            Mode            => 'binmode',                                      # optional - binmode|utf8
+            NoFilenameClean => 1,
         );
         next FILE if !$ContentID;
 
@@ -389,8 +407,9 @@ sub FormIDGetAllFilesMeta {
         }
 
         my $Disposition = $MainObject->FileRead(
-            Location => "$File.Disposition",
-            Mode     => 'binmode',                                             # optional - binmode|utf8
+            Location        => "$File.Disposition",
+            Mode            => 'binmode',                                      # optional - binmode|utf8
+            NoFilenameClean => 1,
         );
         next FILE if !$Disposition;
 
