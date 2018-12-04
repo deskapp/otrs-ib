@@ -270,40 +270,30 @@ sub FilenameCleanUp {
 
         }
 
-        # separate filename and extension
-        my $FileName = $Param{Filename};
-        my $FileExt  = '';
-        if ( $Param{Filename} =~ /(.*)\.+(.*)$/ ) {
+        # trim filename to 100 chars (=200 bytes in case of all UTF-8 chars) if longer
+        # to avoid exceeding filesystem limits (i.e. 255 byte filename length limit in XFS);
+        # must leave enought space for extra OTRS extensions (i.e. .ContentID, .content_type)
+        # that are suffixed without calling FilenameCleanUp()
+        if ( length($Param{Filename}) > 100 ) {
 
-            # allow extensions up to 10 chars to avoid infinite loop below
-            if (length encode('UTF-8', $2) <= 10) {
-                $FileName = $1;
-                $FileExt  = '.' . $2;
+            # if extension exists and is not longer than 50 chars
+            # than leave whole extension and trim filename part before
+            # extension only; trim whole filename otherwise
+
+            my $FileName = $Param{Filename};
+            my $FileExt  = '';
+            if ( $Param{Filename} =~ /(.*)\.+(.*)$/ ) {
+                if (length($2) <= 50) {
+                    $FileName = $1;
+                    $FileExt = '.' . $2;
+                }
             }
-        }
-
-        if ( length $FileName ) {
-            my $ModifiedName;
-
-            # remove character by character starting from the end of the filename string
-            # untill we get acceptable 100 byte long filename size including extension
-            CHOPSTRING:
-            while (1) {
-
-                $ModifiedName = $FileName . $FileExt;
-
-                last CHOPSTRING if ( length encode( 'UTF-8', $ModifiedName ) < 100 );
-                chop $FileName;
-
-            }
-            $Param{Filename} = $ModifiedName;
+            $Param{Filename} = substr($FileName, 0, 100-length($FileExt)) . $FileExt;
         }
     }
 
     return $Param{Filename};
 }
-
-
 
 =item FileRead()
 
@@ -347,8 +337,9 @@ sub FileRead {
 
         # filename clean up
         $Param{Filename} = $Self->FilenameCleanUp(
-            Filename => $Param{Filename},
-            Type     => $Param{Type} || 'Local',    # Local|Attachment|MD5
+            Filename        => $Param{Filename},
+            Type            => $Param{Type} || 'Local',    # Local|Attachment|MD5
+            NoFilenameClean => $Param{NoFilenameClean},
         );
         $Param{Location} = "$Param{Directory}/$Param{Filename}";
     }
@@ -575,8 +566,9 @@ sub FileDelete {
 
         # filename clean up
         $Param{Filename} = $Self->FilenameCleanUp(
-            Filename => $Param{Filename},
-            Type     => $Param{Type} || 'Local',    # Local|Attachment|MD5
+            Filename        => $Param{Filename},
+            Type            => $Param{Type} || 'Local',    # Local|Attachment|MD5
+            NoFilenameClean => $Param{NoFilenameClean},
         );
         $Param{Location} = "$Param{Directory}/$Param{Filename}";
     }
@@ -638,8 +630,9 @@ sub FileGetMTime {
 
         # filename clean up
         $Param{Filename} = $Self->FilenameCleanUp(
-            Filename => $Param{Filename},
-            Type     => $Param{Type} || 'Local',    # Local|Attachment|MD5
+            Filename        => $Param{Filename},
+            Type            => $Param{Type} || 'Local',    # Local|Attachment|MD5
+            NoFilenameClean => $Param{NoFilenameClean},
         );
         $Param{Location} = "$Param{Directory}/$Param{Filename}";
     }
