@@ -143,6 +143,7 @@ sub Run {
             NoOutOfOffice => 1,
         );
         my $Output = $LayoutObject->Header();
+        $Output .= $Self->_ActiveAgentAccountLimitNote();
         $Output .= $LayoutObject->NavigationBar();
         $Self->_Edit(
             Action => 'Change',
@@ -202,8 +203,29 @@ sub Run {
             $Errors{'UserLoginInvalid'} = 'ServerError';
         }
 
+        # error if activating non-root agent account over limit
+        my $ActiveAgentAccountLimit = $ConfigObject->Get('ActiveAgentAccountLimit');
+        if ($ActiveAgentAccountLimit && ((!$GetParam{UserID}) || ($GetParam{UserID} != 1))) {
+            my $Valid = scalar grep { $_ eq $GetParam{ValidID} } @ValidIDList;
+            if ( $Valid ) {
+                my %User = $UserObject->GetUserData(
+                    UserID => $GetParam{UserID},
+                    Valid => 1,
+                );
+                if (!%User) {
+                    my $ActiveAgentNumber = $UserObject->ActiveUserNumber();
+                    if ($ActiveAgentNumber >= $ActiveAgentAccountLimit) {
+                        $Note .= $LayoutObject->Notify(
+                            Info => 'Operation failed - active agent limit exceeded!',
+                            Priority => 'Error',
+                        );
+                    }
+                }
+            }
+        }
+
         # if no errors occurred
-        if ( !%Errors )
+        if ( (!%Errors) && ($Note eq '') )
         {
 
             # update user
@@ -265,6 +287,7 @@ sub Run {
                 if ( !$Note ) {
                     $Self->_Overview( Search => $Search );
                     my $Output = $LayoutObject->Header();
+                    $Output .= $Self->_ActiveAgentAccountLimitNote();
                     $Output .= $LayoutObject->NavigationBar();
                     $Output .= $LayoutObject->Notify( Info => Translatable('Agent updated!') );
                     $Output .= $LayoutObject->Output(
@@ -283,6 +306,7 @@ sub Run {
             }
         }
         my $Output = $LayoutObject->Header();
+        $Output .= $Self->_ActiveAgentAccountLimitNote();
         $Output .= $Note;
         $Output .= $LayoutObject->NavigationBar();
         $Self->_Edit(
@@ -310,6 +334,7 @@ sub Run {
         $GetParam{UserLogin} = $ParamObject->GetParam( Param => 'UserLogin' );
 
         my $Output = $LayoutObject->Header();
+        $Output .= $Self->_ActiveAgentAccountLimitNote();
         $Output .= $LayoutObject->NavigationBar();
         $Self->_Edit(
             Action => 'Add',
@@ -366,8 +391,20 @@ sub Run {
             $Errors{'UserLoginInvalid'} = 'ServerError';
         }
 
+        # error if creating valid, non-root agent account over limit
+        my $ActiveAgentAccountLimit = $ConfigObject->Get('ActiveAgentAccountLimit');
+        if ($ActiveAgentAccountLimit && ((!$GetParam{UserID}) || ($GetParam{UserID} != 1))) {
+            my $Valid = scalar grep { $_ eq $GetParam{ValidID} } @ValidIDList;
+            if ( $Valid ) {
+                my $ActiveAgentNumber = $UserObject->ActiveUserNumber();
+                if ($ActiveAgentNumber >= $ActiveAgentAccountLimit) {
+                    $Note .= 'Operation failed - active agent limit exceeded!';
+                }
+            }
+        }
+
         # if no errors occurred
-        if ( !%Errors )
+        if ( (!%Errors) && ($Note eq '') )
         {
 
             # add user
@@ -455,6 +492,7 @@ sub Run {
             }
         }
         my $Output = $LayoutObject->Header();
+        $Output .= $Self->_ActiveAgentAccountLimitNote();
         $Output .= $Note
             ? $LayoutObject->Notify(
             Priority => 'Error',
@@ -483,6 +521,7 @@ sub Run {
     else {
         $Self->_Overview( Search => $Search );
         my $Output = $LayoutObject->Header();
+        $Output .= $Self->_ActiveAgentAccountLimitNote();
         $Output .= $LayoutObject->NavigationBar();
         $Output .= $LayoutObject->Output(
             TemplateFile => 'AdminUser',
@@ -772,6 +811,40 @@ sub _Overview {
     }
 
     return 1;
+}
+
+sub _ActiveAgentAccountLimitNote {
+    my ( $Self, %Param ) = @_;
+
+    # get layout object
+    my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
+
+    # get user object
+    my $UserObject = $Kernel::OM->Get('Kernel::System::User');
+
+    # get config object
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
+    # add warning if agent account limit reached
+    my $ActiveAgentAccountLimit = $ConfigObject->Get('ActiveAgentAccountLimit');
+    if ($ActiveAgentAccountLimit) {
+        my $ActiveAgentNumber = $UserObject->ActiveUserNumber();
+
+        if ($ActiveAgentNumber >= $ActiveAgentAccountLimit) {
+            my $ActiveAgentNumberLimitMessage = $ConfigObject->Get('ActiveAgentAccountLimitMessage')
+                || 'Active agents limit (%s) reached. No more active agent account allowed.';
+
+            $ActiveAgentNumberLimitMessage =
+                $LayoutObject->{LanguageObject}->Translate($ActiveAgentNumberLimitMessage, $ActiveAgentAccountLimit),
+
+            return $LayoutObject->Notify(
+                Priority => 'Warning',
+                Info => $ActiveAgentNumberLimitMessage,
+            );
+        }
+    }
+
+    return '';
 }
 
 1;
