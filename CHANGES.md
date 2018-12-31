@@ -1,4 +1,5 @@
 #6.0.0.beta1 2017-??-??
+ - 2018-12-31 Added option to limit number of active agent accounts.
  - 2018-12-04 Fixed upload cache filename cleanup and filename cleanup optimization.
  - 2018-12-03 Fixed infinite loop on filename generation.
  - 2018-05-29 Configurable access to sensitive generic agent ops.

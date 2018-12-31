@@ -3007,6 +3007,8 @@ sub Data {
 
         # Perl Module: Kernel/Modules/AdminUser.pm
         'Agent updated!' => 'Agent został zaktualizowany!',
+        'Active agents limit (%s) reached. No more active agent account allowed.' => 'Osiągnięty limit liczby aktywnych agentów (%s). Brak możliwości uaktywnienia kolejnych agentów.',
+        'Operation failed - active agent limit exceeded!' => 'Operacja nie powiodła się z powodu przekroczenia limitu aktywnych agentów!',
 
         # Perl Module: Kernel/Modules/AgentCustomerSearch.pm
         'Customer History' => 'Historia Klienta',
