@@ -1123,6 +1123,36 @@ sub UserList {
     return %Users;
 }
 
+=head2 ActiveUserNumber()
+
+return a number of all active users (without root account)
+
+    my $ActiveAgentNumber = $UserObject->ActiveUserNumber();
+
+=cut
+
+sub ActiveUserNumber {
+    my ( $Self, %Param ) = @_;
+
+    # get config object
+    my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
+
+    # get database object
+    my $DBObject = $Kernel::OM->Get('Kernel::System::DB');
+
+    return if !$DBObject->Prepare(
+        SQL => "SELECT count(*) FROM $ConfigObject->{DatabaseUserTable} "
+            . "WHERE valid_id IN ( ${\(join ', ', $Kernel::OM->Get('Kernel::System::Valid')->ValidIDsGet())} ) AND (id > 1)"
+    );
+
+    my $Result = 0;
+    while ( my @Row = $DBObject->FetchrowArray() ) {
+        $Result = $Row[0];
+    }
+
+    return $Result;
+}
+
 =head2 GenerateRandomPassword()
 
 generate a random password
