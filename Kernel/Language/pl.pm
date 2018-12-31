@@ -247,6 +247,8 @@ sub Data {
         'Logout successful. Thank you for using %s!' => 'Wylogowanie udane. Dziękujemy za używanie %s!',
         'Feature not active!' => 'Funkcja nieaktywna!',
         'Agent updated!' => 'Agent został zaktualizowany!',
+        'Active agents limit (%s) reached. No more active agent account allowed.' => 'Osiągnięty limit liczby aktywnych agentów (%s). Brak możliwości uaktywnienia kolejnych agentów.',
+        'Operation failed - active agent limit exceeded!' => 'Operacja nie powiodła się z powodu przekroczenia limitu aktywnych agentów!',
         'Database Selection' => 'Wybór bazy danych',
         'Create Database' => 'Utwórz bazę danych',
         'System Settings' => 'Konfiguracja Systemu',

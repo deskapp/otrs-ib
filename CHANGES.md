@@ -1,4 +1,5 @@
 #5.0.32 20??-??-??
+ - 2018-12-31 Added option to limit number of active agent accounts.
 
 #5.0.31 2018-11-09
  - 2018-10-26 Fixed bug#[14132](https://bugs.otrs.org/show_bug.cgi?id=14132) - After select a sub-queue the queue's field is break in the bulk window.
