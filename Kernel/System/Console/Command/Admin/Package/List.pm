@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -251,7 +251,7 @@ sub _PackageMetadataGet {
     }
 
     if ( !defined $Param{StripHTML} || $Param{StripHTML} ) {
-        $Title =~ s/(.{4,78})(?:\s|\z)/| $1\n/gm;
+        $Title       =~ s/(.{4,78})(?:\s|\z)/| $1\n/gm;
         $Description =~ s/^\s*//mg;
         $Description =~ s/\n/ /gs;
         $Description =~ s/\r/ /gs;

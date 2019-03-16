@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -687,7 +687,7 @@ my @Tests = (
                 Provider => {
                     Transport => {
                         Type => 'HTTP::Test'
-                        }
+                    }
                 },
                 Requester => 'String',
             },
@@ -722,7 +722,7 @@ my @Tests = (
                 Provider => {
                     Transport => {
                         Type => 'HTTP::Test'
-                        }
+                    }
                 },
                 Requester => {},
             },
@@ -757,7 +757,7 @@ my @Tests = (
                 Provider => {
                     Transport => {
                         Type => 'HTTP::Test'
-                        }
+                    }
                 },
                 Requester => {
                     Transport => undef,
@@ -795,7 +795,7 @@ my @Tests = (
                 Provider => {
                     Transport => {
                         Type => 'HTTP::Test'
-                        }
+                    }
                 },
                 Requester => {
                     Transport => 'string',
@@ -832,7 +832,7 @@ my @Tests = (
                 Provider => {
                     Transport => {
                         Type => 'HTTP::Test'
-                        }
+                    }
                 },
                 Requester => {
                     Transport => {},

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -86,7 +86,7 @@ $Selenium->RunTest(
                 )
             {
                 my $ObjectType = $Type . "DynamicField";
-                my $Element = $Selenium->find_element( "#$ObjectType option[value=$ID]", 'css' );
+                my $Element    = $Selenium->find_element( "#$ObjectType option[value=$ID]", 'css' );
                 $Element->is_enabled();
 
                 # Create a real test DynamicField.

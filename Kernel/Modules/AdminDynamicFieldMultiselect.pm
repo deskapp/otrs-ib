@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -353,7 +353,7 @@ sub _ChangeAction {
     $GetParam{TreeView} = defined $GetParam{TreeView} && $GetParam{TreeView} ? '1' : '0';
 
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
-    my $FieldID = $ParamObject->GetParam( Param => 'ID' );
+    my $FieldID      = $ParamObject->GetParam( Param => 'ID' );
     if ( !$FieldID ) {
         return $LayoutObject->ErrorScreen(
             Message => Translatable('Need ID'),
@@ -770,7 +770,7 @@ sub _ShowScreen {
             TreeViewStrg           => $TreeViewStrg,
             TranslatableValuesStrg => $TranslatableValuesStrg,
             ReadonlyInternalField  => $ReadonlyInternalField,
-            }
+        }
     );
 
     $Output .= $LayoutObject->Footer();

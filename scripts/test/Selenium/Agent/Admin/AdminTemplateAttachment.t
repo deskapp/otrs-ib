@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -56,7 +56,7 @@ $Selenium->RunTest(
         );
 
         my $Content = ${$ContentRef};
-        my $MD5 = $MainObject->MD5sum( String => \$Content );
+        my $MD5     = $MainObject->MD5sum( String => \$Content );
 
         my $AttachmentRandomID = "attachment" . $Helper->GetRandomID();
         my $AttachmentID       = $StdAttachmentObject->StdAttachmentAdd(

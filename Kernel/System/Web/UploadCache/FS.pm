@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -102,7 +102,7 @@ sub FormIDAddFile {
     $Param{Content} = '' if !defined($Param{Content});
 
     # create content id
-    my $ContentID = $Param{ContentID};
+    my $ContentID   = $Param{ContentID};
     my $Disposition = $Param{Disposition} || '';
     if ( !$ContentID && lc $Disposition eq 'inline' ) {
 

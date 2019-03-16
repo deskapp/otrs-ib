@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -112,10 +112,11 @@ sub Run {
         );
         my @JSONData = (
             {
-                Name       => 'QueueID',
-                Data       => \%QueueList,
-                SelectedID => $GetParam{QueueID},
-                TreeView   => $TreeView,
+                Name         => 'QueueID',
+                Data         => \%QueueList,
+                SelectedID   => $GetParam{QueueID},
+                TreeView     => $TreeView,
+                PossibleNone => 1,
             },
         );
 
@@ -758,7 +759,7 @@ sub Run {
                 my $TemplateGeneratorObject = $Kernel::OM->ObjectParamAdd(
                     'Kernel::System::TemplateGenerator' => {
                         CustomerUserObject => $CustomerUserObject,
-                        }
+                    }
                 );
 
                 $TemplateGeneratorObject = $Kernel::OM->Get('Kernel::System::TemplateGenerator');
@@ -1080,7 +1081,7 @@ sub _Mask {
 
     # build ArticleTypeID string
     my %DefaultNoteTypes = %{ $Config->{ArticleTypes} };
-    my %NoteTypes = $TicketObject->ArticleTypeList( Result => 'HASH' );
+    my %NoteTypes        = $TicketObject->ArticleTypeList( Result => 'HASH' );
     for my $KeyNoteType ( sort keys %NoteTypes ) {
         if ( !$DefaultNoteTypes{ $NoteTypes{$KeyNoteType} } ) {
             delete $NoteTypes{$KeyNoteType};
@@ -1483,7 +1484,7 @@ sub _GetOwners {
         my $GroupObject = $Kernel::OM->Get('Kernel::System::Group');
 
         for my $QueueID (@QueueIDs) {
-            my $GroupID = $QueueObject->GetQueueGroupID( QueueID => $QueueID );
+            my $GroupID     = $QueueObject->GetQueueGroupID( QueueID => $QueueID );
             my %GroupMember = $GroupObject->PermissionGroupGet(
                 GroupID => $GroupID,
                 Type    => 'owner',
@@ -1549,7 +1550,7 @@ sub _GetResponsibles {
         my $GroupObject = $Kernel::OM->Get('Kernel::System::Group');
 
         for my $QueueID (@QueueIDs) {
-            my $GroupID = $QueueObject->GetQueueGroupID( QueueID => $QueueID );
+            my $GroupID     = $QueueObject->GetQueueGroupID( QueueID => $QueueID );
             my %GroupMember = $GroupObject->PermissionGroupGet(
                 GroupID => $GroupID,
                 Type    => 'responsible',

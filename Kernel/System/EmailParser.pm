@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -816,7 +816,7 @@ sub PartsAttachments {
         )
     {
         # Is it a plain or HTML body?
-        my $MimeType = $PartData{ContentType} =~ /text\/html/i ? 'text/html' : 'text/plain';
+        my $MimeType       = $PartData{ContentType} =~ /text\/html/i ? 'text/html' : 'text/plain';
         my $TargetMimeType = $MimeType;
 
         my $BodyAttachmentKey = "MultipartMixedBodyAttachment$MimeType";

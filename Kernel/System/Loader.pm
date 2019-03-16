@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -413,7 +413,7 @@ sub CacheGenerate {
 
     my %CustomerFrontends = (
         %{ $ConfigObject->Get('CustomerFrontend::Module') // {} },
-        %{ $ConfigObject->Get('PublicFrontend::Module') //   {} },
+        %{ $ConfigObject->Get('PublicFrontend::Module')   // {} },
     );
 
     for my $FrontendModule ( sort { $a cmp $b } keys %CustomerFrontends ) {
@@ -474,7 +474,7 @@ sub CacheDelete {
     }
 
     # now go through the cache folders and delete all .js and .css files
-    my @FileTypes = ( "*.js", "*.css" );
+    my @FileTypes    = ( "*.js", "*.css" );
     my $TotalCounter = 0;
     FOLDERTODELETE:
     for my $FolderToDelete (@CacheFoldersList) {

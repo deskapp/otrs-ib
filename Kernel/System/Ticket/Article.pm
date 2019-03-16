@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -108,7 +108,7 @@ sub ArticleCreate {
     # get time object
     my $TimeObject = $Kernel::OM->Get('Kernel::System::Time');
 
-    my $ValidID = $Param{ValidID} || 1;
+    my $ValidID      = $Param{ValidID} || 1;
     my $IncomingTime = $TimeObject->SystemTime();
 
     # create ArticleContentPath
@@ -1592,7 +1592,7 @@ sub ArticleGet {
         $Ticket{QueueID}        = $Row[12];
         $Ticket{AgeTimeUnix}    = $TimeObject->SystemTime()
             - $TimeObject->TimeStamp2SystemTime( String => $Row[13] );
-        $Ticket{Created} = $TimeObject->SystemTime2TimeStamp( SystemTime => $Ticket{CreateTimeUnix} );
+        $Ticket{Created}   = $TimeObject->SystemTime2TimeStamp( SystemTime => $Ticket{CreateTimeUnix} );
         $Data{ContentType} = $Row[14];
 
         $Data{CreatedBy}           = $Row[15];

@@ -1,7 +1,22 @@
-#5.0.32 20??-??-??
+#5.0.35 ????-??-??
+
+#5.0.34 2019-01-18
+ - 2019-01-08 Synchronized translation files.
+ - 2018-12-18 Fixed bug#[14114](https://bugs.otrs.org/show_bug.cgi?id=14114) - Dynamic field of type database cannot be saved via a web service.
+ - 2018-12-16 Fixed bug#[14305](https://bugs.otrs.org/show_bug.cgi?id=14305) - Incorrect handling of content-type in PictureUpload.
+
+#5.0.33 2018-12-14
+ - 2018-12-05 Added possibility to display links in footer section of customer and public interface.
+ - 2018-11-27 Fixed bug#[14246](https://bugs.otrs.org/show_bug.cgi?id=14246) - Attachments with 0 byte do not show up.
+ - 2018-11-20 Fixed bug#[14237](https://bugs.otrs.org/show_bug.cgi?id=14237) - Sorting of state menu entries is different then order in state overview screen.
+ - 2018-11-19 Fixed bug#[14148](https://bugs.otrs.org/show_bug.cgi?id=14148) - Superfluous filter boxes and "Add Group" form in Group Management screen.
+ - 2018-11-15 Fixed bug#[14226](https://bugs.otrs.org/show_bug.cgi?id=14226) - It is not possible to deselect queue in AgentTicketBulk after AJAX update.
+
+#5.0.32 2018-11-14
  - 2018-12-31 Added option to limit number of active agent accounts.
  - 2018-12-04 Fixed upload cache filename cleanup and filename cleanup optimization.
  - 2018-12-03 Fixed infinite loop on filename generation.
+ - 2018-11-13 Follow-up fix for bug#[13978](https://bugs.otrs.org/show_bug.cgi?id=13978) - User and customer preferences may override user data.
 
 #5.0.31 2018-11-09
  - 2018-10-26 Fixed bug#[14132](https://bugs.otrs.org/show_bug.cgi?id=14132) - After select a sub-queue the queue's field is break in the bulk window.

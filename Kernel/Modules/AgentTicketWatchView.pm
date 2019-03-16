@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -269,7 +269,7 @@ sub Run {
     my $Limit = 10_000;
 
     my $ElementChanged = $ParamObject->GetParam( Param => 'ElementChanged' ) || '';
-    my $HeaderColumn = $ElementChanged;
+    my $HeaderColumn   = $ElementChanged;
     $HeaderColumn =~ s{\A ColumnFilter }{}msxg;
     my @OriginalViewableTickets;
     my @ViewableTickets;

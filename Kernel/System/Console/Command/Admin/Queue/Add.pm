@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -103,7 +103,7 @@ sub Run {
     $Self->Print("<yellow>Adding a new queue...</yellow>\n");
 
     # check group
-    my $Group = $Self->GetOption('group');
+    my $Group   = $Self->GetOption('group');
     my $GroupID = $Kernel::OM->Get('Kernel::System::Group')->GroupLookup( Group => $Group );
     if ( !$GroupID ) {
         $Self->PrintError("Found no GroupID for $Group\n");

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -187,7 +187,7 @@ for my $Character (@SpecialCharacters) {
     );
 
     # select like value (with underscore)
-    $Character = 'otrs_test';
+    $Character     = 'otrs_test';
     $CharacterLike = $DBObject->Quote( $Character, 'Like' );
 
     # proof of concept that oracle needs special treatment

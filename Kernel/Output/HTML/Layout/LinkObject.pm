@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -291,7 +291,7 @@ sub LinkObjectTableCreateComplex {
 
     my $BlockCounter = 0;
 
-    my $Config = $Kernel::OM->Get('Kernel::Config')->Get("LinkObject::ComplexTable") || {};
+    my $Config             = $Kernel::OM->Get('Kernel::Config')->Get("LinkObject::ComplexTable") || {};
     my $SettingsVisibility = $Kernel::OM->Get('Kernel::Config')->Get("LinkObject::ComplexTable::SettingsVisibility")
         || {};
 
@@ -571,7 +571,7 @@ sub LinkObjectTableCreateSimple {
         }
 
         # investigate link type name
-        my @LinkData = split q{::}, $LinkTypeLinkDirection;
+        my @LinkData     = split q{::}, $LinkTypeLinkDirection;
         my $LinkTypeName = $TypeList{ $LinkData[0] }->{ $LinkData[1] . 'Name' };
 
         # output the type block

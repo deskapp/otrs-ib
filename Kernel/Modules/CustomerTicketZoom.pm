@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -97,7 +97,7 @@ sub Run {
 
     # get all articles of this ticket
     my @CustomerArticleTypes = $TicketObject->ArticleTypeList( Type => 'Customer' );
-    my @ArticleBox = $TicketObject->ArticleContentIndex(
+    my @ArticleBox           = $TicketObject->ArticleContentIndex(
         TicketID                   => $Self->{TicketID},
         ArticleType                => \@CustomerArticleTypes,
         StripPlainBodyAsAttachment => $StripPlainBodyAsAttachment,
@@ -187,12 +187,12 @@ sub Run {
         my $Priorities = $Self->_GetPriorities(
             %GetParam,
             CustomerUserID => $CustomerUser || '',
-            TicketID => $Self->{TicketID},
+            TicketID       => $Self->{TicketID},
         );
         my $NextStates = $Self->_GetNextStates(
             %GetParam,
             CustomerUserID => $CustomerUser || '',
-            TicketID => $Self->{TicketID},
+            TicketID       => $Self->{TicketID},
         );
 
         # update Dynamic Fields Possible Values via AJAX
@@ -1029,7 +1029,7 @@ sub _Mask {
             Data => {
                 Valid => $Type{ValidID},
                 %Param,
-                }
+            }
         );
     }
 
@@ -1403,7 +1403,7 @@ sub _Mask {
                             Name => 'Chat',
                             Data => {
                                 %Param,
-                                }
+                            }
                         );
                     }
                     else {
@@ -1445,7 +1445,7 @@ sub _Mask {
                                     Name => 'Chat',
                                     Data => {
                                         %Param,
-                                        }
+                                    }
                                 );
                             }
                         }
@@ -1630,7 +1630,7 @@ sub _Mask {
                     ChatMessages => $Kernel::OM->Get('Kernel::System::JSON')->Decode(
                         Data => $Article{Body},
                     ),
-                    }
+                }
             );
         }
         else {

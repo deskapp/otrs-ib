@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -145,7 +145,7 @@ $Self->Is(
 );
 
 my %SystemAddressList = $SystemAddressObject->SystemAddressList( Valid => 0 );
-my $Hit = 0;
+my $Hit               = 0;
 for ( sort keys %SystemAddressList ) {
     if ( $_ eq $SystemAddressID ) {
         $Hit = 1;
@@ -158,7 +158,7 @@ $Self->True(
 
 # caching
 %SystemAddressList = $SystemAddressObject->SystemAddressList( Valid => 0 );
-$Hit = 0;
+$Hit               = 0;
 for ( sort keys %SystemAddressList ) {
     if ( $_ eq $SystemAddressID ) {
         $Hit = 1;

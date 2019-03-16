@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -105,7 +105,7 @@ sub Run {
         );
 
         if ($NameExists) {
-            $Errors{NameExists} = 1;
+            $Errors{NameExists}    = 1;
             $Errors{'NameInvalid'} = 'ServerError';
         }
 
@@ -195,7 +195,7 @@ sub Run {
         # check if a type exists with this name
         my $NameExists = $TypeObject->NameExistsCheck( Name => $GetParam{Name} );
         if ($NameExists) {
-            $Errors{NameExists} = 1;
+            $Errors{NameExists}    = 1;
             $Errors{'NameInvalid'} = 'ServerError';
         }
 
@@ -330,7 +330,7 @@ sub _Overview {
     );
 
     my $TypeObject = $Kernel::OM->Get('Kernel::System::Type');
-    my %List = $TypeObject->TypeList( Valid => 0 );
+    my %List       = $TypeObject->TypeList( Valid => 0 );
 
     # if there are any types, they are shown
     if (%List) {

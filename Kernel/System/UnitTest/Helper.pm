@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -144,7 +144,7 @@ my %GetRandomNumberPrevious;
 sub GetRandomNumber {
 
     my $PIDReversed = reverse $$;
-    my $PID = reverse sprintf '%.6d', $PIDReversed;
+    my $PID         = reverse sprintf '%.6d', $PIDReversed;
 
     my $Prefix = $PID . substr time(), -5, 5;
 
@@ -676,7 +676,7 @@ use Kernel::System::WebUserAgent;
 sub CustomCodeActivate {
     my ( $Self, %Param ) = @_;
 
-    my $Code = $Param{Code};
+    my $Code       = $Param{Code};
     my $Identifier = $Param{Identifier} || $Self->GetRandomNumber();
 
     die "Need 'Code'" if !defined $Code;

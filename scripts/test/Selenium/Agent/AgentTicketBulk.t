@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -329,6 +329,14 @@ $Selenium->RunTest(
         $Selenium->execute_script("\$('#PriorityID').val('4').trigger('redraw.InputField').trigger('change');");
         $Selenium->WaitFor( JavaScript => 'return typeof($) === "function" && !$(".AJAXLoader:visible").length;' );
 
+        # Check if form update for Queue is working well.
+        # See bug #14226
+        $Self->Is(
+            $Selenium->execute_script("return \$('#QueueID option:selected').text();"),
+            "-",
+            "On form update - Queue is not selected",
+        );
+
         $Self->Is(
             $Selenium->execute_script("return \$('#TypeID option[value=1]').text();"),
             "Unclassified",
@@ -463,7 +471,7 @@ $Selenium->RunTest(
                     $UserIDs[0] => 1,
                     $UserIDs[1] => 1,
                     $UserIDs[2] => 0,
-                    }
+                }
             },
             {
                 SelectedQueueID => $QueueIDs[1],
@@ -471,7 +479,7 @@ $Selenium->RunTest(
                     $UserIDs[0] => 0,
                     $UserIDs[1] => 0,
                     $UserIDs[2] => 1,
-                    }
+                }
             }
         );
 

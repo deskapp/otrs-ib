@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -225,7 +225,7 @@ sub PossibleLinkList {
 
     # get possible link list
     my $PossibleLinkListRef = $ConfigObject->Get('LinkObject::PossibleLink') || {};
-    my %PossibleLinkList = %{$PossibleLinkListRef};
+    my %PossibleLinkList    = %{$PossibleLinkListRef};
 
     # prepare the possible link list
     POSSIBLELINK:
@@ -983,7 +983,7 @@ sub LinkList {
 
     # prepare SQL statement
     my $TypeSQL = '';
-    my @Bind = ( \$ObjectID, \$Param{Key}, \$StateID );
+    my @Bind    = ( \$ObjectID, \$Param{Key}, \$StateID );
 
     # add type id to SQL statement
     if ( $Param{Type} ) {
@@ -1886,7 +1886,7 @@ sub TypeList {
 
     # get type list
     my $TypeListRef = $Kernel::OM->Get('Kernel::Config')->Get('LinkObject::Type') || {};
-    my %TypeList = %{$TypeListRef};
+    my %TypeList    = %{$TypeListRef};
 
     # get check item object
     my $CheckItemObject = $Kernel::OM->Get('Kernel::System::CheckItem');
@@ -1950,7 +1950,7 @@ sub TypeGroupList {
 
     # get possible type groups
     my $TypeGroupListRef = $Kernel::OM->Get('Kernel::Config')->Get('LinkObject::TypeGroup') || {};
-    my %TypeGroupList = %{$TypeGroupListRef};
+    my %TypeGroupList    = %{$TypeGroupListRef};
 
     # get check item object
     my $CheckItemObject = $Kernel::OM->Get('Kernel::System::CheckItem');

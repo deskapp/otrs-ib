@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -3375,7 +3375,7 @@ sub _StoreActivityDialog {
                     }
 
                     if ( $ValidationResult->{ServerError} ) {
-                        $Error{ $DynamicFieldConfig->{Name} } = 1;
+                        $Error{ $DynamicFieldConfig->{Name} }        = 1;
                         $ErrorMessage{ $DynamicFieldConfig->{Name} } = $ValidationResult->{ErrorMessage} || '';
                     }
 
@@ -3743,7 +3743,7 @@ sub _StoreActivityDialog {
         }
 
         if ( $CurrentField =~ m{^DynamicField_(.*)}xms ) {
-            my $DynamicFieldName = $1;
+            my $DynamicFieldName   = $1;
             my $DynamicFieldConfig = ( grep { $_->{Name} eq $DynamicFieldName } @{$DynamicField} )[0];
 
             if ( !IsHashRefWithData($DynamicFieldConfig) ) {

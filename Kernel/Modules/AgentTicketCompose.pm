@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -1293,7 +1293,7 @@ sub Run {
             if ( $Data{Body} ) {
                 $Data{Body} =~ s/\t/ /g;
                 my $Quote = $LayoutObject->Ascii2Html(
-                    Text => $ConfigObject->Get('Ticket::Frontend::Quote') || '',
+                    Text           => $ConfigObject->Get('Ticket::Frontend::Quote') || '',
                     HTMLResultMode => 1,
                 );
                 if ($Quote) {

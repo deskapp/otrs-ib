@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -1033,7 +1033,7 @@ sub _GetUsers {
 
     # show all users who are rw in the queue group
     elsif ( $Param{QueueID} ) {
-        my $GID = $Kernel::OM->Get('Kernel::System::Queue')->GetQueueGroupID( QueueID => $Param{QueueID} );
+        my $GID        = $Kernel::OM->Get('Kernel::System::Queue')->GetQueueGroupID( QueueID => $Param{QueueID} );
         my %MemberList = $Kernel::OM->Get('Kernel::System::Group')->PermissionGroupGet(
             GroupID => $GID,
             Type    => 'rw',

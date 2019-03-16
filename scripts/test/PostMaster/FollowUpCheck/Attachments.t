@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -25,8 +25,8 @@ $ConfigObject->Set(
     Value => {
         '0400-Attachments' => {
             Module => 'Kernel::System::PostMaster::FollowUpCheck::Attachments',
-            }
         }
+    }
 );
 
 my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');

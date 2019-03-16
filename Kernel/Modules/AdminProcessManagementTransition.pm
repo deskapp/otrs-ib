@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -591,7 +591,7 @@ sub _ShowEdit {
                 Name => 'EditWarning',
                 Data => {
                     ProcessList => join( ', ', @{$AffectedProcesses} ),
-                    }
+                }
             );
         }
     }
@@ -667,7 +667,7 @@ sub _GetParams {
     my $ParamObject = $Kernel::OM->Get('Kernel::System::Web::Request');
 
     # get parameters from web browser
-    $GetParam->{Name} = $ParamObject->GetParam( Param => 'Name' ) || '';
+    $GetParam->{Name}            = $ParamObject->GetParam( Param => 'Name' ) || '';
     $GetParam->{ConditionConfig} = $ParamObject->GetParam( Param => 'ConditionConfig' )
         || '';
 

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -92,7 +92,7 @@ sub Run {
     my ( $Self, %Param ) = @_;
 
     my $MailAccountObject = $Kernel::OM->Get('Kernel::System::MailAccount');
-    my %List = $MailAccountObject->MailAccountList( Valid => 1 );
+    my %List              = $MailAccountObject->MailAccountList( Valid => 1 );
 
     my $Debug         = $Self->GetOption('debug');
     my $Timeout       = $Self->GetOption('timeout') || 600;

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -95,7 +95,7 @@ sub Run {
         $LayoutObject->ChallengeTokenCheck();
 
         # get user data
-        my $UserID = $ParamObject->GetParam( Param => 'ID' ) || '';
+        my $UserID   = $ParamObject->GetParam( Param => 'ID' ) || '';
         my %UserData = $CustomerUserObject->CustomerUserDataGet(
             User  => $UserID,
             Valid => 1,
@@ -238,7 +238,7 @@ sub Run {
 
         # get user data
         my %UserData = $CustomerUserObject->CustomerUserDataGet( User => $User );
-        my $Output = $NavBar;
+        my $Output   = $NavBar;
         $Output .= $Self->_Edit(
             Nav    => $Nav,
             Action => 'Change',

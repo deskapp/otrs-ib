@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 
 This software comes with ABSOLUTELY NO WARRANTY. For details, see
 the enclosed file COPYING for license information (GPL). If you
@@ -280,6 +280,30 @@ textarea.cke_dialog_ui_input_textarea:focus {
 
 #Footer a:hover {
     color: #F92;
+}
+
+#Footer ul.FooterLinks {
+    float: none;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+#Footer ul.FooterLinks li {
+    float: none;
+    display: inline-block;
+    padding: 0;
+}
+
+#Footer ul.FooterLinks li::after {
+    content: '|';
+}
+
+#Footer ul.FooterLinks li:last-child::after {
+    content: '';
+}
+
+#Footer ul.FooterLinks li a {
+    margin: 8px 0 7px 0;
 }
 
 /**

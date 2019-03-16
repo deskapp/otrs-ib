@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -105,7 +105,7 @@ sub Post {
                 next DATA if !$URLRef->{URL} || !$URLRef->{Image} || !$URLRef->{Target};
 
                 my $KeywordQuote = $LayoutObject->Ascii2Html( Text => $Keyword );
-                my $URL = $URLRef->{URL};
+                my $URL          = $URLRef->{URL};
 
                 # replace the whole keyword
                 my $KeywordLinkEncode = $LayoutObject->LinkEncode($Keyword);

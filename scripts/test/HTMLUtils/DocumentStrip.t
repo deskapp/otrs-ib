@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -135,7 +135,7 @@ bgColor=#ffffff>
 for my $Test (@Tests) {
 
     # these 2 lines are for Windows check-out
-    $Test->{Input} =~ s{\r\n}{\n}smxg;
+    $Test->{Input}  =~ s{\r\n}{\n}smxg;
     $Test->{Result} =~ s{\r\n}{\n}smxg;
     my $Ascii = $HTMLUtilsObject->DocumentStrip(
         String => $Test->{Input},

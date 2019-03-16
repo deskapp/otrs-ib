@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -143,7 +143,7 @@ my @Tests = (
             'image2.png' => 1,
             'image3.png' => 1,
             'some.html'  => 1,
-            }
+        }
     },
     {
         Config => {
@@ -157,7 +157,7 @@ my @Tests = (
         Attachment         => {
             'image4.png' => 1,
             'some.html'  => 1,
-            }
+        }
     },
     {
         Config => {
@@ -170,7 +170,7 @@ my @Tests = (
         AttachmentsInclude => 0,
         Attachment         => {
             'image.png' => 1,
-            }
+        }
     },
     {
         Config => {

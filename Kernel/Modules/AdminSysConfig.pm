@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -711,7 +711,7 @@ sub Run {
                 for my $Index ( 1 .. $#{ $ItemHash{Setting}->[1]->{TimeWorkingHours}->[1]->{Day} } )
                 {
                     my $Weekday = $ItemHash{Setting}->[1]->{TimeWorkingHours}->[1]->{Day}->[$Index]->{Name};
-                    my @Hours = $ParamObject->GetArray( Param => $_ . $Weekday . '[]' );
+                    my @Hours   = $ParamObject->GetArray( Param => $_ . $Weekday . '[]' );
                     $Content{$Weekday} = \@Hours;
                 }
 

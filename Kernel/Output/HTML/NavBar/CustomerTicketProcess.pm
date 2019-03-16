@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -137,7 +137,7 @@ sub Run {
 
     # frontend module is enabled but there is no selectable process, then remove the menu entry
     my $NavBarName = $FrontendModuleConfig->{NavBarName};
-    my $Priority = sprintf( "%07d", $FrontendModuleConfig->{NavBar}->[0]->{Prio} );
+    my $Priority   = sprintf( "%07d", $FrontendModuleConfig->{NavBar}->[0]->{Prio} );
 
     my %Return = %{ $Param{NavBarModule}->{Sub} };
 

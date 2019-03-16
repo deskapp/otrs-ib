@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -43,8 +43,8 @@ $Selenium->RunTest(
         $Selenium->find_element( "table thead tr th", 'css' );
         $Selenium->find_element( "table tbody tr td", 'css' );
 
-        # click 'add group' linK
-        $Selenium->find_element("//button[\@value='Add'][\@type='submit']")->VerifiedClick();
+        # Click 'Add group' link, it should not be a form link. See bug#14148.
+        $Selenium->find_element("//a[contains(\@href, \'Action=AdminGroup;Subaction=Add' )]")->VerifiedClick();
 
         # check add page
         my $Element = $Selenium->find_element( "#GroupName", 'css' );

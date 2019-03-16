@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -132,7 +132,7 @@ sub Run {
         # remove certificate and private key if exists
         else {
             my $Certificate = $SMIMEObject->CertificateGet( Filename => $Filename );
-            my %Attributes = $SMIMEObject->CertificateAttributes(
+            my %Attributes  = $SMIMEObject->CertificateAttributes(
                 Certificate => $Certificate,
             );
 

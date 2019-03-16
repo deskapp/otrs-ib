@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -141,11 +141,11 @@ sub Auth {
 
             if ( $Magic eq '$apr1$' ) {
                 $CryptedPw = apache_md5_crypt( $Pw, $Salt );
-                $Method = 'apache_md5_crypt';
+                $Method    = 'apache_md5_crypt';
             }
             else {
                 $CryptedPw = unix_md5_crypt( $Pw, $Salt );
-                $Method = 'unix_md5_crypt';
+                $Method    = 'unix_md5_crypt';
             }
 
         }
@@ -253,7 +253,7 @@ sub Auth {
         $EncodeObject->EncodeOutput( \$Pw );
         $EncodeObject->EncodeOutput( \$Salt );
         $CryptedPw = crypt( $Pw, $Salt );
-        $Method = 'crypt';
+        $Method    = 'crypt';
     }
 
     # just in case for debug!

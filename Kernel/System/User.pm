@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -633,7 +633,7 @@ sub UserUpdate {
 
     # TODO Not needed to delete the cache if ValidID or Name was not changed
 
-    my $CacheObject = $Kernel::OM->Get('Kernel::System::Cache');
+    my $CacheObject            = $Kernel::OM->Get('Kernel::System::Cache');
     my $SystemPermissionConfig = $Kernel::OM->Get('Kernel::Config')->Get('System::Permission') || [];
 
     for my $Type ( @{$SystemPermissionConfig}, 'rw' ) {
@@ -816,7 +816,7 @@ sub SetPassword {
         return;
     }
 
-    my $Pw = $Param{PW} || '';
+    my $Pw        = $Param{PW} || '';
     my $CryptedPw = '';
 
     # get crypt type
@@ -1114,7 +1114,7 @@ sub UserList {
 
     # check cache
     my $CacheKey = join '::', 'UserList', $Type, $Valid, $FirstnameLastNameOrder, $NoOutOfOffice;
-    my $Cache = $Kernel::OM->Get('Kernel::System::Cache')->Get(
+    my $Cache    = $Kernel::OM->Get('Kernel::System::Cache')->Get(
         Type => $Self->{CacheType},
         Key  => $CacheKey,
     );
@@ -1336,7 +1336,7 @@ sub _UserCacheClear {
     my $FirstnameLastNameOrder = $Kernel::OM->Get('Kernel::Config')->Get('FirstnameLastnameOrder') || 0;
 
     # create cachekey
-    my $Login = $Self->UserLookup( UserID => $Param{UserID} );
+    my $Login     = $Self->UserLookup( UserID => $Param{UserID} );
     my @CacheKeys = (
         'GetUserData::User::' . $Login . '::0::' . $FirstnameLastNameOrder . '::0',
         'GetUserData::User::' . $Login . '::0::' . $FirstnameLastNameOrder . '::1',

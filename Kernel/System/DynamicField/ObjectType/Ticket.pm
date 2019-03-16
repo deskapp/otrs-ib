@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -171,21 +171,21 @@ sub PostValueSet {
 
         # limit FieldName to 55 chars if is necessary
         my $FieldNameLength = int( ( $NoCharacters - length($HistoryOldValue) ) / 2 );
-        my $ValueLength = $FieldNameLength;
+        my $ValueLength     = $FieldNameLength;
         if ( length($FieldName) > $FieldNameLength ) {
 
             # HistoryValue will be at least 55 chars or more, if is FieldName or HistoryOldValue less than 55 chars
             if ( length($HistoryValue) > $ValueLength ) {
                 $FieldNameLength = $FieldNameLength - 5;
-                $FieldName = substr( $FieldName, 0, $FieldNameLength );
+                $FieldName       = substr( $FieldName, 0, $FieldNameLength );
                 $FieldName .= '[...]';
-                $ValueLength = $ValueLength - 5;
+                $ValueLength  = $ValueLength - 5;
                 $HistoryValue = substr( $HistoryValue, 0, $ValueLength );
                 $HistoryValue .= '[...]';
             }
             else {
                 $FieldNameLength = $NoCharacters - length($HistoryOldValue) - length($HistoryValue) - 5;
-                $FieldName = substr( $FieldName, 0, $FieldNameLength );
+                $FieldName       = substr( $FieldName, 0, $FieldNameLength );
                 $FieldName .= '[...]';
             }
         }

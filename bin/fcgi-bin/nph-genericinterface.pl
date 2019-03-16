@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ while ( my $WebRequest = new CGI::Fast ) {
     local $Kernel::OM = Kernel::System::ObjectManager->new(
         'Kernel::System::Web::Request' => {
             WebRequest => $WebRequest,
-            }
+        }
     );
     my $Provider = Kernel::GenericInterface::Provider->new();
 

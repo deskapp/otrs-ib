@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -169,7 +169,7 @@ $Selenium->RunTest(
 
         # Ticket::SubjectSize is set to 60 at the beginning of test
         my $ShortTitle = substr( $LongTicketTitle, 0, 57 ) . "...";
-        my $Success = $TicketObject->TicketTitleUpdate(
+        my $Success    = $TicketObject->TicketTitleUpdate(
             Title    => $LongTicketTitle,
             TicketID => $TicketIDs[1],
             UserID   => 1,

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -135,7 +135,7 @@ $Selenium->RunTest(
         $Selenium->find_element( "#submitRichText", 'css' )->VerifiedClick();
 
         # Get created test ticket ID and number.
-        my @Ticket = split( 'TicketID=', $Selenium->get_current_url() );
+        my @Ticket   = split( 'TicketID=', $Selenium->get_current_url() );
         my $TicketID = $Ticket[1];
 
         # Go to ticket zoom page of created test ticket.

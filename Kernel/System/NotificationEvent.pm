@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -705,7 +705,7 @@ sub NotificationEventCheck {
     my $DBObject    = $Kernel::OM->Get('Kernel::System::DB');
     my $ValidObject = $Kernel::OM->Get('Kernel::System::Valid');
 
-    my @ValidIDs = $ValidObject->ValidIDsGet();
+    my @ValidIDs      = $ValidObject->ValidIDsGet();
     my $ValidIDString = join ', ', @ValidIDs;
 
     $DBObject->Prepare(

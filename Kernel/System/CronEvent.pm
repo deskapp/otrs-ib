@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -385,7 +385,7 @@ sub _Init {
     my ( $Min, $Hour, $DayMonth, $Month, $DayWeek ) = split ' ', $Param{Schedule};
     if ( IsPositiveInteger($DayMonth) && IsPositiveInteger($Month) ) {
 
-        my @MonthLastDay = ( 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 );
+        my @MonthLastDay   = ( 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 );
         my $LastDayOfMonth = $MonthLastDay[ $Month - 1 ];
 
         if ( $DayMonth > $LastDayOfMonth ) {

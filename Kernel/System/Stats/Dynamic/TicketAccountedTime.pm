@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -1259,7 +1259,7 @@ sub _ReportingValues {
 
     if ( $SelectedKindsOfReporting{TicketAverage} ) {
         my $NumberOfTickets = scalar keys %TicketID;
-        my $Average = $NumberOfTickets ? $Time / $NumberOfTickets : 0;
+        my $Average         = $NumberOfTickets ? $Time / $NumberOfTickets : 0;
         $Reporting{TicketAverage} = sprintf( "%.2f", $Average );
     }
     if ( $SelectedKindsOfReporting{TicketMinTime} ) {
@@ -1273,7 +1273,7 @@ sub _ReportingValues {
     }
     if ( $SelectedKindsOfReporting{ArticleAverage} ) {
         my $NumberOfArticles = scalar keys %ArticleID;
-        my $Average = $NumberOfArticles ? $Time / $NumberOfArticles : 0;
+        my $Average          = $NumberOfArticles ? $Time / $NumberOfArticles : 0;
         $Reporting{ArticleAverage} = sprintf( "%.2f", $Average );
     }
     if ( $SelectedKindsOfReporting{ArticleMinTime} ) {

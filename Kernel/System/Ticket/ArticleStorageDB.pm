@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -140,7 +140,7 @@ sub ArticleDeletePlain {
 
     # delete from fs
     my $ContentPath = $Self->ArticleGetContentPath( ArticleID => $Param{ArticleID} );
-    my $File = "$Self->{ArticleDataDir}/$ContentPath/$Param{ArticleID}/plain.txt";
+    my $File        = "$Self->{ArticleDataDir}/$ContentPath/$Param{ArticleID}/plain.txt";
     if ( -f $File ) {
         if ( !unlink $File ) {
             $Kernel::OM->Get('Kernel::System::Log')->Log(
@@ -181,7 +181,7 @@ sub ArticleDeleteAttachment {
 
     # delete from fs
     my $ContentPath = $Self->ArticleGetContentPath( ArticleID => $Param{ArticleID} );
-    my $Path = "$Self->{ArticleDataDir}/$ContentPath/$Param{ArticleID}";
+    my $Path        = "$Self->{ArticleDataDir}/$ContentPath/$Param{ArticleID}";
 
     if ( -e $Path ) {
 
@@ -712,7 +712,7 @@ sub ArticleAttachment {
 
     # try fileystem, if no content is found
     my $ContentPath = $Self->ArticleGetContentPath( ArticleID => $Param{ArticleID} );
-    my $Counter = 0;
+    my $Counter     = 0;
 
     # get main object
     my $MainObject = $Kernel::OM->Get('Kernel::System::Main');
@@ -865,7 +865,7 @@ sub _ArticleDeleteDirectory {
 
     # delete directory from fs
     my $ContentPath = $Self->ArticleGetContentPath( ArticleID => $Param{ArticleID} );
-    my $Path = "$Self->{ArticleDataDir}/$ContentPath/$Param{ArticleID}";
+    my $Path        = "$Self->{ArticleDataDir}/$ContentPath/$Param{ArticleID}";
     if ( -d $Path ) {
         if ( !rmdir $Path ) {
             $Kernel::OM->Get('Kernel::System::Log')->Log(

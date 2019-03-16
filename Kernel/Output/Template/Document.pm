@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -81,7 +81,7 @@ sub _InstallOTRSExtensions {
             my $stash = $Context->localise($_tt_params);
             eval {
 
-                my $BlockName = $stash->get('BlockName');
+                my $BlockName   = $stash->get('BlockName');
                 my $ParentBlock = $stash->get('ParentBlock') || $stash->{_BlockTree};
 
                 return if !exists $ParentBlock->{Children};
@@ -206,10 +206,10 @@ sub _PrecalculateBlockStructure {
 
     BLOCKPATHIDENTIFIER:
     for my $BlockIdentifier ( sort keys %{$Defblocks} ) {
-        my @BlockPath = split( m{/}, $BlockIdentifier );
+        my @BlockPath       = split( m{/}, $BlockIdentifier );
         my $BlockPathLength = scalar @BlockPath;
         next BLOCKPATHIDENTIFIER if !$BlockPathLength;
-        $BlockPaths->{ $BlockPath[-1] } = $BlockIdentifier;
+        $BlockPaths->{ $BlockPath[-1] }   = $BlockIdentifier;
         $BlockParents->{ $BlockPath[-1] } = [ splice( @BlockPath, 0, $BlockPathLength - 1 ) ];
     }
 

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -47,7 +47,7 @@ sub Run {
     # ------------------------------------------------------------ #
     if ( $Self->{Subaction} eq 'Change' ) {
         my $CustomerID = $ParamObject->GetParam( Param => 'CustomerID' ) || '';
-        my %Data = $CustomerCompanyObject->CustomerCompanyGet(
+        my %Data       = $CustomerCompanyObject->CustomerCompanyGet(
             CustomerID => $CustomerID,
         );
         $Data{CustomerCompanyID} = $CustomerID;

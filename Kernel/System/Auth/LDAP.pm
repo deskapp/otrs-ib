@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -35,7 +35,7 @@ sub new {
 
     # get ldap preferences
     $Self->{Count} = $Param{Count} || '';
-    $Self->{Die} = $ConfigObject->Get( 'AuthModule::LDAP::Die' . $Param{Count} );
+    $Self->{Die}   = $ConfigObject->Get( 'AuthModule::LDAP::Die' . $Param{Count} );
     if ( $ConfigObject->Get( 'AuthModule::LDAP::Host' . $Param{Count} ) ) {
         $Self->{Host} = $ConfigObject->Get( 'AuthModule::LDAP::Host' . $Param{Count} );
     }

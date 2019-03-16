@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -1023,7 +1023,7 @@ sub SendEmail {
     if (%Error) {
 
         my $QueueID = $TicketObject->TicketQueueID( TicketID => $Self->{TicketID} );
-        my $Output = $LayoutObject->Header(
+        my $Output  = $LayoutObject->Header(
             Type      => 'Small',
             BodyClass => 'Popup',
         );

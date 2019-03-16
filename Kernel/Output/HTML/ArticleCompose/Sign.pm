@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -65,7 +65,7 @@ sub Run {
         # get default signing key
         if ( $Param{QueueID} ) {
             my $QueueObject = $Kernel::OM->Get('Kernel::System::Queue');
-            my %Queue = $QueueObject->QueueGet( ID => $Param{QueueID} );
+            my %Queue       = $QueueObject->QueueGet( ID => $Param{QueueID} );
             $Param{SignKeyID} = $Queue{DefaultSignKey} || '';
         }
     }
@@ -177,7 +177,7 @@ sub GetParamAJAX {
     # get default signing key
     if ( $Param{QueueID} ) {
         my $QueueObject = $Kernel::OM->Get('Kernel::System::Queue');
-        my %Queue = $QueueObject->QueueGet( ID => $Param{QueueID} );
+        my %Queue       = $QueueObject->QueueGet( ID => $Param{QueueID} );
         $Result{SignKeyID} = $Queue{DefaultSignKey} || '';
     }
 

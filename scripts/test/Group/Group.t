@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -68,7 +68,7 @@ for my $GroupName ( sort keys %GroupIDByGroupName ) {
 # try to fetch data of existing groups
 for my $GroupName ( sort keys %GroupIDByGroupName ) {
     my $GroupID = $GroupIDByGroupName{$GroupName};
-    my %Group = $GroupObject->GroupGet( ID => $GroupID );
+    my %Group   = $GroupObject->GroupGet( ID => $GroupID );
 
     $Self->Is(
         $Group{Name},

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -64,7 +64,7 @@ sub Check {
 
     # get needed objects
     my $TicketObject = $Param{TicketObject} || $Kernel::OM->Get('Kernel::System::Ticket');
-    my $PGPObject = $Kernel::OM->Get('Kernel::System::Crypt::PGP');
+    my $PGPObject    = $Kernel::OM->Get('Kernel::System::Crypt::PGP');
 
     # check inline pgp crypt
     if ( $Param{Article}->{Body} =~ /\A[\s\n]*^-----BEGIN PGP MESSAGE-----/m ) {

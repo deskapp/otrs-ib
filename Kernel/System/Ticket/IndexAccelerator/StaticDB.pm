@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -173,7 +173,7 @@ sub TicketAcceleratorUpdateOnQueueUpdate {
 
     # Updated ticket_index for all sub queue names when parent name is changed.
     # See bug#13570 (https://bugs.otrs.org/show_bug.cgi?id=13570).
-    my %AllQueue = $Kernel::OM->Get('Kernel::System::Queue')->QueueList( Valid => 0 );
+    my %AllQueue    = $Kernel::OM->Get('Kernel::System::Queue')->QueueList( Valid => 0 );
     my @ParentQueue = split( /::/, $Param{OldQueueName} );
 
     for my $QueueID ( sort keys %AllQueue ) {

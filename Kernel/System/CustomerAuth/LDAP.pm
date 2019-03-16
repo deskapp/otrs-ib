@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -74,7 +74,7 @@ sub new {
         || '';
     $Self->{SearchUserPw} = $ConfigObject->Get( 'Customer::AuthModule::LDAP::SearchUserPw' . $Param{Count} )
         || '';
-    $Self->{GroupDN} = $ConfigObject->Get( 'Customer::AuthModule::LDAP::GroupDN' . $Param{Count} ) || '';
+    $Self->{GroupDN}    = $ConfigObject->Get( 'Customer::AuthModule::LDAP::GroupDN' . $Param{Count} ) || '';
     $Self->{AccessAttr} = $ConfigObject->Get( 'Customer::AuthModule::LDAP::AccessAttr' . $Param{Count} )
         || '';
     $Self->{UserAttr} = $ConfigObject->Get( 'Customer::AuthModule::LDAP::UserAttr' . $Param{Count} )

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -566,7 +566,7 @@ sub Run {
         }
 
         # Add ActivityDialog to Dialog
-        my @Keys = sort { $a <=> $b } keys %{ $ActivityData->{Config}->{ActivityDialog} };
+        my @Keys   = sort { $a <=> $b } keys %{ $ActivityData->{Config}->{ActivityDialog} };
         my $NewKey = 1;
         if (@Keys) {
             my $LastKey = pop @Keys;
@@ -805,7 +805,7 @@ sub _ShowEdit {
                 Name => 'EditWarning',
                 Data => {
                     ProcessList => join( ', ', @{$AffectedProcesses} ),
-                    }
+                }
             );
         }
 

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -61,7 +61,7 @@ $Selenium->RunTest(
                     $Selenium->get_page_source(),
                     $LanguageObject->Get(
                         "There are no roles defined. Please use the 'Add' button to create a new role."
-                        )
+                    )
                 ) > -1,
                 "There are no roles defined.",
             );

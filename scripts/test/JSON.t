@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -72,7 +72,7 @@ my @Tests = (
                 },
                 Key4 => {
                     Bar => [ "f", "o", "o" ]
-                    }
+                }
             },
         ],
         Result =>
@@ -146,7 +146,7 @@ for my $Test (@Tests) {
                 },
                 Key4 => {
                     Bar => [ "f", "o", "o" ]
-                    }
+                }
             },
         ],
         InputDecode =>
@@ -197,7 +197,7 @@ for my $Test (@Tests) {
                 },
                 Key4 => {
                     Bar => [ 0, "o", 1 ]
-                    }
+                }
             },
         ],
         InputDecode =>

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -171,7 +171,7 @@ JAVASCRIPT
         );
 
         # type in some text & confirm by pressing 'enter', which should produce a new field
-        $Selenium->find_element( '#ACLMatch .DataItem .NewDataKey', 'css' )->send_keys( '<Test>', "\N{U+E007}" );
+        $Selenium->find_element( '#ACLMatch .DataItem .NewDataKey', 'css' )->send_keys("<Test>\N{U+E007}");
 
         # check if the text was escaped correctly
         $Self->Is(
@@ -201,13 +201,22 @@ JAVASCRIPT
         # element containing dynamic fields and an 'Add all' button
         $Selenium->find_element( "#ACLMatch .ItemAdd option[value='DynamicField']", 'css' )->VerifiedClick();
 
+        # Wait until element is shown.
+        $Selenium->WaitFor(
+            JavaScript => "return \$('#ACLMatch .DataItem .NewDataKeyDropdown').length;"
+        );
         $Self->Is(
             $Selenium->find_element( '#ACLMatch .DataItem .NewDataKeyDropdown', 'css' )->is_displayed(),
             '1',
             'Check for .NewDataKeyDropdown element',
         );
+
+        # Wait until element is shown.
+        $Selenium->WaitFor(
+            JavaScript => "return \$('#ACLMatch .DataItem .AddAll').length;"
+        );
         $Self->Is(
-            $Selenium->find_element( ' #ACLMatch .DataItem .AddAll', 'css' )->is_displayed(),
+            $Selenium->find_element( '#ACLMatch .DataItem .AddAll', 'css' )->is_displayed(),
             '1',
             'Check for .AddAll element',
         );

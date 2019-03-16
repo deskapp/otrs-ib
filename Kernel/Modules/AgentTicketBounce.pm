@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -49,7 +49,7 @@ sub Run {
 
     # get ticket data
     my $TicketObject = $Kernel::OM->Get('Kernel::System::Ticket');
-    my %Ticket = $TicketObject->TicketGet( TicketID => $Self->{TicketID} );
+    my %Ticket       = $TicketObject->TicketGet( TicketID => $Self->{TicketID} );
 
     # get config object
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
@@ -428,7 +428,7 @@ $Param{Signature}";
                 $Param{Body} =~ s/&lt;OTRS_BOUNCE_TO&gt;/&amp;lt;OTRS_BOUNCE_TO&amp;gt;/gi;
             }
 
-            $Param{InformationFormat} = $Param{Body};
+            $Param{InformationFormat}   = $Param{Body};
             $Param{InformSenderChecked} = $Param{InformSender} ? 'checked="checked"' : '';
 
             my $Output = $LayoutObject->Header(

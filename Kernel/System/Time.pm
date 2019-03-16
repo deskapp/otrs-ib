@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -373,7 +373,7 @@ returns the computed difference in seconds between UTC time and local time.
 sub ServerLocalTimeOffsetSeconds {
     my ( $Self, %Param ) = @_;
 
-    my $ServerTime = $Param{SystemTime} || time();
+    my $ServerTime      = $Param{SystemTime} || time();
     my $ServerLocalTime = Time::Local::timegm_nocheck( localtime($ServerTime) );
 
     # Check if local time and UTC time are different
@@ -420,7 +420,7 @@ sub MailTimeStamp {
     #   Therefore OTRS cannot generate the correct offset for the mail timestamp.
     #   So we need to use the real time configuration of the server to determine this properly.
 
-    my $ServerTime = time();
+    my $ServerTime     = time();
     my $ServerTimeDiff = $Self->ServerLocalTimeOffsetSeconds( SystemTime => $ServerTime );
 
     # calculate offset - should be '+0200', '-0600', '+0545' or '+0000'

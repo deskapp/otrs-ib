@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -1025,7 +1025,7 @@ sub _SendRecipientNotification {
             my ( $Sec, $Min, $Hour, $Day, $Month, $Year, $WeekDay ) = $TimeObject->SystemTime2Date(
                 SystemTime => $TimeObject->TimeStamp2SystemTime(
                     String => $LastNotificationHistory->{CreateTime},
-                    )
+                )
             );
 
             # get current date

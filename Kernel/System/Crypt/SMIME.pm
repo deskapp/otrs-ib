@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -639,13 +639,13 @@ sub _CheckCertificateList {
     my ( $Self, %Param ) = @_;
 
     my @CertList = @{ $Param{CertificateList} };
-    my $Search = $Param{Search} || '';
+    my $Search   = $Param{Search} || '';
 
     my @Result;
 
     for my $Filename (@CertList) {
         my $Certificate = $Self->CertificateGet( Filename => $Filename );
-        my %Attributes = $Self->CertificateAttributes(
+        my %Attributes  = $Self->CertificateAttributes(
             Certificate => $Certificate,
             Filename    => $Filename,
         );
@@ -994,7 +994,7 @@ sub CertificateGet {
         return if !$Param{Filename};
     }
 
-    my $File = "$Self->{CertPath}/$Param{Filename}";
+    my $File           = "$Self->{CertPath}/$Param{Filename}";
     my $CertificateRef = $Kernel::OM->Get('Kernel::System::Main')->FileRead( Location => $File );
 
     return if !$CertificateRef;
@@ -1273,7 +1273,7 @@ sub PrivateSearch {
 
     for my $File (@Certificates) {
         my $Certificate = $Self->CertificateGet( Filename => $File );
-        my %Attributes = $Self->CertificateAttributes(
+        my %Attributes  = $Self->CertificateAttributes(
             Certificate => $Certificate,
             Filename    => $File,
         );
@@ -2548,7 +2548,7 @@ sub _NormalizePrivateSecretFiles {
 
         # all private secret files has different content, just log this as a waring and continue to
         # the next wrong private secret file
-        $Details . "  The private secret file $File has information not stored in any other"
+        $Details .= "  The private secret file $File has information not stored in any other"
             . " private secret file for hash $Hash\n"
             . "    The file will not be deleted... <red>Warning</red>\n";
         next FILENAME;

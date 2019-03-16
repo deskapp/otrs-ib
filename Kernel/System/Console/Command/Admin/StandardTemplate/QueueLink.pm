@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -53,7 +53,7 @@ sub PreRun {
 
     # check queue
     $Self->{QueueName} = $Self->GetOption('queue-name');
-    $Self->{QueueID} = $Kernel::OM->Get('Kernel::System::Queue')->QueueLookup( Queue => $Self->{QueueName} );
+    $Self->{QueueID}   = $Kernel::OM->Get('Kernel::System::Queue')->QueueLookup( Queue => $Self->{QueueName} );
     if ( !$Self->{QueueID} ) {
         die "Queue '$Self->{QueueName}' does not exist.\n";
     }

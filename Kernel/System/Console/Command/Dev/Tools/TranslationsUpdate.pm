@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -137,7 +137,7 @@ sub HandleLanguage {
     my ( $Self, %Param ) = @_;
 
     my $Language = $Param{Language};
-    my $Module = $Param{Module} || '';
+    my $Module   = $Param{Module} || '';
 
     my $ModuleDirectory = $Module;
     my $LanguageFile;
@@ -738,7 +738,7 @@ sub WritePerlLanguageFile {
 
         $NewOut = <<"EOF";
 $Separator
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 $Separator
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you

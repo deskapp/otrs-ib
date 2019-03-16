@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -73,7 +73,7 @@ sub PreRun {
     my ( $Self, %Param ) = @_;
 
     # check if all groups exist
-    my @Groups = @{ $Self->GetOption('group') // [] };
+    my @Groups    = @{ $Self->GetOption('group') // [] };
     my %GroupList = reverse $Kernel::OM->Get('Kernel::System::Group')->GroupList();
 
     GROUP:

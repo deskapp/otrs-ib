@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -31,7 +31,7 @@ sub new {
     my $ParamObject = $Kernel::OM->Get('Kernel::System::Web::Request');
 
     # get current start-hit and preferences
-    my $Name = $ParamObject->GetParam( Param => 'Name' ) || '';
+    my $Name           = $ParamObject->GetParam( Param => 'Name' ) || '';
     my $PreferencesKey = 'UserDashboardUserOutOfOffice' . $Self->{Name};
 
     $Self->{PrefKey} = 'UserDashboardPref' . $Self->{Name} . '-Shown';

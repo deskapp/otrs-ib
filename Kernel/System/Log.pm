@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -172,8 +172,8 @@ sub Log {
 
     return 1 if $PriorityNum < $Self->{MinimumLevelNum};
 
-    my $Message = $Param{MSG} || $Param{Message} || '???';
-    my $Caller = $Param{Caller} || 0;
+    my $Message = $Param{MSG}    || $Param{Message} || '???';
+    my $Caller  = $Param{Caller} || 0;
 
     # returns the context of the current subroutine and sub-subroutine!
     my ( $Package1, $Filename1, $Line1, $Subroutine1 ) = caller( $Caller + 0 );

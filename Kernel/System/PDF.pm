@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -1999,7 +1999,7 @@ sub _TableCalculate {
             if ( !defined( $Param{ColumnData}->[$ColumnCounter]->{MinColWidth} ) ) {
                 $Param{ColumnData}->[$ColumnCounter]->{MinColWidth} = 0;
             }
-            my @Words = split( /\s+/, $Cell->{Content} );
+            my @Words         = split( /\s+/, $Cell->{Content} );
             my $WordMaxLength = 0;
             for (@Words) {
                 my $WordLength = length($_);
@@ -2720,7 +2720,7 @@ sub _TextCalculate {
                 # caculate exactly point of cut
                 while ( $RowForeWidth < $Param{Width} ) {
                     $RowFore .= substr( $RowRear, 0, 1 );
-                    $RowRear = substr( $RowRear, 1 );
+                    $RowRear      = substr( $RowRear, 1 );
                     $RowForeWidth = $Self->_StringWidth(
                         Text     => $RowFore,
                         Font     => $Param{Font},

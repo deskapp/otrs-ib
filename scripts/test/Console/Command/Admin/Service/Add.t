@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -85,7 +85,7 @@ $Self->Is(
 );
 
 # Parent (two levels) and child same name.
-$ExitCode = $CommandObject->Execute( '--name', $ParentServiceName, '--parent-name', $ServiceName );
+$ExitCode    = $CommandObject->Execute( '--name', $ParentServiceName, '--parent-name', $ServiceName );
 $ServiceName = $ServiceName . '::' . $ParentServiceName;
 $Self->Is(
     $ExitCode,

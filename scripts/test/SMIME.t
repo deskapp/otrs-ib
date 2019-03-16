@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -33,7 +33,7 @@ my $HomeDir = $ConfigObject->Get('Home');
 
 my $CertPath    = $ConfigObject->Get('Home') . "/var/tmp/certs";
 my $PrivatePath = $ConfigObject->Get('Home') . "/var/tmp/private";
-$CertPath =~ s{/{2,}}{/}smxg;
+$CertPath    =~ s{/{2,}}{/}smxg;
 $PrivatePath =~ s{/{2,}}{/}smxg;
 File::Path::rmtree($CertPath);
 File::Path::rmtree($PrivatePath);

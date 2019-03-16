@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -538,7 +538,7 @@ sub GetUsageHelp {
         if ( !$Option->{Required} ) {
             $OptionShort = "[$OptionShort]";
         }
-        $UsageText .= " $OptionShort";
+        $UsageText   .= " $OptionShort";
         $OptionsText .= sprintf " <green>%-30s</green> - %s", $OptionShort, $Option->{Description} . "\n";
     }
 
@@ -557,7 +557,7 @@ sub GetUsageHelp {
         if ( !$Argument->{Required} ) {
             $ArgumentShort = "[$ArgumentShort]";
         }
-        $UsageText .= " $ArgumentShort";
+        $UsageText     .= " $ArgumentShort";
         $ArgumentsText .= sprintf " <green>%-30s</green> - %s", $ArgumentShort,
             $Argument->{Description} . "\n";
     }

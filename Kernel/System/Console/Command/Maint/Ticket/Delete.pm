@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -44,7 +44,7 @@ sub Configure {
 sub PreRun {
     my ( $Self, %Param ) = @_;
 
-    my @TicketIDs     = @{ $Self->GetOption('ticket-id') //     [] };
+    my @TicketIDs     = @{ $Self->GetOption('ticket-id')     // [] };
     my @TicketNumbers = @{ $Self->GetOption('ticket-number') // [] };
 
     if ( !@TicketIDs && !@TicketNumbers ) {
@@ -59,7 +59,7 @@ sub Run {
 
     $Self->Print("<yellow>Deleting tickets...</yellow>\n");
 
-    my @TicketIDs     = @{ $Self->GetOption('ticket-id') //     [] };
+    my @TicketIDs     = @{ $Self->GetOption('ticket-id')     // [] };
     my @TicketNumbers = @{ $Self->GetOption('ticket-number') // [] };
 
     my @DeleteTicketIDs;

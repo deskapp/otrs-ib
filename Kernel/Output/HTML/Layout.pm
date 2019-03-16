@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -114,7 +114,7 @@ sub new {
     #   is none yet.
     if ( !$Self->{UserLanguage} ) {
         my @BrowserLanguages = split /\s*,\s*/, $Self->{Lang} || $ENV{HTTP_ACCEPT_LANGUAGE} || '';
-        my %Data = %{ $ConfigObject->Get('DefaultUsedLanguages') };
+        my %Data             = %{ $ConfigObject->Get('DefaultUsedLanguages') };
         LANGUAGE:
         for my $BrowserLang (@BrowserLanguages) {
             for my $Language ( reverse sort keys %Data ) {
@@ -628,7 +628,7 @@ sub Redirect {
     #  o http://bugs.otrs.org/show_bug.cgi?id=9835
     #  o http://support.microsoft.com/default.aspx?scid=kb;en-us;221154
     if ( $ENV{SERVER_SOFTWARE} =~ /^microsoft\-iis\/6/i ) {
-        my $Host = $ENV{HTTP_HOST} || $ConfigObject->Get('FQDN');
+        my $Host     = $ENV{HTTP_HOST} || $ConfigObject->Get('FQDN');
         my $HttpType = $ConfigObject->Get('HttpType');
         $Param{Redirect} = $HttpType . '://' . $Host . $Param{Redirect};
     }
@@ -2863,7 +2863,7 @@ sub NavigationBar {
                     %Param,
                     Config => $Jobs{$Job},
                     NavBar => \%NavBar || {}
-                    )
+                )
             );
         }
     }
@@ -3315,7 +3315,7 @@ sub BuildDateSelection {
                     defined( $Param{ $Prefix . 'Minute' } )
                     ? int( $Param{ $Prefix . 'Minute' } )
                     : $m
-                    )
+                )
                 ) . "\" "
                 . ( $Param{Disabled} ? 'readonly="readonly"' : '' ) . "/>";
         }
@@ -3565,6 +3565,23 @@ sub CustomerLogin {
         }
     }
 
+    # Display footer links.
+    my $FooterLinks = $ConfigObject->Get('PublicFrontend::FooterLinks');
+    if ( IsHashRefWithData($FooterLinks) ) {
+
+        my @FooterLinks;
+
+        for my $Link ( sort keys %{$FooterLinks} ) {
+
+            push @FooterLinks, {
+                Description => $FooterLinks->{$Link},
+                Target      => $Link,
+            };
+        }
+
+        $Param{FooterLinks} = \@FooterLinks;
+    }
+
     # create & return output
     $Output .= $Self->Output(
         TemplateFile => 'CustomerLogin',
@@ -3771,10 +3788,27 @@ sub CustomerFooter {
             || $Kernel::OM->Get('Kernel::System::Web::Request')->GetParam( Param => 'UnitTestMode' ) // 0;
     }
 
+    # Display footer links.
+    my $FooterLinks = $ConfigObject->Get('PublicFrontend::FooterLinks');
+    if ( IsHashRefWithData($FooterLinks) ) {
+
+        my @FooterLinks;
+
+        for my $Link ( sort keys %{$FooterLinks} ) {
+
+            push @FooterLinks, {
+                Description => $FooterLinks->{$Link},
+                Target      => $Link,
+            };
+        }
+
+        $Param{FooterLinks} = \@FooterLinks;
+    }
+
     # create & return output
     return $Self->Output(
         TemplateFile => "CustomerFooter$Type",
-        Data         => \%Param
+        Data         => \%Param,
     );
 }
 

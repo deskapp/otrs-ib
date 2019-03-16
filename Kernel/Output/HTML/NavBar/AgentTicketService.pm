@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -43,7 +43,7 @@ sub Run {
 
     # frontend module is enabled but not ticket service, then remove the menu entry
     my $NavBarName = $Config->{NavBarName};
-    my $Priority = sprintf( "%07d", $Config->{NavBar}->[0]->{Prio} );
+    my $Priority   = sprintf( "%07d", $Config->{NavBar}->[0]->{Prio} );
 
     my %Return = %{ $Param{NavBar}->{Sub} };
 

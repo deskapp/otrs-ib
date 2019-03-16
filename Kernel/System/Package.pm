@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -2071,7 +2071,7 @@ build an opm package
 sub PackageBuild {
     my ( $Self, %Param ) = @_;
 
-    my $XML = '';
+    my $XML  = '';
     my $Home = $Param{Home} || $Self->{ConfigObject}->Get('Home');
 
     # check needed stuff
@@ -3928,7 +3928,7 @@ sub _MergedPackages {
     return 1 if ref $Param{Structure}->{PackageMerge} ne 'ARRAY';
 
     # get repository list
-    my @RepositoryList = $Self->RepositoryList();
+    my @RepositoryList    = $Self->RepositoryList();
     my %PackageListLookup = map { $_->{Name}->{Content} => $_ } @RepositoryList;
 
     # check required packages

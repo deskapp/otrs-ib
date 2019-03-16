@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -447,7 +447,7 @@ sub TransportSettingsDisplayGet {
 
     # set security settings enabled
     $Param{EmailSecuritySettings} = ( $Param{Data}->{EmailSecuritySettings} ? 'checked="checked"' : '' );
-    $Param{SecurityDisabled} = 0;
+    $Param{SecurityDisabled}      = 0;
 
     if ( $Param{EmailSecuritySettings} eq '' ) {
         $Param{SecurityDisabled} = 1;

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -45,7 +45,7 @@ Some Content in Body',
         NewTicket => 1,
         Check     => {
             Type => 'Unclassified',
-            }
+        }
     },
     {
         Name  => 'Valid ticket type (Unclassified)',
@@ -58,7 +58,7 @@ Some Content in Body',
         NewTicket => 1,
         Check     => {
             Type => 'X-OTRS-Type-Test',
-            }
+        }
     },
     {
         Name  => 'Invalid ticket type, ticket still needs to be created',
@@ -71,7 +71,7 @@ Some Content in Body',
         NewTicket => 1,
         Check     => {
             Type => 'Unclassified',
-            }
+        }
     },
 );
 

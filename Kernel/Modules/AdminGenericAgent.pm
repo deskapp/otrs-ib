@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -1279,7 +1279,7 @@ sub _MaskRun {
 
     # perform ticket search
     my $GenericAgentTicketSearch = $ConfigObject->Get("Ticket::GenericAgentTicketSearch") || {};
-    my $Counter = $TicketObject->TicketSearch(
+    my $Counter                  = $TicketObject->TicketSearch(
         Result          => 'COUNT',
         SortBy          => 'Age',
         OrderBy         => 'Down',

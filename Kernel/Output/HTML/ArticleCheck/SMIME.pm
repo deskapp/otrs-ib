@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -62,7 +62,7 @@ sub Check {
     my $StoreDecryptedData = $ConfigObject->Get('SMIME::StoreDecryptedData');
 
     # get needed objects
-    my $SMIMEObject = $Kernel::OM->Get('Kernel::System::Crypt::SMIME');
+    my $SMIMEObject  = $Kernel::OM->Get('Kernel::System::Crypt::SMIME');
     my $TicketObject = $Param{TicketObject} || $Kernel::OM->Get('Kernel::System::Ticket');
 
     # check inline smime
@@ -266,7 +266,7 @@ sub Check {
                 # made if sender and signer addresses does not match
 
                 # get original sender from email
-                my @OrigEmail = map {"$_\n"} split( /\n/, $Message );
+                my @OrigEmail        = map {"$_\n"} split( /\n/, $Message );
                 my $ParserObjectOrig = Kernel::System::EmailParser->new(
                     Email => \@OrigEmail,
                 );
@@ -381,7 +381,7 @@ sub Check {
                 # made if sender and signer addresses does not match
 
                 # get original sender from email
-                my @OrigEmail = map {"$_\n"} split( /\n/, $Message );
+                my @OrigEmail        = map {"$_\n"} split( /\n/, $Message );
                 my $ParserObjectOrig = Kernel::System::EmailParser->new(
                     Email => \@OrigEmail,
                 );

@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -212,7 +212,7 @@ sub Run {
 
         # get params
         my $PostUser = $ParamObject->GetParam( Param => 'User' ) || '';
-        my $PostPw = $ParamObject->GetParam(
+        my $PostPw   = $ParamObject->GetParam(
             Param => 'Password',
             Raw   => 1
         ) || '';
@@ -251,7 +251,7 @@ sub Run {
                             HTTPOnly => 1,
                         ),
                     },
-                    }
+                }
             );
             my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
 
@@ -645,7 +645,7 @@ sub Run {
         );
 
         # verify user is valid when requesting password reset
-        my @ValidIDs = $Kernel::OM->Get('Kernel::System::Valid')->ValidIDsGet();
+        my @ValidIDs    = $Kernel::OM->Get('Kernel::System::Valid')->ValidIDsGet();
         my $UserIsValid = grep { $UserData{ValidID} && $UserData{ValidID} == $_ } @ValidIDs;
         if ( !$UserData{UserID} || !$UserIsValid ) {
 

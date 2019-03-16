@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -439,20 +439,20 @@ sub TableCreateComplex {
                     elsif ( $Column eq 'EscalationSolutionTime' ) {
 
                         $Hash{'Content'} = $Self->{LayoutObject}->CustomerAgeInHours(
-                            Age => $Ticket->{SolutionTime} || 0,
+                            Age   => $Ticket->{SolutionTime} || 0,
                             Space => ' ',
                         );
                     }
                     elsif ( $Column eq 'EscalationResponseTime' ) {
 
                         $Hash{'Content'} = $Self->{LayoutObject}->CustomerAgeInHours(
-                            Age => $Ticket->{FirstResponseTime} || 0,
+                            Age   => $Ticket->{FirstResponseTime} || 0,
                             Space => ' ',
                         );
                     }
                     elsif ( $Column eq 'EscalationUpdateTime' ) {
                         $Hash{'Content'} = $Self->{LayoutObject}->CustomerAgeInHours(
-                            Age => $Ticket->{UpdateTime} || 0,
+                            Age   => $Ticket->{UpdateTime} || 0,
                             Space => ' ',
                         );
                     }

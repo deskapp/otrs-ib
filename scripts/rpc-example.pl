@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ $SOM = $RPC->Dispatch(
 );
 die $SOM->fault()->{faultstring} if $SOM->fault();
 my $Feedback = $SOM->result();
-my $Message = $Feedback ? 'was successful' : 'was not successful';
+my $Message  = $Feedback ? 'was successful' : 'was not successful';
 print "NOTICE: Delete Ticket with ID $TicketID $Message\n";
 
 # check if the customer exits

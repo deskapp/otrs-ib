@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -105,7 +105,7 @@ sub CustomerCompanyList {
     if ( $Self->{CacheObject} ) {
 
         $CacheType = $Self->{CacheType} . '_CustomerCompanyList';
-        $CacheKey = "CustomerCompanyList::${Valid}::${Limit}::" . ( $Param{Search} || '' );
+        $CacheKey  = "CustomerCompanyList::${Valid}::${Limit}::" . ( $Param{Search} || '' );
 
         my $Data = $Self->{CacheObject}->Get(
             Type => $CacheType,

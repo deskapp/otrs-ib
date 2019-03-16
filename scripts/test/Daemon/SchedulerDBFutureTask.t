@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -305,7 +305,7 @@ for my $Test (@Tests) {
 }
 
 #FutureTaskList() tests
-my @List = $SchedulerDBObject->FutureTaskList();
+my @List       = $SchedulerDBObject->FutureTaskList();
 my %ListLookup = map { $_->{TaskID} => $_ } @List;
 
 for my $TaskID (@AddedTasksIDs) {
@@ -412,7 +412,7 @@ for my $Test (@Tests) {
             $Success,
             "$Test->{Name} FutureTaskToExecute() - with false",
         );
-        my @List = $SchedulerDBObject->FutureTaskList();
+        my @List       = $SchedulerDBObject->FutureTaskList();
         my %ListLookup = map { $_->{TaskID} => $_ } @List;
         $Self->True(
             $ListLookup{$TaskID},
@@ -433,7 +433,7 @@ for my $Test (@Tests) {
         $Success,
         "$Test->{Name} FutureTaskToExecute() - with true",
     );
-    my @List = $SchedulerDBObject->FutureTaskList();
+    my @List       = $SchedulerDBObject->FutureTaskList();
     my %ListLookup = map { $_->{TaskID} => $_ } @List;
     $Self->False(
         $ListLookup{$TaskID},

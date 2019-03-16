@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -105,7 +105,7 @@ $Self->IsNot(
 );
 
 my @AddedActivityDialogs = ( $AcitivityDialogID1, $AcitivityDialogID2, $AcitivityDialogID3 );
-my $ActivityDialogList = $ActivityDialogObject->ActivityDialogList(
+my $ActivityDialogList   = $ActivityDialogObject->ActivityDialogList(
     UseEntities => 1,
     UserID      => $UserID,
 );
@@ -686,7 +686,7 @@ for my $Test (@Tests) {
 
     # get the old activity (if any)
     my $OldActivity = $ActivityObject->ActivityGet(
-        ID => $Test->{Config}->{ID} || 0,
+        ID     => $Test->{Config}->{ID} || 0,
         UserID => $Test->{Config}->{UserID},
     );
 

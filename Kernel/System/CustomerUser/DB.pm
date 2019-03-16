@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2001-2018 OTRS AG, https://otrs.com/
+# Copyright (C) 2001-2019 OTRS AG, https://otrs.com/
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (GPL). If you
@@ -1012,7 +1012,7 @@ sub SetPassword {
     my ( $Self, %Param ) = @_;
 
     my $Login = $Param{UserLogin};
-    my $Pw = $Param{PW} || '';
+    my $Pw    = $Param{PW} || '';
 
     # get config object
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
