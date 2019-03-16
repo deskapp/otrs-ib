@@ -1,7 +1,7 @@
 # --
 # Copyright (C) 2003-2010 Tomasz Melissa <janek at rumianek.com>
 # Copyright (C) 2009 Artur Skalski <skal.ar at wp.pl>
-# Copyright (C) 2011-2018 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
+# Copyright (C) 2011-2019 Informatyka Boguslawski sp. z o.o. sp.k., http://www.ib.pl/
 # Copyright (C) 2014 Wojciech Myrda <wmyrda at auticon.pl>, http://www.auticon.pl
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
@@ -1501,23 +1501,15 @@ sub Data {
         'WARNING: When you change the name of the group \'admin\', before making the appropriate changes in the SysConfig, you will be locked out of the administrations panel! If this happens, please rename the group back to admin per SQL statement.' =>
             'Uwaga: Jeżeli zmienisz nazwę grupy \'admin\', przed wykonaniem właściwych zmian w SysConfig, zablokujesz panel administratorów! Jeżeli to nastąpi, przywróć nazwę grupy admin z użyciem SQL.',
         'Group Management' => 'Zarządzanie grupami',
-<<<<<<< HEAD
         'Add group' => 'Dodaj grupę',
-=======
         'Add Group' => 'Dodaj grupę',
->>>>>>> rel-5_0_34
         'The admin group is to get in the admin area and the stats group to get stats area.' =>
             'Grupa Admin posiada prawa do Administracji systemem. Grupa Stats umożliwia przeglądanie statystyk zgłoszeń.',
         'Create new groups to handle access permissions for different groups of agent (e. g. purchasing department, support department, sales department, ...). ' =>
             'Utwórz nowe grupy aby obsłużyć prawa dostępu dla różnych grup agentów (np. działu zakupu, działu wsparcia, działu sprzedaży, ...). ',
         'It\'s useful for ASP solutions. ' => 'Przydatne dla rozwiązań ASP. ',
         'total' => 'wszystkich',
-<<<<<<< HEAD
-        'Add Group' => 'Dodaj grupę',
         'Edit Group' => 'Edytuj grupę',
-=======
-        'Edit Group' => 'Edytuj Grupę',
->>>>>>> rel-5_0_34
 
         # Template: AdminLog
         'System Log' => 'Log systemu',
@@ -2526,16 +2518,9 @@ sub Data {
         'End' => 'Koniec',
 
         # Template: AdminUserGroup
-<<<<<<< HEAD
         'Manage Agent-Group Relations' => 'Zarządzanie przypisaniami Agent <-> Grupa',
         'Change Group Relations for Agent' => 'Zmień przypisania grup do agenta',
         'Change Agent Relations for Group' => 'Zmień przypisania agentów do grupy',
-=======
-        'Manage Agent-Group Relations' => 'Zarządzaj relacjami agent-grupa',
-        'Add group' => 'Dodaj Grupę',
-        'Change Group Relations for Agent' => 'Zmień relacje grup do agenta',
-        'Change Agent Relations for Group' => 'Zmień relacje agentów do grupy',
->>>>>>> rel-5_0_34
 
         # Template: AgentBook
         'Address Book' => 'Książka adresowa',
@@ -2582,12 +2567,8 @@ sub Data {
         'in' => 'za',
 
         # Template: AgentDashboardCommon
-<<<<<<< HEAD
         'Close this widget' => 'Zamknij ten widżet',
-=======
         'Save settings' => 'Zapisz ustawienia',
-        'Close this widget' => 'Zamknij ten gadżet',
->>>>>>> rel-5_0_34
         'Available Columns' => 'Dostępne kolumny',
         'Visible Columns (order by drag & drop)' => 'Widoczne kolumny (sortuj poprzez przeciągnij i upuść)',
 
@@ -4944,12 +4925,8 @@ Thanks for your help!
             'Kontroluje czy flagi zgłoszenia i artykułu są usunięte kiedy zgłoszenie jest zarchiwizowane.',
         'Converts HTML mails into text messages.' => 'Konwertuję e-maile HTML do tekstowych',
         'Create New process ticket.' => '',
-<<<<<<< HEAD
         'Create and manage Service Level Agreements (SLAs).' => 'Zarządzanie listą SLA.',
-=======
-        'Create Ticket' => '',
-        'Create and manage Service Level Agreements (SLAs).' => 'Twórz i zarządzaj poziomami SLA.',
->>>>>>> rel-5_0_34
+        'Create Ticket' => 'Utwórz zgłoszenie',
         'Create and manage agents.' => 'Zarządzanie listą agentów.',
         'Create and manage attachments.' => 'Zarządzanie listą załączników do szablonów wiadomości.',
         'Create and manage customer users.' => 'Zarządzanie listą użytkowników klienta.',
