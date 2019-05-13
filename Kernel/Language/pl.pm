@@ -27,7 +27,7 @@ sub Data {
     $Self->{DateFormatShort}     = '%Y-%M-%D';
     $Self->{DateInputFormat}     = '%Y-%M-%D';
     $Self->{DateInputFormatLong} = '%Y-%M-%D - %T';
-    $Self->{Completeness}        = 0.748447826957741;
+    $Self->{Completeness}        = 0.767967967967968;
 
     # csv separator
     $Self->{Separator} = ';';
@@ -167,7 +167,7 @@ sub Data {
         'Sorry' => 'Przykro mi',
         'update!' => 'zapisz!',
         'update' => 'zapisz',
-        'Update' => 'Zapisz',
+        'Update' => 'Zaktualizuj',
         'Updated!' => 'Uaktualniono!',
         'submit!' => 'akceptuj!',
         'submit' => 'akceptuj',
@@ -289,7 +289,7 @@ sub Data {
         '(Click here to add)' => '(Kliknij tutaj aby dodać)',
         'Preview' => 'Podgląd',
         'Package not correctly deployed! Please reinstall the package.' =>
-            'Pakiet zainstalowany nieprawidłowo! Zainstaluj pakiet ponownie.',
+            'Pakiet wdrożony nieprawidłowo! Zainstaluj pakiet ponownie.',
         '%s is not writable!' => '%s nie ma uprawnień do zapsiu!',
         'Cannot create %s!' => 'Nie można utworzyć %s!',
         'Check to activate this date' => 'Zaznacz aby aktywować tę datę',
@@ -788,7 +788,7 @@ sub Data {
         'ACL Name' => 'Nazwa ACL',
         'Actions' => 'Akcje',
         'Create New ACL' => 'Utwórz nowy ACL',
-        'Deploy ACLs' => 'Zatwierdź ACL',
+        'Deploy ACLs' => 'Wdróż ACL',
         'Export ACLs' => 'Eksportuj ACL',
         'Configuration import' => 'Import konfiguracji',
         'Here you can upload a configuration file to import ACLs to your system. The file needs to be in .yml format as exported by the ACL editor module.' =>
@@ -923,7 +923,7 @@ sub Data {
         'Customer user are needed to have a customer history and to login via customer panel.' =>
             'Aby posiadać historię klienta i umożliwić mu logowanie się do panela klienta konieczne jest założenie konta użytkownika klienta.',
         'Last Login' => 'Ostatnie logowanie',
-        'Login as' => 'Zaloguj jako',
+        'Login as' => 'Nazwa użytkownika',
         'Switch to customer' => 'Zmień klienta',
         'Add Customer User' => 'Dodaj użytkownika klienta',
         'Edit Customer User' => 'Edytuj użytkownika klienta',
@@ -1213,7 +1213,7 @@ sub Data {
         # Template: AdminGenericInterfaceDebugger
         'GenericInterface Debugger for Web Service %s' => 'GenericInterface Debugger dla serwisu sieciowego %s',
         'You are here' => 'Jesteś tu',
-        'Web Services' => 'Usługi Sieciowe',
+        'Web Services' => 'Serwisy Sieciowe (WS)',
         'Debugger' => 'Debugger',
         'Go back to web service' => 'Powróć do usług sieciowych',
         'Clear' => 'Wyczyść',
@@ -1424,7 +1424,7 @@ sub Data {
             'Pełna ścieżka do katalogu gdzie znajdują się certyfikaty CA.',
         'e.g. /opt/otrs/var/certificates/SOAP/CA' => 'np. /opt/otrs/var/certificates/SOAP/CA',
         'Sort options' => 'Opcje sortowania',
-        'Add new first level element' => '',
+        'Add new first level element' => 'Dodaj element pierwszego poziomu',
         'Element' => 'Element',
         'Outbound sort order for xml fields (structure starting below function name wrapper) - see documentation for SOAP transport.' =>
             '',
@@ -1560,7 +1560,7 @@ sub Data {
         'Show in agent preferences' => 'Pokaż w preferencjach agenta',
         'Agent preferences tooltip' => 'Podpowiedź (etykieta) w preferencjach agenta',
         'This message will be shown on the agent preferences screen as a tooltip for this notification.' =>
-            '',
+            'Ten komunikat agent zobaczy na ekranie ustawień jako podpowiedź opisująca te powiadomienie.',
         'Here you can choose which events will trigger this notification. An additional ticket filter can be applied below to only send for ticket with certain criteria.' =>
             'Tu możesz wybrać które zdarzenia będą wywoływać te powiadomienie. Poniżej może zostać zastosowany dodatkowy filtr zgłoszeń by wysyłać powiadomienie tylko dla zgłoszeń spełniających określone kryteria.',
         'Ticket Filter' => 'Filtr zgłoszeń',
@@ -1576,22 +1576,22 @@ sub Data {
         'Recipients' => 'Odbiorcy',
         'Send to' => 'Wyślij do',
         'Send to these agents' => 'Wyślij do tych agentów',
-        'Send to all group members (agents only)' => '',
+        'Send to all group members (agents only)' => ' Wyślij do wszystkich członków grupy (tylko agenci)',
         'Send to all role members' => 'Wyślij do wszystkich członków roli',
         'Send on out of office' => 'Wyślij powiadomienie o nieobecności w biurze',
         'Also send if the user is currently out of office.' => 'Również wyślij jeśli użytkownik jest aktualnie poza biurem',
         'Once per day' => 'Jeden na dzień',
         'Notify user just once per day about a single ticket using a selected transport.' =>
-            '',
+            'Powiadamiaj użytkownika raz na dzień o pojedynczym tickecie używając wybranego sposobu',
         'Notification Methods' => 'Metoda powiadomienia',
         'These are the possible methods that can be used to send this notification to each of the recipients. Please select at least one method below.' =>
-            '',
-        'Enable this notification method' => 'Włącz tą metodę powiadomiania',
+            'To są metody, które mogą zostać użyte do wysłania tego powiadomienia do każdego z odbiorców. Wybierz przynajmniej jedną metodę poniżej.',
+        'Enable this notification method' => 'Włącz tę metodę powiadomiania',
         'Transport' => 'Transport',
-        'At least one method is needed per notification.' => '',
-        'Active by default in agent preferences' => '',
+        'At least one method is needed per notification.' => 'Wymagana jest przynajmniej jedna metoda na powiadomienie.',
+        'Active by default in agent preferences' => 'Domyślnie aktywne w ustawieniach agenta',
         'This is the default value for assigned recipient agents who didn\'t make a choice for this notification in their preferences yet. If the box is enabled, the notification will be sent to such agents.' =>
-            '',
+            'Wartość domyślna ustawienia odbioru tego powiadomienia dla agenta, który nie określił jeszcze tej wartości w swoich preferencjach. Jeśli pole jest zaznaczone, powiadomienie będzie do takich agentów wysyłane.',
         'This feature is currently not available.' => 'Ta funkcja jest obecnie niedostępna.',
         'No data found' => 'Nie znaleziono danych',
         'No notification method found.' => 'Nie znaleziono metody powiadomienia',
@@ -1678,14 +1678,14 @@ sub Data {
         'You will receive updates for all other relevant OTRS issues' => '',
         'An update for your %s is available! Please update at your earliest!' =>
             '',
-        '%s Correctly Deployed' => '',
+        '%s Correctly Deployed' => '%s poprawnie wdrożony',
         'Congratulations, your %s is correctly installed and up to date!' =>
-            '',
+            'Gratulacje, twój %szostał poprawnie zainstalowany i jest aktualny.',
 
         # Template: AdminOTRSBusinessNotInstalled
         '%s will be available soon. Please check again in a few days.' =>
-            '',
-        'Please have a look at %s for more information.' => '',
+            '%s będzie dostępny niebawem. Sprawdź ponownie za kilka dni.',
+        'Please have a look at %s for more information.' => 'Spójrz na %s aby uzyskać więcej informacji.',
         'Your ((OTRS)) Community Edition is the base for all future actions. Please register first before you continue with the upgrade process of %s!' =>
             '',
         'Before you can benefit from %s, please contact %s to get your %s contract.' =>
@@ -1707,7 +1707,7 @@ sub Data {
             '',
         'Vendor' => 'Producent',
         'Please uninstall the packages first using the package manager and try again.' =>
-            '',
+            'Odinstaluj najpierw pakiety za pomocą menedżera pakietów i spróbuj ponownie.',
         'You are about to downgrade to ((OTRS)) Community Edition and will lose the following features and all data related to these:' =>
             '',
         'Chat' => 'Czat',
@@ -1837,8 +1837,8 @@ sub Data {
             'Jeśli użyjesz wyrażeń regularnych, możesz również użyć dopasowanej wartości w () jako [***] w akcji \'Set\'.',
         'Delete this filter' => 'Usuń ten filtr',
         'Do you really want to delete this filter?' => 'Czy na pewno chcesz usunąć ten filtr?',
-        'Add PostMaster Filter' => 'Dodaj filtr PostMaster',
-        'Edit PostMaster Filter' => 'Edytuj filtr PostMaster',
+        'Add PostMaster Filter' => 'Dodaj filtr pocztowy',
+        'Edit PostMaster Filter' => 'Edytuj filtr pocztowy',
         'A postmaster filter with this name already exists!' => 'Filtr poczty o takiej nazwie już istnieje!',
         'Filter Condition' => 'Warunek filtra',
         'AND Condition' => 'Warunek ORAZ',
@@ -1926,7 +1926,7 @@ sub Data {
             'Możesz przypisac pola do tego okna działania za pomocą przeciągania elementów myszką z listy po lewej stronie do listy po prawej stronie.',
         'Filter available fields' => 'Filtruj dostępne pola',
         'Available Fields' => 'Dostępne pola',
-        'Name: %s' => '',
+        'Name: %s' => 'Nazwa: %s',
         'Assigned Fields' => 'Przypisane pola',
         'ArticleType' => 'TypWiadomości',
         'Display' => 'Wyświetl',
@@ -2056,7 +2056,7 @@ sub Data {
         'Add queue' => 'Dodaj kolejkę',
         'Add Queue' => 'Dodaj kolejkę',
         'Edit Queue' => 'Edytuj kolejkę',
-        'A queue with this name already exists!' => '',
+        'A queue with this name already exists!' => 'Kolejka o tej nazwie już istnieje!',
         'Sub-queue of' => 'Podkolejka kolejki',
         'Unlock timeout' => 'Limit czasowy odblokowania',
         '0 = no unlock' => '0 = bez odblokowania',
@@ -2066,7 +2066,7 @@ sub Data {
         'Notify by' => 'Powiadom wcześniej',
         '0 = no escalation' => '0 = brak eskalacji',
         'If there is not added a customer contact, either email-external or phone, to a new ticket before the time defined here expires, the ticket is escalated.' =>
-            'Jeśli w określonym tutaj czasie nie pojawi się kontakt z klientem, zewnętrzny e-mail lub telefon związany z nowym zgłoszeniem, zgłoszenie takie będzie eskalowane.',
+            'Jeśli nie będzie kontaktu z klientem, ani wiadomości e-mail, ani telefonu dodanego do zgłoszenia przed upływem określonego tutaj czasu, zgłoszenie to będzie eskalowane.',
         'If there is an article added, such as a follow-up via email or the customer portal, the escalation update time is reset. If there is no customer contact, either email-external or phone, added to a ticket before the time defined here expires, the ticket is escalated.' =>
             'Jeśli dodana zostanie wiadomość, przez e-mail lub przez panel klienta, czas aktualizacji eskalacji będzie zresetowany. Jeśli nie będzie kontaktu z klientem, ani wiadomości e-mail, ani telefonu dodanego do zgłoszenia przed upływem określonego tutaj czasu, zgłoszenie to będzie eskalowane.',
         'If the ticket is not set to closed before the time defined here expires, the ticket is escalated.' =>
@@ -2087,7 +2087,7 @@ sub Data {
 
         # Template: AdminQueueAutoResponse
         'Manage Queue-Auto Response Relations' => 'Zarządzanie przypisaniami Kolejka <-> Autoodpowiedź',
-        'This filter allow you to show queues without auto responses' => '',
+        'This filter allow you to show queues without auto responses' => 'Ten filtr pozwala pokazać kolejki bez automatycznych odpowiedzi',
         'Queues without auto responses' => 'Kolejki bez automatycznych odpowiedzi',
         'This filter allow you to show all queues' => 'Ten filtr pozwala na wyświetlenie wszystkich kolejek',
         'Show all queues' => 'pokaż wszystkie kolejki',
@@ -2293,7 +2293,7 @@ sub Data {
             '',
         'Here you can enter SQL to send it directly to the application database.' =>
             'Wpisz zapytanie SQL, które zostanie wysłane bezpośrednio do bazy danych.',
-        'Only select queries are allowed.' => '',
+        'Only select queries are allowed.' => 'Tylko wybrane zapytania są dozwolone.',
         'The syntax of your SQL query has a mistake. Please check it.' =>
             'Składnia twojego zapytania SQL jest niepoprawna. Sprawdź ją.',
         'There is at least one parameter missing for the binding. Please check it.' =>
@@ -2308,8 +2308,8 @@ sub Data {
         'Add Service' => 'Dodaj usługę',
         'Edit Service' => 'Edytuj usługę',
         'Service name maximum length is 200 characters (with Sub-service).' =>
-            '',
-        'Sub-service of' => 'Usługa podrzędna',
+            'Długość nazwy usługi to maksymalnie 200 znaków (razem z podusługą)',
+        'Sub-service of' => 'Usługa podrzędna dla',
 
         # Template: AdminSession
         'Session Management' => 'Zarządzanie sesjami',
@@ -2551,7 +2551,7 @@ sub Data {
         'The OTRS Daemon is a daemon process that performs asynchronous tasks, e.g. ticket escalation triggering, email sending, etc.' =>
             '',
         'A running OTRS Daemon is mandatory for correct system operation.' =>
-            '',
+            'Uruchomiony Daemon OTRS jest niezbędny do prawidłowego działania systemu.',
         'Starting the OTRS Daemon' => 'Uruchom OTRS Daemon',
         'Make sure that the file \'%s\' exists (without .dist extension). This cron job will check every 5 minutes if the OTRS Daemon is running and start it if needed.' =>
             '',
@@ -2596,7 +2596,7 @@ sub Data {
 
         # Template: AgentDashboardStats
         'The configuration for this statistic widget contains errors, please review your settings.' =>
-            '',
+            'Konfiguracja tego wigdeta statystyk zawiera błędy, przejrzyj jego ustawienia.',
         'Download as SVG file' => 'Pobierz jako plik SVG',
         'Download as PNG file' => 'Pobierz jako plik PNG',
         'Download as CSV file' => 'Pobierz jako plik CSV',
@@ -3015,7 +3015,7 @@ sub Data {
             'Aby korzystać z OTRS, musisz włączyć obsługę JavaScript w twojej przeglądarce.',
         'Browser Warning' => 'Ostrzeżenie dotyczące przeglądarki',
         'One moment please, you are being redirected...' => 'Poczekaj chwilę, trwa przekierowywanie...',
-        'Login' => 'Zaloguj się',
+        'Login' => 'Login',
         'User name' => 'Nazwa użytkownika',
         'Your user name' => 'Twoja nazwa użytkownika',
         'Your password' => 'Twoje hasło',
@@ -3054,7 +3054,7 @@ sub Data {
         # Template: CustomerTicketSearch
         'Profile' => 'Profil',
         'e. g. 10*5155 or 105658*' => 'np. 10*5155 lub 105658*',
-        'Customer ID' => 'Identyfikator klienta',
+        'Customer ID' => 'Identyfikator Klienta',
         'Fulltext search in tickets (e. g. "John*n" or "Will*")' => 'Wyszukiwanie pełnotekstowe w zgłoszeniach (np. "*odyfikacj* lub druk*")',
         'Recipient' => 'Odbiorca',
         'Carbon Copy' => 'Kopia (CC)',
@@ -3203,7 +3203,7 @@ sub Data {
 
         # Template: InstallerDBStart
         'Install Type' => 'Zainstaluj typ',
-        'Create a new database for OTRS' => 'Stwórz nową baze danych dla OTRS',
+        'Create a new database for OTRS' => 'Utwórz nową baze danych dla OTRS',
         'Use an existing database for OTRS' => 'Użyj istniejącej bazy danych dla OTRS',
 
         # Template: InstallerDBmssql
@@ -3319,7 +3319,7 @@ sub Data {
         'Inform Agent' => 'Poinformuj agenta',
 
         # Template: PublicDefault
-        'Welcome' => 'Wiataj',
+        'Welcome' => 'Witaj',
         'This is the default public interface of OTRS! There was no action parameter given.' =>
             '',
         'You could install a custom public module (via the package manager), for example the FAQ module, which has a public interface.' =>
@@ -3463,8 +3463,8 @@ sub Data {
         'Checked' => 'Zaznaczone',
 
         # Perl Module: Kernel/Modules/AdminDynamicFieldDateTime.pm
-        'Prevent entry of dates in the future' => '',
-        'Prevent entry of dates in the past' => '',
+        'Prevent entry of dates in the future' => 'Nie pozwalaj na wprowadzanie dat w przyszłości',
+        'Prevent entry of dates in the past' => 'Nie pozwalaj na wprowadzanie dat w przeszłości',
 
         # Perl Module: Kernel/Modules/AdminDynamicFieldDropdown.pm
         'This field value is duplicated.' => '',
@@ -3475,7 +3475,7 @@ sub Data {
         # Perl Module: Kernel/Modules/AdminGenericAgent.pm
         'archive tickets' => 'archiwizuj zgłoszenia',
         'restore tickets from archive' => 'przywróć zgłoszenia z archiwum',
-        'Need Profile!' => '',
+        'Need Profile!' => 'Potrzebny Profil!',
         'Got no values to check.' => '',
         'Please remove the following words because they cannot be used for the ticket selection:' =>
             '',
@@ -3528,7 +3528,7 @@ sub Data {
             '',
         'Web service "%s" deleted!' => '',
         'New Web service' => '',
-        'Operations' => '',
+        'Operations' => 'Operacje',
         'Invokers' => '',
 
         # Perl Module: Kernel/Modules/AdminGenericInterfaceWebserviceHistory.pm
@@ -3594,7 +3594,7 @@ sub Data {
 
         # Perl Module: Kernel/Modules/AdminProcessManagement.pm
         'Need ExampleProcesses!' => '',
-        'Need ProcessID!' => '',
+        'Need ProcessID!' => 'Potrzebny ProcessID!',
         'Yes (mandatory)' => 'Tak (obowiązkowo)',
         'Unknown Process %s!' => 'Nieznany Proces %s!',
         'There was an error generating a new EntityID for this Process' =>
@@ -3605,14 +3605,14 @@ sub Data {
             '',
         'Could not get data for ProcessID %s' => '',
         'There was an error updating the Process' => '',
-        'Process: %s could not be deleted' => '',
+        'Process: %s could not be deleted' => 'Proces: %s nie może być usunięty',
         'There was an error synchronizing the processes.' => '',
         'The %s:%s is still in use' => '%s:%s jest cały czas w użyciu',
-        'The %s:%s has a different EntityID' => '',
+        'The %s:%s has a different EntityID' => '%s:%s mają inne EtnityID',
         'Could not delete %s:%s' => 'Nie można usunąć %s:%s',
         'There was an error setting the entity sync status for %s entity: %s' =>
             '',
-        'Could not get %s' => '',
+        'Could not get %s' => 'Nie można pobrać %s',
         'Need %s!' => 'Potrzebny %s!',
         'Process: %s is not Inactive' => 'Proces: %s jest nie aktywny',
 
@@ -3622,7 +3622,7 @@ sub Data {
         'There was an error creating the Activity' => '',
         'There was an error setting the entity sync status for Activity entity: %s' =>
             '',
-        'Need ActivityID!' => '',
+        'Need ActivityID!' => 'Potrzebny ActivityID!',
         'Could not get data for ActivityID %s' => '',
         'There was an error updating the Activity' => '',
         'Missing Parameter: Need Activity and ActivityDialog!' => '',
@@ -3696,7 +3696,7 @@ sub Data {
         'Development' => '',
 
         # Perl Module: Kernel/Modules/AdminRoleUser.pm
-        'Role' => '',
+        'Role' => 'Rola',
 
         # Perl Module: Kernel/Modules/AdminSMIME.pm
         'S/MIME environment is not working. Please check log for more info!' =>
@@ -3758,16 +3758,16 @@ sub Data {
         'Need SourceObject and SourceKey!' => '',
         'Please contact the administrator.' => 'Proszę skontaktuj się z administratorem',
         'You need ro permission!' => 'Potrzebujesz uprawnień do odczytu!',
-        'Can not delete link with %s!' => '',
+        'Can not delete link with %s!' => 'Nie można usunąć połączenia z %s!',
         'Can not create link with %s! Object already linked as %s.' => 'Nie można utworzyć łączenia z %s! Już połączono jako %s.',
-        'Can not create link with %s!' => '',
-        'The object %s cannot link with other object!' => '',
+        'Can not create link with %s!' => 'Nie można stworzyć połączenia z %s!',
+        'The object %s cannot link with other object!' => 'Obiekt %s nie może być połączony z innym obiektem!',
 
         # Perl Module: Kernel/Modules/AgentPreferences.pm
         'Param Group is required!' => '',
 
         # Perl Module: Kernel/Modules/AgentStatistics.pm
-        'Parameter %s is missing.' => '',
+        'Parameter %s is missing.' => 'Brak parametru %s',
         'Invalid Subaction.' => 'Nieprawidłowe działanie podrzędne.',
         'Statistic could not be imported.' => '',
         'Please upload a valid statistic file.' => '',
@@ -3838,7 +3838,7 @@ sub Data {
         'Chat is not active.' => 'Czat jest nieaktywny.',
         'No permission.' => 'Brak uprawnień!',
         '%s has left the chat.' => '%s opuścił czat.',
-        'This chat has been closed and will be removed in %s hours.' => '',
+        'This chat has been closed and will be removed in %s hours.' => 'Ten czat został zamknięty i będzie usunięty w ciągu %sgodzin.',
 
         # Perl Module: Kernel/Modules/AgentTicketPlain.pm
         'No ArticleID!' => '',
@@ -3931,16 +3931,16 @@ sub Data {
         'Escalation Update Time In Effect' => '',
         'Escalation Update Time Stopped' => '',
         'Escalation First Response Time Stopped' => '',
-        'Customer Updated' => 'Klient Zaktualizowany',
-        'Internal Chat' => '',
+        'Customer Updated' => 'Klient zaktualizowany',
+        'Internal Chat' => 'Czat wewnętrzny',
         'Automatic Follow-Up Sent' => '',
         'Note Added' => 'Uwaga Dodana',
-        'Note Added (Customer)' => 'Uwaga Dodana (Klient)',
+        'Note Added (Customer)' => 'Notatka doana (klient)',
         'State Updated' => 'Stan Zaktualizowany',
         'Outgoing Answer' => 'Odpowiedź Wychodząca',
         'Service Updated' => 'Usługa Zaktualizowana',
         'Link Added' => '',
-        'Incoming Customer Email' => 'Wiadomość Od Klienta',
+        'Incoming Customer Email' => ' Wiadomość od klienta',
         'Incoming Web Request' => '',
         'Priority Updated' => '',
         'Ticket Unlocked' => '',
@@ -3962,7 +3962,7 @@ sub Data {
         'Escalation Response Time Stopped' => '',
         'SLA Updated' => 'SLA Zaktualizowane',
         'Queue Updated' => '',
-        'External Chat' => '',
+        'External Chat' => 'Czat zewnętrzny',
         'Queue Changed' => '',
         'Notification Was Sent' => '',
         'We are sorry, you do not have permissions anymore to access this ticket in its current state.' =>
@@ -3992,7 +3992,7 @@ sub Data {
         'Check SysConfig setting for %s::TicketTypeDefault.' => '',
 
         # Perl Module: Kernel/Modules/CustomerTicketOverview.pm
-        'Need CustomerID!' => '',
+        'Need CustomerID!' => 'Potrzebne ID Klienta!',
         'My Tickets' => 'Moje zgłoszenia',
         'Company Tickets' => 'Zgłoszenia firmy',
 
@@ -4002,7 +4002,7 @@ sub Data {
 
         # Perl Module: Kernel/Modules/CustomerTicketZoom.pm
         'Can\'t reopen ticket, not possible in this queue!' => '',
-        'Create a new ticket!' => 'Stwórz nowe zgłoszenie!',
+        'Create a new ticket!' => 'Utwórz nowe zgłoszenie!',
 
         # Perl Module: Kernel/Modules/Installer.pm
         'SecureMode active!' => '',
@@ -4011,10 +4011,10 @@ sub Data {
         'Directory "%s" doesn\'t exist!' => '',
         'Configure "Home" in Kernel/Config.pm first!' => '',
         'File "%s/Kernel/Config.pm" not found!' => '',
-        'Directory "%s" not found!' => '',
-        'Kernel/Config.pm isn\'t writable!' => '',
+        'Directory "%s" not found!' => 'Katalog "%s" nie został znaleziony!',
+        'Kernel/Config.pm isn\'t writable!' => 'Kernel/Config.pm nie jest zapisywalny!',
         'If you want to use the installer, set the Kernel/Config.pm writable for the webserver user!' =>
-            '',
+            'Jeśli chcesz użyć instalatora, ustaw Kernel/Config.pm jako zapisywalny dla użytkownika WebServer',
         'Unknown Check!' => '',
         'The check "%s" doesn\'t exist!' => '',
         'Database %s' => 'Baza danych %s',
@@ -4085,7 +4085,7 @@ sub Data {
         'Archive search' => 'Wyszukiwanie w archiwum',
 
         # Perl Module: Kernel/Output/HTML/Notification/AgentOTRSBusiness.pm
-        '%s Upgrade to %s now! %s' => '',
+        '%s Upgrade to %s now! %s' => '%sUlepsz do wersji %steraz! %s',
 
         # Perl Module: Kernel/Output/HTML/Notification/CustomerSystemMaintenanceCheck.pm
         'A system maintenance period will start at: ' => 'Niedostępność systemu rozpocznie się o: ',
@@ -4182,7 +4182,7 @@ sub Data {
 
         # Perl Module: Kernel/System/ProcessManagement/DB/Process/State.pm
         'Inactive' => 'Nieaktywny',
-        'FadeAway' => '',
+        'FadeAway' => 'Wygaszony',
 
         # Perl Module: Kernel/System/Registration.pm
         'Can\'t get Token from sever' => '',
@@ -4367,9 +4367,9 @@ sub Data {
         'Could not determine value.' => 'Nie można określić wartości.',
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/DaemonRunning.pm
-        'Daemon' => '',
-        'Daemon is running.' => '',
-        'Daemon is not running.' => '',
+        'Daemon' => 'Demon',
+        'Daemon is running.' => 'Demon jest uruchomiony',
+        'Daemon is not running.' => 'Demon nie jest uruchomiony',
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/DatabaseRecords.pm
         'Database Records' => 'Rekordy bazy danych',
@@ -4382,7 +4382,7 @@ sub Data {
         'Invalid Dynamic Fields' => 'Nieprawidłowe pola dynamiczne',
         'Invalid Dynamic Field Values' => 'Nieprawidłowe wartości pól dynamicznych',
         'GenericInterface Webservices' => 'Ogólny interfejs usług sieciowych',
-        'Process Tickets' => '',
+        'Process Tickets' => 'Zgłoszenia procesowe',
         'Months Between First And Last Ticket' => 'Ilość miesięcy pomiędzy pierwszym, a ostatnim zgłoszeniem',
         'Tickets Per Month (avg)' => 'Zgłoszeń w miesiącu (śred.)',
         'Open Tickets' => 'Otwarte zgłoszenia',
@@ -4398,8 +4398,8 @@ sub Data {
             'Zagrożenie bezpieczeństwa: Konto agenta "root@localhost" nadal ma ustawione domyślne hasło. Należy je zmienić lub wyłączyć konto.',
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/FQDN.pm
-        'FQDN (domain name)' => '',
-        'Please configure your FQDN setting.' => '',
+        'FQDN (domain name)' => 'FQDN (nazwa domeny)',
+        'Please configure your FQDN setting.' => 'Skonfiguruj proszę ustawienie twojej FQDN',
         'Domain Name' => 'Nazwa domeny',
         'Your FQDN setting is invalid.' => 'Kompletna nazwa hosta (FQDN) jest nieprawidłowa.',
 
@@ -4411,7 +4411,7 @@ sub Data {
         'Package Installation Status' => 'Stan instalacji pakietu',
         'Some packages have locally modified files.' => '',
         'Some packages are not correctly installed.' => 'Niektóre pakiety nie zostały poprawnie zainstalowane.',
-        'Package Verification Status' => '',
+        'Package Verification Status' => 'Stan Weryfikacji Pakietów',
         'Some packages are not verified by the OTRS Group! It is recommended not to use this packages.' =>
             '',
         'Package Framework Version Status' => '',
@@ -4433,7 +4433,7 @@ sub Data {
             'Wartość pola SystemID jest nieprawidłowa, powinno zawierać tylko cyfry.',
 
         # Perl Module: Kernel/System/SupportDataCollector/Plugin/OTRS/Ticket/DefaultType.pm
-        'Default Ticket Type' => '',
+        'Default Ticket Type' => 'Domyślny Typ Zgłoszenia',
         'The configured default ticket type is invalid or missing. Please change the setting Ticket::Type::Default and select a valid ticket type.' =>
             '',
 
@@ -4546,7 +4546,7 @@ sub Data {
             '',
         'Can`t remove SessionID.' => '',
         'Logout successful.' => 'Wylogowanie zakończone pomyślnie.',
-        'Error: invalid session.' => '',
+        'Error: invalid session.' => 'Błąd: nie prawidłowa sesja.',
         'No Permission to use this frontend module!' => 'Brak uprawnień do użycia tego modułu!',
 
         # Perl Module: Kernel/System/Web/InterfaceCustomer.pm
@@ -4572,7 +4572,7 @@ sub Data {
         'All \'pending auto *\' state types (default: viewable).' => '',
         'All \'removed\' state types (default: not viewable).' => '',
         'State type for merged tickets (default: not viewable).' => '',
-        'New ticket created by customer.' => '',
+        'New ticket created by customer.' => 'Nowe zgłoszenie stworzone przez klienta.',
         'Ticket is closed successful.' => 'Zgłoszenie zamknięte z powodzeniem.',
         'Ticket is closed unsuccessful.' => 'Zgłoszenie zamknięte bez powodzenia.',
         'Open tickets.' => 'Otwarte zgłoszenia.',
@@ -4665,7 +4665,7 @@ Thanks for your help!
         '(UserLogin) Lastname, Firstname' => '(Login) Nazwisko, Imię',
         '*** out of office until %s (%s d left) ***' => '*** poza biurem do %s (pozostało %s d) ***',
         '100 (Expert)' => '',
-        '200 (Advanced)' => '',
+        '200 (Advanced)' => '200 (Zaawansowane)',
         '300 (Beginner)' => '',
         'A TicketWatcher Module.' => '',
         'A Website' => 'Strona internetowa',
@@ -4744,7 +4744,7 @@ Thanks for your help!
         'AgentUserSearch.' => '',
         'Agents <-> Groups' => 'Agenci <-> Grupy',
         'Agents <-> Roles' => 'Agenci <-> Role',
-        'All customer users of a CustomerID' => 'Wszyscy użytkownicy  z identyyfikatorem klienta',
+        'All customer users of a CustomerID' => 'Wszyscy użytkownicy  z identyfikatorem klienta',
         'Allows adding notes in the close ticket screen of the agent interface. Can be overwritten by Ticket::Frontend::NeedAccountedTime.' =>
             'Pozwala na dodawanie notatek w oknie zamknięcia zgłoszenia interfejsu agenta. Może być nadpisane przez Ticket::Frontend::NeedAccountedTime.',
         'Allows adding notes in the ticket free text screen of the agent interface. Can be overwritten by Ticket::Frontend::NeedAccountedTime.' =>
@@ -4790,6 +4790,9 @@ Thanks for your help!
             '',
         'Allows extended search conditions in ticket search of the generic agent interface. With this feature you can search e. g. ticket title with this kind of conditions like "(*key1*&&*key2*)" or "(*key1*||*key2*)".' =>
             '',
+        'Allows generic agent to execute custom command line scripts.' =>
+            '',
+        'Allows generic agent to execute custom modules.' => '',
         'Allows having a medium format ticket overview (CustomerInfo => 1 - shows also the customer information).' =>
             '',
         'Allows having a small format ticket overview (CustomerInfo => 1 - shows also the customer information).' =>
@@ -4861,8 +4864,8 @@ Thanks for your help!
         'Checks the availability of OTRS Business Solution™ for this system.' =>
             '',
         'Checks the entitlement status of OTRS Business Solution™.' => '',
-        'Chinese (Simplified)' => '',
-        'Chinese (Traditional)' => '',
+        'Chinese (Simplified)' => 'Chiński (Uproszczony)',
+        'Chinese (Traditional)' => 'Chiński (Tradycyjny)',
         'Choose for which kind of ticket changes you want to receive notifications.' =>
             'Wybierz powiadomienia jakie chcesz otrzymywać.',
         'Closed tickets (customer user)' => 'Zamknięte zgłoszenia (użytkownik)',
@@ -4952,7 +4955,7 @@ Thanks for your help!
         'Create new phone ticket.' => 'Utwórz nowe zgłoszenie telefoniczne.',
         'Create new process ticket.' => 'Utwórz nowe zgłoszenie procesowe.',
         'Create tickets.' => 'Utwórz zgłoszenia.',
-        'Croatian' => '',
+        'Croatian' => 'Chorwacki',
         'Custom RSS Feed' => '',
         'Custom text for the page shown to customers that have no tickets yet (if you need those text translated add them to a custom translation module).' =>
             '',
@@ -4981,10 +4984,10 @@ Thanks for your help!
         'Customers <-> Groups' => 'Klienci <-> Grupy',
         'Customizable stop words for fulltext index. These words will be removed from the search index.' =>
             '',
-        'Czech' => '',
+        'Czech' => 'Czeski',
         'DEPRECATED: This config setting will be removed in further versions of OTRS. Sets the time (in seconds) a user is marked as active (minimum active time is 300 seconds).' =>
             '',
-        'Danish' => '',
+        'Danish' => 'Duński',
         'Data used to export the search result in CSV format.' => 'Dane używane przy eksporcie wyników wyszukiwania do formatu CSV.',
         'Date / Time' => 'Data / Czas',
         'Debug' => '',
@@ -5092,33 +5095,33 @@ Thanks for your help!
         'Defines if a pre-sorting by priority should be done in the service view.' =>
             '',
         'Defines if a ticket lock is required in the close ticket screen of the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).' =>
-            '',
+            'Określa, czy wymagana jest blokada zgłoszenia na ekranie zamykania zgłoszenia w interfejsie agenta (jeśli zgłoszenie nie jest jeszcze zablokowane, zostaje nałożona blokada, a bieżący agent staje się automatycznie właścicielem).',
         'Defines if a ticket lock is required in the email outbound screen of the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).' =>
-            '',
+            'Określa, czy wymagana jest blokada zgłoszenia na ekranie emaila wychodzącego w interfejsie agenta (jeśli zgłoszenie nie jest jeszcze zablokowane, zostaje nałożona blokada, a bieżący agent staje się automatycznie właścicielem).',
         'Defines if a ticket lock is required in the ticket bounce screen of the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).' =>
-            '',
+            'Określa, czy wymagana jest blokada zgłoszenia na ekranie przkazania zgłoszenia w interfejsie agenta (jeśli zgłoszenie nie jest jeszcze zablokowane, zostaje nałożona blokada, a bieżący agent staje się automatycznie właścicielem).',
         'Defines if a ticket lock is required in the ticket compose screen of the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).' =>
-            '',
+            'Określa, czy wymagana jest blokada zgłoszenia na ekranie tworzenia zgłoszenia w interfejsie agenta (jeśli zgłoszenie nie jest jeszcze zablokowane, zostaje nałożona blokada, a bieżący agent staje się automatycznie właścicielem).',
         'Defines if a ticket lock is required in the ticket forward screen of the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).' =>
-            '',
+            'Określa, czy wymagana jest blokada zgłoszenia na ekranie przekazania dalej zgłoszenia w interfejsie agenta (jeśli zgłoszenie nie jest jeszcze zablokowane, zostaje nałożona blokada, a bieżący agent staje się automatycznie właścicielem).',
         'Defines if a ticket lock is required in the ticket free text screen of the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).' =>
-            '',
+            'Określa, czy wymagana jest blokada zgłoszenia na ekranie notatki tekstowej zgłoszenia w interfejsie agenta (jeśli zgłoszenie nie jest jeszcze zablokowane, zostaje nałożona blokada, a bieżący agent staje się automatycznie właścicielem).',
         'Defines if a ticket lock is required in the ticket merge screen of a zoomed ticket in the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).' =>
-            '',
+            'Określa, czy wymagana jest blokada zgłoszenia na ekranie łączenia przybliżonego zgłoszenia w interfejsie agenta (jeśli zgłoszenie nie jest jeszcze zablokowane, zostaje nałożona blokada, a bieżący agent staje się automatycznie właścicielem).',
         'Defines if a ticket lock is required in the ticket note screen of the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).' =>
-            '',
+            'Określa, czy wymagana jest blokada zgłoszenia na ekranie notatki do zgłoszenia w interfejsie agenta (jeśli zgłoszenie nie jest jeszcze zablokowane, zostaje nałożona blokada, a bieżący agent staje się automatycznie właścicielem).',
         'Defines if a ticket lock is required in the ticket owner screen of a zoomed ticket in the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).' =>
-            '',
+            'Określa, czy wymagana jest blokada zgłoszenia na ekranie właściciela przybliżonego zgłoszenia w interfejsie agenta (jeśli zgłoszenie nie jest jeszcze zablokowane, zostaje nałożona blokada, a bieżący agent staje się automatycznie właścicielem).',
         'Defines if a ticket lock is required in the ticket pending screen of a zoomed ticket in the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).' =>
-            '',
+            'Określa, czy wymagana jest blokada zgłoszenia na ekranie oczekującego przybliżonego zgłoszenia w interfejsie agenta (jeśli zgłoszenie nie jest jeszcze zablokowane, zostaje nałożona blokada, a bieżący agent staje się automatycznie właścicielem).',
         'Defines if a ticket lock is required in the ticket phone inbound screen of the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).' =>
-            '',
+            'Określa, czy wymagana jest blokada zgłoszenia na ekranie rozmowy tel. przychodzącej zgłoszenia w interfejsie agenta (jeśli zgłoszenie nie jest jeszcze zablokowane, zostaje nałożona blokada, a bieżący agent staje się automatycznie właścicielem).',
         'Defines if a ticket lock is required in the ticket phone outbound screen of the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).' =>
-            '',
+            'Określa, czy wymagana jest blokada zgłoszenia na ekranie rozmowy tel. wychodzącej zgłoszenia w interfejsie agenta (jeśli zgłoszenie nie jest jeszcze zablokowane, zostaje nałożona blokada, a bieżący agent staje się automatycznie właścicielem).',
         'Defines if a ticket lock is required in the ticket priority screen of a zoomed ticket in the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).' =>
-            '',
+            'Określa, czy wymagana jest blokada zgłoszenia na ekranie priorytetu przybliżonego zgłoszenia w interfejsie agenta (jeśli zgłoszenie nie jest jeszcze zablokowane, zostaje nałożona blokada, a bieżący agent staje się automatycznie właścicielem).',
         'Defines if a ticket lock is required in the ticket responsible screen of the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).' =>
-            '',
+            'Określa, czy wymagana jest blokada zgłoszenia na ekranie odpowiedzialnego za zgłoszenie w interfejsie agenta (jeśli zgłoszenie nie jest jeszcze zablokowane, zostaje nałożona blokada, a bieżący agent staje się automatycznie właścicielem).',
         'Defines if a ticket lock is required to change the customer of a ticket in the agent interface (if the ticket isn\'t locked yet, the ticket gets locked and the current agent will be set automatically as its owner).' =>
             'Określa czy blokada zgłoszenia jest wymagana, aby zmienić klienta powiązanego ze zgłoszeniem (jeżeli zgłoszenie nie zostało jeszcze zablokowane, blokuje się ono automatycznie i aktualny agent zostaje jego właścicielem).',
         'Defines if agents should be allowed to login if they have no shared secret stored in their preferences and therefore are not using two-factor authentication.' =>
@@ -5454,7 +5457,7 @@ Thanks for your help!
             '',
         'Defines the list of types for templates.' => 'Definiuje listę rodzajów szablonów.',
         'Defines the location to get online repository list for additional packages. The first available result will be used.' =>
-            'Definiuje likalizację repozytorium dla kolejnych pakietów. Użyty zostanie pierwszy dostępny wynik.',
+            'Definiuje lokalizację listy repozytoriów pakietów dodatkowy. Użyty zostanie pierwszy dostępny wynik.',
         'Defines the log module for the system. "File" writes all messages in a given logfile, "SysLog" uses the syslog daemon of the system, e.g. syslogd.' =>
             '',
         'Defines the maximal size (in bytes) for file uploads via the browser. Warning: Setting this option to a value which is too low could cause many masks in your OTRS instance to stop working (probably any mask which takes input from the user).' =>
@@ -5918,7 +5921,7 @@ Thanks for your help!
             'Widok modułu interfejsu (wyłącz okno procesów jeśli żadne procesy nie są dostepne).',
         'Frontend module registration for the agent interface.' => 'Rejestracja modułu interfejsu dla interfejsu agenta.',
         'Frontend module registration for the customer interface.' => 'Rejestracja modułu interfejsu dla interfejsu klienta.',
-        'Frontend module registration for the public interface.' => '',
+        'Frontend module registration for the public interface.' => 'Rejestracja modułu interfejsu dla interfejsu publicznego.',
         'Frontend theme' => 'Schemat graficzny',
         'Frontend theme.' => '',
         'Full value' => '',
@@ -6052,7 +6055,7 @@ Thanks for your help!
         'If enabled, OTRS will deliver all JavaScript files in minified form.' =>
             '',
         'If enabled, TicketPhone and TicketEmail will be open in new windows.' =>
-            'Jeśli włączone to zgłoszneia telefoniczne i e-mail będą otwierane w nowych oknach.',
+            'Jeśli włączone to zgłoszenia telefoniczne i e-mail będą otwierane w nowych oknach.',
         'If enabled, the OTRS version tag will be removed from the Webinterface, the HTTP headers and the X-Headers of outgoing mails. NOTE: If you change this option, please make sure to delete the cache.' =>
             '',
         'If enabled, the customer can search for tickets in all services (regardless what services are assigned to the customer).' =>
@@ -6141,7 +6144,7 @@ Thanks for your help!
         'List of all queue events to be displayed in the GUI.' => '',
         'List of all ticket events to be displayed in the GUI.' => 'Lista wszystkich wydarzeń związanych ze zgłoszeniami do wyświetlenia w interfejsie uźytkownika.',
         'List of default Standard Templates which are assigned automatically to new Queues upon creation.' =>
-            '',
+            'Lista predefiniowanych szablonów standardowych, które są przypisywane automatycznie do nowych kolejek po utworzeniu.',
         'List of responsive CSS files to always be loaded for the agent interface.' =>
             '',
         'List of responsive CSS files to always be loaded for the customer interface.' =>
@@ -6476,7 +6479,7 @@ Thanks for your help!
         'Sends reminder notifications of unlocked ticket after reaching the reminder date (only sent to ticket owner).' =>
             '',
         'Sends the notifications which are configured in the admin interface under "Ticket Notifications".' =>
-            '',
+            'Wysyła powiadomienia skonfigurowane w interfejsie administracyjnym pod "Powiadomienia o zgłoszeniach".',
         'Serbian Cyrillic' => '',
         'Serbian Latin' => '',
         'Service view' => 'Widok usług',
@@ -6506,7 +6509,7 @@ Thanks for your help!
         'Sets the PendingTime of a ticket to 0 if the state is changed to a non-pending state.' =>
             '',
         'Sets the age in minutes (first level) for highlighting queues that contain untouched tickets.' =>
-            'Ustawia czas w minutach (pierwzy poziom) dla wyróżnienia kolejek z nierozpoczętymi zgłoszeniami.',
+            'Ustawia czas w minutach (pierwszy poziom) dla wyróżnienia kolejek z nierozpoczętymi zgłoszeniami.',
         'Sets the age in minutes (second level) for highlighting queues that contain untouched tickets.' =>
             'Ustawia czas w minutach (drugi poziom) dla wyróżnienia kolejek z nierozpoczętymi zgłoszeniami.',
         'Sets the configuration level of the administrator. Depending on the config level, some sysconfig options will be not shown. The config levels are in in ascending order: Expert, Advanced, Beginner. The higher the config level is (e.g. Beginner is the highest), the less likely is it that the user can accidentally configure the system in a way that it is not usable any more.' =>
@@ -6835,7 +6838,7 @@ Thanks for your help!
         'Shows either the last customer article\'s subject or the ticket title in the small format overview.' =>
             'Pokazuje ostatni temat artykułu klienta lub tytuł zgłoszenia w podglądzie o małym formacie.',
         'Shows existing parent/child queue lists in the system in the form of a tree or a list.' =>
-            'Pokazuje bierzące listy kolejek nadrzędna/podrzędna w systemie w formie drzewa lub listy.',
+            'Pokazuje bieżące listy kolejek nadrzędna/podrzędna w systemie w formie drzewa lub listy.',
         'Shows information on how to start OTRS Daemon' => '',
         'Shows the activated ticket attributes in the customer interface (0 = Disabled and 1 = Enabled).' =>
             'Pokazuje aktywowane atrybuty zgłoszenia w interfejsie klienta (0 = Wyłączony i 1 = Włączony).',
@@ -6997,7 +7000,7 @@ Thanks for your help!
         'The duration in minutes after emitting an event, in which the new escalation notify and start events are suppressed.' =>
             '',
         'The format of the subject. \'Left\' means \'[TicketHook#:12345] Some Subject\', \'Right\' means \'Some Subject [TicketHook#:12345]\', \'None\' means \'Some Subject\' and no ticket number. In the latter case you should verify that the setting PostMaster::CheckFollowUpModule###0200-References is activated to recognize followups based on email headers.' =>
-            '',
+            'Formatowanie tematu. \'Lewo\' oznacza \'[TicketHook#:12345] Pewien Temat\'. \'Prawo\' oznacza \'Pewien Temat [TicketHook#:12345]\', \'Brak\' oznacza \'Pewien Temat\' bez określania numeru zgłoszenia. W ostatnim przypadku sprawdź, czy ustawienie odpowiadające za rozpoznawanie kolejnych wiadomości w oparciu o nagłówki: PostMaster::CheckFollowUpModule###0200-References jest włączone',
         'The headline shown in the customer interface.' => 'Nagłówek widoczny w interfejsie klienta.',
         'The identifier for a ticket, e.g. Ticket#, Call#, MyTicket#. The default is Ticket#.' =>
             'Identyfikator zgłoszenia np. Ticket#, Call#, MyTicket#. Domyślny to Ticket#.',
@@ -7067,7 +7070,7 @@ Thanks for your help!
         'Ticket Queue Overview' => 'Przegląd zgłoszeń w kolejkach',
         'Ticket Responsible.' => 'Odpowiedzialny za zgłoszenie.',
         'Ticket Watcher' => 'Obserwujący zgłoszenie',
-        'Ticket Zoom' => '',
+        'Ticket Zoom' => 'Szczegóły zgłoszenia',
         'Ticket Zoom.' => 'Szczegóły zgłoszenia.',
         'Ticket bulk module.' => '',
         'Ticket event module that triggers the escalation stop events.' =>
@@ -7133,11 +7136,11 @@ Thanks for your help!
         'View performance benchmark results.' => 'Objerzyj wyniki testów wydajności systemu',
         'Watch this ticket' => 'Obserwuj to zgłoszenie',
         'Watched Tickets.' => 'Obserwowane zgłoszenia.',
-        'We are performing scheduled maintenance.' => '',
+        'We are performing scheduled maintenance.' => 'Przeprowadzamy zaplanowane prace serwisowe.',
         'We are performing scheduled maintenance. Login is temporarily not available.' =>
-            '',
+            'Przeprowadzamy zaplanowane prace serwisowe. Logowanie jest tymczasowo niedostępne.',
         'We are performing scheduled maintenance. We should be back online shortly.' =>
-            '',
+            'Przeprowadzamy zaplanowane prace serwisowe. System zostanie niedługo udostępniony.',
         'Web View' => 'Widok strony',
         'When tickets are merged, a note will be added automatically to the ticket which is no longer active. Here you can define the body of this note (this text cannot be changed by the agent).' =>
             'W momencie scalenia zgłoszeń, do zgłoszenia, które nie będzie aktywne zostanie dodana notatka. Tu można zdefiniować treść tej notatki (ten tekst nie może zostać zmieniony przez agenta).',

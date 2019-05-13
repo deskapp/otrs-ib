@@ -804,7 +804,7 @@ Core.Agent.Admin.GenericAgent.Init({
                 </div>
                 <div class="Content">
                     <fieldset class="TableLike">
-[% IF Config('Ticket::GenericAgentCustomExecEnabled') %]
+[% IF Data.AllowCustomScriptExecution %]
                         <label for="NewCMD">[% Translate("CMD") | html %]:</label>
                         <div class="Field">
                             <input type="text" name="NewCMD" id="NewCMD" value="[% Data.NewCMD | html %]" size="40"/>
@@ -815,7 +815,6 @@ Core.Agent.Admin.GenericAgent.Init({
 [% END %]
 [% IF Config('Ticket::GenericAgentRemoveEnabled') %]
                         <div class="Clear"></div>
-
                         <label for="NewDelete">[% Translate("Delete tickets") | html %]:</label>
                         <div class="Field">
                             [% Data.DeleteOption %]
@@ -829,8 +828,7 @@ Core.Agent.Admin.GenericAgent.Init({
                 </div>
             </div>
 
-[% IF Config('Ticket::GenericAgentCustomExecEnabled') %]
-
+[% IF Data.AllowCustomModuleExecution %]
             <div class="WidgetSimple SpacingTop Collapsed">
                 <div class="Header">
                     <div class="WidgetAction Toggle">
