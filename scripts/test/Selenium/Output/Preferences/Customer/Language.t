@@ -40,6 +40,7 @@ $Selenium->RunTest(
         $Selenium->execute_script(
             "\$('#UserLanguage').val('$Language').trigger('redraw.InputField').trigger('change');"
         );
+
         $Selenium->find_element( "#UserLanguageUpdate", 'css' )->VerifiedClick();
 
         # check for update preference message on screen
